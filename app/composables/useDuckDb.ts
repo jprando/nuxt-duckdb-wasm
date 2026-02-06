@@ -39,7 +39,8 @@ export const useDuckDb = () => {
 
     try {
       const duckdb = await import("@duckdb/duckdb-wasm");
-      const wasmUrl = (await import("@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url")).default;
+      const DUCKDB_VERSION = "1.32.0";
+      const wasmUrl = `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${DUCKDB_VERSION}/dist/duckdb-eh.wasm`;
       const workerUrl = (await import("@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url")).default;
 
       const logger = new duckdb.ConsoleLogger();
