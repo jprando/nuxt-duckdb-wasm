@@ -101,7 +101,7 @@ let ultimaConsultaExecutada: (
               :sibling-count="3"
               :items-per-page="50"
               :total="quantidadeTotalRegistros"
-              @update:page="() => ultimaConsultaExecutada(paginaAtual, 50)"
+              @update:page="(valorPagina: number) => ultimaConsultaExecutada(valorPagina, 50)"
             />
           </div>
           <div class="items-baseline">
