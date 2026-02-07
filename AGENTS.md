@@ -143,3 +143,10 @@ pnpm typecheck         # Verify TypeScript types
 pnpm test              # Run all tests
 pnpm format            # Format code before committing
 ```
+
+# Regras do Projeto (Nuxt + TypeScript)
+- Utilize sempre TypeScript com tipagem estrita.
+- No Vue, prefira Script Setup e Composition API.
+- Para APIs e rotas de servidor, siga os padrões do Nitro.build.
+- Ao criar componentes, utilize Tailwind CSS (se aplicável).
+- Evite recursão; priorize soluções iterativas e elegantes.
