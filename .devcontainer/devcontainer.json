@@ -19,11 +19,15 @@
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		3000
+		3000,
+		4213
 	],
 	"portsAttributes": {
 		"3000": {
 			"label": "Nuxt Local Dev"
+		},
+		"4213": {
+			"label": "DuckDB UI"
 		}
 	},
 	"otherPortsAttributes": {
