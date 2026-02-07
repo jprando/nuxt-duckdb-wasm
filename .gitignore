@@ -1,3 +1,7 @@
+# arquivos e pastas que devem permanecer somente na maquina local
+**/*.local
+**/*.local.*
+
 # Nuxt dev/build outputs
 .output
 .data
@@ -8,6 +12,7 @@ dist
 
 # Node dependencies
 node_modules
+.pnpm-store
 
 # Logs
 logs
