@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "nuxt": {
+      "type": "url",
+      "url": "https://mcp.nuxt.com/sse"
+    },
+    "nuxt-ui": {
+      "type": "url",
+      "url": "https://mcp.nuxt.com/ui/sse"
+    }
+  }
+}
