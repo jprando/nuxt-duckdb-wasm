@@ -61,7 +61,7 @@ const executarConsulta = async (
 </script>
 
 <template>
-  <UContainer class="flex-1 flex flex-col min-h-0 pt-2 px-4">
+  <UContainer class="flex-1 flex flex-col min-h-0 pt-3 px-4">
     <UCard
       class="flex-1 flex flex-col min-h-0"
       :ui="{
@@ -90,20 +90,22 @@ const executarConsulta = async (
               size="xl"
               :disabled="!datasetSelecionado"
               :loading="estahCarregando"
+              class="justify-center w-28 min-w-28 max-w-28"
               @click="() => {
                 paginaAtual = 1;
                 paginadorKey++;
                 executarConsulta(paginaAtual);
               }"
             >
-              carregar
+              <span class="truncate">
+                {{ estahCarregando ? "carregando" : "carregar" }}
+              </span>
             </UButton>
           </div>
           <UPagination
             :key="paginadorKey"
-            v-show="quantidadeTotalRegistros"
             v-model="paginaAtual"
-            :disabled="estahCarregando"
+            :disabled="estahCarregando || !datasetSelecionado"
             :sibling-count="3"
             :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
