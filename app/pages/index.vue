@@ -15,6 +15,8 @@ const paginadorKey = ref(0);
 
 const datasetSelecionado = ref<DatasetParquet | undefined>();
 
+const paginadorSiblingCount = ref(1);
+
 const itensAgrupados = computed(() => {
   const grupos = new Map<string, DatasetParquet[]>();
   for (const ds of datasetsParquet) {
@@ -22,7 +24,14 @@ const itensAgrupados = computed(() => {
     lista.push(ds);
     grupos.set(ds.grupo, lista);
   }
-  return Array.from(grupos.values());
+  const items:
+    (DatasetParquet | { type: "label" | "separator"; label?: string })[] = [];
+  for (const [nome, lista] of grupos) {
+    if (items.length) items.push({ type: "separator" });
+    items.push({ type: "label", label: nome });
+    items.push(...lista);
+  }
+  return items;
 });
 
 const colunas = computed(() =>
@@ -57,7 +66,25 @@ const executarConsulta = async (
   quantidadeTotalRegistros.value = resultado.quantidadeTotal;
 };
 
-// onMounted(fetchData);
+onMounted(() => {
+  const breakpoints: [MediaQueryList, number][] = [
+    [matchMedia("(min-width: 1280px)"), 9],
+    [matchMedia("(min-width: 1200px)"), 8],
+    [matchMedia("(min-width: 1120px)"), 7],
+    [matchMedia("(min-width: 1040px)"), 6],
+    [matchMedia("(min-width: 960px)"), 5],
+    [matchMedia("(min-width: 880px)"), 4],
+    [matchMedia("(min-width: 800px)"), 3],
+    [matchMedia("(min-width: 720px)"), 2],
+    [matchMedia("(min-width: 640px)"), 1],
+  ];
+  const atualizar = () => {
+    paginadorSiblingCount.value = breakpoints.find(([mq]) => mq.matches)?.[1]
+      ?? 0;
+  };
+  atualizar();
+  breakpoints.forEach(([mq]) => mq.addEventListener("change", atualizar));
+});
 </script>
 
 <template>
@@ -106,12 +133,12 @@ const executarConsulta = async (
             :key="paginadorKey"
             v-model="paginaAtual"
             :disabled="estahCarregando || !datasetSelecionado"
-            :sibling-count="3"
+            :sibling-count="paginadorSiblingCount"
             :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
             @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
             show-edges
-            variant="link"
+            variant="ghost"
             size="xl"
           />
         </div>
