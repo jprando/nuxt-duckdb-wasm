@@ -34,58 +34,55 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 </script>
 
 <template>
-  <UApp class="h-dvh flex flex-col overflow-hidden">
-    <UHeader>
-      <template #left>
-        <NuxtLink to="/">
-          <AppLogo class="w-auto h-6 shrink-0" />
-        </NuxtLink>
-      </template>
+  <UApp>
+    <div class="h-dvh flex flex-col overflow-hidden">
+      <UHeader :ui="{ root: 'h-12!', container: 'h-full' }">
+        <template #left>
+          <NuxtLink to="/">
+            <AppLogo class="w-auto h-6 shrink-0" />
+          </NuxtLink>
+        </template>
 
-      <template #right>
-        <span
-          v-if="duckDBWasmInfo"
-          class="text-xs text-muted hidden sm:inline"
-        >
-          {{ duckDBWasmInfo }}
-        </span>
+        <template #right>
+          <span
+            v-if="duckDBWasmInfo"
+            class="text-xs text-muted hidden sm:inline"
+          >
+            {{ duckDBWasmInfo }}
+          </span>
 
-        <UColorModeButton />
+          <UColorModeButton />
+        </template>
+      </UHeader>
 
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
-      </template>
-    </UHeader>
+      <UMain class="flex-1 flex flex-col min-h-0">
+        <NuxtPage />
+      </UMain>
 
-    <UMain class="flex-1 flex flex-col min-h-0">
-      <NuxtPage />
-    </UMain>
+      <USeparator
+        class="relative top-1"
+        icon="i-simple-icons-nuxtdotjs"
+      />
 
-    <USeparator icon="i-simple-icons-nuxtdotjs" />
+      <UFooter :ui="{ container: 'pt-0! pb-1! lg:items-start!' }">
+        <template #left>
+          <p class="text-sm text-muted">
+            Built with Nuxt UI • © {{ new Date().getFullYear() }}
+          </p>
+        </template>
 
-    <UFooter>
-      <template #left>
-        <p class="text-sm text-muted">
-          Built with Nuxt UI • © {{ new Date().getFullYear() }}
-        </p>
-      </template>
-
-      <template #right>
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
-      </template>
-    </UFooter>
+        <template #right>
+          <UButton
+            to="https://github.com/jprando/nuxt-duckdb-wasm"
+            target="_blank"
+            icon="i-simple-icons-github"
+            aria-label="GitHub"
+            color="neutral"
+            variant="ghost"
+            class="relative -top-1"
+          />
+        </template>
+      </UFooter>
+    </div>
   </UApp>
 </template>

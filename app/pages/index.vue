@@ -60,17 +60,21 @@ const executarConsulta = async (
 </script>
 
 <template>
-  <UContainer class="ucontainer flex-1 flex flex-col py-4">
+  <UContainer class="flex-1 flex flex-col min-h-0 pt-2 px-4">
     <UCard
-      class="flex-1 min-h-0 overflow-hidden"
-      :ui="{ root: 'flex flex-col', body: 'p-0! flex-1 min-h-0 overflow-y-auto' }"
+      class="flex-1 flex flex-col min-h-0"
+      :ui="{
+        root: 'flex-1 flex flex-col min-h-0',
+        body: 'flex-1 min-h-0 overflow-y-auto p-0',
+        footer: 'py-1.5 px-4 sm:px-4',
+      }"
     >
       <template #header>
         <div class="flex flex-col gap-4">
           <div class="flex flex-row items-end gap-2">
             <div class="flex-1">
               <label class="text-sm font-medium text-neutral-250 mb-1 block">
-                Datasets (DuckDB WASM)
+                Datasets
               </label>
               <USelectMenu
                 v-model="datasetSelecionado"
