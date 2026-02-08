@@ -1,9 +1,5 @@
-<script
-  setup
-  lang="ts"
->
+<script setup lang="ts">
 const {
-  estahInicializando,
   estahCarregando,
   obterDadosSimples,
   obterDadosParquet,
@@ -11,14 +7,10 @@ const {
 
 const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
-const paginaAtual = ref(0);
-
-const carregando = computed(() =>
-  estahInicializando.value || estahCarregando.value
-);
+const paginaAtual = ref(1);
 
 const colunas = computed(() =>
-  !carregando.value
+  !estahCarregando.value
     && Array.isArray(registros.value)
     && registros.value?.length
     ? Object.keys(registros.value?.[0])
@@ -66,47 +58,27 @@ let ultimaConsultaExecutada: (
 
 <template>
   <UContainer class="ucontainer">
-    <UCard
-      class="mt-10"
-      :ui="{ body: 'p-0!' }"
-    >
+    <UCard class="mt-10" :ui="{ body: 'p-0!' }">
       <template #header>
-        <div class="flex gap-4 justify-between items-baseline">
-          <div class="grid grid-cols-3 grid-rows-2 grid-flow-col gap-4 overflow-x-auto">
-            <UButton
-              @click="() => {
-                paginaAtual = 0;
-                executarObterDadosSimples(paginaAtual);
-              }"
-              size="xl"
-            >
+        <div class="flex flex-row items-center gap-4">
+          <div class="flex flex-col gap-2 shrink-0">
+            <UButton @click="() => {
+              paginaAtual = 1;
+              executarObterDadosSimples(paginaAtual);
+            }" size="xl">
               carregar dados simples
             </UButton>
-            <UButton
-              @click="() => {
-                paginaAtual = 0;
-                executarObterDadosParquet(paginaAtual);
-              }"
-              size="xl"
-            >
+            <UButton @click="() => {
+              paginaAtual = 1;
+              executarObterDadosParquet(paginaAtual);
+            }" size="xl">
               carregar dados parquet
             </UButton>
-            <UPagination
-              v-if="quantidadeTotalRegistros"
-              v-model="paginaAtual"
-              show-edges
-              variant="link"
-              size="xl"
-              class="place-content-center-safe row-span-2 col-span-2"
-              :sibling-count="3"
-              :items-per-page="50"
-              :total="quantidadeTotalRegistros"
-              @update:page="(valorPagina: number) => ultimaConsultaExecutada(valorPagina, 50)"
-            />
           </div>
-          <div class="items-baseline">
-            <span v-if="carregando"> carregando... </span>
-          </div>
+          <UPagination v-show="quantidadeTotalRegistros" v-model="paginaAtual" show-edges variant="link" size="xl"
+            class="flex-1" :sibling-count="3" :items-per-page="duckDBItensPorPagina"
+            :total="quantidadeTotalRegistros || 1"
+            @update:page="(valorPagina: number) => ultimaConsultaExecutada(valorPagina, 50)" />
         </div>
       </template>
       <template #default>
@@ -114,25 +86,16 @@ let ultimaConsultaExecutada: (
           <!-- <ClientOnly> -->
           <table class="w-full">
             <thead class="text-justify">
-              <th
-                v-for="(nomeColuna, indexColuna) in colunas"
-                :key="`${registros?.length || 0}:${indexColuna}`"
-                class="px-5"
-              >
+              <th v-for="(nomeColuna, indexColuna) in colunas" :key="`${registros?.length || 0}:${indexColuna}`"
+                class="px-5">
                 {{ nomeColuna }}
               </th>
             </thead>
             <tbody>
-              <tr
-                v-for="(itemRegistro, indexRegistro) in registros"
-                :key="(registros?.length || 0) - indexRegistro"
-                class="text-justify"
-              >
-                <td
-                  v-for="(nomeColuna, indexColuna) in colunas"
-                  :key="(registros?.length || 0) - indexColuna"
-                  class="px-5"
-                >
+              <tr v-for="(itemRegistro, indexRegistro) in registros" :key="(registros?.length || 0) - indexRegistro"
+                class="text-justify">
+                <td v-for="(nomeColuna, indexColuna) in colunas" :key="(registros?.length || 0) - indexColuna"
+                  class="px-5">
                   {{ itemRegistro?.[nomeColuna] }}
                 </td>
               </tr>

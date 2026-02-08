@@ -1,8 +1,5 @@
-<script
-  setup
-  lang="ts"
->
-import type { main } from "#build/ui";
+<script setup lang="ts">
+// import type { main } from "#build/ui";
 
 useHead({
   meta: [
@@ -29,6 +26,8 @@ useSeoMeta({
   twitterImage: "https://ui.nuxt.com/assets/templates/nuxt/starter-light.png",
   twitterCard: "summary_large_image",
 });
+
+const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 </script>
 
 <template>
@@ -41,16 +40,15 @@ useSeoMeta({
       </template>
 
       <template #right>
+        <span v-if="estahCarregando || duckDBWasmInfo" class="text-xs text-muted hidden sm:inline">
+          <span v-if="estahCarregando">carregando...</span>
+          <span v-else>{{ duckDBWasmInfo }}</span>
+        </span>
+
         <UColorModeButton />
 
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
+        <UButton to="https://github.com/nuxt-ui-templates/starter" target="_blank" icon="i-simple-icons-github"
+          aria-label="GitHub" color="neutral" variant="ghost" />
       </template>
     </UHeader>
 
@@ -68,14 +66,8 @@ useSeoMeta({
       </template>
 
       <template #right>
-        <UButton
-          to="https://github.com/nuxt-ui-templates/starter"
-          target="_blank"
-          icon="i-simple-icons-github"
-          aria-label="GitHub"
-          color="neutral"
-          variant="ghost"
-        />
+        <UButton to="https://github.com/nuxt-ui-templates/starter" target="_blank" icon="i-simple-icons-github"
+          aria-label="GitHub" color="neutral" variant="ghost" />
       </template>
     </UFooter>
   </UApp>

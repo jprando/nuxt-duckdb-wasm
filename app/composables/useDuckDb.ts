@@ -1,71 +1,36 @@
-const sanitizeRow = (row: Record<string, unknown>) => {
-  const obj: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(row)) {
-    obj[key] = typeof value === "bigint" ? Number(value) : value;
-  }
-  return obj;
-};
+import { get } from "@nuxt/ui/runtime/utils/index.js";
 
-const parquetUrl = "/yellow_tripdata_2024-01.parquet";
+const db = shallowRef<any>(null);
+const _estahCarregando = ref(false);
+const duckDBWasmInfo = ref("...");
 
-const selectDadosSimples = (pagina: number, tamanhoPagina: number = 50) => `
-    SELECT range, random() as val
-    FROM range(10000)
-    WHERE range % 2 = 0
-    LIMIT ${tamanhoPagina} OFFSET ${pagina * tamanhoPagina}
-  `;
+let timerDebounce: number | undefined;
 
-const selectDadosParquet = (pagina: number, tamanhoPagina: number = 50) => `
-    -- SELECT
-    --   passenger_count,
-    --   round(avg(tip_amount), 2) as avg_tip,
-    --   count(*) as total_trips
-    FROM 'remote_file.parquet'
-    -- WHERE passenger_count IS NOT NULL
-    -- GROUP BY passenger_count
-    ORDER BY passenger_count ASC
-    LIMIT ${tamanhoPagina} OFFSET ${pagina * tamanhoPagina}
-  `;
+const estahCarregando = computed({
+  get: () => _estahCarregando.value,
+  set: (value: boolean) => {
+    clearTimeout(timerDebounce);
+    timerDebounce = window.setTimeout(() => {
+      _estahCarregando.value = value;
+    }, 800);
+  },
+});
 
 export const useDuckDb = () => {
-  const db = shallowRef<any>(null);
-  const estahInicializando = ref(false);
-  const estahCarregando = ref(false);
-  const duckDBDataProtocolHTTP = 4;
-
-  const init = async () => {
-    if (!import.meta.client || db.value || estahInicializando.value) return;
-    estahInicializando.value = true;
-
-    try {
-      const duckdb = await import("@duckdb/duckdb-wasm");
-      const DUCKDB_VERSION = "1.32.0";
-      const wasmUrl = `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${DUCKDB_VERSION}/dist/duckdb-eh.wasm`;
-      const workerUrl = (await import("@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url")).default;
-
-      const logger = new duckdb.ConsoleLogger();
-      const worker = new Worker(workerUrl);
-      const _db = new duckdb.AsyncDuckDB(logger, worker);
-
-      await _db.instantiate(wasmUrl);
-
-      db.value = _db;
-    } catch (error) {
-      console.error("Falha ao instanciar DuckDB COI:", error);
-    } finally {
-      estahInicializando.value = false;
-    }
-  };
+  const init = duckDBWasmInit(db, estahCarregando, duckDBWasmInfo);
 
   const execute = async (sql: string) => {
     if (!db.value) await init();
 
     const conn = await db.value!.connect();
     try {
+      estahCarregando.value = true;
+      // infoDev("#duckdb:query#", sql);
       const result = await conn.query(sql);
       return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
     } finally {
       await conn.close();
+      estahCarregando.value = false;
     }
   };
 
@@ -73,39 +38,67 @@ export const useDuckDb = () => {
     if (!db.value) await init();
 
     // Registra o arquivo no sistema de arquivos virtual (HTTP FS)
-    await db.value!.registerFileURL("remote_file.parquet", url, duckDBDataProtocolHTTP, false);
+    await db.value!.registerFileURL(
+      "remote_file.parquet",
+      url,
+      duckDBDataProtocolHTTP,
+      false,
+    );
 
     const conn = await db.value!.connect();
     try {
       // O DuckDB lê apenas o necessário via Range Requests
+      estahCarregando.value = true;
       const result = await conn.query(sql);
       return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
     } finally {
       await conn.close();
+      estahCarregando.value = false;
     }
   };
 
-  const obterDadosSimples = async (pagina: number = 0, tamanhoPagina: number = 50) => {
-    estahCarregando.value = true;
+  const obterDadosSimples = async (
+    pagina: number = 1,
+    tamanhoPagina: number = 50,
+  ) => {
     try {
-      const registros = await execute(selectDadosSimples(pagina, tamanhoPagina));
-      const [quantidade] = await execute("FROM range(10000) SELECT COUNT() AS total");
+      const registros = await execute(
+        selectDadosSimples(pagina, duckDBItensPorPagina),
+      );
+      const [quantidade] = await execute(
+        "FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0",
+      );
+      return { registros, quantidadeTotal: quantidade?.total ?? 0 };
+    } finally {
+      selectDadosSimples;
+      estahCarregando.value = false;
+    }
+  };
+
+  const obterDadosParquet = async (
+    pagina: number = 1,
+    tamanhoPagina: number = 50,
+  ) => {
+    try {
+      const registros = await queryRemoteParquet(
+        parquetUrl,
+        selectDadosParquet(pagina, duckDBItensPorPagina),
+      );
+      const [quantidade] = await execute(
+        "FROM 'remote_file.parquet' SELECT COUNT() AS total",
+      );
       return { registros, quantidadeTotal: quantidade?.total ?? 0 };
     } finally {
       estahCarregando.value = false;
     }
   };
 
-  const obterDadosParquet = async (pagina: number = 0, tamanhoPagina: number = 50) => {
-    estahCarregando.value = true;
-    try {
-      const registros = await queryRemoteParquet(parquetUrl, selectDadosParquet(pagina, tamanhoPagina));
-      const [quantidade] = await execute("FROM 'remote_file.parquet' SELECT COUNT() AS total");
-      return { registros, quantidadeTotal: quantidade?.total ?? 0 };
-    } finally {
-      estahCarregando.value = false;
-    }
+  return {
+    estahCarregando,
+    duckDBWasmInfo,
+    execute,
+    queryRemoteParquet,
+    obterDadosSimples,
+    obterDadosParquet,
   };
-
-  return { estahInicializando, estahCarregando, execute, queryRemoteParquet, obterDadosSimples, obterDadosParquet };
 };

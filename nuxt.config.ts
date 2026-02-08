@@ -27,6 +27,14 @@ export default defineNuxtConfig({
     experimental: {
       wasm: true,
     },
+    routeRules: {
+      "/**": {
+        headers: {
+          "Cross-Origin-Opener-Policy": "same-origin",
+          "Cross-Origin-Embedder-Policy": "require-corp",
+        },
+      },
+    },
   },
 
   vite: {

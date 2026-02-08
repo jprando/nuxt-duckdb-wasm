@@ -144,6 +144,13 @@ pnpm test              # Run all tests
 pnpm format            # Format code before committing
 ```
 
+## Fontes de Informacao (MCP Servers)
+
+- Os MCP servers do **Nuxt** e do **Nuxt UI** sao a **unica fonte da verdade** sobre o framework e seus componentes. Sempre consulte-os antes de qualquer outra fonte.
+- **Nao** dependa de conhecimento interno ou busca na web para informacoes sobre Nuxt ou Nuxt UI. Use exclusivamente os MCP servers configurados em `.claude/mcp.json`.
+- Para documentacao, modulos, deploy e conceitos do Nuxt, use o MCP `nuxt`.
+- Para componentes, composables, exemplos e temas do Nuxt UI, use o MCP `nuxt-ui`.
+
 # Regras do Projeto (Nuxt + TypeScript)
 - Utilize sempre TypeScript com tipagem estrita.
 - No Vue, prefira Script Setup e Composition API.
