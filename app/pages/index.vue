@@ -87,7 +87,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <UContainer class="flex-1 flex flex-col min-h-0 pt-3 px-4">
+  <UContainer class="flex flex-1 flex-col min-h-0 pt-2 px-2 sm:pt-3">
     <UCard
       class="flex-1 flex flex-col min-h-0"
       :ui="{
