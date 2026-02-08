@@ -68,15 +68,15 @@ const executarConsulta = async (
 
 onMounted(() => {
   const breakpoints: [MediaQueryList, number][] = [
-    [matchMedia("(min-width: 1280px)"), 9],
-    [matchMedia("(min-width: 1200px)"), 8],
-    [matchMedia("(min-width: 1120px)"), 7],
-    [matchMedia("(min-width: 1040px)"), 6],
-    [matchMedia("(min-width: 960px)"), 5],
-    [matchMedia("(min-width: 880px)"), 4],
-    [matchMedia("(min-width: 800px)"), 3],
-    [matchMedia("(min-width: 720px)"), 2],
-    [matchMedia("(min-width: 640px)"), 1],
+    [matchMedia("(min-width: 1280px)"), 8],
+    [matchMedia("(min-width: 1200px)"), 7],
+    [matchMedia("(min-width: 1120px)"), 6],
+    [matchMedia("(min-width: 1040px)"), 5],
+    [matchMedia("(min-width: 960px)"), 4],
+    [matchMedia("(min-width: 880px)"), 3],
+    [matchMedia("(min-width: 800px)"), 2],
+    [matchMedia("(min-width: 720px)"), 1],
+    [matchMedia("(min-width: 640px)"), 0],
   ];
   const atualizar = () => {
     paginadorSiblingCount.value = breakpoints.find(([mq]) => mq.matches)?.[1]

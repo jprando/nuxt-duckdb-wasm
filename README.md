@@ -1,70 +1,80 @@
-# 📊 Nuxt + DuckDB WASM
+# Nuxt + DuckDB WASM
 
-Aplicação Nuxt 4 que utiliza **DuckDB WASM** para realizar consultas SQL diretamente no navegador, permitindo análise de dados Parquet sem necessidade de backend.
+Aplicacao Nuxt 4 que utiliza **DuckDB WASM** para realizar consultas SQL diretamente no navegador, permitindo analise de dados Parquet sem necessidade de backend.
 
-## 🎯 Visão Geral
+## Visao Geral
 
-Este projeto demonstra como executar consultas SQL e análise de dados diretamente no lado do cliente usando WebAssembly.
+Este projeto demonstra como executar consultas SQL e analise de dados diretamente no lado do cliente usando WebAssembly. A aplicacao roda em modo **SPA** (`ssr: false`) com **Cross-Origin Isolation** habilitado para suporte a SharedArrayBuffer.
 
-## 🛠 Stack Tecnológico
+## Stack Tecnologico
 
 ### Core Framework
-- **Nuxt 4.3.1** - Framework Vue com SSR/SSG
+- **Nuxt 4.3.1** - Framework Vue com compatibilityVersion 5
 - **Vue 3** - Interface reativa
-- **TypeScript 5.9.3** - Tipagem estática
+- **TypeScript 5.9.3** - Tipagem estatica
 
 ### UI & Styling
 - **Nuxt UI 4.4.0** - Biblioteca de componentes (baseada em Tailwind CSS)
 - **Tailwind CSS 4.1.18** - Framework CSS utility-first
-- **@nuxt/image 2.0.0** - Otimização de imagens
+- **@nuxt/image 2.0.0** - Otimizacao de imagens
 - **@nuxt/hints 1.0.0-alpha.6** - Dicas de desenvolvimento
 
 ### Banco de Dados
-- **@duckdb/duckdb-wasm 1.32.0** - DuckDB rodando via WebAssembly
-- **Suporte a Parquet** - Formato colunar eficiente para análise
+- **@duckdb/duckdb-wasm 1.33.1-dev19.0** - DuckDB rodando via WebAssembly
+- Carregado via **jsdelivr CDN** (nao e bundled, ultrapassa o limite de 25MB do Cloudflare)
+- **Suporte a Parquet** - Formato colunar eficiente para analise
 
 ### Ferramentas de Desenvolvimento
-- **ESLint 9.39.2** - Linting de código
-- **dprint 0.51.1** - Formatter rápido
+- **ESLint 9.39.2** - Linting de codigo
+- **dprint 0.51.1** - Formatter rapido
 - **pnpm 10.29.1** - Gerenciador de pacotes
 
 ### Testes
-- **Vitest 4.0.18** - Testes unitários e de componentes
+- **Vitest 4.0.18** - Testes unitarios e de componentes
 - **Playwright 1.58.2** - Testes E2E
-- **@vue/test-utils 2.4.6** - Utilitários para testes Vue
+- **@vue/test-utils 2.4.6** - Utilitarios para testes Vue
 
 ### Node Environment
-- **Node 22.22.0+** - Runtime JavaScript
-- **NPM 10.9.0+** - Gerenciador de pacotes
+- **Node 24.13.0+** - Runtime JavaScript
+- **NPM 11.9.0+** - Gerenciador de pacotes
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 projeto/
 ├── app/
 │   ├── app.vue                    # Layout principal com Header/Footer
-│   ├── app.config.ts              # Configurações da aplicação (UI colors, etc)
+│   ├── app.config.ts              # Configuracoes da aplicacao (UI colors, etc)
 │   ├── assets/css/main.css        # Tema customizado (cores green, font Public Sans)
 │   ├── components/
 │   │   ├── AppLogo.vue            # Logo SVG do projeto
 │   │   └── TemplateMenu.vue       # Componente de menu
 │   ├── composables/
-│   │   └── useDuckDb.ts           # Hook principal do DuckDB WASM
+│   │   └── useDuckDb.ts           # Composable principal do DuckDB WASM
+│   ├── utils/
+│   │   ├── duckdb.init.ts         # Inicializacao DuckDB (CDN, Worker, blob URL)
+│   │   ├── duckdb.selects.ts      # Builders de queries SQL
+│   │   ├── duckdb.constantes.ts   # Constantes e definicoes de datasets
+│   │   └── duckdb.sanitizeRow.ts  # Sanitizacao de BigInt para Number
 │   └── pages/
-│       ├── index.vue              # Página principal com tabela de dados
-│       └── index.bkp.vue          # Backup da página original (template starter)
+│       └── index.vue              # Pagina principal com tabela de dados
+│
+├── server/
+│   └── middleware/
+│       └── cross-origin-isolation.ts  # Headers COOP/COEP para SharedArrayBuffer
 │
 ├── public/
-│   ├── favicon.ico                # Ícone do site
-│   └── yellow_tripdata_2024-01.parquet  # Dataset de viagens de táxi NYC
+│   ├── favicon.ico                # Icone do site
+│   ├── _headers                   # Headers Cloudflare (COOP/COEP)
+│   └── yellow_tripdata_2024-01.parquet  # Dataset de viagens de taxi NYC
 │
 ├── shared/
 │   └── utils/
-│       └── formatar.ts            # Utilitário de formatação (números pt-BR)
+│       └── formatar.ts            # Utilitario de formatacao (numeros pt-BR)
 │
 ├── test/
 │   ├── unit/
-│   │   └── example.test.ts        # Teste unitário de exemplo
+│   │   └── example.test.ts        # Teste unitario de exemplo
 │   └── nuxt/
 │       └── component.test.ts      # Teste de componente Nuxt
 │
@@ -74,211 +84,185 @@ projeto/
 ├── .github/workflows/
 │   └── ci.yml                     # Pipeline CI/CD (GitHub Actions)
 │
-├── nuxt.config.ts                 # Configuração do Nuxt
-├── vitest.config.ts               # Configuração do Vitest
-├── playwright.config.ts           # Configuração do Playwright
-├── eslint.config.mjs              # Configuração do ESLint
-├── dprint.json                    # Configuração do dprint formatter
-├── tsconfig.json                  # Configuração do TypeScript
-└── package.json                   # Dependências e scripts
+├── nuxt.config.ts                 # Configuracao do Nuxt
+├── vitest.config.ts               # Configuracao do Vitest
+├── playwright.config.ts           # Configuracao do Playwright
+├── eslint.config.mjs              # Configuracao do ESLint
+├── dprint.json                    # Configuracao do dprint formatter
+├── tsconfig.json                  # Configuracao do TypeScript
+└── package.json                   # Dependencias e scripts
 ```
 
-## 🔧 Funcionalidades Principais
+## Funcionalidades Principais
 
 ### 1. Interface de Dados (`app/pages/index.vue`)
-- Tabela interativa com paginação
-- Dois modos de consulta:
-  - **Dados simples**: Consulta SQL gerada (range de 10.000 registros)
-  - **Dados Parquet**: Dataset real de viagens de táxi NYC (3M+ registros)
-- Paginação com 50 itens por página
-- Contador total de registros
-- Estados de carregamento (loading)
+- Tabela interativa com paginacao responsiva
+- Seletor de dataset com **12 datasets** organizados em 7 grupos:
+  - **Local**: Dados gerados em memoria + Parquet local (NYC Taxi)
+  - **Taxi (NYC)**: Abr/2019, Jan/2010
+  - **Ferroviario**: Servicos de trem, tarifas, estacoes (Holanda)
+  - **Outros**: Corpus de Shakespeare, dados de voos
+  - **Redes Sociais**: Posts HackerNews
+  - **Financeiro**: Precos de acoes
+  - **Energia**: Eletricidade Finlandia
+- Paginacao com 50 itens por pagina e sibling count responsivo (0-9 botoes conforme largura da tela)
+- Tempo de execucao da query (ms ou segundos)
+- Skeleton loading durante carregamento
+- Contador total de registros formatado em pt-BR
 
-### 2. DuckDB WASM Integration (`app/composables/useDuckDb.ts`)
+### 2. DuckDB WASM Integration
 
-**Inicialização:**
-- Carrega DuckDB via CDN JSdelivr
-- Instância AsyncDuckDB com Worker
-- Configura logger e conexão
+**Composable (`app/composables/useDuckDb.ts`):**
+- Orquestra inicializacao, queries e estados de carregamento
+- Loading state com debounce de 400ms (evita flicker)
 
-**Funções disponíveis:**
+**Inicializacao (`app/utils/duckdb.init.ts`):**
+- Carrega DuckDB via CDN jsdelivr (dynamic import)
+- Cria Worker via blob URL para compatibilidade com Cross-Origin Isolation
+- Pthread worker baixado via fetch e convertido em blob URL
+- Detecta versao e tipo de bundle (mvp/eh)
+
+**Funcoes disponveis:**
 - `execute(sql)` - Executa consultas SQL
-- `queryRemoteParquet(url, sql)` - Consulta arquivos Parquet remotos via HTTP
-- `obterDadosSimples(pagina, tamanhoPagina)` - Dados gerados
-- `obterDadosParquet(pagina, tamanhoPagina)` - Dataset real
+- `registrarArquivoRemoto(url)` - Registra URL no HTTP FS do DuckDB
+- `obterDadosSimples(pagina, tamanhoPagina)` - Dados gerados (range de 10.000)
+- `obterDadosParquet(pagina, tamanhoPagina, url)` - Consulta datasets Parquet
 
-**Features:**
-- Range Requests HTTP para ler apenas dados necessários do Parquet
-- Sanitização de BigInt para JavaScript Number
-- Gerenciamento de estados (inicializando, carregando)
+**Queries (`app/utils/duckdb.selects.ts`):**
+- SQL builders com LIMIT/OFFSET para paginacao
 
-### 3. Layout (`app/app.vue`)
+**Sanitizacao (`app/utils/duckdb.sanitizeRow.ts`):**
+- Converte BigInt para Number (compatibilidade JavaScript)
+
+### 3. Cross-Origin Isolation
+- Headers COOP/COEP configurados em 3 camadas:
+  - `server/middleware/cross-origin-isolation.ts` (dev)
+  - `nuxt.config.ts` via nitro routeRules
+  - `public/_headers` (Cloudflare Pages)
+- Necessario para SharedArrayBuffer (DuckDB multi-threading)
+
+### 4. Layout (`app/app.vue`)
 - Header com logo e toggle de tema claro/escuro
-- Main content area com `<NuxtPage />`
-- Footer com copyright e links
+- Exibe versao do DuckDB WASM (ex: "DuckDB WASM v1.33.1 (mvp)")
+- Footer com copyright e link para GitHub
 - SEO otimizado (meta tags, Open Graph, Twitter Cards)
 
-### 4. Configurações
+### 5. Configuracoes
 
 **Nuxt Config (`nuxt.config.ts`):**
-- Módulos: ESLint, UI, Hints, Image, Scripts, Test Utils
+- `ssr: false` - Modo SPA (client-side only)
+- Modulos: ESLint, UI, Hints, Image, Scripts, Test Utils
 - WASM habilitado no Nitro
-- Otimização de dependências (exclui DuckDB)
+- DuckDB excluido do Vite optimizeDeps (carregado via CDN)
 - Worker format configurado para ES
-- Regras de rota: `/` com prerender
 
 **Estilos (`main.css`):**
 - Fonte Public Sans
 - Paleta de cores green customizada (50-950)
-- Integração com @nuxt/ui e Tailwind CSS
+- Integracao com @nuxt/ui e Tailwind CSS
 
-**Testes (`vitest.config.ts`):**
-- Dois projetos: `unit` (Node) e `nuxt` (ambiente Nuxt + Playwright)
-- Cobertura de código habilitada
-- Instância de Chromium para testes de navegador
-
-## 📊 Fluxo de Dados
+## Fluxo de Dados
 
 ```
-Usuário clica no botão
-    ↓
-useDuckDb.obterDadosParquet()
-    ↓
-Init DuckDB (se não inicializado)
-    ↓
-Registrar URL do arquivo Parquet no DuckDB
-    ↓
+Usuario seleciona dataset e clica "carregar"
+    |
+useDuckDb.obterDadosParquet() / obterDadosSimples()
+    |
+Init DuckDB (se nao inicializado)
+    |
+Registrar URL do arquivo Parquet no HTTP FS do DuckDB
+    |
 Executar SQL com LIMIT/OFFSET
-    ↓
-DuckDB faz Range Request HTTP
-    ↓
-Processar e sanitizar resultados
-    ↓
-Retornar registros + total
-    ↓
-Exibir na tabela com paginação
+    |
+DuckDB faz Range Request HTTP (le apenas dados necessarios)
+    |
+Sanitizar resultados (BigInt -> Number)
+    |
+Exibir na tabela com paginacao
 ```
 
-## 🎨 Design System
+## Design System
 
 ### Cores (Custom Green)
 - **50-100**: Fundos claros
 - **400**: Cor principal (#00dc82)
-- **500-600**: Ações e hover states
+- **500-600**: Acoes e hover states
 - **900-950**: Textos e elementos escuros
 
 ### Componentes Nuxt UI Utilizados
 - `UContainer` - Layout responsivo
 - `UCard` - Cards com header/body/footer
-- `UButton` - Botões com variants
-- `UPagination` - Paginação com navegação
+- `UButton` - Botoes com variants e loading state
+- `UPagination` - Paginacao com navegacao e sibling count responsivo
+- `USelectMenu` - Seletor de dataset com agrupamento
+- `USkeleton` - Skeleton loading
 - `UHeader`, `UMain`, `UFooter` - Layout structure
 - `UColorModeButton` - Toggle tema claro/escuro
 - `USeparator` - Separadores visuais
 
-## 🚀 Scripts Disponíveis
+## Scripts Disponiveis
 
 ```bash
 # Desenvolvimento
 pnpm dev                    # Servidor de desenvolvimento (http://localhost:3000)
-pnpm build                  # Build para produção
-pnpm preview                # Preview do build de produção
+pnpm build                  # Build para producao
+pnpm preview                # Preview do build de producao
 
-# Qualidade de Código
-pnpm lint                   # Verificar código com ESLint
+# Qualidade de Codigo
+pnpm lint                   # Verificar codigo com ESLint
 pnpm typecheck              # Verificar tipos TypeScript
-pnpm format                 # Format código com dprint
+pnpm format                 # Format codigo com dprint
 
 # Testes
 pnpm test                   # Todos os testes
-pnpm test:unit              # Testes unitários
+pnpm test:unit              # Testes unitarios
 pnpm test:nuxt              # Testes de componentes
 pnpm test:e2e               # Testes E2E com Playwright
 pnpm test:e2e:ui            # Testes E2E com interface visual
-pnpm test:coverage          # Cobertura de código
+pnpm test:coverage          # Cobertura de codigo
 pnpm test:watch             # Testes em modo watch
 
 # DuckDB
 pnpm duckdb:ui              # Interface DuckDB local
 ```
 
-## 🔐 CI/CD Pipeline (`.github/workflows/ci.yml`)
+## CI/CD Pipeline (`.github/workflows/ci.yml`)
 
 **Trigger:** Push em qualquer branch
 
 **Steps:**
-1. Checkout do código
-2. Instalação do pnpm
-3. Instalação do Node 22
+1. Checkout do codigo
+2. Instalacao do pnpm
+3. Instalacao do Node
 4. Install dependencies (com cache)
 5. Run lint
 6. Run typecheck
 
-## 💡 Destacado
+## Deploy
 
-### Arquitetura Client-Side
-- Sem necessidade de backend
-- DuckDB roda no navegador via WebAssembly
-- Análise de dados Parquet com Range Requests
-- Performance otimizada
+O deploy e feito no **Cloudflare Pages**. O arquivo WASM do DuckDB ultrapassa o limite de 25MB por arquivo do Cloudflare, por isso e carregado via **jsdelivr CDN**.
 
-### Internacionalização
-- Configuração pt-BR para formatação de números
-- Meta tags com idioma ptBR
+Cross-Origin Isolation (COOP/COEP) e necessario e configurado tanto no server middleware quanto no `public/_headers` para garantir que SharedArrayBuffer funcione corretamente.
 
-### Desenvolvimento
-- Auto-imports do Nuxt
-- Hot Module Replacement
-- TypeScript full-stack
-- Linting e formatting consistentes
+## Arquitetura
 
-## 📈 Dataset de Exemplo
+- **Zero-backend**: DuckDB roda no navegador via WebAssembly
+- **SPA mode**: SSR desabilitado, toda logica e client-side
+- **Range Requests**: DuckDB le apenas os dados necessarios dos arquivos Parquet via HTTP
+- **CDN strategy**: DuckDB WASM carregado via jsdelivr (contorna limite de 25MB do Cloudflare)
+- **COI compliance**: Cross-Origin Isolation para multi-threading via SharedArrayBuffer
+- **Blob URL workers**: Workers de CDN externo convertidos em blob URL para compatibilidade com COI
 
-**Arquivo:** `public/yellow_tripdata_2024-01.parquet`
+## Dataset de Exemplo
+
+**Arquivo local:** `public/yellow_tripdata_2024-01.parquet`
 - Fonte: NYC Taxi & Limousine Commission
-- Conteúdo: Viagens de táxi amarelo em janeiro de 2024
-- Tamanho: ~3 milhões de registros
-- Colunas típicas: `passenger_count`, `trip_distance`, `tip_amount`, etc.
+- Conteudo: Viagens de taxi amarelo em janeiro de 2024
+- Tamanho: ~3 milhoes de registros
 
-### Outros Datasets Disponíveis
+Alem do dataset local, a aplicacao suporta **10 datasets remotos** de diversas fontes (DuckDB blobs, Hugging Face, GitHub, duckdb.org).
 
-Serviços de Trem (Holanda):
-https://blobs.duckdb.org/train_services.parquet
-
-Dados de Táxi (NYC):
-https://blobs.duckdb.org/data/taxi_2019_04.parquet
-https://blobs.duckdb.org/data/yellow_tripdata_2010-01.parquet
-
-Corpus de Shakespeare:
-https://blobs.duckdb.org/data/shakespeare.parquet
-
-Dados de Voos (On-time):
-https://blobs.duckdb.org/data/ontime.parquet
-
-Tarifas Ferroviárias:
-https://blobs.duckdb.org/tariffs.parquet
-
-Estações de Trem:
-https://blobs.duckdb.org/stations.parquet
-
-## 🎯 Próximos Passos Potenciais
-
-- Adicionar filtros e ordenação na tabela
-- Implementar mais colunas do dataset Parquet
-- Adicionar gráficos de visualização
-- Suporte a múltiplos datasets
-- Exportação de resultados (CSV, Excel)
-- Autenticação e controle de acesso
-- Deploy automático (Vercel, Netlify)
-
-## 🚀 Deploy
-
-### Vercel
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-name=starter&repository-url=https%3A%2F%2Fgithub.com%2Fnuxt-ui-templates%2Fstarter&demo-image=https%3A%2F%2Fui.nuxt.com%2Fassets%2Ftemplates%2Fnuxt%2Fstarter-dark.png&demo-url=https%3A%2F%2Fstarter-template.nuxt.dev%2F&demo-title=Nuxt%20Starter%20Template&demo-description=A%20minimal%20template%20to%20get%20started%20with%20Nuxt%20UI.)
-
-Veja a [documentação de deployment do Nuxt](https://nuxt.com/docs/getting-started/deployment) para mais opções.
-
-## 📚 Recursos
+## Recursos
 
 - [Nuxt Documentation](https://nuxt.com)
 - [Nuxt UI Documentation](https://ui.nuxt.com)
