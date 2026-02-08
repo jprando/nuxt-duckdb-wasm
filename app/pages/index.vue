@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 const {
   estahCarregando,
   obterDadosSimples,
@@ -8,6 +11,18 @@ const {
 const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
+
+const datasetSelecionado = ref<DatasetParquet | undefined>();
+
+const itensAgrupados = computed(() => {
+  const grupos = new Map<string, DatasetParquet[]>();
+  for (const ds of datasetsParquet) {
+    const lista = grupos.get(ds.grupo) ?? [];
+    lista.push(ds);
+    grupos.set(ds.grupo, lista);
+  }
+  return Array.from(grupos.values());
+});
 
 const colunas = computed(() =>
   !estahCarregando.value
@@ -22,92 +37,161 @@ const rodapeQuantidadeRegistros = computed(() =>
   || `${numeroSemCasaDecimal.format(quantidadeTotalRegistros.value)} registros`
 );
 
-const executarObterDadosSimples = async (
-  pagina: number = 0,
+const tempoExecucaoMs = ref<number | null>(null);
+
+const executarConsulta = async (
+  pagina: number = 1,
   totalPagina: number = 50,
 ) => {
-  const {
-    registros: _registros,
-    quantidadeTotal,
-  } = await obterDadosSimples(pagina, totalPagina);
-  registros.value = _registros;
-  quantidadeTotalRegistros.value = quantidadeTotal;
-  ultimaConsultaExecutada = executarObterDadosSimples;
-};
+  if (!datasetSelecionado.value) return;
 
-const executarObterDadosParquet = async (
-  pagina: number = 0,
-  totalPagina: number = 50,
-) => {
-  const {
-    registros: _registros,
-    quantidadeTotal,
-  } = await obterDadosParquet(pagina, totalPagina);
-  registros.value = _registros;
-  quantidadeTotalRegistros.value = quantidadeTotal;
-  ultimaConsultaExecutada = executarObterDadosParquet;
-};
+  const inicio = performance.now();
+  const url = datasetSelecionado.value.url;
+  const resultado = url === ""
+    ? await obterDadosSimples(pagina, totalPagina)
+    : await obterDadosParquet(pagina, totalPagina, url);
 
-let ultimaConsultaExecutada: (
-  pagina: number,
-  totalPagina: number,
-) => Promise<unknown> = executarObterDadosSimples;
+  tempoExecucaoMs.value = performance.now() - inicio;
+  registros.value = resultado.registros;
+  quantidadeTotalRegistros.value = resultado.quantidadeTotal;
+};
 
 // onMounted(fetchData);
 </script>
 
 <template>
-  <UContainer class="ucontainer">
-    <UCard class="mt-10" :ui="{ body: 'p-0!' }">
+  <UContainer class="ucontainer flex-1 flex flex-col py-4">
+    <UCard
+      class="flex-1 min-h-0 overflow-hidden"
+      :ui="{ root: 'flex flex-col', body: 'p-0! flex-1 min-h-0 overflow-y-auto' }"
+    >
       <template #header>
-        <div class="flex flex-row items-center gap-4">
-          <div class="flex flex-col gap-2 shrink-0">
-            <UButton @click="() => {
-              paginaAtual = 1;
-              executarObterDadosSimples(paginaAtual);
-            }" size="xl">
-              carregar dados simples
-            </UButton>
-            <UButton @click="() => {
-              paginaAtual = 1;
-              executarObterDadosParquet(paginaAtual);
-            }" size="xl">
-              carregar dados parquet
+        <div class="flex flex-col gap-4">
+          <div class="flex flex-row items-end gap-2">
+            <div class="flex-1">
+              <label class="text-sm font-medium text-neutral-250 mb-1 block">
+                Datasets (DuckDB WASM)
+              </label>
+              <USelectMenu
+                v-model="datasetSelecionado"
+                :items="itensAgrupados"
+                placeholder="Selecione um dataset..."
+                size="xl"
+                class="w-full"
+                :search-input="false"
+              />
+            </div>
+            <UButton
+              size="xl"
+              :disabled="!datasetSelecionado"
+              :loading="estahCarregando"
+              @click="() => {
+                paginaAtual = 1;
+                executarConsulta(paginaAtual);
+              }"
+            >
+              carregar
             </UButton>
           </div>
-          <UPagination v-show="quantidadeTotalRegistros" v-model="paginaAtual" show-edges variant="link" size="xl"
-            class="flex-1" :sibling-count="3" :items-per-page="duckDBItensPorPagina"
+          <UPagination
+            v-show="quantidadeTotalRegistros"
+            v-model="paginaAtual"
+            show-edges
+            variant="link"
+            size="xl"
+            :sibling-count="3"
+            :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
-            @update:page="(valorPagina: number) => ultimaConsultaExecutada(valorPagina, 50)" />
+            @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
+          />
         </div>
       </template>
       <template #default>
-        <div class="min-h-115 max-h-115 overflow-y-auto">
-          <!-- <ClientOnly> -->
-          <table class="w-full">
+        <div>
+          <!-- Skeleton de tabela durante carregamento -->
+          <table
+            v-if="estahCarregando"
+            class="w-full"
+          >
+            <thead>
+              <tr>
+                <th
+                  v-for="i in 5"
+                  :key="i"
+                  class="px-5 py-2"
+                >
+                  <USkeleton class="h-4 w-full" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in 8"
+                :key="row"
+              >
+                <td
+                  v-for="col in 5"
+                  :key="col"
+                  class="px-5 py-2"
+                >
+                  <USkeleton
+                    class="h-3.5"
+                    :class="col === 1 ? 'w-3/4' : col === 3 ? 'w-1/2' : 'w-full'"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tabela com dados -->
+          <table
+            v-else
+            class="w-full"
+          >
             <thead class="text-justify">
-              <th v-for="(nomeColuna, indexColuna) in colunas" :key="`${registros?.length || 0}:${indexColuna}`"
-                class="px-5">
+              <th
+                v-for="(nomeColuna, indexColuna) in colunas"
+                :key="`${registros?.length || 0}:${indexColuna}`"
+                class="px-5"
+              >
                 {{ nomeColuna }}
               </th>
             </thead>
             <tbody>
-              <tr v-for="(itemRegistro, indexRegistro) in registros" :key="(registros?.length || 0) - indexRegistro"
-                class="text-justify">
-                <td v-for="(nomeColuna, indexColuna) in colunas" :key="(registros?.length || 0) - indexColuna"
-                  class="px-5">
+              <tr
+                v-for="(itemRegistro, indexRegistro) in registros"
+                :key="(registros?.length || 0) - indexRegistro"
+                class="text-justify"
+              >
+                <td
+                  v-for="(nomeColuna, indexColuna) in colunas"
+                  :key="(registros?.length || 0) - indexColuna"
+                  class="px-5"
+                >
                   {{ itemRegistro?.[nomeColuna] }}
                 </td>
               </tr>
             </tbody>
           </table>
-          <!-- </ClientOnly> -->
         </div>
       </template>
       <template #footer>
-        <span class="flex justify-end">
-          {{ rodapeQuantidadeRegistros }}
-        </span>
+        <div class="flex justify-between">
+          <span
+            v-if="tempoExecucaoMs != null"
+            class="text-neutral-400"
+          >
+            {{
+              tempoExecucaoMs < 1000
+              ? `${Math.round(tempoExecucaoMs)} ms`
+              : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
+            }}
+          </span>
+          <span v-else> </span>
+          <span class="text-neutral-400">
+            {{ rodapeQuantidadeRegistros }}
+          </span>
+        </div>
       </template>
     </UCard>
   </UContainer>

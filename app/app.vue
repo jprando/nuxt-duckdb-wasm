@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 // import type { main } from "#build/ui";
 
 useHead({
@@ -31,7 +34,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 </script>
 
 <template>
-  <UApp>
+  <UApp class="h-dvh flex flex-col overflow-hidden">
     <UHeader>
       <template #left>
         <NuxtLink to="/">
@@ -40,19 +43,27 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
       </template>
 
       <template #right>
-        <span v-if="estahCarregando || duckDBWasmInfo" class="text-xs text-muted hidden sm:inline">
-          <span v-if="estahCarregando">carregando...</span>
-          <span v-else>{{ duckDBWasmInfo }}</span>
+        <span
+          v-if="duckDBWasmInfo"
+          class="text-xs text-muted hidden sm:inline"
+        >
+          {{ duckDBWasmInfo }}
         </span>
 
         <UColorModeButton />
 
-        <UButton to="https://github.com/nuxt-ui-templates/starter" target="_blank" icon="i-simple-icons-github"
-          aria-label="GitHub" color="neutral" variant="ghost" />
+        <UButton
+          to="https://github.com/nuxt-ui-templates/starter"
+          target="_blank"
+          icon="i-simple-icons-github"
+          aria-label="GitHub"
+          color="neutral"
+          variant="ghost"
+        />
       </template>
     </UHeader>
 
-    <UMain>
+    <UMain class="flex-1 flex flex-col min-h-0">
       <NuxtPage />
     </UMain>
 
@@ -66,8 +77,14 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
       </template>
 
       <template #right>
-        <UButton to="https://github.com/nuxt-ui-templates/starter" target="_blank" icon="i-simple-icons-github"
-          aria-label="GitHub" color="neutral" variant="ghost" />
+        <UButton
+          to="https://github.com/nuxt-ui-templates/starter"
+          target="_blank"
+          icon="i-simple-icons-github"
+          aria-label="GitHub"
+          color="neutral"
+          variant="ghost"
+        />
       </template>
     </UFooter>
   </UApp>

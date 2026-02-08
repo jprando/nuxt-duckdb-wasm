@@ -1,5 +1,3 @@
-import { get } from "@nuxt/ui/runtime/utils/index.js";
-
 const db = shallowRef<any>(null);
 const _estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
@@ -34,27 +32,26 @@ export const useDuckDb = () => {
     }
   };
 
-  const queryRemoteParquet = async (url: string, sql: string) => {
+  const arquivosRegistrados = new Set<string>();
+
+  /** Registra URL no sistema de arquivos virtual do DuckDB (HTTP FS) e retorna o nome do arquivo virtual. */
+  const registrarArquivoRemoto = async (url: string) => {
     if (!db.value) await init();
 
-    // Registra o arquivo no sistema de arquivos virtual (HTTP FS)
-    await db.value!.registerFileURL(
-      "remote_file.parquet",
-      url,
-      duckDBDataProtocolHTTP,
-      false,
-    );
+    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+    const nomeArquivo = absoluteUrl.split("/").pop() || "remote.parquet";
 
-    const conn = await db.value!.connect();
-    try {
-      // O DuckDB lê apenas o necessário via Range Requests
-      estahCarregando.value = true;
-      const result = await conn.query(sql);
-      return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
-    } finally {
-      await conn.close();
-      estahCarregando.value = false;
+    if (!arquivosRegistrados.has(nomeArquivo)) {
+      await db.value!.registerFileURL(
+        nomeArquivo,
+        absoluteUrl,
+        duckDBDataProtocolHTTP,
+        false,
+      );
+      arquivosRegistrados.add(nomeArquivo);
     }
+
+    return nomeArquivo;
   };
 
   const obterDadosSimples = async (
@@ -78,14 +75,15 @@ export const useDuckDb = () => {
   const obterDadosParquet = async (
     pagina: number = 1,
     tamanhoPagina: number = 50,
+    url: string = parquetUrl,
   ) => {
     try {
-      const registros = await queryRemoteParquet(
-        parquetUrl,
-        selectDadosParquet(pagina, duckDBItensPorPagina),
+      const nomeArquivo = await registrarArquivoRemoto(url);
+      const registros = await execute(
+        selectDadosParquet(nomeArquivo, pagina, duckDBItensPorPagina),
       );
       const [quantidade] = await execute(
-        "FROM 'remote_file.parquet' SELECT COUNT() AS total",
+        `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
       );
       return { registros, quantidadeTotal: quantidade?.total ?? 0 };
     } finally {
@@ -97,7 +95,7 @@ export const useDuckDb = () => {
     estahCarregando,
     duckDBWasmInfo,
     execute,
-    queryRemoteParquet,
+    registrarArquivoRemoto,
     obterDadosSimples,
     obterDadosParquet,
   };

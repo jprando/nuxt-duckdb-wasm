@@ -17,16 +17,15 @@ async () => {
 
     const version = JSDELIVR_BUNDLES.mvp!.mainModule.match(/duckdb-wasm@([\d.\-\w]+)\//)?.[1] ?? "latest";
 
-    // infoDev("duckdb:version", version);
-
-    JSDELIVR_BUNDLES.coi = {
-      mainModule: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-coi.wasm`,
-      mainWorker: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.worker.js`,
-      pthreadWorker:
-        `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.pthread.worker.js`,
-    };
-
-    // infoDev("Bundles disponiveis:", JSON.stringify(JSDELIVR_BUNDLES, null, 2));
+    // COI bundle desabilitado: extensões (parquet, etc.) não são compiladas com shared memory,
+    // causando LinkError em wasm_threads. Bug aberto: https://github.com/duckdb/duckdb-wasm/issues/1916
+    // Quando corrigido, descomentar o bloco abaixo para reativar COI com multi-threading.
+    // JSDELIVR_BUNDLES.coi = {
+    //   mainModule: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-coi.wasm`,
+    //   mainWorker: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.worker.js`,
+    //   pthreadWorker:
+    //     `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.pthread.worker.js`,
+    // };
 
     const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
 
