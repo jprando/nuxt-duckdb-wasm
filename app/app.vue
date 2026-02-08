@@ -63,8 +63,14 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
         class="relative top-1"
         icon="i-simple-icons-nuxtdotjs"
       />
-
-      <UFooter :ui="{ container: 'pt-0! pb-1! lg:items-start!' }">
+      <UFooter
+        :ui="{
+          container:
+            'w-full max-w-(--ui-container) mx-auto px-4 sm:px-8 py-8 sm:py-4 flex items-center justify-between sm:gap-x-3 pt-0! pb-1!',
+          left: 'flex-1 flex items-center justify-start gap-x-1.5 order-1',
+          right: 'flex-1 flex items-center justify-end gap-x-1.5 mt-3.5 order-3',
+        }"
+      >
         <template #left>
           <p class="text-sm text-muted">
             Built with Nuxt UI • © {{ new Date().getFullYear() }}
