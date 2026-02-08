@@ -1,5 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
+
   modules: [
     "@nuxt/eslint",
     "@nuxt/ui",
@@ -14,10 +16,6 @@ export default defineNuxtConfig({
   },
 
   css: ["~/assets/css/main.css"],
-
-  routeRules: {
-    "/": { prerender: true },
-  },
 
   compatibilityDate: "2025-01-15",
   future: {
