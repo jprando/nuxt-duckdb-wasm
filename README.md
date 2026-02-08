@@ -1,10 +1,10 @@
-# 📊 Portal da Transparência - Nuxt + DuckDB WASM
+# 📊 Nuxt + DuckDB WASM
 
 Aplicação Nuxt 4 que utiliza **DuckDB WASM** para realizar consultas SQL diretamente no navegador, permitindo análise de dados Parquet sem necessidade de backend.
 
 ## 🎯 Visão Geral
 
-Este projeto demonstra como construir um portal da transparência moderno e performático, executando consultas SQL e análise de dados diretamente no lado do cliente usando WebAssembly.
+Este projeto demonstra como executar consultas SQL e análise de dados diretamente no lado do cliente usando WebAssembly.
 
 ## 🛠 Stack Tecnológico
 
@@ -40,7 +40,7 @@ Este projeto demonstra como construir um portal da transparência moderno e perf
 ## 📁 Estrutura do Projeto
 
 ```
-portal-transparencia-nuxt/
+projeto/
 ├── app/
 │   ├── app.vue                    # Layout principal com Header/Footer
 │   ├── app.config.ts              # Configurações da aplicação (UI colors, etc)
