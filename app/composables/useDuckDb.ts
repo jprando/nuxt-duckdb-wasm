@@ -10,7 +10,7 @@ const estahCarregando = computed({
     clearTimeout(timerDebounce);
     timerDebounce = window.setTimeout(() => {
       _estahCarregando.value = value;
-    }, 800);
+    }, 400);
   },
 });
 
