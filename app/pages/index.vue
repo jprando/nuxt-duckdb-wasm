@@ -66,6 +66,8 @@ const executarConsulta = async (
   quantidadeTotalRegistros.value = resultado.quantidadeTotal;
 };
 
+const innerWidth = ref(window.innerWidth);
+
 onMounted(() => {
   const breakpoints: [MediaQueryList, number][] = [
     [matchMedia("(min-width: 1280px)"), 5],
@@ -73,17 +75,17 @@ onMounted(() => {
     [matchMedia("(min-width: 1120px)"), 4],
     [matchMedia("(min-width: 1040px)"), 4],
     [matchMedia("(min-width: 960px)"), 3],
-    [matchMedia("(min-width: 880px)"), 3],
+    [matchMedia("(min-width: 880px)"), 3], // 883
     [matchMedia("(min-width: 800px)"), 2],
     [matchMedia("(min-width: 720px)"), 2],
     [matchMedia("(min-width: 640px)"), 1],
     [matchMedia("(min-width: 560px)"), 1],
     [matchMedia("(min-width: 480px)"), 1],
-    [matchMedia("(min-width: 400px)"), 0],
+    [matchMedia("(min-width: 400px)"), 1], // 417
   ];
   const atualizar = () => {
     paginadorSiblingCount.value = breakpoints.find(([mq]) => mq.matches)?.[1]
-      ?? 0;
+      ?? 1;
   };
   atualizar();
   breakpoints.forEach(([mq]) => mq.addEventListener("change", atualizar));
@@ -91,11 +93,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <UContainer class="flex flex-1 flex-col min-h-0 pt-2 px-2 sm:pt-3">
+  <UContainer class="flex flex-1 flex-col min-h-0 pt-0 px-0.5 sm:pt-3">
     <UCard
       class="flex-1 flex flex-col min-h-0"
       :ui="{
-        root: 'flex-1 flex flex-col min-h-0',
+        header: 'p-2 sm:px-6',
+        root: 'flex-1 flex flex-col min-h-0 ring-0! sm:ring-1!',
         body: 'flex-1 min-h-0 overflow-y-auto p-0',
         footer: 'py-1.5 px-4 sm:px-4',
       }"
@@ -142,6 +145,7 @@ onMounted(() => {
             :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
             @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
+            class="pagination"
             variant="ghost"
             size="xl"
           />
@@ -149,73 +153,73 @@ onMounted(() => {
       </template>
 
       <template #default>
-        <div>
-          <!-- Skeleton de tabela durante carregamento -->
-          <table
-            v-if="estahCarregando"
-            class="w-full"
-          >
-            <thead>
-              <tr>
-                <th
-                  v-for="i in 5"
-                  :key="i"
-                  class="px-5 py-2"
-                >
-                  <USkeleton class="h-4 w-full" />
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="row in 8"
-                :key="row"
-              >
-                <td
-                  v-for="col in 5"
-                  :key="col"
-                  class="px-5 py-2"
-                >
-                  <USkeleton
-                    class="h-3.5"
-                    :class="col === 1 ? 'w-3/4' : col === 3 ? 'w-1/2' : 'w-full'"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- Tabela com dados -->
-          <table
-            v-else
-            class="w-full"
-          >
-            <thead class="text-justify">
+        <!-- <div> -->
+        <!-- Skeleton de tabela durante carregamento -->
+        <table
+          v-if="estahCarregando"
+          class="w-full"
+        >
+          <thead>
+            <tr>
               <th
+                v-for="i in 5"
+                :key="i"
+                class="px-5 py-2"
+              >
+                <USkeleton class="h-4 w-full" />
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="row in 8"
+              :key="row"
+            >
+              <td
+                v-for="col in 5"
+                :key="col"
+                class="px-5 py-2"
+              >
+                <USkeleton
+                  class="h-3.5"
+                  :class="col === 1 ? 'w-3/4' : col === 3 ? 'w-1/2' : 'w-full'"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Tabela com dados -->
+        <table
+          v-else
+          class="w-full"
+        >
+          <thead class="text-justify">
+            <th
+              v-for="(nomeColuna, indexColuna) in colunas"
+              :key="`${registros?.length || 0}:${indexColuna}`"
+              class="px-5"
+            >
+              {{ nomeColuna }}
+            </th>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(itemRegistro, indexRegistro) in registros"
+              :key="(registros?.length || 0) - indexRegistro"
+              class="text-justify"
+            >
+              <td
                 v-for="(nomeColuna, indexColuna) in colunas"
-                :key="`${registros?.length || 0}:${indexColuna}`"
+                :key="(registros?.length || 0) - indexColuna"
                 class="px-5"
               >
-                {{ nomeColuna }}
-              </th>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(itemRegistro, indexRegistro) in registros"
-                :key="(registros?.length || 0) - indexRegistro"
-                class="text-justify"
-              >
-                <td
-                  v-for="(nomeColuna, indexColuna) in colunas"
-                  :key="(registros?.length || 0) - indexColuna"
-                  class="px-5"
-                >
-                  {{ itemRegistro?.[nomeColuna] }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                {{ itemRegistro?.[nomeColuna] }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- </div> -->
       </template>
 
       <template #footer>
@@ -239,3 +243,9 @@ onMounted(() => {
     </UCard>
   </UContainer>
 </template>
+
+<style scoped>
+nav.pagination button:first-child {
+  padding-left: 0px !important;
+}
+</style>
