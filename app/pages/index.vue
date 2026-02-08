@@ -68,14 +68,18 @@ const executarConsulta = async (
 
 onMounted(() => {
   const breakpoints: [MediaQueryList, number][] = [
-    [matchMedia("(min-width: 1280px)"), 7],
-    [matchMedia("(min-width: 1200px)"), 6],
-    [matchMedia("(min-width: 1120px)"), 5],
+    [matchMedia("(min-width: 1280px)"), 5],
+    [matchMedia("(min-width: 1200px)"), 5],
+    [matchMedia("(min-width: 1120px)"), 4],
     [matchMedia("(min-width: 1040px)"), 4],
     [matchMedia("(min-width: 960px)"), 3],
-    [matchMedia("(min-width: 880px)"), 2],
-    [matchMedia("(min-width: 800px)"), 1],
-    [matchMedia("(min-width: 720px)"), 0],
+    [matchMedia("(min-width: 880px)"), 3],
+    [matchMedia("(min-width: 800px)"), 2],
+    [matchMedia("(min-width: 720px)"), 2],
+    [matchMedia("(min-width: 640px)"), 1],
+    [matchMedia("(min-width: 560px)"), 1],
+    [matchMedia("(min-width: 480px)"), 1],
+    [matchMedia("(min-width: 400px)"), 0],
   ];
   const atualizar = () => {
     paginadorSiblingCount.value = breakpoints.find(([mq]) => mq.matches)?.[1]
@@ -129,14 +133,13 @@ onMounted(() => {
             </UButton>
           </div>
           <UPagination
-            :key="paginadorKey"
             v-model="paginaAtual"
+            :key="paginadorKey"
             :disabled="estahCarregando || !datasetSelecionado"
             :sibling-count="paginadorSiblingCount"
             :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
             @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
-            show-edges
             variant="ghost"
             size="xl"
           />
