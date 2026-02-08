@@ -11,6 +11,7 @@ const {
 const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
+const paginadorKey = ref(0);
 
 const datasetSelecionado = ref<DatasetParquet | undefined>();
 
@@ -91,6 +92,7 @@ const executarConsulta = async (
               :loading="estahCarregando"
               @click="() => {
                 paginaAtual = 1;
+                paginadorKey++;
                 executarConsulta(paginaAtual);
               }"
             >
@@ -98,16 +100,17 @@ const executarConsulta = async (
             </UButton>
           </div>
           <UPagination
+            :key="paginadorKey"
             v-show="quantidadeTotalRegistros"
             v-model="paginaAtual"
             :disabled="estahCarregando"
-            show-edges
-            variant="link"
-            size="xl"
             :sibling-count="3"
             :items-per-page="duckDBItensPorPagina"
             :total="quantidadeTotalRegistros || 1"
             @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
+            show-edges
+            variant="link"
+            size="xl"
           />
         </div>
       </template>
