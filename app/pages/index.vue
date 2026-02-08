@@ -100,6 +100,7 @@ const executarConsulta = async (
           <UPagination
             v-show="quantidadeTotalRegistros"
             v-model="paginaAtual"
+            :disabled="estahCarregando"
             show-edges
             variant="link"
             size="xl"
