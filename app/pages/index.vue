@@ -16,7 +16,7 @@ const datasetSelecionado = ref<DatasetParquet | undefined>();
 const paginadorSiblingCount = ref(1);
 const tempoExecucaoMs = ref<number | null>(null);
 const elmPaginacao = ref<HTMLDivElement | null>(null);
-const intervalId = ref<NodeJS.Timeout | null>(null);
+const debounceTimerId = ref<ReturnType<typeof setTimeout> | null>(null);
 
 const totalPaginas = computed(() =>
   Math.max(
@@ -68,10 +68,18 @@ const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
 
   switch (evento.key) {
     case "ArrowRight":
-      novaPagina = Math.min(paginaAtual.value + 1, totalPaginas.value);
+      novaPagina = Math.min(
+        paginaAtual.value
+          + (evento.shiftKey ? (paginaAtual.value === 1 ? 4 : 5) : 1),
+        totalPaginas.value,
+      );
       break;
     case "ArrowLeft":
-      novaPagina = Math.max(paginaAtual.value - 1, 1);
+      novaPagina = Math.max(
+        paginaAtual.value
+          - (evento.shiftKey ? (paginaAtual.value === 1 ? 4 : 5) : 1),
+        1,
+      );
       break;
     case "Home":
       novaPagina = 1;
@@ -81,20 +89,30 @@ const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
       break;
     case "PageUp":
       novaPagina = Math.min(
-        paginaAtual.value + (evento.shiftKey ? 100 : 50),
+        paginaAtual.value
+          + (evento.shiftKey
+            ? (paginaAtual.value === 1 ? 99 : 100)
+            : (paginaAtual.value === 1 ? 49 : 50)),
         totalPaginas.value,
       );
       break;
     case "PageDown":
       novaPagina = Math.max(
-        paginaAtual.value - (evento.shiftKey ? 100 : 50),
+        paginaAtual.value
+          - (evento.shiftKey
+            ? (paginaAtual.value === 1 ? 99 : 100)
+            : (paginaAtual.value === 1 ? 49 : 50)),
         1,
       );
       break;
   }
 
   if (novaPagina !== paginaAtual.value) {
-    executarConsulta(novaPagina);
+    paginaAtual.value = novaPagina;
+    if (debounceTimerId.value) clearTimeout(debounceTimerId.value);
+    debounceTimerId.value = setTimeout(() => {
+      executarConsulta(paginaAtual.value);
+    }, 650);
   }
 };
 
@@ -141,26 +159,11 @@ onMounted(() => {
   };
   atualizar();
   breakpoints.forEach(([mq]) => mq.addEventListener("change", atualizar));
-  if (import.meta.env.DEV) {
-    intervalId.value = setInterval(() => {
-      try {
-        if (
-          !estahCarregando.value
-          && ultimoDatasetCarregado.value === datasetSelecionado.value?.label
-          && quantidadeTotalRegistros.value > 1
-          && paginaAtual.value < totalPaginas.value
-        ) {
-          executarConsulta(paginaAtual.value + 1);
-        }
-      } finally {
-      }
-    }, 3250);
-  }
 });
 
 onUnmounted(() => {
-  if (intervalId.value) {
-    clearInterval(intervalId.value);
+  if (debounceTimerId.value) {
+    clearTimeout(debounceTimerId.value);
   }
 });
 </script>
