@@ -46,7 +46,9 @@ const calcularLinhas = () => {
 
   if (alturaLinha <= 0) return;
 
-  linhas.value = Math.floor((alturaContainer - alturaHeader) / alturaLinha);
+  linhas.value = Math.floor(
+    (alturaContainer - alturaHeader - (alturaLinha * 1)) / alturaLinha,
+  );
 };
 
 let observer: ResizeObserver | null = null;

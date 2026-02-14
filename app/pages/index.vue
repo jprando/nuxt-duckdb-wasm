@@ -13,34 +13,8 @@ const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
 const datasetSelecionado = ref<DatasetParquet | undefined>();
-const paginadorSiblingCount = ref(1);
 const tempoExecucaoMs = ref<number | null>(null);
-const elmPaginacao = ref<HTMLDivElement | null>(null);
-const debounceTimerId = ref<ReturnType<typeof setTimeout> | null>(null);
-
-const totalPaginas = computed(() =>
-  Math.max(
-    1,
-    Math.ceil((quantidadeTotalRegistros.value || 1) / duckDBItensPorPagina),
-  )
-);
-
-const itensAgrupados = computed(() => {
-  const grupos = new Map<string, DatasetParquet[]>();
-  for (const ds of datasetsParquet) {
-    const lista = grupos.get(ds.grupo) ?? [];
-    lista.push(ds);
-    grupos.set(ds.grupo, lista);
-  }
-  const items:
-    (DatasetParquet | { type: "label" | "separator"; label?: string })[] = [];
-  for (const [nome, lista] of grupos) {
-    if (items.length) items.push({ type: "separator" });
-    items.push({ type: "label", label: nome });
-    items.push(...lista);
-  }
-  return items;
-});
+const elmPaginacao = useTemplateRef<{ focus: () => void }>("elmPaginacao");
 
 const colunas = computed(() =>
   !estahCarregando.value
@@ -58,42 +32,6 @@ const rodapeQuantidadeRegistros = computed(() =>
         numeroSemCasaDecimal.format(quantidadeTotalRegistros.value)
       } registros`
 );
-
-const calcularDeslocamento = (base: number, ehPrimeiraPagina: boolean) =>
-  ehPrimeiraPagina ? base - 1 : base;
-
-const teclasNavegacao: Record<string, (pagina: number, shift: boolean, ehPrimeira: boolean) => number> = {
-  ArrowRight: (p, shift, eh1) => p + (shift ? calcularDeslocamento(5, eh1) : 1),
-  ArrowLeft: (p, shift, eh1) => p - (shift ? calcularDeslocamento(5, eh1) : 1),
-  Home: () => 1,
-  End: () => totalPaginas.value,
-  PageUp: (p, shift, eh1) => p + calcularDeslocamento(shift ? 100 : 50, eh1),
-  PageDown: (p, shift, eh1) => p - calcularDeslocamento(shift ? 100 : 50, eh1),
-};
-
-const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
-  evento.preventDefault();
-  if (estahCarregando.value) return;
-
-  const calcular = teclasNavegacao[evento.key];
-  if (!calcular) return;
-
-  const novaPagina = Math.max(
-    1,
-    Math.min(
-      calcular(paginaAtual.value, evento.shiftKey, paginaAtual.value === 1),
-      totalPaginas.value,
-    ),
-  );
-
-  if (novaPagina !== paginaAtual.value) {
-    paginaAtual.value = novaPagina;
-    if (debounceTimerId.value) clearTimeout(debounceTimerId.value);
-    debounceTimerId.value = setTimeout(() => {
-      executarConsulta(paginaAtual.value);
-    }, 650);
-  }
-};
 
 const executarConsulta = async (
   pagina: number = 1,
@@ -116,30 +54,6 @@ const executarConsulta = async (
   quantidadeTotalRegistros.value = resultado.quantidadeTotal;
   elmPaginacao.value?.focus();
 };
-
-onMounted(() => {
-  const breakpoints: [string, number][] = [
-    ["(min-width: 1120px)", 4],
-    ["(min-width: 960px)", 3],
-    ["(min-width: 800px)", 2],
-    ["(min-width: 400px)", 1],
-  ];
-  const mediaQueries = breakpoints.map(
-    ([query, count]) => [matchMedia(query), count] as const,
-  );
-  const atualizar = () => {
-    paginadorSiblingCount.value = mediaQueries.find(([mq]) => mq.matches)?.[1]
-      ?? 1;
-  };
-  atualizar();
-  mediaQueries.forEach(([mq]) => mq.addEventListener("change", atualizar));
-});
-
-onUnmounted(() => {
-  if (debounceTimerId.value) {
-    clearTimeout(debounceTimerId.value);
-  }
-});
 </script>
 
 <template>
@@ -155,98 +69,32 @@ onUnmounted(() => {
     >
       <template #header>
         <div class="flex flex-col gap-4">
-          <div class="flex flex-row items-end gap-2">
-            <div class="flex-1">
-              <label class="text-sm font-medium text-neutral-250 mb-1 block">
-                Datasets
-              </label>
-              <USelectMenu
-                v-model="datasetSelecionado"
-                :items="itensAgrupados"
-                :search-input="false"
-                :loading="estahCarregando"
-                :disabled="estahCarregando"
-                :ui="{
-                  trailingIcon:
-                    'group-data-[state=open]:rotate-180 transition-transform duration-200',
-                }"
-                variant="soft"
-                placeholder="Selecione um dataset..."
-                size="xl"
-                class="w-full"
-              />
-            </div>
-            <UButton
-              size="xl"
-              :disabled="!datasetSelecionado"
-              :loading="estahCarregando"
-              class="justify-center w-28 min-w-28 max-w-28"
-              @click="() => {
-                estahCarregando = true;
-                quantidadeTotalRegistros = 0;
-                executarConsulta(1);
-              }"
-            >
-              <span class="truncate">
-                {{ estahCarregando ? "carregando" : "carregar" }}
-              </span>
-            </UButton>
-          </div>
-          <div
-            tabindex="0"
+          <SeletorDataset
+            v-model:dataset-selecionado="datasetSelecionado"
+            :loading="estahCarregando"
+            @carregar="() => {
+              estahCarregando = true;
+              quantidadeTotalRegistros = 0;
+              executarConsulta(1);
+            }"
+          />
+          <Paginador
             ref="elmPaginacao"
-            @keydown="aoTeclarNoPaginador"
-          >
-            <UPagination
-              v-model:page="paginaAtual"
-              :disabled="estahCarregando || !datasetSelecionado"
-              :show-edges="true"
-              :show-controls="false"
-              :sibling-count="paginadorSiblingCount"
-              :items-per-page="duckDBItensPorPagina"
-              :total="quantidadeTotalRegistros || 1"
-              @update:page="(valorPagina: number) => executarConsulta(valorPagina, duckDBItensPorPagina)"
-              activeVariant="subtle"
-              class="pagination"
-              variant="ghost"
-              size="xl"
-            />
-          </div>
+            v-model:page="paginaAtual"
+            :disabled="estahCarregando || !datasetSelecionado"
+            :total="quantidadeTotalRegistros"
+            @consultar-pagina="(p) => executarConsulta(p, duckDBItensPorPagina)"
+          />
         </div>
       </template>
 
       <template #default>
         <TabelaSkeleton v-if="estahCarregando" />
-
-        <table
+        <TabelaDados
           v-else
-          class="w-full"
-        >
-          <thead class="text-justify">
-            <th
-              v-for="(nomeColuna, indexColuna) in colunas"
-              :key="`${registros?.length || 0}:${indexColuna}`"
-              class="px-5"
-            >
-              {{ nomeColuna }}
-            </th>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(itemRegistro, indexRegistro) in registros"
-              :key="(registros?.length || 0) - indexRegistro"
-              class="text-justify"
-            >
-              <td
-                v-for="(nomeColuna, indexColuna) in colunas"
-                :key="(registros?.length || 0) - indexColuna"
-                class="px-5"
-              >
-                {{ itemRegistro?.[nomeColuna] }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          :colunas="colunas"
+          :registros="registros"
+        />
       </template>
 
       <template #footer>
@@ -270,9 +118,3 @@ onUnmounted(() => {
     </UCard>
   </UContainer>
 </template>
-
-<style scoped>
-nav.pagination button:first-child {
-  padding-left: 0px !important;
-}
-</style>
