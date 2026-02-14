@@ -12,10 +12,57 @@ const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
 const paginadorKey = ref(0);
-
 const datasetSelecionado = ref<DatasetParquet | undefined>();
-
 const paginadorSiblingCount = ref(1);
+const tempoExecucaoMs = ref<number | null>(null);
+const elmPaginacao = ref<HTMLDivElement | null>(null);
+const intervalId = ref<NodeJS.Timeout | null>(null);
+
+const totalPaginas = computed(() =>
+  Math.max(
+    1,
+    Math.ceil((quantidadeTotalRegistros.value || 1) / duckDBItensPorPagina),
+  )
+);
+
+const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
+  evento.preventDefault();
+  let novaPagina = paginaAtual.value;
+
+  switch (evento.key) {
+    case "ArrowRight":
+      novaPagina = Math.min(paginaAtual.value + 1, totalPaginas.value);
+      break;
+    case "ArrowLeft":
+      novaPagina = Math.max(paginaAtual.value - 1, 1);
+      break;
+    case "Home":
+      novaPagina = 1;
+      break;
+    case "End":
+      novaPagina = totalPaginas.value;
+      break;
+    case "PageUp":
+      novaPagina = Math.min(
+        paginaAtual.value + (evento.shiftKey ? 100 : 50),
+        totalPaginas.value,
+      );
+      break;
+    case "PageDown":
+      novaPagina = Math.max(
+        paginaAtual.value - (evento.shiftKey ? 100 : 50),
+        1,
+      );
+      break;
+  }
+
+  if (novaPagina !== paginaAtual.value) {
+    paginaAtual.value = novaPagina;
+    paginadorKey.value++;
+    executarConsulta(paginaAtual.value);
+  }
+  elmPaginacao.value?.focus();
+};
 
 const itensAgrupados = computed(() => {
   const grupos = new Map<string, DatasetParquet[]>();
@@ -43,30 +90,33 @@ const colunas = computed(() =>
 );
 
 const rodapeQuantidadeRegistros = computed(() =>
-  ["nenhum registro", "1 registro"][quantidadeTotalRegistros.value || 0]
-  || `${numeroSemCasaDecimal.format(quantidadeTotalRegistros.value)} registros`
+  estahCarregando.value
+    ? "carregando, aguarde..."
+    : ["nenhum registro", "1 registro"][quantidadeTotalRegistros.value || 0]
+      || `${
+        numeroSemCasaDecimal.format(quantidadeTotalRegistros.value)
+      } registros`
 );
-
-const tempoExecucaoMs = ref<number | null>(null);
 
 const executarConsulta = async (
   pagina: number = 1,
-  totalPagina: number = 50,
+  itensPorPagina: number = duckDBItensPorPagina,
 ) => {
   if (!datasetSelecionado.value) return;
+
+  paginaAtual.value = pagina;
 
   const inicio = performance.now();
   const url = datasetSelecionado.value.url;
   const resultado = url === ""
-    ? await obterDadosSimples(pagina, totalPagina)
-    : await obterDadosParquet(pagina, totalPagina, url);
+    ? await obterDadosSimples(pagina, itensPorPagina)
+    : await obterDadosParquet(pagina, itensPorPagina, url);
 
   tempoExecucaoMs.value = performance.now() - inicio;
   registros.value = resultado.registros;
   quantidadeTotalRegistros.value = resultado.quantidadeTotal;
+  elmPaginacao.value?.focus();
 };
-
-const innerWidth = ref(window.innerWidth);
 
 onMounted(() => {
   const breakpoints: [MediaQueryList, number][] = [
@@ -89,6 +139,27 @@ onMounted(() => {
   };
   atualizar();
   breakpoints.forEach(([mq]) => mq.addEventListener("change", atualizar));
+  if (import.meta.env.DEV) {
+    intervalId.value = setInterval(() => {
+      try {
+        if (
+          !estahCarregando.value && totalPaginas.value > 1
+          && paginaAtual.value < totalPaginas.value
+        ) {
+          paginaAtual.value++;
+          paginadorKey.value++;
+          executarConsulta(paginaAtual.value);
+        }
+      } finally {
+      }
+    }, 3250);
+  }
+});
+
+onUnmounted(() => {
+  if (intervalId.value) {
+    clearInterval(intervalId.value);
+  }
 });
 </script>
 
@@ -113,10 +184,17 @@ onMounted(() => {
               <USelectMenu
                 v-model="datasetSelecionado"
                 :items="itensAgrupados"
+                :search-input="false"
+                :loading="estahCarregando"
+                :disabled="estahCarregando"
+                :ui="{
+                  trailingIcon:
+                    'group-data-[state=open]:rotate-180 transition-transform duration-200',
+                }"
+                variant="soft"
                 placeholder="Selecione um dataset..."
                 size="xl"
                 class="w-full"
-                :search-input="false"
               />
             </div>
             <UButton
@@ -125,9 +203,11 @@ onMounted(() => {
               :loading="estahCarregando"
               class="justify-center w-28 min-w-28 max-w-28"
               @click="() => {
+                estahCarregando = true;
                 paginaAtual = 1;
+                quantidadeTotalRegistros = 0;
                 paginadorKey++;
-                executarConsulta(paginaAtual);
+                nextTick(() => executarConsulta(paginaAtual));
               }"
             >
               <span class="truncate">
@@ -135,20 +215,27 @@ onMounted(() => {
               </span>
             </UButton>
           </div>
-          <UPagination
-            v-model="paginaAtual"
-            :key="paginadorKey"
-            :disabled="estahCarregando || !datasetSelecionado"
-            :show-edges="true"
-            :show-controls="false"
-            :sibling-count="paginadorSiblingCount"
-            :items-per-page="duckDBItensPorPagina"
-            :total="quantidadeTotalRegistros || 1"
-            @update:page="(valorPagina: number) => executarConsulta(valorPagina, 50)"
-            class="pagination"
-            variant="ghost"
-            size="xl"
-          />
+          <div
+            tabindex="0"
+            ref="elmPaginacao"
+            @keydown="aoTeclarNoPaginador"
+          >
+            <UPagination
+              v-model:page="paginaAtual"
+              :key="paginadorKey"
+              :disabled="estahCarregando || !datasetSelecionado"
+              :show-edges="true"
+              :show-controls="false"
+              :sibling-count="paginadorSiblingCount"
+              :items-per-page="duckDBItensPorPagina"
+              :total="quantidadeTotalRegistros || 1"
+              @update:page="(valorPagina: number) => executarConsulta(valorPagina, duckDBItensPorPagina)"
+              activeVariant="subtle"
+              class="pagination"
+              variant="ghost"
+              size="xl"
+            />
+          </div>
         </div>
       </template>
 

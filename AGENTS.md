@@ -5,6 +5,7 @@ This file contains guidelines for AI agents working on this Nuxt 4 + DuckDB WASM
 ## Build, Lint, and Test Commands
 
 ### Development
+
 ```bash
 pnpm dev                    # Start dev server on http://localhost:3000
 pnpm build                  # Build for production
@@ -12,6 +13,7 @@ pnpm preview                # Preview production build
 ```
 
 ### Code Quality
+
 ```bash
 pnpm lint                   # Run ESLint (fix with --fix)
 pnpm typecheck              # Run TypeScript type checking
@@ -19,6 +21,7 @@ pnpm format                 # Format code with dprint
 ```
 
 ### Testing
+
 ```bash
 pnpm test                   # Run all tests
 pnpm test:unit              # Run unit tests only
@@ -30,6 +33,7 @@ pnpm test:watch             # Watch mode for unit tests
 ```
 
 ### Run Single Test
+
 ```bash
 # Unit test
 pnpm vitest run test/unit/example.test.ts
@@ -47,6 +51,7 @@ pnpm vitest --run test/unit/example.test.ts
 ## Code Style Guidelines
 
 ### Formatting
+
 - **Indentation**: 2 spaces (no tabs)
 - **Line endings**: LF (Unix)
 - **Trailing whitespace**: None
@@ -56,6 +61,7 @@ pnpm vitest --run test/unit/example.test.ts
 - **Max attributes per line**: 1 in Vue templates
 
 ### TypeScript
+
 - Use `lang="ts"` in Vue `<script>` tags
 - Explicit imports for non-Nuxt packages (e.g., `import { something } from "external"`)
 - Auto-imports from Vue and Nuxt: `ref`, `computed`, `shallowRef`, `onMounted`, etc.
@@ -64,6 +70,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Avoid `any`; prefer `unknown` or specific types
 
 ### Vue Components
+
 - Use Composition API with `<script setup lang="ts">`
 - PascalCase for component files: `AppLogo.vue`, `TemplateMenu.vue`
 - Template indentation: 2 spaces per level
@@ -71,6 +78,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Use `class` and `style` bindings, not `class=""` strings for dynamic values
 
 ### Naming Conventions
+
 - **Variables/Functions**: camelCase (Portuguese preferred, e.g., `estahInicializando`, `obterDadosParquet`)
 - **Components**: PascalCase
 - **Files**: kebab-case (except components: PascalCase)
@@ -78,12 +86,14 @@ pnpm vitest --run test/unit/example.test.ts
 - **Interfaces/Types**: PascalCase with `I` prefix NOT required
 
 ### Imports
+
 - Auto-imported (no import needed): `ref`, `computed`, `onMounted`, `shallowRef`, `useHead`, `useSeoMeta`, `NuxtLink`, `NuxtPage`
 - Import Nuxt UI components explicitly: `import { UButton, UCard } from "#ui"`
 - Import external packages: `import * as duckdb from "@duckdb/duckdb-wasm"`
 - Shared utils: `import { numeroSemCasaDecimal } from "~/shared/utils/formatar"`
 
 ### Error Handling
+
 - Use try/catch/finally for async operations
 - Log errors with `console.error("description:", error)`
 - Provide fallback values: `quantidadeTotal: quantidade?.total ?? 0`
@@ -91,6 +101,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Never expose secrets or sensitive data in logs
 
 ### Nuxt UI Components
+
 - Use Nuxt UI components from auto-import: `UButton`, `UCard`, `UContainer`, `UPagination`, etc.
 - Props use kebab-case in templates: `:ui="{ body: 'p-0!' }"`
 - Slots: `#header`, `#footer`, `#default` for template parts
@@ -98,6 +109,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Icons via Iconify: `icon="i-lucide-rocket"`, `icon="i-simple-icons-github"`
 
 ### Composables
+
 - Export composable functions directly: `export const useDuckDb = () => {}`
 - Use `ref` for reactive values, `shallowRef` for large objects
 - Return object with methods and reactive state
@@ -105,6 +117,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Use `import.meta.client` checks for client-only code
 
 ### Testing
+
 - **Unit tests**: `test/unit/*.test.ts` - Pure TypeScript functions
 - **Component tests**: `test/nuxt/*.test.ts` - Use `@nuxt/test-utils/runtime` with `mountSuspended`
 - **E2E tests**: `tests/*.spec.ts` - Use `@nuxt/test-utils/playwright` with `goto` and `expect`
@@ -113,12 +126,14 @@ pnpm vitest --run test/unit/example.test.ts
 - Expectations with `expect().toBe()`, `expect().toHaveTitle()`, etc.
 
 ### Comments
+
 - Use Portuguese for comments and descriptions
 - Keep comments concise and meaningful
 - No inline comments at end of lines
 - Use block comments for file headers or major sections
 
 ### File Organization
+
 - `app/` - Application code (pages, components, composables)
 - `shared/` - Shared utilities across app/server
 - `test/unit/` - Unit tests
@@ -128,6 +143,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Use `.bkp` suffix for backup files, don't commit production files as `.bkp`
 
 ### DuckDB WASM Specific
+
 - DuckDB version: 1.32.0
 - WASM URL from CDN: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${VERSION}/dist/duckdb-eh.wasm`
 - Worker URL: `@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url`
@@ -137,6 +153,7 @@ pnpm vitest --run test/unit/example.test.ts
 - Always close connections: `await conn.close()` in finally blocks
 
 ### After Making Changes
+
 ```bash
 pnpm lint              # Check for linting issues
 pnpm typecheck         # Verify TypeScript types
@@ -152,6 +169,7 @@ pnpm format            # Format code before committing
 - Para componentes, composables, exemplos e temas do Nuxt UI, use o MCP `nuxt-ui`.
 
 # Regras do Projeto (Nuxt + TypeScript)
+
 - Utilize sempre TypeScript com tipagem estrita.
 - No Vue, prefira Script Setup e Composition API.
 - Para APIs e rotas de servidor, siga os padrões do Nitro.build.

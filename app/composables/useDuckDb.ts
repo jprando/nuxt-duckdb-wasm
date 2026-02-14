@@ -56,11 +56,11 @@ export const useDuckDb = () => {
 
   const obterDadosSimples = async (
     pagina: number = 1,
-    tamanhoPagina: number = 50,
+    itensPorPagina: number = duckDBItensPorPagina,
   ) => {
     try {
       const registros = await execute(
-        selectDadosSimples(pagina, duckDBItensPorPagina),
+        selectDadosSimples(pagina, itensPorPagina),
       );
       const [quantidade] = await execute(
         "FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0",
@@ -74,13 +74,13 @@ export const useDuckDb = () => {
 
   const obterDadosParquet = async (
     pagina: number = 1,
-    tamanhoPagina: number = 50,
+    itensPorPagina: number = duckDBItensPorPagina,
     url: string = parquetUrl,
   ) => {
     try {
       const nomeArquivo = await registrarArquivoRemoto(url);
       const registros = await execute(
-        selectDadosParquet(nomeArquivo, pagina, duckDBItensPorPagina),
+        selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
       );
       const [quantidade] = await execute(
         `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
@@ -92,8 +92,9 @@ export const useDuckDb = () => {
   };
 
   return {
-    estahCarregando,
-    duckDBWasmInfo,
+    // estahCarregando: readonly(estahCarregando),
+    estahCarregando: estahCarregando,
+    duckDBWasmInfo: duckDBWasmInfo,
     execute,
     registrarArquivoRemoto,
     obterDadosSimples,

@@ -1,7 +1,8 @@
 // export const DUCKDB_VERSION = "1.32.0";
-export const duckDBDataProtocolHTTP = 4;
-export const duckDBItensPorPagina = 50;
-export const parquetUrl = "/yellow_tripdata_2024-01.parquet";
+export const duckDBDataProtocolHTTP = 4; // Protocolo HTTP para leitura de dados (vs. Fetch API ou File API)
+export const duckDBItensPorPagina = 50; // Quantidade de itens a exibir por página na paginação dos resultados
+export const duckDBLogLevelWARNING = 3; // Correspondente a LogLevel.WARNING em @duckdb/duckdb-wasm
+export const localNycTaxiParquetUrl = "/yellow_tripdata_2024-01.parquet";
 
 export interface DatasetParquet {
   label: string;
@@ -12,7 +13,7 @@ export interface DatasetParquet {
 export const datasetsParquet: DatasetParquet[] = [
   // Gerado em memória
   { label: "Dados simples (gerado)", url: "", grupo: "Local" },
-  { label: "Parquet local (NYC Taxi)", url: parquetUrl, grupo: "Local" },
+  { label: "Parquet local (NYC Taxi)", url: localNycTaxiParquetUrl, grupo: "Local" },
   // Dados de Táxi (NYC)
   { label: "NYC Taxi - Abr/2019", url: "https://blobs.duckdb.org/data/taxi_2019_04.parquet", grupo: "Táxi (NYC)" },
   {

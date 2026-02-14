@@ -9,32 +9,38 @@ Este projeto demonstra como executar consultas SQL e analise de dados diretament
 ## Stack Tecnologico
 
 ### Core Framework
+
 - **Nuxt 4.3.1** - Framework Vue com compatibilityVersion 5
 - **Vue 3** - Interface reativa
 - **TypeScript 5.9.3** - Tipagem estatica
 
 ### UI & Styling
+
 - **Nuxt UI 4.4.0** - Biblioteca de componentes (baseada em Tailwind CSS)
 - **Tailwind CSS 4.1.18** - Framework CSS utility-first
 - **@nuxt/image 2.0.0** - Otimizacao de imagens
 - **@nuxt/hints 1.0.0-alpha.6** - Dicas de desenvolvimento
 
 ### Banco de Dados
+
 - **@duckdb/duckdb-wasm 1.33.1-dev19.0** - DuckDB rodando via WebAssembly
 - Carregado via **jsdelivr CDN** (nao e bundled, ultrapassa o limite de 25MB do Cloudflare)
 - **Suporte a Parquet** - Formato colunar eficiente para analise
 
 ### Ferramentas de Desenvolvimento
+
 - **ESLint 9.39.2** - Linting de codigo
 - **dprint 0.51.1** - Formatter rapido
 - **pnpm 10.29.1** - Gerenciador de pacotes
 
 ### Testes
+
 - **Vitest 4.0.18** - Testes unitarios e de componentes
 - **Playwright 1.58.2** - Testes E2E
 - **@vue/test-utils 2.4.6** - Utilitarios para testes Vue
 
 ### Node Environment
+
 - **Node 24.13.0+** - Runtime JavaScript
 - **NPM 11.9.0+** - Gerenciador de pacotes
 
@@ -96,6 +102,7 @@ projeto/
 ## Funcionalidades Principais
 
 ### 1. Interface de Dados (`app/pages/index.vue`)
+
 - Tabela interativa com paginacao responsiva
 - Seletor de dataset com **12 datasets** organizados em 7 grupos:
   - **Local**: Dados gerados em memoria + Parquet local (NYC Taxi)
@@ -113,28 +120,34 @@ projeto/
 ### 2. DuckDB WASM Integration
 
 **Composable (`app/composables/useDuckDb.ts`):**
+
 - Orquestra inicializacao, queries e estados de carregamento
 - Loading state com debounce de 400ms (evita flicker)
 
 **Inicializacao (`app/utils/duckdb.init.ts`):**
+
 - Carrega DuckDB via CDN jsdelivr (dynamic import)
 - Cria Worker via blob URL para compatibilidade com Cross-Origin Isolation
 - Pthread worker baixado via fetch e convertido em blob URL
 - Detecta versao e tipo de bundle (mvp/eh)
 
 **Funcoes disponveis:**
+
 - `execute(sql)` - Executa consultas SQL
 - `registrarArquivoRemoto(url)` - Registra URL no HTTP FS do DuckDB
 - `obterDadosSimples(pagina, tamanhoPagina)` - Dados gerados (range de 10.000)
 - `obterDadosParquet(pagina, tamanhoPagina, url)` - Consulta datasets Parquet
 
 **Queries (`app/utils/duckdb.selects.ts`):**
+
 - SQL builders com LIMIT/OFFSET para paginacao
 
 **Sanitizacao (`app/utils/duckdb.sanitizeRow.ts`):**
+
 - Converte BigInt para Number (compatibilidade JavaScript)
 
 ### 3. Cross-Origin Isolation
+
 - Headers COOP/COEP configurados em 3 camadas:
   - `server/middleware/cross-origin-isolation.ts` (dev)
   - `nuxt.config.ts` via nitro routeRules
@@ -142,6 +155,7 @@ projeto/
 - Necessario para SharedArrayBuffer (DuckDB multi-threading)
 
 ### 4. Layout (`app/app.vue`)
+
 - Header com logo e toggle de tema claro/escuro
 - Exibe versao do DuckDB WASM (ex: "DuckDB WASM v1.33.1 (mvp)")
 - Footer com copyright e link para GitHub
@@ -150,6 +164,7 @@ projeto/
 ### 5. Configuracoes
 
 **Nuxt Config (`nuxt.config.ts`):**
+
 - `ssr: false` - Modo SPA (client-side only)
 - Modulos: ESLint, UI, Hints, Image, Scripts, Test Utils
 - WASM habilitado no Nitro
@@ -157,6 +172,7 @@ projeto/
 - Worker format configurado para ES
 
 **Estilos (`main.css`):**
+
 - Fonte Public Sans
 - Paleta de cores green customizada (50-950)
 - Integracao com @nuxt/ui e Tailwind CSS
@@ -184,12 +200,14 @@ Exibir na tabela com paginacao
 ## Design System
 
 ### Cores (Custom Green)
+
 - **50-100**: Fundos claros
 - **400**: Cor principal (#00dc82)
 - **500-600**: Acoes e hover states
 - **900-950**: Textos e elementos escuros
 
 ### Componentes Nuxt UI Utilizados
+
 - `UContainer` - Layout responsivo
 - `UCard` - Cards com header/body/footer
 - `UButton` - Botoes com variants e loading state
@@ -231,6 +249,7 @@ pnpm duckdb:ui              # Interface DuckDB local
 **Trigger:** Push em qualquer branch
 
 **Steps:**
+
 1. Checkout do codigo
 2. Instalacao do pnpm
 3. Instalacao do Node
@@ -256,6 +275,7 @@ Cross-Origin Isolation (COOP/COEP) e necessario e configurado tanto no server mi
 ## Dataset de Exemplo
 
 **Arquivo local:** `public/yellow_tripdata_2024-01.parquet`
+
 - Fonte: NYC Taxi & Limousine Commission
 - Conteudo: Viagens de taxi amarelo em janeiro de 2024
 - Tamanho: ~3 milhoes de registros

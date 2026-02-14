@@ -18,9 +18,15 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
 
   compatibilityDate: "2025-01-15",
+
   future: {
     compatibilityVersion: 5,
   },
+
+  experimental: {
+    viewTransition: true,
+  },
+
   nitro: {
     experimental: {
       wasm: true,

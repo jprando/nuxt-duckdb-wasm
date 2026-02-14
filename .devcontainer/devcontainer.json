@@ -1,47 +1,47 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "alpine node",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/base:alpine-3.22",
-	"features": {
-		"ghcr.io/cirolosapio/devcontainers-features/alpine-node:0": {
-			"corepack": true,
-			"pnpmVersion": "latest"
-		}
-	},
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	"containerEnv": {
-		"SHELL": "/bin/bash",
-		"NODE_ENV": "development",
-		"ALPINE_DUCKDB": "http://dl-cdn.alpinelinux.org/alpine/edge/testing",
-		"DUCKDB_BIN": "/usr/bin/duckdb",
-		"DUCKDB_UI_PORT": "4213",
-		"DUCKDB_UI_LOCAL_PORT": "4213",
-		"DUCKDB_UI_OPEN_BROWSER": "false"
-	},
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [
-		3000,
-		4213
-	],
-	"portsAttributes": {
-		"3000": {
-			"label": "Nuxt Local Dev",
-			"onAutoForward": "silent"
-		},
-		"4213": {
-			"label": "DuckDB UI",
-			"onAutoForward": "notify"
-		}
-	},
-	"otherPortsAttributes": {
-		"onAutoForward": "silent"
-	},
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apk add duckdb --repository=$ALPINE_DUCKDB; $DUCKDB_BIN -c \"INSTALL ui;\"; corepack up; pnpm setup"
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+  "name": "alpine node",
+  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+  "image": "mcr.microsoft.com/devcontainers/base:alpine-3.22",
+  "features": {
+    "ghcr.io/cirolosapio/devcontainers-features/alpine-node:0": {
+      "corepack": true,
+      "pnpmVersion": "latest"
+    }
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  "containerEnv": {
+    "SHELL": "/bin/bash",
+    "NODE_ENV": "development",
+    "ALPINE_DUCKDB": "http://dl-cdn.alpinelinux.org/alpine/edge/testing",
+    "DUCKDB_BIN": "/usr/bin/duckdb",
+    "DUCKDB_UI_PORT": "4213",
+    "DUCKDB_UI_LOCAL_PORT": "4213",
+    "DUCKDB_UI_OPEN_BROWSER": "false"
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    3000,
+    4213
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Nuxt Local Dev",
+      "onAutoForward": "silent"
+    },
+    "4213": {
+      "label": "DuckDB UI",
+      "onAutoForward": "notify"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "silent"
+  },
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "sudo apk add duckdb --repository=$ALPINE_DUCKDB; $DUCKDB_BIN -c \"INSTALL ui;\"; corepack up; pnpm setup"
+  // Configure tool-specific properties.
+  // "customizations": {},
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root"
 }
