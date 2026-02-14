@@ -8,7 +8,7 @@ const {
   obterDadosParquet,
 } = useDuckDb();
 
-const ultimoDatasetCarregado = ref<String | null>(null);
+const ultimoDatasetCarregado = ref<string | null>(null);
 const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
@@ -45,8 +45,8 @@ const itensAgrupados = computed(() => {
 const colunas = computed(() =>
   !estahCarregando.value
     && Array.isArray(registros.value)
-    && registros.value?.length
-    ? Object.keys(registros.value?.[0])
+    && registros.value.length
+    ? Object.keys(registros.value[0])
     : []
 );
 
@@ -59,53 +59,32 @@ const rodapeQuantidadeRegistros = computed(() =>
       } registros`
 );
 
+const calcularDeslocamento = (base: number, ehPrimeiraPagina: boolean) =>
+  ehPrimeiraPagina ? base - 1 : base;
+
+const teclasNavegacao: Record<string, (pagina: number, shift: boolean, ehPrimeira: boolean) => number> = {
+  ArrowRight: (p, shift, eh1) => p + (shift ? calcularDeslocamento(5, eh1) : 1),
+  ArrowLeft: (p, shift, eh1) => p - (shift ? calcularDeslocamento(5, eh1) : 1),
+  Home: () => 1,
+  End: () => totalPaginas.value,
+  PageUp: (p, shift, eh1) => p + calcularDeslocamento(shift ? 100 : 50, eh1),
+  PageDown: (p, shift, eh1) => p - calcularDeslocamento(shift ? 100 : 50, eh1),
+};
+
 const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
   evento.preventDefault();
-
   if (estahCarregando.value) return;
 
-  let novaPagina = paginaAtual.value;
+  const calcular = teclasNavegacao[evento.key];
+  if (!calcular) return;
 
-  switch (evento.key) {
-    case "ArrowRight":
-      novaPagina = Math.min(
-        paginaAtual.value
-          + (evento.shiftKey ? (paginaAtual.value === 1 ? 4 : 5) : 1),
-        totalPaginas.value,
-      );
-      break;
-    case "ArrowLeft":
-      novaPagina = Math.max(
-        paginaAtual.value
-          - (evento.shiftKey ? (paginaAtual.value === 1 ? 4 : 5) : 1),
-        1,
-      );
-      break;
-    case "Home":
-      novaPagina = 1;
-      break;
-    case "End":
-      novaPagina = totalPaginas.value;
-      break;
-    case "PageUp":
-      novaPagina = Math.min(
-        paginaAtual.value
-          + (evento.shiftKey
-            ? (paginaAtual.value === 1 ? 99 : 100)
-            : (paginaAtual.value === 1 ? 49 : 50)),
-        totalPaginas.value,
-      );
-      break;
-    case "PageDown":
-      novaPagina = Math.max(
-        paginaAtual.value
-          - (evento.shiftKey
-            ? (paginaAtual.value === 1 ? 99 : 100)
-            : (paginaAtual.value === 1 ? 49 : 50)),
-        1,
-      );
-      break;
-  }
+  const novaPagina = Math.max(
+    1,
+    Math.min(
+      calcular(paginaAtual.value, evento.shiftKey, paginaAtual.value === 1),
+      totalPaginas.value,
+    ),
+  );
 
   if (novaPagina !== paginaAtual.value) {
     paginaAtual.value = novaPagina;
@@ -139,26 +118,21 @@ const executarConsulta = async (
 };
 
 onMounted(() => {
-  const breakpoints: [MediaQueryList, number][] = [
-    [matchMedia("(min-width: 1280px)"), 5],
-    [matchMedia("(min-width: 1200px)"), 5],
-    [matchMedia("(min-width: 1120px)"), 4],
-    [matchMedia("(min-width: 1040px)"), 4],
-    [matchMedia("(min-width: 960px)"), 3],
-    [matchMedia("(min-width: 880px)"), 3], // 883
-    [matchMedia("(min-width: 800px)"), 2],
-    [matchMedia("(min-width: 720px)"), 2],
-    [matchMedia("(min-width: 640px)"), 1],
-    [matchMedia("(min-width: 560px)"), 1],
-    [matchMedia("(min-width: 480px)"), 1],
-    [matchMedia("(min-width: 400px)"), 1], // 417
+  const breakpoints: [string, number][] = [
+    ["(min-width: 1120px)", 4],
+    ["(min-width: 960px)", 3],
+    ["(min-width: 800px)", 2],
+    ["(min-width: 400px)", 1],
   ];
+  const mediaQueries = breakpoints.map(
+    ([query, count]) => [matchMedia(query), count] as const,
+  );
   const atualizar = () => {
-    paginadorSiblingCount.value = breakpoints.find(([mq]) => mq.matches)?.[1]
+    paginadorSiblingCount.value = mediaQueries.find(([mq]) => mq.matches)?.[1]
       ?? 1;
   };
   atualizar();
-  breakpoints.forEach(([mq]) => mq.addEventListener("change", atualizar));
+  mediaQueries.forEach(([mq]) => mq.addEventListener("change", atualizar));
 });
 
 onUnmounted(() => {
@@ -242,43 +216,8 @@ onUnmounted(() => {
       </template>
 
       <template #default>
-        <!-- <div> -->
-        <!-- Skeleton de tabela durante carregamento -->
-        <table
-          v-if="estahCarregando"
-          class="w-full"
-        >
-          <thead>
-            <tr>
-              <th
-                v-for="i in 5"
-                :key="i"
-                class="px-5 py-2"
-              >
-                <USkeleton class="h-4 w-full" />
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="row in 8"
-              :key="row"
-            >
-              <td
-                v-for="col in 5"
-                :key="col"
-                class="px-5 py-2"
-              >
-                <USkeleton
-                  class="h-3.5"
-                  :class="col === 1 ? 'w-3/4' : col === 3 ? 'w-1/2' : 'w-full'"
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <TabelaSkeleton v-if="estahCarregando" />
 
-        <!-- Tabela com dados -->
         <table
           v-else
           class="w-full"
@@ -308,7 +247,6 @@ onUnmounted(() => {
             </tr>
           </tbody>
         </table>
-        <!-- </div> -->
       </template>
 
       <template #footer>
