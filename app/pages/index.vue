@@ -8,10 +8,10 @@ const {
   obterDadosParquet,
 } = useDuckDb();
 
+const ultimoDatasetCarregado = ref<String | null>(null);
 const registros = ref<any[]>([]);
 const quantidadeTotalRegistros = ref(0);
 const paginaAtual = ref(1);
-const paginadorKey = ref(0);
 const datasetSelecionado = ref<DatasetParquet | undefined>();
 const paginadorSiblingCount = ref(1);
 const tempoExecucaoMs = ref<number | null>(null);
@@ -24,45 +24,6 @@ const totalPaginas = computed(() =>
     Math.ceil((quantidadeTotalRegistros.value || 1) / duckDBItensPorPagina),
   )
 );
-
-const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
-  evento.preventDefault();
-  let novaPagina = paginaAtual.value;
-
-  switch (evento.key) {
-    case "ArrowRight":
-      novaPagina = Math.min(paginaAtual.value + 1, totalPaginas.value);
-      break;
-    case "ArrowLeft":
-      novaPagina = Math.max(paginaAtual.value - 1, 1);
-      break;
-    case "Home":
-      novaPagina = 1;
-      break;
-    case "End":
-      novaPagina = totalPaginas.value;
-      break;
-    case "PageUp":
-      novaPagina = Math.min(
-        paginaAtual.value + (evento.shiftKey ? 100 : 50),
-        totalPaginas.value,
-      );
-      break;
-    case "PageDown":
-      novaPagina = Math.max(
-        paginaAtual.value - (evento.shiftKey ? 100 : 50),
-        1,
-      );
-      break;
-  }
-
-  if (novaPagina !== paginaAtual.value) {
-    paginaAtual.value = novaPagina;
-    paginadorKey.value++;
-    executarConsulta(paginaAtual.value);
-  }
-  elmPaginacao.value?.focus();
-};
 
 const itensAgrupados = computed(() => {
   const grupos = new Map<string, DatasetParquet[]>();
@@ -98,6 +59,45 @@ const rodapeQuantidadeRegistros = computed(() =>
       } registros`
 );
 
+const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
+  evento.preventDefault();
+
+  if (estahCarregando.value) return;
+
+  let novaPagina = paginaAtual.value;
+
+  switch (evento.key) {
+    case "ArrowRight":
+      novaPagina = Math.min(paginaAtual.value + 1, totalPaginas.value);
+      break;
+    case "ArrowLeft":
+      novaPagina = Math.max(paginaAtual.value - 1, 1);
+      break;
+    case "Home":
+      novaPagina = 1;
+      break;
+    case "End":
+      novaPagina = totalPaginas.value;
+      break;
+    case "PageUp":
+      novaPagina = Math.min(
+        paginaAtual.value + (evento.shiftKey ? 100 : 50),
+        totalPaginas.value,
+      );
+      break;
+    case "PageDown":
+      novaPagina = Math.max(
+        paginaAtual.value - (evento.shiftKey ? 100 : 50),
+        1,
+      );
+      break;
+  }
+
+  if (novaPagina !== paginaAtual.value) {
+    executarConsulta(novaPagina);
+  }
+};
+
 const executarConsulta = async (
   pagina: number = 1,
   itensPorPagina: number = duckDBItensPorPagina,
@@ -108,6 +108,7 @@ const executarConsulta = async (
 
   const inicio = performance.now();
   const url = datasetSelecionado.value.url;
+  ultimoDatasetCarregado.value = datasetSelecionado.value.label;
   const resultado = url === ""
     ? await obterDadosSimples(pagina, itensPorPagina)
     : await obterDadosParquet(pagina, itensPorPagina, url);
@@ -143,12 +144,12 @@ onMounted(() => {
     intervalId.value = setInterval(() => {
       try {
         if (
-          !estahCarregando.value && totalPaginas.value > 1
+          !estahCarregando.value
+          && ultimoDatasetCarregado.value === datasetSelecionado.value?.label
+          && quantidadeTotalRegistros.value > 1
           && paginaAtual.value < totalPaginas.value
         ) {
-          paginaAtual.value++;
-          paginadorKey.value++;
-          executarConsulta(paginaAtual.value);
+          executarConsulta(paginaAtual.value + 1);
         }
       } finally {
       }
@@ -204,10 +205,8 @@ onUnmounted(() => {
               class="justify-center w-28 min-w-28 max-w-28"
               @click="() => {
                 estahCarregando = true;
-                paginaAtual = 1;
                 quantidadeTotalRegistros = 0;
-                paginadorKey++;
-                nextTick(() => executarConsulta(paginaAtual));
+                executarConsulta(1);
               }"
             >
               <span class="truncate">
@@ -222,7 +221,6 @@ onUnmounted(() => {
           >
             <UPagination
               v-model:page="paginaAtual"
-              :key="paginadorKey"
               :disabled="estahCarregando || !datasetSelecionado"
               :show-edges="true"
               :show-controls="false"
