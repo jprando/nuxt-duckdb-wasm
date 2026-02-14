@@ -106,6 +106,7 @@ const executarConsulta = async (
 
   paginaAtual.value = pagina;
 
+  tempoExecucaoMs.value = null;
   const inicio = performance.now();
   const url = datasetSelecionado.value.url;
   ultimoDatasetCarregado.value = datasetSelecionado.value.label;

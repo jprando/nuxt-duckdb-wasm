@@ -46,7 +46,7 @@ export const useDuckDb = () => {
         nomeArquivo,
         absoluteUrl,
         duckDBDataProtocolHTTP,
-        false,
+        true,
       );
       arquivosRegistrados.add(nomeArquivo);
     }
@@ -75,15 +75,19 @@ export const useDuckDb = () => {
   const obterDadosParquet = async (
     pagina: number = 1,
     itensPorPagina: number = duckDBItensPorPagina,
-    url: string = parquetUrl,
+    url: string = "",
   ) => {
+    if (!url) return { registros: [], quantidadeTotal: 0 };
     try {
-      const nomeArquivo = await registrarArquivoRemoto(url);
+      const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+      // const nomeArquivo = await registrarArquivoRemoto(url);
       const registros = await execute(
-        selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
+        // selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
+        selectDadosParquet(absoluteUrl, pagina, itensPorPagina),
       );
       const [quantidade] = await execute(
-        `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
+        // `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
+        `FROM '${absoluteUrl}' SELECT COUNT() AS total`,
       );
       return { registros, quantidadeTotal: quantidade?.total ?? 0 };
     } finally {

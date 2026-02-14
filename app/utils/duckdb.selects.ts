@@ -9,10 +9,10 @@ export const selectDadosSimples = (
 `;
 
 export const selectDadosParquet = (
-  nomeArquivo: string,
+  absoluteUrl: string,
   pagina: number = 1,
   tamanhoPagina: number = duckDBItensPorPagina,
 ) => `
-    FROM '${nomeArquivo}'
+    FROM '${absoluteUrl}'
     LIMIT ${tamanhoPagina || duckDBItensPorPagina} OFFSET ${(pagina - 1) * (tamanhoPagina || duckDBItensPorPagina)}
 `;
