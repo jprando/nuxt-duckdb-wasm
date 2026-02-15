@@ -24,15 +24,6 @@ const colunas = computed(() =>
     : []
 );
 
-const rodapeQuantidadeRegistros = computed(() =>
-  estahCarregando.value
-    ? "carregando, aguarde..."
-    : ["nenhum registro", "1 registro"][quantidadeTotalRegistros.value || 0]
-      || `${
-        numeroSemCasaDecimal.format(quantidadeTotalRegistros.value)
-      } registros`
-);
-
 const executarConsulta = async (
   pagina: number = 1,
   itensPorPagina: number = duckDBItensPorPagina,
@@ -57,64 +48,43 @@ const executarConsulta = async (
 </script>
 
 <template>
-  <UContainer class="flex flex-1 flex-col min-h-0 pt-0 px-0.5 sm:pt-3">
-    <UCard
-      class="flex-1 flex flex-col min-h-0"
-      :ui="{
-        header: 'p-2 sm:px-6',
-        root: 'flex-1 flex flex-col min-h-0 ring-0! sm:ring-1!',
-        body: 'flex-1 min-h-0 overflow-y-auto p-0',
-        footer: 'py-1.5 px-4 sm:px-4',
-      }"
-    >
-      <template #header>
-        <div class="flex flex-col gap-4">
-          <SeletorDataset
-            v-model:dataset-selecionado="datasetSelecionado"
-            :loading="estahCarregando"
-            @carregar="() => {
-              estahCarregando = true;
-              quantidadeTotalRegistros = 0;
-              executarConsulta(1);
-            }"
-          />
-          <Paginador
-            ref="elmPaginacao"
-            v-model:page="paginaAtual"
-            :disabled="estahCarregando || !datasetSelecionado"
-            :total="quantidadeTotalRegistros"
-            @consultar-pagina="(p) => executarConsulta(p, duckDBItensPorPagina)"
-          />
-        </div>
-      </template>
-
-      <template #default>
-        <TabelaSkeleton v-if="estahCarregando" />
-        <TabelaDados
-          v-else
-          :colunas="colunas"
-          :registros="registros"
+  <NuxtLayout>
+    <template #header>
+      <div class="flex flex-col gap-4">
+        <SeletorDataset
+          v-model:dataset-selecionado="datasetSelecionado"
+          :loading="estahCarregando"
+          @carregar="() => {
+            estahCarregando = true;
+            quantidadeTotalRegistros = 0;
+            executarConsulta(1);
+          }"
         />
-      </template>
+        <Paginador
+          ref="elmPaginacao"
+          v-model:page="paginaAtual"
+          :disabled="estahCarregando || !datasetSelecionado"
+          :total="quantidadeTotalRegistros"
+          @consultar-pagina="(p) => executarConsulta(p, duckDBItensPorPagina)"
+        />
+      </div>
+    </template>
 
-      <template #footer>
-        <div class="flex justify-between">
-          <span
-            v-if="tempoExecucaoMs != null"
-            class="text-neutral-400"
-          >
-            {{
-              tempoExecucaoMs < 1000
-              ? `${Math.round(tempoExecucaoMs)} ms`
-              : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
-            }}
-          </span>
-          <span v-else> </span>
-          <span class="text-neutral-400">
-            {{ rodapeQuantidadeRegistros }}
-          </span>
-        </div>
-      </template>
-    </UCard>
-  </UContainer>
+    <template #default>
+      <TabelaSkeleton v-if="estahCarregando" />
+      <TabelaDados
+        v-else
+        :colunas="colunas"
+        :registros="registros"
+      />
+    </template>
+
+    <template #footer>
+      <RodapeInfo
+        :tempo-execucao-ms="tempoExecucaoMs"
+        :quantidade-total-registros="quantidadeTotalRegistros"
+        :loading="estahCarregando"
+      />
+    </template>
+  </NuxtLayout>
 </template>
