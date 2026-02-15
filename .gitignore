@@ -34,3 +34,6 @@ coverage/
 # Playwright
 playwright-report/
 test-results/
+
+# binario gerado pelo bun build --compile
+nuxtbin
