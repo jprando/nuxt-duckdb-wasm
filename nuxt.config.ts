@@ -9,7 +9,12 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxt/test-utils",
+    "nuxt-bun-compile",
   ],
+
+  bunCompile: {
+    outfile: "nuxtbin",
+  },
 
   devtools: {
     enabled: false,
@@ -28,32 +33,6 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    ...import.meta.env.NITRO_PRESET === "bun"
-      ? {
-        // preparacao para rodar bun:compile em seguida para gerar um binario standalone
-        preset: "bun",
-        noExternals: true,
-        inlineDynamicImports: true,
-        serveStatic: "inline",
-        esbuild: {
-          options: {
-            target: "esnext",
-          },
-        },
-        rollupConfig: {
-          external: [
-            "sharp",
-            /^@img\//,
-            "css-tree",
-            "csso",
-            "svgo",
-            "mdn-data",
-            /^mdn-data\//,
-            /^css-tree\//,
-          ],
-        },
-      }
-      : {},
     experimental: {
       wasm: true,
     },

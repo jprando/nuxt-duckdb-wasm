@@ -18,8 +18,7 @@
     "test:e2e:ui": "playwright test --ui",
     "format": "dprint fmt",
     "duckdb:ui": "duckdb -cmd 'LOAD ui; CALL start_ui_server();'",
-    "bun:compile": "bun build .output/server/index.mjs --compile --outfile nuxtbin",
-    "prebun:compile": "NITRO_PRESET=bun NODE_OPTIONS=\"--max-old-space-size=8192\" bun run build",
+    "bun:compile": "NODE_OPTIONS=\"--max-old-space-size=8192\" bun run -b build",
     "pnpm:self:update": "pnpm self-update"
   },
   "dependencies": {
@@ -48,6 +47,7 @@
     "@vue/test-utils": "^2.4.6",
     "dprint": "^0.51.1",
     "eslint": "^9.39.2",
+    "nuxt-bun-compile": "github:jprando/nuxt-bun-compile",
     "playwright": "^1.58.2",
     "playwright-core": "^1.58.2",
     "typescript": "^5.9.3",
