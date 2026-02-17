@@ -95,6 +95,10 @@ export const useDuckDb = () => {
     }
   };
 
+  const setEstahCarregando = (value: boolean) => {
+    estahCarregando.value = value;
+  };
+
   return {
     // estahCarregando: readonly(estahCarregando),
     estahCarregando: estahCarregando,
@@ -103,5 +107,6 @@ export const useDuckDb = () => {
     registrarArquivoRemoto,
     obterDadosSimples,
     obterDadosParquet,
+    setEstahCarregando,
   };
 };

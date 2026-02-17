@@ -40,7 +40,6 @@ const itensAgrupados = computed(() => {
         v-model="datasetSelecionado"
         :items="itensAgrupados"
         :search-input="false"
-        :loading="loading"
         :disabled="loading"
         :ui="{
           trailingIcon:

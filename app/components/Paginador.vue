@@ -37,7 +37,6 @@ const teclasNavegacao: Record<string, (p: number, shift: boolean, eh1: boolean) 
 };
 
 const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
-  evento.preventDefault();
   if (props.disabled) return;
 
   const calcular = teclasNavegacao[evento.key];
@@ -55,6 +54,7 @@ const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
     pagina.value = novaPagina;
     if (debounceTimerId.value) clearTimeout(debounceTimerId.value);
     debounceTimerId.value = setTimeout(() => {
+      evento.preventDefault();
       emit("consultarPagina", pagina.value);
     }, 650);
   }

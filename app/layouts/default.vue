@@ -36,7 +36,7 @@ const {
             :ui="{
               header: 'p-2 sm:px-6',
               root: 'flex-1 flex flex-col min-h-0 ring-0! sm:ring-1!',
-              body: 'flex-1 min-h-0 overflow-y-auto p-0',
+              body: 'flex-1 min-h-0 overflow-y-auto p-0!',
               footer: 'py-1.5 px-4 sm:px-4',
             }"
           >

@@ -6,6 +6,7 @@ const {
   estahCarregando,
   obterDadosSimples,
   obterDadosParquet,
+  setEstahCarregando,
 } = useDuckDb();
 
 const ultimoDatasetCarregado = ref<string | null>(null);
@@ -17,9 +18,7 @@ const tempoExecucaoMs = ref<number | null>(null);
 const elmPaginacao = useTemplateRef<{ focus: () => void }>("elmPaginacao");
 
 const colunas = computed(() =>
-  !estahCarregando.value
-    && Array.isArray(registros.value)
-    && registros.value.length
+  Array.isArray(registros.value) && registros.value.length
     ? Object.keys(registros.value[0])
     : []
 );
@@ -55,7 +54,7 @@ const executarConsulta = async (
           v-model:dataset-selecionado="datasetSelecionado"
           :loading="estahCarregando"
           @carregar="() => {
-            estahCarregando = true;
+            setEstahCarregando(true);
             quantidadeTotalRegistros = 0;
             executarConsulta(1);
           }"
@@ -65,7 +64,7 @@ const executarConsulta = async (
           v-model:page="paginaAtual"
           :disabled="estahCarregando || !datasetSelecionado"
           :total="quantidadeTotalRegistros"
-          @consultar-pagina="(p) => executarConsulta(p, duckDBItensPorPagina)"
+          @consultar-pagina="(numeroPagina: number) => executarConsulta(numeroPagina, duckDBItensPorPagina)"
         />
       </div>
     </template>
