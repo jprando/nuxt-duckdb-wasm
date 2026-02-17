@@ -38,6 +38,7 @@ const executarConsulta = async (
 
   if (ultimoDatasetCarregado.value !== datasetSelecionado.value.label) {
     quantidadeTotalRegistros.value = 0;
+    registros.value = [{ carregando: "aguarde..." }];
     const quantidadeRegistros = url === ""
       ? await obterDadosSimplesQuantidade()
       : await obterDadosParquetQuantidade(url);
