@@ -5,12 +5,12 @@
 const pagina = defineModel<number>("page", { required: true });
 
 const props = defineProps<{
-  disabled: boolean
-  total: number
+  disabled: boolean;
+  total: number;
 }>();
 
 const emit = defineEmits<{
-  consultarPagina: [pagina: number]
+  consultarPagina: [pagina: number];
 }>();
 
 const paginadorSiblingCount = ref(1);
@@ -27,7 +27,10 @@ const totalPaginas = computed(() =>
 const calcularDeslocamento = (base: number, ehPrimeiraPagina: boolean) =>
   ehPrimeiraPagina ? base - 1 : base;
 
-const teclasNavegacao: Record<string, (p: number, shift: boolean, eh1: boolean) => number> = {
+const teclasNavegacao: Record<
+  string,
+  (p: number, shift: boolean, eh1: boolean) => number
+> = {
   ArrowRight: (p, shift, eh1) => p + (shift ? calcularDeslocamento(5, eh1) : 1),
   ArrowLeft: (p, shift, eh1) => p - (shift ? calcularDeslocamento(5, eh1) : 1),
   Home: () => 1,

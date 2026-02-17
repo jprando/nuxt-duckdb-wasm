@@ -44,13 +44,13 @@ nuxt-duckdb-wasm/
 
 ## Arquivos-Chave para Tarefas Comuns
 
-| Tarefa | Arquivos |
-|--------|----------|
-| Adicionar novo dataset | `app/utils/duckdb.constantes.ts` (adicionar ao array `datasetsParquet`) |
-| Modificar consultas SQL | `app/utils/duckdb.selects.ts` |
-| Alterar inicialização do DuckDB | `app/utils/duckdb.init.ts` |
-| Editar composable principal | `app/composables/useDuckDb.ts` |
-| Modificar UI/layout | `app/app.vue`, `app/pages/index.vue` |
-| Adicionar componente | `app/components/` (NomePascalCase.vue) |
-| Adicionar utilitário compartilhado | `shared/utils/` |
-| Adicionar middleware do servidor | `server/middleware/` |
+| Tarefa                             | Arquivos                                                                |
+| ---------------------------------- | ----------------------------------------------------------------------- |
+| Adicionar novo dataset             | `app/utils/duckdb.constantes.ts` (adicionar ao array `datasetsParquet`) |
+| Modificar consultas SQL            | `app/utils/duckdb.selects.ts`                                           |
+| Alterar inicialização do DuckDB    | `app/utils/duckdb.init.ts`                                              |
+| Editar composable principal        | `app/composables/useDuckDb.ts`                                          |
+| Modificar UI/layout                | `app/app.vue`, `app/pages/index.vue`                                    |
+| Adicionar componente               | `app/components/` (NomePascalCase.vue)                                  |
+| Adicionar utilitário compartilhado | `shared/utils/`                                                         |
+| Adicionar middleware do servidor   | `server/middleware/`                                                    |

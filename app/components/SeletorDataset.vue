@@ -2,14 +2,16 @@
   setup
   lang="ts"
 >
-const datasetSelecionado = defineModel<DatasetParquet | undefined>("datasetSelecionado");
+const datasetSelecionado = defineModel<DatasetParquet | undefined>(
+  "datasetSelecionado",
+);
 
 defineProps<{
-  loading: boolean
+  loading: boolean;
 }>();
 
 const emit = defineEmits<{
-  carregar: []
+  carregar: [];
 }>();
 
 const itensAgrupados = computed(() => {

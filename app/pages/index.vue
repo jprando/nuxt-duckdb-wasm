@@ -5,8 +5,9 @@
 const {
   estahCarregando,
   obterDadosSimples,
+  obterDadosSimplesQuantidade,
   obterDadosParquet,
-  setEstahCarregando,
+  obterDadosParquetQuantidade,
 } = useDuckDb();
 
 const ultimoDatasetCarregado = ref<string | null>(null);
@@ -30,18 +31,28 @@ const executarConsulta = async (
   if (!datasetSelecionado.value) return;
 
   paginaAtual.value = pagina;
-
   tempoExecucaoMs.value = null;
-  const inicio = performance.now();
+
   const url = datasetSelecionado.value.url;
+  const inicio = performance.now();
+
+  if (ultimoDatasetCarregado.value !== datasetSelecionado.value.label) {
+    quantidadeTotalRegistros.value = 0;
+    const quantidadeRegistros = url === ""
+      ? await obterDadosSimplesQuantidade()
+      : await obterDadosParquetQuantidade(url);
+    quantidadeTotalRegistros.value = quantidadeRegistros;
+  }
+
   ultimoDatasetCarregado.value = datasetSelecionado.value.label;
-  const resultado = url === ""
+
+  const _registros = url === ""
     ? await obterDadosSimples(pagina, itensPorPagina)
     : await obterDadosParquet(pagina, itensPorPagina, url);
 
   tempoExecucaoMs.value = performance.now() - inicio;
-  registros.value = resultado.registros;
-  quantidadeTotalRegistros.value = resultado.quantidadeTotal;
+  registros.value = _registros;
+
   elmPaginacao.value?.focus();
 };
 </script>
@@ -54,8 +65,7 @@ const executarConsulta = async (
           v-model:dataset-selecionado="datasetSelecionado"
           :loading="estahCarregando"
           @carregar="() => {
-            setEstahCarregando(true);
-            quantidadeTotalRegistros = 0;
+            // quantidadeTotalRegistros = 0;
             executarConsulta(1);
           }"
         />
@@ -64,17 +74,17 @@ const executarConsulta = async (
           v-model:page="paginaAtual"
           :disabled="estahCarregando || !datasetSelecionado"
           :total="quantidadeTotalRegistros"
-          @consultar-pagina="(numeroPagina: number) => executarConsulta(numeroPagina, duckDBItensPorPagina)"
+          @consultar-pagina="(numeroPagina: number) =>
+          executarConsulta(numeroPagina, duckDBItensPorPagina)"
         />
       </div>
     </template>
 
     <template #default>
-      <TabelaSkeleton v-if="estahCarregando" />
       <TabelaDados
-        v-else
         :colunas="colunas"
         :registros="registros"
+        :estah-carregando="estahCarregando"
       />
     </template>
 

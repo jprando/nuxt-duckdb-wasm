@@ -11,15 +11,16 @@ interface DataRecord {
 const props = defineProps<{
   colunas: string[];
   registros: DataRecord[];
+  estahCarregando?: boolean;
 }>();
 
-const columns = computed(() =>
-  props.colunas.map(coluna => ({
-    id: coluna,
-    key: coluna,
-    label: coluna,
-  }))
-);
+// const columns = computed(() =>
+//   props.colunas.map(coluna => ({
+//     id: coluna,
+//     key: coluna,
+//     label: coluna,
+//   }))
+// );
 </script>
 
 <template>
@@ -33,7 +34,11 @@ const columns = computed(() =>
     v-else
     class="w-full h-full min-h-0 overflow-auto"
   >
-    <UTable :data="props.registros" sticky />
+    <UTable
+      :loading="props.estahCarregando"
+      :data="props.registros"
+      sticky
+    />
     <!--
     <table class="w-full">
       <thead class="bg-gray-50 dark:bg-gray-900">

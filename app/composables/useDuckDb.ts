@@ -20,9 +20,9 @@ export const useDuckDb = () => {
   const execute = async (sql: string) => {
     if (!db.value) await init();
 
+    estahCarregando.value = true;
     const conn = await db.value!.connect();
     try {
-      estahCarregando.value = true;
       // infoDev("#duckdb:query#", sql);
       const result = await conn.query(sql);
       return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
@@ -32,44 +32,21 @@ export const useDuckDb = () => {
     }
   };
 
-  const arquivosRegistrados = new Set<string>();
-
-  /** Registra URL no sistema de arquivos virtual do DuckDB (HTTP FS) e retorna o nome do arquivo virtual. */
-  const registrarArquivoRemoto = async (url: string) => {
-    if (!db.value) await init();
-
-    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
-    const nomeArquivo = absoluteUrl.split("/").pop() || "remote.parquet";
-
-    if (!arquivosRegistrados.has(nomeArquivo)) {
-      await db.value!.registerFileURL(
-        nomeArquivo,
-        absoluteUrl,
-        duckDBDataProtocolHTTP,
-        true,
-      );
-      arquivosRegistrados.add(nomeArquivo);
-    }
-
-    return nomeArquivo;
-  };
-
   const obterDadosSimples = async (
     pagina: number = 1,
     itensPorPagina: number = duckDBItensPorPagina,
   ) => {
-    try {
-      const registros = await execute(
-        selectDadosSimples(pagina, itensPorPagina),
-      );
-      const [quantidade] = await execute(
-        "FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0",
-      );
-      return { registros, quantidadeTotal: quantidade?.total ?? 0 };
-    } finally {
-      selectDadosSimples;
-      estahCarregando.value = false;
-    }
+    const registros: any[] = await execute(
+      selectDadosSimples(pagina, itensPorPagina),
+    );
+    return registros;
+  };
+
+  const obterDadosSimplesQuantidade = async () => {
+    const [quantidade]: [{ total?: number }] = await execute(
+      "FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0",
+    );
+    return quantidade?.total ?? 0;
   };
 
   const obterDadosParquet = async (
@@ -77,36 +54,35 @@ export const useDuckDb = () => {
     itensPorPagina: number = duckDBItensPorPagina,
     url: string = "",
   ) => {
-    if (!url) return { registros: [], quantidadeTotal: 0 };
-    try {
-      const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
-      // const nomeArquivo = await registrarArquivoRemoto(url);
-      const registros = await execute(
-        // selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
-        selectDadosParquet(absoluteUrl, pagina, itensPorPagina),
-      );
-      const [quantidade] = await execute(
-        // `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
-        `FROM '${absoluteUrl}' SELECT COUNT() AS total`,
-      );
-      return { registros, quantidadeTotal: quantidade?.total ?? 0 };
-    } finally {
-      estahCarregando.value = false;
-    }
+    if (!url) return [];
+
+    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+    const registros: any[] = await execute(
+      selectDadosParquet(absoluteUrl, pagina, itensPorPagina),
+    );
+
+    return registros;
   };
 
-  const setEstahCarregando = (value: boolean) => {
-    estahCarregando.value = value;
+  const obterDadosParquetQuantidade = async (
+    url: string = "",
+  ) => {
+    if (!url) return 0;
+
+    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+    const [quantidade]: [{ total?: number }] = await execute(
+      `FROM '${absoluteUrl}' SELECT COUNT() AS total`,
+    );
+
+    return quantidade?.total ?? 0;
   };
 
   return {
-    // estahCarregando: readonly(estahCarregando),
-    estahCarregando: estahCarregando,
+    estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
-    execute,
-    registrarArquivoRemoto,
     obterDadosSimples,
+    obterDadosSimplesQuantidade,
     obterDadosParquet,
-    setEstahCarregando,
+    obterDadosParquetQuantidade,
   };
 };

@@ -3,18 +3,14 @@
   lang="ts"
 >
 const props = defineProps<{
-  tempoExecucaoMs: number | null
-  quantidadeTotalRegistros: number
-  loading: boolean
+  tempoExecucaoMs: number | null;
+  quantidadeTotalRegistros: number;
+  loading: boolean;
 }>();
 
 const rodapeQuantidadeRegistros = computed(() =>
-  props.loading
-    ? "carregando, aguarde..."
-    : ["nenhum registro", "1 registro"][props.quantidadeTotalRegistros || 0]
-      || `${
-        numeroSemCasaDecimal.format(props.quantidadeTotalRegistros)
-      } registros`
+  ["-", "1 registro"][props.quantidadeTotalRegistros || 0]
+  || `${numeroSemCasaDecimal.format(props.quantidadeTotalRegistros)} registros`
 );
 </script>
 
@@ -30,7 +26,7 @@ const rodapeQuantidadeRegistros = computed(() =>
         : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
       }}
     </span>
-    <span v-else> </span>
+    <span v-else> - </span>
     <span class="text-neutral-400">
       {{ rodapeQuantidadeRegistros }}
     </span>
