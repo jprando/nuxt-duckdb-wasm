@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev19.0",
-    "@iconify-json/lucide": "^1.2.91",
+    "@iconify-json/lucide": "^1.2.92",
     "@iconify-json/simple-icons": "^1.2.71",
     "@nuxt/hints": "1.0.0-alpha.6",
     "@nuxt/image": "2.0.0",
@@ -37,7 +37,7 @@
     "nuxt": "^4.3.1",
     "sharp": "^0.34.5",
     "svgo": "^4.0.0",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.2.0"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.1",
