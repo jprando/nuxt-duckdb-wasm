@@ -14,8 +14,12 @@ const estahCarregando = computed({
   },
 });
 
+if (import.meta.client) {
+  window.addEventListener("pagehide", () => duckDBWasmEncerrar(db));
+}
+
 export const useDuckDb = () => {
-  const init = duckDBWasmInit(db, estahCarregando, duckDBWasmInfo);
+  const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
   const execute = async (sql: string) => {
     if (!db.value) await init();
@@ -27,7 +31,7 @@ export const useDuckDb = () => {
       const result = await conn.query(sql);
       return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
     } finally {
-      await conn.close();
+      // await conn.close();
       estahCarregando.value = false;
     }
   };

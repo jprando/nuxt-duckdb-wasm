@@ -20,7 +20,7 @@ const {
         <template #right>
           <span
             v-if="duckDBWasmInfo"
-            class="text-xs text-muted hidden sm:inline"
+            class="text-xs text-muted inline"
           >
             {{ duckDBWasmInfo }}
           </span>
@@ -46,7 +46,7 @@ const {
               header: 'p-2 sm:px-6',
               root: 'flex-1 flex flex-col min-h-0 ring-0! sm:ring-1!',
               body: 'flex-1 min-h-0 overflow-y-auto p-0!',
-              footer: 'py-1.5 px-4 sm:px-4',
+              footer: 'py-0! pt-1! sm:py-2!',
             }"
           >
             <template #header>
@@ -65,15 +65,16 @@ const {
       </UMain>
 
       <USeparator
-        class="relative top-2"
+        class="relative md:top-2 p-0! -mt-1! lg:mt-0!"
         icon="i-simple-icons-nuxtdotjs"
       />
-      <UFooter v-if="true"
+      <UFooter class="hidden md:block"
         :ui="{
           container:
-            'w-full max-w-(--ui-container) mx-auto px-4 sm:px-8 sm:py-2 flex items-center justify-between sm:gap-x-3 py-0!',
-          left: 'flex items-center justify-start gap-x-1.5 order-1',
-          right: 'flex items-center justify-end gap-x-1.5 order-3',
+            'w-full max-w-(--ui-container) mx-auto px-0 sm:py-2 flex sm:gap-x-3 py-0!',
+          left: 'flex gap-x-1.5 order-1 mt-0',
+          center: 'order-2',
+          right: 'flex gap-x-1.5 order-3',
         }"
       >
         <template #left>

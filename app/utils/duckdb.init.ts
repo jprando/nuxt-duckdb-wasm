@@ -1,4 +1,4 @@
-export const duckDBWasmInit = (
+export const duckDBWasmIniciar = (
   db: ShallowRef<unknown>,
   estahCarregando: WritableComputedRef<boolean>,
   duckDBWasmInfo: Ref<string>,
@@ -56,5 +56,12 @@ async () => {
     console.error("Falha ao instanciar DuckDB COI:", error);
   } finally {
     estahCarregando.value = false;
+  }
+};
+
+export const duckDBWasmEncerrar = async (db: ShallowRef<unknown>) => {
+  if (typeof db.value?.close === "function") {
+    await db.value.close();
+    console.info("Conexão encerrada.");
   }
 };
