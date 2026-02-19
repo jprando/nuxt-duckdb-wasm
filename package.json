@@ -19,7 +19,9 @@
     "format": "dprint fmt",
     "duckdb:ui": "duckdb -cmd 'LOAD ui; CALL start_ui_server();'",
     "bun:compile": "NODE_OPTIONS=\"--max-old-space-size=8192\" bun run -b build",
-    "pnpm:self:update": "pnpm self-update"
+    "pnpm:self:update": "pnpm self-update",
+    "docker:build": "docker buildx build -t nuxt-duckdb-wasm:latest .",
+    "docker:run": "docker run --name nuxt-duckdb-wasm-latest --rm -ti --init -p 3000:3000 nuxt-duckdb-wasm:latest"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev19.0",
@@ -47,7 +49,7 @@
     "@vue/test-utils": "^2.4.6",
     "dprint": "^0.51.1",
     "eslint": "^9.39.2",
-    "nuxt-bun-compile": "^0.1.19",
+    "nuxt-bun-compile": "^0.1.25",
     "playwright": "^1.58.2",
     "playwright-core": "^1.58.2",
     "typescript": "^5.9.3",

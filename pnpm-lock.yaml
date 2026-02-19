@@ -79,8 +79,8 @@ importers:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
       nuxt-bun-compile:
-        specifier: ^0.1.19
-        version: 0.1.19(magicast@0.5.2)
+        specifier: ^0.1.25
+        version: 0.1.25(magicast@0.5.2)
       playwright:
         specifier: ^1.58.2
         version: 1.58.2
@@ -4587,8 +4587,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  nuxt-bun-compile@0.1.19:
-    resolution: {integrity: sha512-ONqW0Op2of1/nVtX4HKxbJhqyOQ6L0x4tKoJwMAO/6ieyQyPoxE36nzWRj+MVD7yr1CElDv4s8lU6JqrslpRMg==}
+  nuxt-bun-compile@0.1.25:
+    resolution: {integrity: sha512-LZt+CE9oFTVfyFH+PWln+VSlPv8+6mWFBpBXp/ObTTKPiMZSku4/XMJzp0XKHxlUy2SLkdAIGQ2iiS2QurYSog==}
     engines: {bun: ^1.3.9}
 
   nuxt@4.3.1:
@@ -10762,7 +10762,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nuxt-bun-compile@0.1.19(magicast@0.5.2):
+  nuxt-bun-compile@0.1.25(magicast@0.5.2):
     dependencies:
       '@nuxt/kit': 4.3.1(magicast@0.5.2)
     transitivePeerDependencies:

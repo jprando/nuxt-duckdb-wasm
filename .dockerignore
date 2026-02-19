@@ -1,0 +1,16 @@
+.claude
+.devcontainer
+.gemini
+.git
+.github
+.husky
+.nuxt
+.output
+.serena
+.vscode
+.yarn
+dist
+node_modules
+nuxtbin
+test
+tests
