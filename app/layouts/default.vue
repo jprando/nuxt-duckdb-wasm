@@ -10,7 +10,7 @@ const {
 <template>
   <UApp>
     <div class="h-dvh flex flex-col overflow-hidden">
-      <UHeader :ui="{ root: 'h-12!', container: 'h-full' }">
+      <UHeader :toggle="false" :ui="{ root: 'h-12!', container: 'h-full' }">
         <template #left>
           <NuxtLink to="/">
             <AppLogo class="w-auto h-6 shrink-0" />
@@ -26,6 +26,15 @@ const {
           </span>
 
           <UColorModeButton />
+
+          <UButton
+            to="https://github.com/jprando/nuxt-duckdb-wasm"
+            target="_blank"
+            icon="i-simple-icons-github"
+            aria-label="GitHub"
+            color="neutral"
+            variant="ghost"
+          />
         </template>
       </UHeader>
 
@@ -56,33 +65,21 @@ const {
       </UMain>
 
       <USeparator
-        class="relative top-1"
+        class="relative top-2"
         icon="i-simple-icons-nuxtdotjs"
       />
-      <UFooter
+      <UFooter v-if="true"
         :ui="{
           container:
-            'w-full max-w-(--ui-container) mx-auto px-4 sm:px-8 py-8 sm:py-4 flex items-center justify-between sm:gap-x-3 pt-0! pb-1!',
-          left: 'flex-1 flex items-center justify-start gap-x-1.5 order-1',
-          right: 'flex-1 flex items-center justify-end gap-x-1.5 mt-3.5 order-3',
+            'w-full max-w-(--ui-container) mx-auto px-4 sm:px-8 sm:py-2 flex items-center justify-between sm:gap-x-3 py-0!',
+          left: 'flex items-center justify-start gap-x-1.5 order-1',
+          right: 'flex items-center justify-end gap-x-1.5 order-3',
         }"
       >
         <template #left>
           <p class="text-sm text-muted">
             Built with Nuxt UI • © {{ new Date().getFullYear() }}
           </p>
-        </template>
-
-        <template #right>
-          <UButton
-            to="https://github.com/jprando/nuxt-duckdb-wasm"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-            color="neutral"
-            variant="ghost"
-            class="relative -top-1"
-          />
         </template>
       </UFooter>
     </div>

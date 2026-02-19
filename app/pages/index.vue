@@ -3,6 +3,7 @@
   lang="ts"
 >
 const {
+  init,
   estahCarregando,
   obterDadosSimples,
   obterDadosSimplesQuantidade,
@@ -56,6 +57,8 @@ const executarConsulta = async (
 
   elmPaginacao.value?.focus();
 };
+
+onMounted(init);
 </script>
 
 <template>

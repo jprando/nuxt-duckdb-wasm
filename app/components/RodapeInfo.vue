@@ -26,7 +26,7 @@ const rodapeQuantidadeRegistros = computed(() =>
         : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
       }}
     </span>
-    <span v-else> - </span>
+    <span v-else>&nbsp;</span>
     <span class="text-neutral-400">
       {{ rodapeQuantidadeRegistros }}
     </span>
