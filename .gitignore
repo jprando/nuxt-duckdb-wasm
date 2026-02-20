@@ -35,9 +35,5 @@ coverage/
 playwright-report/
 test-results/
 
-
-# bun lockfile
-bun.lock
-
 # binario gerado pelo bun build --compile
 nuxtbin
