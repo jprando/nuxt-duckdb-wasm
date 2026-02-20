@@ -2,15 +2,16 @@
   setup
   lang="ts"
 >
-const {
-  duckDBWasmInfo,
-} = useDuckDb();
+const { duckDBWasmInfo } = useDuckDb();
 </script>
 
 <template>
   <UApp>
     <div class="h-dvh flex flex-col overflow-hidden">
-      <UHeader :toggle="false" :ui="{ root: 'h-12!', container: 'h-full' }">
+      <UHeader
+        :toggle="false"
+        :ui="{ root: 'h-12!', container: 'h-full' }"
+      >
         <template #left>
           <NuxtLink to="/">
             <AppLogo class="w-auto h-6 shrink-0" />
@@ -20,7 +21,7 @@ const {
         <template #right>
           <span
             v-if="duckDBWasmInfo"
-            class="text-xs text-muted inline"
+            class="text-[0.67rem] sm:text-xs text-dimmed inline"
           >
             {{ duckDBWasmInfo }}
           </span>
@@ -68,7 +69,8 @@ const {
         class="relative md:top-2 p-0! -mt-1! lg:mt-0!"
         icon="i-simple-icons-nuxtdotjs"
       />
-      <UFooter class="hidden md:block"
+      <UFooter
+        class="hidden md:block"
         :ui="{
           container:
             'w-full max-w-(--ui-container) mx-auto px-0 sm:py-2 flex sm:gap-x-3 py-0!',
