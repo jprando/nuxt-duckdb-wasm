@@ -48,7 +48,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "@vue/test-utils": "^2.4.6",
     "dprint": "^0.51.1",
-    "eslint": "^9.39.2",
+    "eslint": "^9.39.3",
     "nuxt-bun-compile": "^0.1.30",
     "playwright": "^1.58.2",
     "playwright-core": "^1.58.2",
