@@ -32,4 +32,4 @@ RUN apk add --no-cache libstdc++ libgcc
 
 EXPOSE 3000/tcp
 
-CMD [ "/app/nuxtbin" ]
+CMD ["/app/nuxtbin"]
