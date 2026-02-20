@@ -12,5 +12,6 @@
 dist
 node_modules
 nuxtbin
+pnpm-lock.yaml
 test
 tests
