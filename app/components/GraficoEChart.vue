@@ -32,6 +32,7 @@ const props = withDefaults(defineProps<{
 
 const containerRef = ref<HTMLDivElement | null>(null);
 let chart: ReturnType<typeof init> | null = null;
+let resizeObserver: ResizeObserver | null = null;
 
 const initChart = () => {
   if (!containerRef.value) return;
@@ -41,9 +42,19 @@ const initChart = () => {
 
 onMounted(() => {
   initChart();
+
+  resizeObserver = new ResizeObserver(() => {
+    chart?.resize();
+  });
+
+  if (containerRef.value) {
+    resizeObserver.observe(containerRef.value);
+  }
 });
 
 onUnmounted(() => {
+  resizeObserver?.disconnect();
+  resizeObserver = null;
   chart?.dispose();
   chart = null;
 });
