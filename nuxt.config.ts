@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@nuxt/test-utils",
     "nuxt-bun-compile",
     "nuxt-echarts",
+    "nuxt-vitalizer",
   ],
 
   bunCompile: {

@@ -50,6 +50,9 @@ importers:
       nuxt-echarts:
         specifier: 1.0.1
         version: 1.0.1(echarts@6.0.0)(magicast@0.5.2)(vue-echarts@8.0.1(echarts@6.0.0)(vue@3.5.28(typescript@5.9.3)))
+      nuxt-vitalizer:
+        specifier: 2.0.0
+        version: 2.0.0(magicast@0.5.2)
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -4608,6 +4611,9 @@ packages:
     peerDependencies:
       echarts: ^6.0.0
       vue-echarts: ^8.0.0
+
+  nuxt-vitalizer@2.0.0:
+    resolution: {integrity: sha512-X2mabvcXMfKmWc46p8WmCbTlr8+wDniPHunQIRSGWmH0goqw6YTAe0+ttxRNISGxcobXDqqip7qPCE6+T60t1g==}
 
   nuxt@4.3.1:
     resolution: {integrity: sha512-bl+0rFcT5Ax16aiWFBFPyWcsTob19NTZaDL5P6t0MQdK63AtgS6fN6fwvwdbXtnTk6/YdCzlmuLzXhSM22h0OA==}
@@ -10817,6 +10823,12 @@ snapshots:
       '@nuxt/kit': 4.3.1(magicast@0.5.2)
       echarts: 6.0.0
       vue-echarts: 8.0.1(echarts@6.0.0)(vue@3.5.28(typescript@5.9.3))
+    transitivePeerDependencies:
+      - magicast
+
+  nuxt-vitalizer@2.0.0(magicast@0.5.2):
+    dependencies:
+      '@nuxt/kit': 4.3.1(magicast@0.5.2)
     transitivePeerDependencies:
       - magicast
 
