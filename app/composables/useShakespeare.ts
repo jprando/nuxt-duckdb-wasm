@@ -1,8 +1,8 @@
 interface Kpis {
-  total_lines: number
-  total_plays: number
-  total_speakers: number
-  avg_words_per_line: number
+  total_lines: number;
+  total_plays: number;
+  total_speakers: number;
+  avg_words_per_line: number;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -45,8 +45,8 @@ export const useShakespeare = () => {
 
     const promises = [
       executar(shakespeareKpisQuery(url))
-        .then((data) => {
-          kpis.value = data[0] as Kpis;
+        .then(([kpisData]) => {
+          kpis.value = kpisData as Kpis;
         }),
 
       executar(shakespearePecasQuery(url))
@@ -148,7 +148,8 @@ export const useShakespeare = () => {
   // ─── Formatação ───────────────────────────────────────────────────────────
 
   const fmtNumero = (n: number) => numeroSemCasaDecimal.format(n);
-  const fmtDecimal = (n: number) => new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n);
+  const fmtDecimal = (n: number) =>
+    new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n);
 
   return {
     carregando,

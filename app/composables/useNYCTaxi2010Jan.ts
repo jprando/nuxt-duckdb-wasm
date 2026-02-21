@@ -1,8 +1,8 @@
 interface Kpis {
-  total_trips: number
-  avg_duration_min: number
-  avg_tip: number
-  total_revenue: number
+  total_trips: number;
+  avg_duration_min: number;
+  avg_tip: number;
+  total_revenue: number;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -50,8 +50,8 @@ export const useNYCTaxi2010Jan = () => {
     const url = nycTaxi2010JanUrl;
 
     executar(nycTaxi2010JanKpisQuery(url))
-      .then((kpisData) => {
-        kpis.value = kpisData[0] as Kpis;
+      .then(([kpisData]) => {
+        kpis.value = kpisData as Kpis;
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;

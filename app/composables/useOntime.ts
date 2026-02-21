@@ -1,10 +1,10 @@
 interface Kpis {
-  total_voos: number
-  distancia_media: number
-  atraso_medio_partida: number
-  atraso_medio_chegada: number
-  taxa_cancelamento: number
-  pct_pontuais: number
+  total_voos: number;
+  distancia_media: number;
+  atraso_medio_partida: number;
+  atraso_medio_chegada: number;
+  taxa_cancelamento: number;
+  pct_pontuais: number;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -22,9 +22,17 @@ const baseChart = {
 const DIAS_SEMANA = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
 const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 const DIST_LABELS = [
-  "<250mi", "250-499", "500-749", "750-999",
-  "1000-1249", "1250-1499", "1500-1749", "1750-1999",
-  "2000-2249", "2250-2499", "2500+mi",
+  "<250mi",
+  "250-499",
+  "500-749",
+  "750-999",
+  "1000-1249",
+  "1250-1499",
+  "1500-1749",
+  "1750-1999",
+  "2000-2249",
+  "2250-2499",
+  "2500+mi",
 ];
 
 export const useOntime = () => {
@@ -66,8 +74,8 @@ export const useOntime = () => {
     const url = ontimeUrl;
 
     executar(ontimeKpisQuery(url))
-      .then((data) => {
-        kpis.value = data[0] as Kpis;
+      .then(([kpisData]) => {
+        kpis.value = kpisData as Kpis;
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;

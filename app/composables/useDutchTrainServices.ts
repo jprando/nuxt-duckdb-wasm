@@ -47,8 +47,8 @@ export const useDutchTrainServices = () => {
     const url = dutchTrainServicesUrl;
 
     executar(dutchTrainServicesKpisQuery(url))
-      .then((kpisData) => {
-        kpis.value = kpisData[0] as Kpis;
+      .then(([kpisData]) => {
+        kpis.value = kpisData as Kpis;
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;

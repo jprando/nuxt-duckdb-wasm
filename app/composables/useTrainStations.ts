@@ -1,10 +1,10 @@
 interface Kpis {
-  total_estacoes: number
-  total_paises: number
-  total_tipos: number
-  megaestacoes: number
-  estacoes_nl: number
-  estacoes_intercidade: number
+  total_estacoes: number;
+  total_paises: number;
+  total_tipos: number;
+  megaestacoes: number;
+  estacoes_nl: number;
+  estacoes_intercidade: number;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -55,8 +55,8 @@ export const useTrainStations = () => {
     const url = trainStationsUrl;
 
     executar(trainStationsKpisQuery(url))
-      .then((data) => {
-        kpis.value = data[0] as Kpis;
+      .then(([kpisData]) => {
+        kpis.value = kpisData as Kpis;
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;

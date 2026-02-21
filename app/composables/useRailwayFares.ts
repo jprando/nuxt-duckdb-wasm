@@ -44,8 +44,8 @@ export const useRailwayFares = () => {
     const url = railwayFaresUrl;
 
     executar(railwayFaresKpisQuery(url))
-      .then((data) => {
-        kpis.value = data[0] as Kpis;
+      .then(([kpisData]) => {
+        kpis.value = kpisData as Kpis;
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;
