@@ -17,7 +17,7 @@ definePageMeta({ layout: "dashboard" });
           NYC Taxi — Dashboard
         </h1>
         <UBadge
-          label="Abr/2019"
+          label="7.4Mi"
           color="primary"
           variant="subtle"
           size="sm"

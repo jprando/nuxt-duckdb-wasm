@@ -17,7 +17,7 @@ definePageMeta({ layout: "dashboard" });
           Voos (On-time) — Dashboard
         </h1>
         <UBadge
-          label="4.3Mi registros"
+          label="4.2Mi"
           color="primary"
           variant="subtle"
           size="sm"

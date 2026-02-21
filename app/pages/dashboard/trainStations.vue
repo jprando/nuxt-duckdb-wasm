@@ -17,7 +17,7 @@ definePageMeta({ layout: "dashboard" });
           Estações de Trem — Dashboard
         </h1>
         <UBadge
-          label="578 estações"
+          label="578"
           color="primary"
           variant="subtle"
           size="sm"

@@ -21,7 +21,7 @@ useHead({
           Tarifas Ferroviárias
         </h1>
         <UBadge
-          label="Dashboard"
+          label="158k"
           color="primary"
           variant="subtle"
           size="sm"

@@ -21,7 +21,7 @@ useHead({
           Serviços de Trem (Holanda)
         </h1>
         <UBadge
-          label="Dashboard"
+          label="380k"
           color="primary"
           variant="subtle"
           size="sm"
