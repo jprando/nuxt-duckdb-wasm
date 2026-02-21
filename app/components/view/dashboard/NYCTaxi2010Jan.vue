@@ -1,6 +1,9 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 const {
-  carregando,
+  carregandoKpis,
   erro,
   kpis,
   temaGrafico,
@@ -19,21 +22,33 @@ const {
 <template>
   <div class="p-4 md:p-6 space-y-5">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
-    <UAlert v-if="erro" color="error" variant="soft" :title="erro" icon="i-lucide-circle-alert" />
+    <UAlert
+      v-if="erro"
+      color="error"
+      variant="soft"
+      :title="erro"
+      icon="i-lucide-circle-alert"
+    />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <!-- Total de corridas -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon name="i-lucide-car" class="size-5 text-primary" />
+            <UIcon
+              name="i-lucide-car"
+              class="size-5 text-primary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
               Total de Corridas
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
@@ -46,16 +61,22 @@ const {
       </UCard>
 
       <!-- Duração média -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon name="i-lucide-timer" class="size-5 text-success" />
+            <UIcon
+              name="i-lucide-timer"
+              class="size-5 text-success"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
               Duração Média
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
@@ -68,16 +89,22 @@ const {
       </UCard>
 
       <!-- Gorjeta média -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon name="i-lucide-hand-coins" class="size-5 text-warning" />
+            <UIcon
+              name="i-lucide-hand-coins"
+              class="size-5 text-warning"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
               Gorjeta Média
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
@@ -90,16 +117,22 @@ const {
       </UCard>
 
       <!-- Receita total -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon name="i-lucide-trending-up" class="size-5 text-secondary" />
+            <UIcon
+              name="i-lucide-trending-up"
+              class="size-5 text-secondary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
               Receita Total
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-28" />
             </template>
             <template v-else>
@@ -117,27 +150,43 @@ const {
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-tag" class="text-primary size-4" />
+            <UIcon
+              name="i-lucide-tag"
+              class="text-primary size-4"
+            />
             Corridas por Fornecedor
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoTarifa">
           <USkeleton class="h-[260px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoTarifa" :tema="temaGrafico" :height="260" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoTarifa"
+          :tema="temaGrafico"
+          :height="260"
+        />
       </UCard>
 
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-credit-card" class="text-success size-4" />
+            <UIcon
+              name="i-lucide-credit-card"
+              class="text-success size-4"
+            />
             Corridas por Forma de Pagamento
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoPagamento">
           <USkeleton class="h-[260px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoPagamento" :tema="temaGrafico" :height="260" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoPagamento"
+          :tema="temaGrafico"
+          :height="260"
+        />
       </UCard>
     </div>
 
@@ -146,27 +195,43 @@ const {
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-timer" class="text-success size-4" />
+            <UIcon
+              name="i-lucide-timer"
+              class="text-success size-4"
+            />
             Distribuição por Duração da Corrida
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoDuracao">
           <USkeleton class="h-[260px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoDuracao" :tema="temaGrafico" :height="260" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoDuracao"
+          :tema="temaGrafico"
+          :height="260"
+        />
       </UCard>
 
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-hand-coins" class="text-warning size-4" />
+            <UIcon
+              name="i-lucide-hand-coins"
+              class="text-warning size-4"
+            />
             Distribuição de Gorjeta (USD)
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoGorjeta">
           <USkeleton class="h-[260px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoGorjeta" :tema="temaGrafico" :height="260" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoGorjeta"
+          :tema="temaGrafico"
+          :height="260"
+        />
       </UCard>
     </div>
 
@@ -174,11 +239,14 @@ const {
     <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
       <template #header>
         <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-clock" class="text-primary size-4" />
+          <UIcon
+            name="i-lucide-clock"
+            class="text-primary size-4"
+          />
           Corridas por Hora do Dia
         </h2>
       </template>
-      <template v-if="carregando">
+      <template v-if="!opcaoHora">
         <USkeleton class="h-[200px] w-full rounded-lg" />
       </template>
       <template v-else-if="Object.keys(opcaoHora).length === 0">
@@ -188,7 +256,12 @@ const {
           </p>
         </div>
       </template>
-      <LazyGraficoEChart v-else :option="opcaoHora" :tema="temaGrafico" :height="200" />
+      <LazyGraficoEChart
+        v-else
+        :option="opcaoHora"
+        :tema="temaGrafico"
+        :height="200"
+      />
     </UCard>
   </div>
 </template>

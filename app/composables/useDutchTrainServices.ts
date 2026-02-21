@@ -24,7 +24,7 @@ export const useDutchTrainServices = () => {
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
-  const carregando = ref(true);
+  const carregandoKpis = ref(true);
   const erro = ref<string | null>(null);
 
   const kpis = ref<Kpis>({
@@ -33,99 +33,96 @@ export const useDutchTrainServices = () => {
     total_trains: 0,
   });
 
-  const opcaoTipo = ref<Record<string, unknown>>({});
-  const opcaoEstacoesMovimentadas = ref<Record<string, unknown>>({});
-  const opcaoPartidasPorHora = ref<Record<string, unknown>>({});
-  const opcaoDuracaoMediaParada = ref<Record<string, unknown>>({});
+  const opcaoTipo = ref<Record<string, unknown> | null>(null);
+  const opcaoEstacoesMovimentadas = ref<Record<string, unknown> | null>(null);
+  const opcaoPartidasPorHora = ref<Record<string, unknown> | null>(null);
+  const opcaoDuracaoMediaParada = ref<Record<string, unknown> | null>(null);
 
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = () => {
-    carregando.value = true;
+    carregandoKpis.value = true;
     erro.value = null;
 
     const url = dutchTrainServicesUrl;
 
-    const promises = [
-      executar(dutchTrainServicesKpisQuery(url)).then((kpisData) => {
+    executar(dutchTrainServicesKpisQuery(url))
+      .then((kpisData) => {
         kpis.value = kpisData[0] as Kpis;
-      }),
-
-      executar(dutchTrainServicesTypeQuery(url)).then((typeData) => {
-        opcaoTipo.value = {
-          backgroundColor: "transparent",
-          color: PALETA,
-          tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-          legend: { bottom: 0, type: "scroll" },
-          series: [
-            {
-              type: "pie",
-              radius: ["42%", "70%"],
-              center: ["50%", "42%"],
-              data: (typeData as any[]).map(d => ({ name: d.type, value: d.total })),
-              label: { show: false },
-              emphasis: { label: { show: true, fontWeight: "bold" } },
-            },
-          ],
-        };
-      }),
-
-      executar(dutchTrainServicesBusiestStationsQuery(url)).then((stationsData) => {
-        const stationLabels = (stationsData as any[]).map(d => d.station_name);
-        const stationValues = (stationsData as any[]).map(d => d.count);
-        opcaoEstacoesMovimentadas.value = {
-          ...baseChart,
-          color: [COR_SECUNDARIA],
-          xAxis: { type: "category", data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: stationValues, name: "Eventos" }],
-        };
-      }),
-
-      executar(dutchTrainServicesDeparturesByHourQuery(url)).then((departuresData) => {
-        const hourLabels = (departuresData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
-        const hourValues = (departuresData as any[]).map(d => d.total);
-        opcaoPartidasPorHora.value = {
-          ...baseChart,
-          grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
-          color: [COR_PRIMARIA],
-          xAxis: { type: "category", data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [
-            {
-              type: "line",
-              data: hourValues,
-              name: "Partidas",
-              smooth: true,
-              symbol: "circle",
-              symbolSize: 5,
-              areaStyle: { opacity: 0.15 },
-            },
-          ],
-        };
-      }),
-
-      executar(dutchTrainServicesAvgStopDurationQuery(url)).then((stopDurationData) => {
-        const stopLabels = (stopDurationData as any[]).map(d => d.station_name);
-        const stopValues = (stopDurationData as any[]).map(d => d.avg_stop_seconds);
-        opcaoDuracaoMediaParada.value = {
-          ...baseChart,
-          color: [COR_TERCIARIA],
-          xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10,formatter: "{value}s" } },
-          series: [{ type: "bar", data: stopValues, name: "Duração Média (s)" }],
-        };
-      }),
-    ];
-
-    Promise.allSettled(promises)
+      })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;
         console.error(e);
       })
       .finally(() => {
-        carregando.value = false;
+        carregandoKpis.value = false;
       });
+
+    executar(dutchTrainServicesTypeQuery(url)).then((typeData) => {
+      opcaoTipo.value = {
+        backgroundColor: "transparent",
+        color: PALETA,
+        tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
+        legend: { bottom: 0, type: "scroll" },
+        series: [
+          {
+            type: "pie",
+            radius: ["42%", "70%"],
+            center: ["50%", "42%"],
+            data: (typeData as any[]).map(d => ({ name: d.type, value: d.total })),
+            label: { show: false },
+            emphasis: { label: { show: true, fontWeight: "bold" } },
+          },
+        ],
+      };
+    });
+
+    executar(dutchTrainServicesBusiestStationsQuery(url)).then((stationsData) => {
+      const stationLabels = (stationsData as any[]).map(d => d.station_name);
+      const stationValues = (stationsData as any[]).map(d => d.count);
+      opcaoEstacoesMovimentadas.value = {
+        ...baseChart,
+        color: [COR_SECUNDARIA],
+        xAxis: { type: "category", data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+        series: [{ type: "bar", data: stationValues, name: "Eventos" }],
+      };
+    });
+
+    executar(dutchTrainServicesDeparturesByHourQuery(url)).then((departuresData) => {
+      const hourLabels = (departuresData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
+      const hourValues = (departuresData as any[]).map(d => d.total);
+      opcaoPartidasPorHora.value = {
+        ...baseChart,
+        grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
+        color: [COR_PRIMARIA],
+        xAxis: { type: "category", data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
+        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+        series: [
+          {
+            type: "line",
+            data: hourValues,
+            name: "Partidas",
+            smooth: true,
+            symbol: "circle",
+            symbolSize: 5,
+            areaStyle: { opacity: 0.15 },
+          },
+        ],
+      };
+    });
+
+    executar(dutchTrainServicesAvgStopDurationQuery(url)).then((stopDurationData) => {
+      const stopLabels = (stopDurationData as any[]).map(d => d.station_name);
+      const stopValues = (stopDurationData as any[]).map(d => d.avg_stop_seconds);
+      opcaoDuracaoMediaParada.value = {
+        ...baseChart,
+        color: [COR_TERCIARIA],
+        xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+        yAxis: { type: "value", axisLabel: { fontSize: 10, formatter: "{value}s" } },
+        series: [{ type: "bar", data: stopValues, name: "Duração Média (s)" }],
+      };
+    });
   };
 
   onMounted(async () => {
@@ -136,7 +133,7 @@ export const useDutchTrainServices = () => {
   const fmtNumero = (n: number) => numeroSemCasaDecimal.format(n);
 
   return {
-    carregando,
+    carregandoKpis,
     erro,
     kpis,
     temaGrafico,

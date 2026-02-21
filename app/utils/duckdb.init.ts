@@ -4,7 +4,7 @@ export const duckDBWasmIniciar = (
   duckDBWasmInfo: Ref<string>,
 ) =>
 async () => {
-  console.clear();
+  // console.clear();
 
   if (!import.meta.client || db.value || estahCarregando.value) return;
 

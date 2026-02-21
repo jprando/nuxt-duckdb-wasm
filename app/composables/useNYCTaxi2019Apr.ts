@@ -25,7 +25,7 @@ export const useNYCTaxi2019Apr = () => {
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
-  const carregando = ref(true);
+  const carregandoKpis = ref(true);
   const erro = ref<string | null>(null);
 
   const kpis = ref<Kpis>({
@@ -35,123 +35,127 @@ export const useNYCTaxi2019Apr = () => {
     total_revenue: 0,
   });
 
-  const opcaoTarifa = ref<Record<string, unknown>>({});
-  const opcaoPagamento = ref<Record<string, unknown>>({});
-  const opcaoDuracao = ref<Record<string, unknown>>({});
-  const opcaoGorjeta = ref<Record<string, unknown>>({});
-  const opcaoHora = ref<Record<string, unknown>>({});
+  const opcaoTarifa = ref<Record<string, unknown> | null>(null);
+  const opcaoPagamento = ref<Record<string, unknown> | null>(null);
+  const opcaoDuracao = ref<Record<string, unknown> | null>(null);
+  const opcaoGorjeta = ref<Record<string, unknown> | null>(null);
+  const opcaoHora = ref<Record<string, unknown> | null>(null);
 
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = () => {
-    carregando.value = true;
+    carregandoKpis.value = true;
     erro.value = null;
 
     const url = nycTaxi2019AprUrl;
 
-    const promises = [
-      executar(nycTaxi2019AprKpisQuery(url))
-        .then((kpisData) => {
-          kpis.value = kpisData[0] as Kpis;
-        }),
-      executar(nycTaxi2019AprTarifaQuery(url))
-        .then((tarifaData) => {
-          opcaoTarifa.value = {
-            backgroundColor: "transparent",
-            color: PALETA,
-            tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-            legend: { bottom: 0, type: "scroll" },
-            series: [
-              {
-                type: "pie",
-                radius: ["42%", "70%"],
-                center: ["50%", "42%"],
-                data: (tarifaData as any[]).map(d => ({ name: d.tarifa, value: d.total })),
-                label: { show: false },
-                emphasis: { label: { show: true, fontWeight: "bold" } },
-              },
-            ],
-          };
-        }),
-      executar(nycTaxi2019AprPagamentoQuery(url))
-        .then((pagamentoData) => {
-          opcaoPagamento.value = {
-            backgroundColor: "transparent",
-            color: PALETA,
-            tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-            legend: { bottom: 0, type: "scroll" },
-            series: [
-              {
-                type: "pie",
-                radius: ["42%", "70%"],
-                center: ["50%", "42%"],
-                data: (pagamentoData as any[]).map(d => ({ name: d.pagamento, value: d.total })),
-                label: { show: false },
-                emphasis: { label: { show: true, fontWeight: "bold" } },
-              },
-            ],
-          };
-        }),
-      executar(nycTaxi2019AprDuracaoQuery(url))
-        .then((duracaoData) => {
-          const durLabels = (duracaoData as any[]).map(d => `${d.faixa_min}min`);
-          const durValues = (duracaoData as any[]).map(d => d.total);
-          opcaoDuracao.value = {
-            ...baseChart,
-            color: [COR_SECUNDARIA],
-            xAxis: { type: "category", data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-            yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-            series: [{ type: "bar", data: durValues, name: "Corridas" }],
-          };
-        }),
-      executar(nycTaxi2019AprGorjetaQuery(url))
-        .then((gorjetaData) => {
-          const gorjLabels = (gorjetaData as any[]).map(d => `$${d.faixa}`);
-          const gorjValues = (gorjetaData as any[]).map(d => d.total);
-          opcaoGorjeta.value = {
-            ...baseChart,
-            color: [COR_TERCIARIA],
-            xAxis: { type: "category", data: gorjLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-            yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-            series: [{ type: "bar", data: gorjValues, name: "Corridas" }],
-          };
-        }),
-      executar(nycTaxi2019AprHoraQuery(url))
-        .then((horaData) => {
-          if (!horaData || horaData.length === 0)
-            return;
-          const horaLabels = (horaData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
-          const horaValues = (horaData as any[]).map(d => d.total);
-          opcaoHora.value = {
-            ...baseChart,
-            grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
-            color: [COR_PRIMARIA],
-            xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-            yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-            series: [
-              {
-                type: "line",
-                data: horaValues,
-                name: "Corridas",
-                smooth: true,
-                symbol: "circle",
-                symbolSize: 5,
-                areaStyle: { opacity: 0.15 },
-              },
-            ],
-          };
-        })
-        .catch(() => { /* silently fail */ }),
-    ];
-
-    Promise.allSettled(promises)
+    executar(nycTaxi2019AprKpisQuery(url))
+      .then((kpisData) => {
+        kpis.value = kpisData[0] as Kpis;
+      })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;
         console.error(e);
       })
       .finally(() => {
-        carregando.value = false;
-        console.log("#154 opcaoTarifa", opcaoTarifa.value);
+        carregandoKpis.value = false;
+      });
+
+    executar(nycTaxi2019AprTarifaQuery(url))
+      .then((tarifaData) => {
+        opcaoTarifa.value = {
+          backgroundColor: "transparent",
+          color: PALETA,
+          tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
+          legend: { bottom: 0, type: "scroll" },
+          series: [
+            {
+              type: "pie",
+              radius: ["42%", "70%"],
+              center: ["50%", "42%"],
+              data: (tarifaData as any[]).map(d => ({ name: d.tarifa, value: d.total })),
+              label: { show: false },
+              emphasis: { label: { show: true, fontWeight: "bold" } },
+            },
+          ],
+        };
+      });
+
+    executar(nycTaxi2019AprPagamentoQuery(url))
+      .then((pagamentoData) => {
+        opcaoPagamento.value = {
+          backgroundColor: "transparent",
+          color: PALETA,
+          tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
+          legend: { bottom: 0, type: "scroll" },
+          series: [
+            {
+              type: "pie",
+              radius: ["42%", "70%"],
+              center: ["50%", "42%"],
+              data: (pagamentoData as any[]).map(d => ({ name: d.pagamento, value: d.total })),
+              label: { show: false },
+              emphasis: { label: { show: true, fontWeight: "bold" } },
+            },
+          ],
+        };
+      });
+
+    executar(nycTaxi2019AprDuracaoQuery(url))
+      .then((duracaoData) => {
+        const durLabels = (duracaoData as any[]).map(d => `${d.faixa_min}min`);
+        const durValues = (duracaoData as any[]).map(d => d.total);
+        opcaoDuracao.value = {
+          ...baseChart,
+          color: [COR_SECUNDARIA],
+          xAxis: { type: "category", data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+          series: [{ type: "bar", data: durValues, name: "Corridas" }],
+        };
+      });
+
+    executar(nycTaxi2019AprGorjetaQuery(url))
+      .then((gorjetaData) => {
+        const gorjLabels = (gorjetaData as any[]).map(d => `$${d.faixa}`);
+        const gorjValues = (gorjetaData as any[]).map(d => d.total);
+        opcaoGorjeta.value = {
+          ...baseChart,
+          color: [COR_TERCIARIA],
+          xAxis: { type: "category", data: gorjLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+          series: [{ type: "bar", data: gorjValues, name: "Corridas" }],
+        };
+      });
+
+    executar(nycTaxi2019AprHoraQuery(url))
+      .then((horaData) => {
+        if (!horaData || horaData.length === 0) {
+          opcaoHora.value = {};
+          return;
+        }
+        const horaLabels = (horaData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
+        const horaValues = (horaData as any[]).map(d => d.total);
+        opcaoHora.value = {
+          ...baseChart,
+          grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
+          color: [COR_PRIMARIA],
+          xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+          series: [
+            {
+              type: "line",
+              data: horaValues,
+              name: "Corridas",
+              smooth: true,
+              symbol: "circle",
+              symbolSize: 5,
+              areaStyle: { opacity: 0.15 },
+            },
+          ],
+        };
+      })
+      .catch(() => {
+        opcaoHora.value = {};
       });
   };
 
@@ -168,7 +172,7 @@ export const useNYCTaxi2019Apr = () => {
   const fmtMin = (n: number) => `${n} min`;
 
   return {
-    carregando,
+    carregandoKpis,
     erro,
     kpis,
     temaGrafico,

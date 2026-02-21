@@ -22,7 +22,7 @@ export const useRailwayFares = () => {
 
   const temaGrafico = computed(() => (colorMode.value === "dark" ? "dark" : ""));
 
-  const carregando = ref(true);
+  const carregandoKpis = ref(true);
   const erro = ref<string | null>(null);
 
   const kpis = ref<Kpis>({
@@ -33,67 +33,64 @@ export const useRailwayFares = () => {
     max_price: 0,
   });
 
-  const opcaoDistribuicaoPreco = ref<Record<string, unknown>>({});
-  const opcaoRotasCaras = ref<Record<string, unknown>>({});
-  const opcaoEstacoesConectadas = ref<Record<string, unknown>>({});
+  const opcaoDistribuicaoPreco = ref<Record<string, unknown> | null>(null);
+  const opcaoRotasCaras = ref<Record<string, unknown> | null>(null);
+  const opcaoEstacoesConectadas = ref<Record<string, unknown> | null>(null);
 
   const carregarDados = () => {
-    carregando.value = true;
+    carregandoKpis.value = true;
     erro.value = null;
 
     const url = railwayFaresUrl;
 
-    const promises = [
-      executar(railwayFaresKpisQuery(url)).then((data) => {
+    executar(railwayFaresKpisQuery(url))
+      .then((data) => {
         kpis.value = data[0] as Kpis;
-      }),
-
-      executar(railwayFaresPriceDistributionQuery(url)).then((data) => {
-        const labels = (data as any[]).map(d => `€${d.price_bucket}`);
-        const values = (data as any[]).map(d => d.count);
-        opcaoDistribuicaoPreco.value = {
-          ...baseChart,
-          color: [COR_PRIMARIA],
-          xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: values, name: "Nº de Rotas" }],
-        };
-      }),
-
-      executar(railwayFaresMostExpensiveRoutesQuery(url)).then((data) => {
-        const routes = (data as any[]).map(d => d.route);
-        const prices = (data as any[]).map(d => d.price);
-        opcaoRotasCaras.value = {
-          ...baseChart,
-          grid: { ...baseChart.grid, left: 80 },
-          color: [COR_TERCIARIA],
-          xAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          yAxis: { type: "category", data: routes, axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: prices, name: "Preço" }],
-        };
-      }),
-
-      executar(railwayFaresBusiestStationsQuery(url)).then((data) => {
-        const stations = (data as any[]).map(d => d.station);
-        const appearances = (data as any[]).map(d => d.appearances);
-        opcaoEstacoesConectadas.value = {
-          ...baseChart,
-          color: [COR_SECUNDARIA],
-          xAxis: { type: "category", data: stations, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: appearances, name: "Nº de Conexões" }],
-        };
-      }),
-    ];
-
-    Promise.allSettled(promises)
+      })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`;
         console.error(e);
       })
       .finally(() => {
-        carregando.value = false;
+        carregandoKpis.value = false;
       });
+
+    executar(railwayFaresPriceDistributionQuery(url)).then((data) => {
+      const labels = (data as any[]).map(d => `€${d.price_bucket}`);
+      const values = (data as any[]).map(d => d.count);
+      opcaoDistribuicaoPreco.value = {
+        ...baseChart,
+        color: [COR_PRIMARIA],
+        xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
+        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+        series: [{ type: "bar", data: values, name: "Nº de Rotas" }],
+      };
+    });
+
+    executar(railwayFaresMostExpensiveRoutesQuery(url)).then((data) => {
+      const routes = (data as any[]).map(d => d.route);
+      const prices = (data as any[]).map(d => d.price);
+      opcaoRotasCaras.value = {
+        ...baseChart,
+        grid: { ...baseChart.grid, left: 80 },
+        color: [COR_TERCIARIA],
+        xAxis: { type: "value", axisLabel: { fontSize: 10 } },
+        yAxis: { type: "category", data: routes, axisLabel: { fontSize: 10 } },
+        series: [{ type: "bar", data: prices, name: "Preço" }],
+      };
+    });
+
+    executar(railwayFaresBusiestStationsQuery(url)).then((data) => {
+      const stations = (data as any[]).map(d => d.station);
+      const appearances = (data as any[]).map(d => d.appearances);
+      opcaoEstacoesConectadas.value = {
+        ...baseChart,
+        color: [COR_SECUNDARIA],
+        xAxis: { type: "category", data: stations, axisLabel: { fontSize: 10, rotate: 45 } },
+        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+        series: [{ type: "bar", data: appearances, name: "Nº de Conexões" }],
+      };
+    });
   };
 
   onMounted(async () => {
@@ -105,7 +102,7 @@ export const useRailwayFares = () => {
   const fmtPreco = (n: number) => euroSemCasaDecimal.format(n);
 
   return {
-    carregando,
+    carregandoKpis,
     erro,
     kpis,
     temaGrafico,
