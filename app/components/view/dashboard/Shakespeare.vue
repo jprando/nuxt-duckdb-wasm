@@ -1,4 +1,7 @@
-<script setup lang="ts">
+<script
+  setup
+  lang="ts"
+>
 const {
   carregando,
   erro,
@@ -17,15 +20,27 @@ const {
 <template>
   <div class="p-4 md:p-6 space-y-5">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
-    <UAlert v-if="erro" color="error" variant="soft" :title="erro" icon="i-lucide-circle-alert" />
+    <UAlert
+      v-if="erro"
+      color="error"
+      variant="soft"
+      :title="erro"
+      icon="i-lucide-circle-alert"
+    />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <!-- Total de linhas -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon name="i-lucide-scroll-text" class="size-5 text-primary" />
+            <UIcon
+              name="i-lucide-scroll-text"
+              class="size-5 text-primary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -44,10 +59,16 @@ const {
       </UCard>
 
       <!-- Total de peças -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon name="i-lucide-book-open" class="size-5 text-success" />
+            <UIcon
+              name="i-lucide-book-open"
+              class="size-5 text-success"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -66,10 +87,16 @@ const {
       </UCard>
 
       <!-- Total de personagens -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon name="i-lucide-users" class="size-5 text-warning" />
+            <UIcon
+              name="i-lucide-users"
+              class="size-5 text-warning"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -88,10 +115,16 @@ const {
       </UCard>
 
       <!-- Média de palavras por fala -->
-      <UCard :ui="{ body: 'p-4!' }" class="overflow-hidden">
+      <UCard
+        :ui="{ body: 'p-4!' }"
+        class="overflow-hidden"
+      >
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon name="i-lucide-message-square" class="size-5 text-secondary" />
+            <UIcon
+              name="i-lucide-message-square"
+              class="size-5 text-secondary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -115,27 +148,43 @@ const {
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-book-open" class="text-primary size-4" />
+            <UIcon
+              name="i-lucide-book-open"
+              class="text-primary size-4"
+            />
             Top 10 Peças por Nº de Linhas
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoPecas">
           <USkeleton class="h-[300px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoPecas" :tema="temaGrafico" :height="300" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoPecas"
+          :tema="temaGrafico"
+          :height="300"
+        />
       </UCard>
 
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-mic-2" class="text-success size-4" />
+            <UIcon
+              name="i-lucide-mic-2"
+              class="text-success size-4"
+            />
             Top 15 Personagens mais Falantes
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoPersonagens">
           <USkeleton class="h-[300px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoPersonagens" :tema="temaGrafico" :height="300" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoPersonagens"
+          :tema="temaGrafico"
+          :height="300"
+        />
       </UCard>
     </div>
 
@@ -144,27 +193,43 @@ const {
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-layers" class="text-warning size-4" />
+            <UIcon
+              name="i-lucide-layers"
+              class="text-warning size-4"
+            />
             Linhas por Ato
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoAto">
           <USkeleton class="h-[220px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoAto" :tema="temaGrafico" :height="220" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoAto"
+          :tema="temaGrafico"
+          :height="220"
+        />
       </UCard>
 
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-users-2" class="text-secondary size-4" />
+            <UIcon
+              name="i-lucide-users-2"
+              class="text-secondary size-4"
+            />
             Tamanho do Elenco (Top 10 Peças)
           </h2>
         </template>
-        <template v-if="carregando">
+        <template v-if="!opcaoElenco">
           <USkeleton class="h-[220px] w-full rounded-lg" />
         </template>
-        <LazyGraficoEChart v-else :option="opcaoElenco" :tema="temaGrafico" :height="220" />
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoElenco"
+          :tema="temaGrafico"
+          :height="220"
+        />
       </UCard>
     </div>
 
@@ -172,14 +237,22 @@ const {
     <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
       <template #header>
         <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-align-left" class="text-primary size-4" />
+          <UIcon
+            name="i-lucide-align-left"
+            class="text-primary size-4"
+          />
           Distribuição do Comprimento das Falas (caracteres)
         </h2>
       </template>
-      <template v-if="carregando">
+      <template v-if="!opcaoComprimento">
         <USkeleton class="h-[200px] w-full rounded-lg" />
       </template>
-      <LazyGraficoEChart v-else :option="opcaoComprimento" :tema="temaGrafico" :height="200" />
+      <LazyGraficoEChart
+        v-else
+        :option="opcaoComprimento"
+        :tema="temaGrafico"
+        :height="200"
+      />
     </UCard>
   </div>
 </template>
