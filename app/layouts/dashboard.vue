@@ -85,7 +85,7 @@ const navItens = [
         </template>
 
         <template #toggle>
-          <UDashboardSidebarToggle variant="subtle" />
+          <UDashboardSidebarToggle variant="soft" />
         </template>
 
         <UNavigationMenu
