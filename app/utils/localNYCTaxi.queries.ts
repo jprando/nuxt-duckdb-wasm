@@ -5,7 +5,7 @@ export const localNYCTaxiKpisQuery = (url: string) => `
     ROUND(AVG(total_amount), 2)     AS avg_amount,
     ROUND(SUM(total_amount), 0)     AS total_revenue
   FROM '${url}'
-`
+`;
 
 export const localNYCTaxiVendorQuery = (url: string) => `
   SELECT
@@ -15,7 +15,7 @@ export const localNYCTaxiVendorQuery = (url: string) => `
   WHERE vendor_id IS NOT NULL
   GROUP BY vendor_id
   ORDER BY vendor_id
-`
+`;
 
 export const localNYCTaxiPassageirosQuery = (url: string) => `
   SELECT
@@ -26,7 +26,7 @@ export const localNYCTaxiPassageirosQuery = (url: string) => `
     AND passenger_count BETWEEN 1 AND 8
   GROUP BY passageiros
   ORDER BY passageiros
-`
+`;
 
 export const localNYCTaxiDistanciaQuery = (url: string) => `
   SELECT
@@ -38,7 +38,7 @@ export const localNYCTaxiDistanciaQuery = (url: string) => `
     AND trip_distance < 30
   GROUP BY milhas
   ORDER BY milhas
-`
+`;
 
 export const localNYCTaxiValorQuery = (url: string) => `
   SELECT
@@ -50,7 +50,7 @@ export const localNYCTaxiValorQuery = (url: string) => `
     AND total_amount < 200
   GROUP BY faixa
   ORDER BY faixa
-`
+`;
 
 export const localNYCTaxiHoraQuery = (url: string) => `
   SELECT
@@ -60,4 +60,4 @@ export const localNYCTaxiHoraQuery = (url: string) => `
   WHERE pickup_datetime IS NOT NULL
   GROUP BY hora
   ORDER BY hora
-`
+`;

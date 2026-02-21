@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   },
 
   echarts: {
-    renderer: 'svg',
+    renderer: "svg",
     charts: ["BarChart", "LineChart", "PieChart"],
     components: ["GridComponent", "TooltipComponent", "LegendComponent"],
     features: ["LabelLayout", "UniversalTransition"],

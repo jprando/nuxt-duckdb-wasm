@@ -18,7 +18,7 @@ export const dutchTrainServicesTypeQuery = (url: string) => `
 `;
 
 // Gráfico de Estações mais movimentadas
-export const dutchTrainServicesBusiestStationsQuery = (url:string) => `
+export const dutchTrainServicesBusiestStationsQuery = (url: string) => `
   SELECT
     Station_name,
     COUNT(*) AS count

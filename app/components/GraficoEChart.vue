@@ -1,11 +1,14 @@
-<script setup lang="ts">
-import { init, use } from "echarts/core";
+<script
+  setup
+  lang="ts"
+>
 import { BarChart, LineChart, PieChart } from "echarts/charts";
 import {
   GridComponent,
-  TooltipComponent,
   LegendComponent,
+  TooltipComponent,
 } from "echarts/components";
+import { init, use } from "echarts/core";
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
 
@@ -21,14 +24,17 @@ use([
   SVGRenderer,
 ]);
 
-const props = withDefaults(defineProps<{
-  option: Record<string, unknown>
-  height?: number
-  tema?: string
-}>(), {
-  height: 260,
-  tema: "",
-});
+const props = withDefaults(
+  defineProps<{
+    option: Record<string, unknown>;
+    height?: number;
+    tema?: string;
+  }>(),
+  {
+    height: 260,
+    tema: "",
+  },
+);
 
 const containerRef = ref<HTMLDivElement | null>(null);
 let chart: ReturnType<typeof init> | null = null;
@@ -71,5 +77,8 @@ watch(() => props.tema, (novoTema) => {
 </script>
 
 <template>
-  <div ref="containerRef" :style="{ height: height + 'px', width: '100%' }" />
+  <div
+    ref="containerRef"
+    :style="{ height: height + 'px', width: '100%' }"
+  />
 </template>

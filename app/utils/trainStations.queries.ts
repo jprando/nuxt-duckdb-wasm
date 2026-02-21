@@ -7,7 +7,7 @@ export const trainStationsKpisQuery = (url: string) => `
     COUNT(*) FILTER (WHERE Country = 'NL')                                             AS estacoes_nl,
     COUNT(*) FILTER (WHERE Type IN ('intercitystation', 'knooppuntIntercitystation'))  AS estacoes_intercidade
   FROM '${url}'
-`
+`;
 
 export const trainStationsPaisesQuery = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const trainStationsPaisesQuery = (url: string) => `
   WHERE Country IS NOT NULL
   GROUP BY Country
   ORDER BY total DESC
-`
+`;
 
 export const trainStationsTiposQuery = (url: string) => `
   SELECT
@@ -27,7 +27,7 @@ export const trainStationsTiposQuery = (url: string) => `
   WHERE Type IS NOT NULL
   GROUP BY Type
   ORDER BY total DESC
-`
+`;
 
 export const trainStationsCategoriasQuery = (url: string) => `
   SELECT
@@ -45,7 +45,7 @@ export const trainStationsCategoriasQuery = (url: string) => `
   WHERE Type IS NOT NULL
   GROUP BY categoria
   ORDER BY total DESC
-`
+`;
 
 export const trainStationsLatitudeQuery = (url: string) => `
   SELECT
@@ -55,7 +55,7 @@ export const trainStationsLatitudeQuery = (url: string) => `
   WHERE Geo_lat IS NOT NULL
   GROUP BY faixa_lat
   ORDER BY faixa_lat
-`
+`;
 
 export const trainStationsLongitudeQuery = (url: string) => `
   SELECT
@@ -65,7 +65,7 @@ export const trainStationsLongitudeQuery = (url: string) => `
   WHERE Geo_lng IS NOT NULL
   GROUP BY faixa_lng
   ORDER BY faixa_lng
-`
+`;
 
 export const trainStationsTiposPorPaisQuery = (url: string) => `
   SELECT
@@ -80,4 +80,4 @@ export const trainStationsTiposPorPaisQuery = (url: string) => `
     AND Country IS NOT NULL
   GROUP BY Country, Type
   ORDER BY Country, total DESC
-`
+`;

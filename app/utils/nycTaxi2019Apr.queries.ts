@@ -6,7 +6,7 @@ export const nycTaxi2019AprKpisQuery = (url: string) => `
     ROUND(SUM(Total_amount), 0)                                AS total_revenue
   FROM '${url}'
   WHERE Dropoff_at > Pickup_at
-`
+`;
 
 export const nycTaxi2019AprTarifaQuery = (url: string) => `
   SELECT
@@ -24,7 +24,7 @@ export const nycTaxi2019AprTarifaQuery = (url: string) => `
   WHERE Rate_code_id IS NOT NULL
   GROUP BY Rate_code_id, tarifa
   ORDER BY total DESC
-`
+`;
 
 export const nycTaxi2019AprPagamentoQuery = (url: string) => `
   SELECT
@@ -41,7 +41,7 @@ export const nycTaxi2019AprPagamentoQuery = (url: string) => `
   WHERE Payment_type IS NOT NULL
   GROUP BY Payment_type, pagamento
   ORDER BY total DESC
-`
+`;
 
 export const nycTaxi2019AprDuracaoQuery = (url: string) => `
   SELECT
@@ -54,7 +54,7 @@ export const nycTaxi2019AprDuracaoQuery = (url: string) => `
     AND date_diff('minute', Pickup_at, Dropoff_at) BETWEEN 1 AND 120
   GROUP BY faixa_min
   ORDER BY faixa_min
-`
+`;
 
 export const nycTaxi2019AprGorjetaQuery = (url: string) => `
   SELECT
@@ -66,7 +66,7 @@ export const nycTaxi2019AprGorjetaQuery = (url: string) => `
     AND Tip_amount < 30
   GROUP BY faixa
   ORDER BY faixa
-`
+`;
 
 export const nycTaxi2019AprHoraQuery = (url: string) => `
   SELECT
@@ -76,4 +76,4 @@ export const nycTaxi2019AprHoraQuery = (url: string) => `
   WHERE Pickup_at IS NOT NULL
   GROUP BY hora
   ORDER BY hora
-`
+`;

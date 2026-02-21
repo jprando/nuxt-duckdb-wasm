@@ -7,7 +7,7 @@ export const ontimeKpisQuery = (url: string) => `
     ROUND(SUM(Cancelled) * 100.0 / COUNT(*), 2)                                                      AS taxa_cancelamento,
     ROUND(SUM(CASE WHEN Cancelled = 0 AND Depdel15 = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1)   AS pct_pontuais
   FROM '${url}'
-`
+`;
 
 export const ontimeCompanhiasQuery = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const ontimeCompanhiasQuery = (url: string) => `
   GROUP BY Carrier
   ORDER BY total DESC
   LIMIT 15
-`
+`;
 
 export const ontimeStatusQuery = (url: string) => `
   SELECT
@@ -31,7 +31,7 @@ export const ontimeStatusQuery = (url: string) => `
   FROM '${url}'
   GROUP BY status
   ORDER BY total DESC
-`
+`;
 
 export const ontimeDiaSemanaQuery = (url: string) => `
   SELECT
@@ -42,7 +42,7 @@ export const ontimeDiaSemanaQuery = (url: string) => `
   WHERE Cancelled = 0
   GROUP BY Dayofweek
   ORDER BY Dayofweek
-`
+`;
 
 export const ontimeMensalQuery = (url: string) => `
   SELECT
@@ -52,7 +52,7 @@ export const ontimeMensalQuery = (url: string) => `
   FROM '${url}'
   GROUP BY Month
   ORDER BY Month
-`
+`;
 
 export const ontimeAtrasoPartidaQuery = (url: string) => `
   SELECT
@@ -65,7 +65,7 @@ export const ontimeAtrasoPartidaQuery = (url: string) => `
     AND Depdelay <= 360
   GROUP BY faixa_min
   ORDER BY faixa_min
-`
+`;
 
 export const ontimeDistanciaQuery = (url: string) => `
   SELECT
@@ -75,7 +75,7 @@ export const ontimeDistanciaQuery = (url: string) => `
   WHERE Distancegroup IS NOT NULL
   GROUP BY Distancegroup
   ORDER BY Distancegroup
-`
+`;
 
 export const ontimeAeroportosQuery = (url: string) => `
   SELECT
@@ -85,7 +85,7 @@ export const ontimeAeroportosQuery = (url: string) => `
   GROUP BY Origin
   ORDER BY total DESC
   LIMIT 12
-`
+`;
 
 export const ontimeCancelamentosQuery = (url: string) => `
   SELECT
@@ -97,7 +97,7 @@ export const ontimeCancelamentosQuery = (url: string) => `
   HAVING COUNT(*) > 10000
   ORDER BY taxa_cancelamento DESC
   LIMIT 12
-`
+`;
 
 export const ontimeHoraPartidaQuery = (url: string) => `
   SELECT
@@ -111,4 +111,4 @@ export const ontimeHoraPartidaQuery = (url: string) => `
   GROUP BY hora
   HAVING hora BETWEEN 0 AND 23
   ORDER BY hora
-`
+`;

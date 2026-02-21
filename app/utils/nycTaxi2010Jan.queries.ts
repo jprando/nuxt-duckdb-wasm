@@ -6,7 +6,7 @@ export const nycTaxi2010JanKpisQuery = (url: string) => `
       ROUND(SUM(Total_amount), 0)                                           AS total_revenue
   FROM '${url}'
   WHERE Dropoff_datetime::TIMESTAMP > Pickup_datetime::TIMESTAMP
-`
+`;
 
 export const nycTaxi2010JanVendorQuery = (url: string) => `
   SELECT
@@ -21,7 +21,7 @@ export const nycTaxi2010JanVendorQuery = (url: string) => `
   WHERE Vendor_id IS NOT NULL
   GROUP BY Vendor_id, vendor
   ORDER BY total DESC
-`
+`;
 
 export const nycTaxi2010JanPagamentoQuery = (url: string) => `
   SELECT
@@ -37,7 +37,7 @@ export const nycTaxi2010JanPagamentoQuery = (url: string) => `
   WHERE Payment_type IS NOT NULL
   GROUP BY UPPER(Payment_type), pagamento
   ORDER BY total DESC
-`
+`;
 
 export const nycTaxi2010JanDistanciaQuery = (url: string) => `
   SELECT
@@ -49,7 +49,7 @@ export const nycTaxi2010JanDistanciaQuery = (url: string) => `
     AND Trip_distance < 30
   GROUP BY milhas
   ORDER BY milhas
-`
+`;
 
 export const nycTaxi2010JanGorjetaQuery = (url: string) => `
   SELECT
@@ -61,7 +61,7 @@ export const nycTaxi2010JanGorjetaQuery = (url: string) => `
     AND Tip_amount < 30
   GROUP BY faixa
   ORDER BY faixa
-`
+`;
 
 export const nycTaxi2010JanHoraQuery = (url: string) => `
   SELECT
@@ -71,4 +71,4 @@ export const nycTaxi2010JanHoraQuery = (url: string) => `
   WHERE Pickup_datetime IS NOT NULL
   GROUP BY hora
   ORDER BY hora;
-`
+`;
