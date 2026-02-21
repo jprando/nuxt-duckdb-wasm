@@ -14,8 +14,14 @@ definePageMeta({ layout: "dashboard" });
           class="text-primary shrink-0"
         />
         <h1 class="text-sm font-semibold text-highlighted truncate">
-          NYC Taxi — Dashboard
+          NYC Taxi
         </h1>
+        <UBadge
+          label="ABRIL/2019"
+          variant="solid"
+          color="primary"
+          size="sm"
+        />
         <UBadge
           label="7.4Mi"
           color="primary"
