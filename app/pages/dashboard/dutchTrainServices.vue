@@ -18,8 +18,12 @@ useHead({
           class="text-primary shrink-0"
         />
         <h1 class="text-sm font-semibold text-highlighted truncate">
-          Serviços de Trem (Holanda)
+          Serviços de Trem
         </h1>
+        <UBadge
+          label="Holanda"
+          size="sm"
+        />
         <UBadge
           label="380k"
           color="primary"
