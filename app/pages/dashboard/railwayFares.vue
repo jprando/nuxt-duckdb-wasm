@@ -12,7 +12,7 @@ useHead({
 <template>
   <NuxtLayout name="dashboard">
     <template #titulo>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 cursor-default">
         <UIcon
           name="i-lucide-euro"
           class="text-primary shrink-0"
@@ -20,12 +20,14 @@ useHead({
         <h1 class="text-sm font-semibold text-highlighted truncate">
           Tarifas Ferroviárias
         </h1>
-        <UBadge
-          label="158k"
-          color="primary"
-          variant="subtle"
-          size="sm"
-        />
+        <UTooltip text="158.802 registros">
+          <UBadge
+            label="158k"
+            color="primary"
+            variant="subtle"
+            size="sm"
+          />
+        </UTooltip>
       </div>
     </template>
 

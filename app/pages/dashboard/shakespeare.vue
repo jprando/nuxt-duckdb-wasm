@@ -8,20 +8,22 @@ definePageMeta({ layout: "dashboard" });
 <template>
   <NuxtLayout name="dashboard">
     <template #titulo>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 cursor-default">
         <UIcon
           name="i-lucide-scroll-text"
           class="text-primary shrink-0"
         />
         <h1 class="text-sm font-semibold text-highlighted truncate">
-          Shakespeare — Dashboard
+          Shakespeare
         </h1>
-        <UBadge
-          label="87k"
-          color="primary"
-          variant="subtle"
-          size="sm"
-        />
+        <UTooltip text="87.643 registros">
+          <UBadge
+            label="87k"
+            color="primary"
+            variant="subtle"
+            size="sm"
+          />
+        </UTooltip>
       </div>
     </template>
 
