@@ -1,24 +1,8 @@
 const db = shallowRef<any>(null);
-const _estahCarregando = ref(false);
+const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
 
 let timerDebounce: number | undefined;
-
-const estahCarregando = computed({
-  get: () => _estahCarregando.value,
-  set: (value: boolean) => {
-    clearTimeout(timerDebounce);
-
-    if (value) {
-      _estahCarregando.value = true;
-      return;
-    }
-    // Debounce de 1 segundo apenas quando value é false
-    timerDebounce = window.setTimeout(() => {
-      _estahCarregando.value = value;
-    }, 650);
-  },
-});
 
 if (import.meta.client) {
   window.addEventListener("pagehide", () => duckDBWasmEncerrar(db));
