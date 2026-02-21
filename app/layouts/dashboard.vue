@@ -53,6 +53,12 @@ const navItens = [
       badge: "578",
       to: "/dashboard/trainStations",
     },
+    {
+      label: "Dados de Voos",
+      icon: "i-lucide-plane",
+      badge: "4.3Mi",
+      to: "/dashboard/ontime",
+    },
   ],
 ];
 </script>
