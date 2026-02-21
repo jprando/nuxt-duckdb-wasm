@@ -6,61 +6,63 @@ const { duckDBWasmInfo } = useDuckDb();
 
 const _collapsed = ref(false);
 
-const navItens = [
-  [
-    { label: "Dados", icon: "i-lucide-table-2", to: "/" },
-  ],
-  [
-    {
-      label: "NYC Taxi Jan/2024",
-      icon: "i-lucide-layout-dashboard",
-      badge: "550k",
-      to: "/dashboard/localnyctaxi",
-    },
-    {
-      label: "NYC Taxi Abr/2019",
-      icon: "i-lucide-layout-dashboard",
-      badge: "7.4Mi",
-      to: "/dashboard/nycTaxi2019Apr",
-    },
-    {
-      label: "NYC Taxi Jan/2010",
-      icon: "i-lucide-layout-dashboard",
-      badge: "14.8Mi",
-      to: "/dashboard/nycTaxi2010Jan",
-    },
-    {
-      label: "Serviços de Trem (Holanda)",
-      icon: "i-lucide-train-track",
-      badge: "380k",
-      to: "/dashboard/dutchTrainServices",
-    },
-    {
-      label: "Tarifas Ferroviárias",
-      icon: "i-lucide-euro",
-      badge: "158k",
-      to: "/dashboard/railwayFares",
-    },
-    {
-      label: "Shakespeare",
-      icon: "i-lucide:scroll-text",
-      badge: "87k",
-      to: "/dashboard/shakespeare",
-    },
-    {
-      label: "Estações de Trem",
-      icon: "i-lucide-building-2",
-      badge: "578",
-      to: "/dashboard/trainStations",
-    },
-    {
-      label: "Dados de Voos",
-      icon: "i-lucide-plane",
-      badge: "4.3Mi",
-      to: "/dashboard/ontime",
-    },
-  ],
-];
+const navItens = computed(() => {
+  return [
+    [
+      { label: "Dados", icon: "i-lucide-table-2", to: "/" },
+    ],
+    [
+      {
+        label: "NYC Taxi Jan/2024",
+        icon: "i-lucide-layout-dashboard",
+        badge: _collapsed.value ? undefined : "550k",
+        to: "/dashboard/localnyctaxi",
+      },
+      {
+        label: "NYC Taxi Abr/2019",
+        icon: "i-lucide-layout-dashboard",
+        badge: _collapsed.value ? undefined : "7.4Mi",
+        to: "/dashboard/nycTaxi2019Apr",
+      },
+      {
+        label: "NYC Taxi Jan/2010",
+        icon: "i-lucide-layout-dashboard",
+        badge: _collapsed.value ? undefined : "14.8Mi",
+        to: "/dashboard/nycTaxi2010Jan",
+      },
+      {
+        label: "Serviços de Trem (Holanda)",
+        icon: "i-lucide-train-track",
+        badge: _collapsed.value ? undefined : "380k",
+        to: "/dashboard/dutchTrainServices",
+      },
+      {
+        label: "Tarifas Ferroviárias",
+        icon: "i-lucide-euro",
+        badge: _collapsed.value ? undefined : "158k",
+        to: "/dashboard/railwayFares",
+      },
+      {
+        label: "Shakespeare",
+        icon: "i-lucide:scroll-text",
+        badge: _collapsed.value ? undefined : "87k",
+        to: "/dashboard/shakespeare",
+      },
+      {
+        label: "Estações de Trem",
+        icon: "i-lucide-building-2",
+        badge: _collapsed.value ? undefined : "578",
+        to: "/dashboard/trainStations",
+      },
+      {
+        label: "Dados de Voos",
+        icon: "i-lucide-plane",
+        badge: _collapsed.value ? undefined : "4.3Mi",
+        to: "/dashboard/ontime",
+      },
+    ],
+  ];
+});
 </script>
 
 <template>
@@ -80,6 +82,7 @@ const navItens = [
           </NuxtLink>
           <UDashboardSidebarCollapse
             class="text-dimmed absolute top-5"
+            :icon="collapsed && 'i-simple-icons:nuxtdotjs'"
             :class="{ 'right-2': !collapsed, 'right-3': collapsed }"
           />
         </template>
