@@ -14,19 +14,19 @@ const navItens = [
     {
       label: "NYC Taxi Jan/2024",
       icon: "i-lucide-layout-dashboard",
-      badge: 2024,
+      badge: "550k",
       to: "/dashboard/localnyctaxi",
     },
     {
       label: "NYC Taxi Abr/2019",
       icon: "i-lucide-layout-dashboard",
-      badge: 2019,
+      badge: "7.4Mi",
       to: "/dashboard/nycTaxi2019Apr",
     },
     {
       label: "NYC Taxi Jan/2010",
       icon: "i-lucide-layout-dashboard",
-      badge: 2010,
+      badge: "14.8Mi",
       to: "/dashboard/nycTaxi2010Jan",
     },
     {
@@ -41,6 +41,18 @@ const navItens = [
       badge: "158k",
       to: "/dashboard/railwayFares",
     },
+    {
+      label: "Shakespeare",
+      icon: "i-lucide:scroll-text",
+      badge: "87k",
+      to: "/dashboard/shakespeare",
+    },
+    {
+      label: "Estações de Trem",
+      icon: "i-lucide-building-2",
+      badge: "578",
+      to: "/dashboard/trainStations",
+    },
   ],
 ];
 </script>
@@ -50,7 +62,7 @@ const navItens = [
     <UDashboardGroup>
       <UDashboardSidebar
         collapsible
-        class="w-fit"
+        :class="{ 'w-fit': !_collapsed }"
         @update:collapsed="(valor) => _collapsed = valor"
       >
         <template #header="{ collapsed }">

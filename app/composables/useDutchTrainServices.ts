@@ -1,12 +1,3 @@
-import {
-  dutchTrainServicesKpisQuery,
-  dutchTrainServicesTypeQuery,
-  dutchTrainServicesBusiestStationsQuery,
-  dutchTrainServicesDeparturesByHourQuery,
-  dutchTrainServicesAvgStopDurationQuery,
-} from "../utils/dutchTrainServices.queries";
-import { dutchTrainServicesUrl } from "../utils/duckdb.constantes";
-
 interface Kpis {
   total_services: number;
   total_stations: number;

@@ -1,12 +1,3 @@
-import {
-  railwayFaresKpisQuery,
-  railwayFaresPriceDistributionQuery,
-  railwayFaresMostExpensiveRoutesQuery,
-  railwayFaresBusiestStationsQuery,
-} from "../utils/railwayFares.queries";
-import { railwayFaresUrl } from "../utils/duckdb.constantes";
-import { numeroSemCasaDecimal, euroSemCasaDecimal } from "../../shared/utils/formatar";
-
 interface Kpis {
   total_routes: number;
   total_stations: number;

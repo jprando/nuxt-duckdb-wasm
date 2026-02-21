@@ -7,6 +7,8 @@ export const dutchTrainServicesUrl = "https://blobs.duckdb.org/train_services.pa
 export const railwayFaresUrl = "https://blobs.duckdb.org/tariffs.parquet";
 export const nycTaxi2019AprUrl = "https://blobs.duckdb.org/data/taxi_2019_04.parquet";
 export const nycTaxi2010JanUrl = "https://blobs.duckdb.org/data/yellow_tripdata_2010-01.parquet";
+export const shakespeareUrl = "https://blobs.duckdb.org/data/shakespeare.parquet";
+export const trainStationsUrl = "https://blobs.duckdb.org/stations.parquet";
 
 export interface DatasetParquet {
   label: string;
@@ -21,34 +23,34 @@ export const datasetsParquet: DatasetParquet[] = [
   // Dados de Táxi (NYC)
   {
     label: "NYC Taxi - Abr/2019",
-    url: "https://blobs.duckdb.org/data/taxi_2019_04.parquet",
+    url: nycTaxi2019AprUrl,
     grupo: "Táxi (NYC)",
   },
   {
     label: "NYC Taxi - Jan/2010",
-    url: "https://blobs.duckdb.org/data/yellow_tripdata_2010-01.parquet",
+    url: nycTaxi2010JanUrl,
     grupo: "Táxi (NYC)",
   },
   // Ferroviário (Holanda)
   {
     label: "Serviços de Trem (Holanda)",
-    url: "https://blobs.duckdb.org/train_services.parquet",
+    url: dutchTrainServicesUrl,
     grupo: "Ferroviário",
   },
   {
     label: "Tarifas Ferroviárias",
-    url: "https://blobs.duckdb.org/tariffs.parquet",
+    url: railwayFaresUrl,
     grupo: "Ferroviário",
   },
   {
     label: "Estações de Trem",
-    url: "https://blobs.duckdb.org/stations.parquet",
+    url: trainStationsUrl,
     grupo: "Ferroviário",
   },
   // Outros
   {
     label: "Corpus de Shakespeare",
-    url: "https://blobs.duckdb.org/data/shakespeare.parquet",
+    url: shakespeareUrl,
     grupo: "Outros",
   },
   {
