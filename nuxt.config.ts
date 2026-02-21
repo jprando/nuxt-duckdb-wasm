@@ -5,11 +5,12 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/eslint",
     "@nuxt/ui",
-    "@nuxt/hints",
+    // "@nuxt/hints", // desabilitado: com ssr:false todos os componentes disparam o hint de lazy loading, tornando-o ruidoso e inútil
     "@nuxt/image",
     "@nuxt/scripts",
     "@nuxt/test-utils",
     "nuxt-bun-compile",
+    "nuxt-echarts",
   ],
 
   bunCompile: {
@@ -54,6 +55,13 @@ export default defineNuxtConfig({
     worker: {
       format: "es",
     },
+  },
+
+  echarts: {
+    renderer: 'svg',
+    charts: ["BarChart", "LineChart", "PieChart"],
+    components: ["GridComponent", "TooltipComponent", "LegendComponent"],
+    features: ["LabelLayout", "UniversalTransition"],
   },
 
   eslint: {

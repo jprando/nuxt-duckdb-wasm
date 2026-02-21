@@ -37,6 +37,7 @@
     "csso": "^5.0.5",
     "mdn-data": "^2.27.1",
     "nuxt": "^4.3.1",
+    "nuxt-echarts": "1.0.1",
     "sharp": "^0.34.5",
     "svgo": "^4.0.0",
     "tailwindcss": "^4.2.0"

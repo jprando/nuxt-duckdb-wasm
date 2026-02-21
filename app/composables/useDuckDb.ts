@@ -89,6 +89,7 @@ export const useDuckDb = () => {
 
   return {
     init,
+    executar: execute,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
     obterDadosSimples,

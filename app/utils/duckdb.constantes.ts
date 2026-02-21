@@ -3,6 +3,10 @@ export const duckDBDataProtocolHTTP = 4; // Protocolo HTTP para leitura de dados
 export const duckDBItensPorPagina = 50; // Quantidade de itens a exibir por página na paginação dos resultados
 export const duckDBLogLevelWARNING = 3; // Correspondente a LogLevel.WARNING em @duckdb/duckdb-wasm
 export const localNycTaxiParquetUrl = "/yellow_tripdata_2024-01.parquet";
+export const dutchTrainServicesUrl = "https://blobs.duckdb.org/train_services.parquet";
+export const railwayFaresUrl = "https://blobs.duckdb.org/tariffs.parquet";
+export const nycTaxi2019AprUrl = "https://blobs.duckdb.org/data/taxi_2019_04.parquet";
+export const nycTaxi2010JanUrl = "https://blobs.duckdb.org/data/yellow_tripdata_2010-01.parquet";
 
 export interface DatasetParquet {
   label: string;
