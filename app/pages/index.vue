@@ -9,7 +9,7 @@ const {
   obterDadosSimplesQuantidade,
   obterDadosParquet,
   obterDadosParquetQuantidade,
-} = useDuckDB();
+} = useDuckDb();
 
 const ultimoDatasetCarregado = ref<string | null>(null);
 const registros = ref<any[]>([]);

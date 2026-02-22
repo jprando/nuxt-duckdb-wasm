@@ -4,7 +4,7 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
-const { duckDBWasmInfo } = useDuckDB();
+const { duckDBWasmInfo } = useDuckDb();
 
 const _collapsed = ref(false);
 

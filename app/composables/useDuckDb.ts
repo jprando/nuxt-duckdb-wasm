@@ -8,7 +8,7 @@ if (import.meta.client) {
   window.addEventListener("pagehide", () => duckDBWasmEncerrar(db));
 }
 
-export const useDuckDB = () => {
+export const useDuckDb = () => {
   const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
   const execute = async (sql: string) => {

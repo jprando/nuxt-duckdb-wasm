@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-const { duckDBWasmInfo } = useDuckDB();
+const { duckDBWasmInfo } = useDuckDb();
 </script>
 
 <template>
