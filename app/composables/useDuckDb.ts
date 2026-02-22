@@ -1,7 +1,7 @@
 const db = shallowRef<any>(null);
 const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
-const warmupAtual = ref(0);
+const warmupAtual = ref<number|null>(0);
 const warmupTotal = datasetsR2.length;
 
 let timerDebounce: number | undefined;
@@ -26,6 +26,7 @@ export const useDuckDb = () => {
     if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
     estahCarregando.value = true;
+    warmupAtual.value = null;
     const conn = await db.value!.connect();
 
     const onAbort = () => conn.cancelSent();
@@ -48,6 +49,7 @@ export const useDuckDb = () => {
       sinalEfetivo.removeEventListener("abort", onAbort);
       await conn.close();
       estahCarregando.value = false;
+      warmupAtual.value = warmupTotal;
     }
   };
 
