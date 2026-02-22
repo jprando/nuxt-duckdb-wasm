@@ -3,6 +3,7 @@ const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
 
 let timerDebounce: number | undefined;
+let _controller = new AbortController();
 
 if (import.meta.client) {
   window.addEventListener("pagehide", () => duckDBWasmEncerrar(db));
@@ -11,15 +12,22 @@ if (import.meta.client) {
 export const useDuckDb = () => {
   const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
+  const cancelarConsulta = () => {
+    // console.info("#16 cancelarConsulta:invocado");
+    _controller.abort();
+    _controller = new AbortController();
+  };
+
   const execute = async (sql: string, signal?: AbortSignal) => {
+    const sinalEfetivo = signal ?? _controller.signal;
     if (!db.value) await init();
-    if (signal?.aborted) throw new DOMException("Consulta cancelada", "AbortError");
+    if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
     estahCarregando.value = true;
     const conn = await db.value!.connect();
 
     const onAbort = () => conn.cancelSent();
-    signal?.addEventListener("abort", onAbort);
+    sinalEfetivo.addEventListener("abort", onAbort);
 
     try {
       const resultado: any[] = [];
@@ -27,14 +35,15 @@ export const useDuckDb = () => {
 
       for await (const batch of stream) {
         resultado.push(...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())));
-        if (signal?.aborted) break;
+        if (sinalEfetivo.aborted) break;
+        // console.info("#39 duckdb:batch:readed");
       }
 
-      if (signal?.aborted) throw new DOMException("Consulta cancelada", "AbortError");
+      if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
       return resultado;
     } finally {
-      signal?.removeEventListener("abort", onAbort);
+      sinalEfetivo.removeEventListener("abort", onAbort);
       await conn.close();
       estahCarregando.value = false;
     }
@@ -88,6 +97,7 @@ export const useDuckDb = () => {
   return {
     init,
     executar: execute,
+    cancelarConsulta,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
     obterDadosSimples,

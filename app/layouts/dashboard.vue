@@ -4,7 +4,7 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
-const { duckDBWasmInfo } = useDuckDb();
+const { duckDBWasmInfo, cancelarConsulta } = useDuckDb();
 
 const _collapsed = ref(false);
 
@@ -12,7 +12,7 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
     [
       { label: "Dados", icon: "i-lucide-table-2", to: "/" },
-    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5" })),
+    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5", onSelect: cancelarConsulta })),
     [
       {
         label: "NYC Taxi Jan/2024",
@@ -62,7 +62,7 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         badge: _collapsed.value ? undefined : "4.3Mi",
         to: "/dashboard/pontualidadeVoos",
       },
-    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5" })),
+    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5", onSelect: cancelarConsulta })),
   ];
 });
 </script>

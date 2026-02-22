@@ -15,14 +15,6 @@ const {
   opcaoTiposPorPais,
   fmtNumero,
 } = useEstacoesFerrovia();
-
-watch(
-  opcaoPaises,
-  (novo) => console.log("#19 opcaoPaises", toValue(novo)),
-  {
-    immediate: true,
-  },
-);
 </script>
 
 <template>
