@@ -104,8 +104,7 @@ export const datasetsParquet: DatasetParquet[] = [
   // Amostras de Redes Sociais (Metadados)
   {
     label: "Amostra de Posts (HackerNews)",
-    url:
-      "https://huggingface.co/datasets/poloclub/diffusiondb/resolve/main/metadata.parquet",
+    url: "https://huggingface.co/datasets/poloclub/diffusiondb/resolve/main/metadata.parquet",
     grupo: "Redes Sociais",
   },
   // Dados Financeiros (DuckDB Sample Data - Direto do S3 Público)
@@ -117,8 +116,7 @@ export const datasetsParquet: DatasetParquet[] = [
   // GitHub Raw (Datasets de teste da comunidade)
   {
     label: "Eletricidade Finlândia (Histórico)",
-    url:
-      "https://raw.githubusercontent.com/kimmolinna/parquet_public/master/2021.parquet",
+    url: "https://raw.githubusercontent.com/kimmolinna/parquet_public/master/2021.parquet",
     grupo: "Energia",
   },
 ];

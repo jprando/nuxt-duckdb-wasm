@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-const { duckDBWasmInfo, warmupAtual, warmupTotal } = useDuckDb();
+const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 </script>
 
 <template>
@@ -88,9 +88,7 @@ const { duckDBWasmInfo, warmupAtual, warmupTotal } = useDuckDb();
         </template>
         <template #right>
           <UProgress
-            v-if="!warmupAtual || warmupAtual < warmupTotal"
-            v-model="warmupAtual"
-            :max="!warmupTotal ? 100 : warmupTotal"
+            v-if="estahCarregando"
             size="sm"
             class="w-20"
           />

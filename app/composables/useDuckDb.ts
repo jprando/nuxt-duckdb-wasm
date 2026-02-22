@@ -1,8 +1,6 @@
 const db = shallowRef<any>(null);
 const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
-const warmupAtual = ref<number|null>(0);
-const warmupTotal = nomeUrlParquetsR2.length;
 
 let timerDebounce: number | undefined;
 let _controller = new AbortController();
@@ -12,7 +10,7 @@ if (import.meta.client) {
 }
 
 export const useDuckDb = () => {
-  const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo, warmupAtual);
+  const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
   const cancelarConsulta = () => {
     // console.info("#16 cancelarConsulta:invocado");
@@ -26,7 +24,6 @@ export const useDuckDb = () => {
     if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
     estahCarregando.value = true;
-    warmupAtual.value = null;
     const conn = await db.value!.connect();
 
     const onAbort = () => conn.cancelSent();
@@ -48,7 +45,6 @@ export const useDuckDb = () => {
     } finally {
       sinalEfetivo.removeEventListener("abort", onAbort);
       // await conn.close();
-      warmupAtual.value = warmupTotal;
       estahCarregando.value = false;
     }
   };
@@ -104,8 +100,6 @@ export const useDuckDb = () => {
     cancelarConsulta,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
-    warmupAtual: readonly(warmupAtual),
-    warmupTotal,
     obterDadosSimples,
     obterDadosSimplesQuantidade,
     obterDadosParquet,
