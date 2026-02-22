@@ -1,14 +1,20 @@
-<script setup lang="ts">
-const props = withDefaults(defineProps<{
-  opcao: Record<string, unknown> | null;
-  tema?: string;
-  altura?: number;
-  msgSemDados?: string;
-}>(), {
-  tema: '',
-  altura: 260,
-  msgSemDados: 'Dados indisponíveis para este dataset.',
-});
+<script
+  setup
+  lang="ts"
+>
+const props = withDefaults(
+  defineProps<{
+    opcao: Record<string, unknown> | null;
+    tema?: string;
+    altura?: number;
+    msgSemDados?: string;
+  }>(),
+  {
+    tema: "",
+    altura: 260,
+    msgSemDados: "Dados indisponíveis para este dataset.",
+  },
+);
 
 const expandido = ref(false);
 const alturaExpandida = ref(0);
@@ -23,29 +29,29 @@ const calcularAlturaExpandida = () => {
 };
 
 const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') fecharExpandido();
+  if (e.key === "Escape") fecharExpandido();
 };
 
 const abrirExpandido = () => {
   calcularAlturaExpandida();
   expandido.value = true;
-  window.addEventListener('resize', calcularAlturaExpandida);
-  document.addEventListener('keydown', onKeydown);
-  document.body.style.overflow = 'hidden';
+  window.addEventListener("resize", calcularAlturaExpandida);
+  document.addEventListener("keydown", onKeydown);
+  document.body.style.overflow = "hidden";
 };
 
 const fecharExpandido = () => {
   expandido.value = false;
-  window.removeEventListener('resize', calcularAlturaExpandida);
-  document.removeEventListener('keydown', onKeydown);
-  document.body.style.overflow = '';
+  window.removeEventListener("resize", calcularAlturaExpandida);
+  document.removeEventListener("keydown", onKeydown);
+  document.body.style.overflow = "";
 };
 
 onUnmounted(() => {
   if (expandido.value) {
-    window.removeEventListener('resize', calcularAlturaExpandida);
-    document.removeEventListener('keydown', onKeydown);
-    document.body.style.overflow = '';
+    window.removeEventListener("resize", calcularAlturaExpandida);
+    document.removeEventListener("keydown", onKeydown);
+    document.body.style.overflow = "";
   }
 });
 </script>
@@ -71,7 +77,10 @@ onUnmounted(() => {
     </template>
 
     <template v-if="!opcao">
-      <USkeleton class="w-full rounded-lg" :style="{ height: altura + 'px' }" />
+      <USkeleton
+        class="w-full rounded-lg"
+        :style="{ height: altura + 'px' }"
+      />
     </template>
     <div
       v-else-if="semDados"
@@ -103,9 +112,9 @@ onUnmounted(() => {
           @click="fecharExpandido"
         />
         <!-- Card expandido -->
-        <div class="relative z-10 w-full h-full flex flex-col bg-(--ui-bg) border border-(--ui-border) rounded-xl shadow-2xl overflow-hidden">
+        <div class="relative z-10 w-full h-full flex flex-col bg-default border border-default rounded-xl shadow-2xl overflow-hidden">
           <!-- Header -->
-          <div class="flex items-center justify-between px-4 py-3 border-b border-(--ui-border) shrink-0">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-default shrink-0">
             <h2 class="text-sm font-semibold flex items-center gap-1.5">
               <slot name="titulo" />
             </h2>

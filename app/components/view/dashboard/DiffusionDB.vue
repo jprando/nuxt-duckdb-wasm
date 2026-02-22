@@ -35,7 +35,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon name="i-lucide-image" class="size-5 text-primary" />
+            <UIcon
+              name="i-lucide-image"
+              class="size-5 text-primary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -57,7 +60,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon name="i-lucide-users" class="size-5 text-success" />
+            <UIcon
+              name="i-lucide-users"
+              class="size-5 text-success"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -79,7 +85,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon name="i-lucide-shield-alert" class="size-5 text-error" />
+            <UIcon
+              name="i-lucide-shield-alert"
+              class="size-5 text-error"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -101,7 +110,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon name="i-lucide-sliders" class="size-5 text-warning" />
+            <UIcon
+              name="i-lucide-sliders"
+              class="size-5 text-warning"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -123,7 +135,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon name="i-lucide-calendar-range" class="size-5 text-secondary" />
+            <UIcon
+              name="i-lucide-calendar-range"
+              class="size-5 text-secondary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -148,9 +163,16 @@ const {
     <!-- ── Linha 1: Dimensões + NSFW ──────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Top 10 Dimensões -->
-      <GraficoCard :opcao="opcaoDimensoes" :tema="temaGrafico" :altura="280">
+      <GraficoCard
+        :opcao="opcaoDimensoes"
+        :tema="temaGrafico"
+        :altura="280"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-frame" class="text-primary size-4" />
+          <UIcon
+            name="i-lucide-frame"
+            class="text-primary size-4"
+          />
           Dimensões Mais Usadas
           <UBadge variant="soft">
             Top 10
@@ -159,9 +181,16 @@ const {
       </GraficoCard>
 
       <!-- Classificação NSFW -->
-      <GraficoCard :opcao="opcaoNsfw" :tema="temaGrafico" :altura="280">
+      <GraficoCard
+        :opcao="opcaoNsfw"
+        :tema="temaGrafico"
+        :altura="280"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-shield" class="text-error size-4" />
+          <UIcon
+            name="i-lucide-shield"
+            class="text-error size-4"
+          />
           Classificação de Segurança (NSFW)
         </template>
       </GraficoCard>
@@ -170,26 +199,47 @@ const {
     <!-- ── Linha 2: Steps + Samplers ──────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Distribuição de Steps -->
-      <GraficoCard :opcao="opcaoSteps" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoSteps"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-sliders-horizontal" class="text-warning size-4" />
+          <UIcon
+            name="i-lucide-sliders-horizontal"
+            class="text-warning size-4"
+          />
           Distribuição de Steps de Inferência
         </template>
       </GraficoCard>
 
       <!-- Samplers -->
-      <GraficoCard :opcao="opcaoSampler" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoSampler"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-cpu" class="text-secondary size-4" />
+          <UIcon
+            name="i-lucide-cpu"
+            class="text-secondary size-4"
+          />
           Algoritmo de Sampling Usado
         </template>
       </GraficoCard>
     </div>
 
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
-    <GraficoCard :opcao="opcaoAtividade" :tema="temaGrafico" :altura="220">
+    <GraficoCard
+      :opcao="opcaoAtividade"
+      :tema="temaGrafico"
+      :altura="220"
+    >
       <template #titulo>
-        <UIcon name="i-lucide-clock" class="text-success size-4" />
+        <UIcon
+          name="i-lucide-clock"
+          class="text-success size-4"
+        />
         Atividade de Geração por Hora do Dia
         <UBadge variant="soft">
           UTC

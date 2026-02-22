@@ -345,7 +345,9 @@ export const usePontualidadeVoos = () => {
             trigger: "item",
             formatter: (p: any) => {
               if (p.dataType === "edge") {
-                return `${p.data.source} → ${p.data.target}<br/>${new Intl.NumberFormat("pt-BR").format(p.data.value)} voos`;
+                return `${p.data.source} → ${p.data.target}<br/>${
+                  new Intl.NumberFormat("pt-BR").format(p.data.value)
+                } voos`;
               }
               return p.name;
             },

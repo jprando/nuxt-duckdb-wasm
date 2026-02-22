@@ -115,7 +115,11 @@ const {
 
     <!-- ── Linha 2: Tipo + Estações ─────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoTipo" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoTipo"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-pie-chart"
@@ -125,7 +129,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoEstacoesMovimentadas" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoEstacoesMovimentadas"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-bar-chart-big"
@@ -137,7 +145,11 @@ const {
     </div>
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
-    <GraficoCard :opcao="opcaoDuracaoMediaParada" :tema="temaGrafico" :altura="260">
+    <GraficoCard
+      :opcao="opcaoDuracaoMediaParada"
+      :tema="temaGrafico"
+      :altura="260"
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-timer"
@@ -151,7 +163,12 @@ const {
     </GraficoCard>
 
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
-    <GraficoCard :opcao="opcaoPartidasPorHora" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+    <GraficoCard
+      :opcao="opcaoPartidasPorHora"
+      :tema="temaGrafico"
+      :altura="200"
+      msg-sem-dados="Dados de hora indisponíveis para este dataset."
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-clock"

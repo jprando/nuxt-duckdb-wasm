@@ -111,7 +111,10 @@ export const useTarifasFerroviarias = () => {
       .then((data) => {
         const rows = data as { src: string; dst: string; total: number; preco_medio: number }[];
         const nodesSet = new Set<string>();
-        rows.forEach(d => { nodesSet.add(d.src); nodesSet.add(d.dst); });
+        rows.forEach(d => {
+          nodesSet.add(d.src);
+          nodesSet.add(d.dst);
+        });
         const nodes = [...nodesSet].map(name => ({ name }));
         opcaoChord.value = {
           backgroundColor: "transparent",

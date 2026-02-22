@@ -4,7 +4,7 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
-const { isFullscreen, toggle } = useFullscreen()
+const { isFullscreen, toggle } = useFullscreen();
 
 const { duckDBWasmInfo, cancelarConsulta, estahCarregando } = useDuckDb();
 

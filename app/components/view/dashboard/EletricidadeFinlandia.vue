@@ -34,7 +34,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon name="i-lucide-zap" class="size-5 text-primary" />
+            <UIcon
+              name="i-lucide-zap"
+              class="size-5 text-primary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -56,7 +59,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon name="i-lucide-trending-up" class="size-5 text-success" />
+            <UIcon
+              name="i-lucide-trending-up"
+              class="size-5 text-success"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -81,7 +87,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon name="i-lucide-arrow-up" class="size-5 text-error" />
+            <UIcon
+              name="i-lucide-arrow-up"
+              class="size-5 text-error"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -106,7 +115,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon name="i-lucide-arrow-down" class="size-5 text-warning" />
+            <UIcon
+              name="i-lucide-arrow-down"
+              class="size-5 text-warning"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -131,7 +143,10 @@ const {
       <UCard :ui="{ body: 'p-4!' }">
         <div class="flex items-start gap-3">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon name="i-lucide-bar-chart-2" class="size-5 text-secondary" />
+            <UIcon
+              name="i-lucide-bar-chart-2"
+              class="size-5 text-secondary"
+            />
           </div>
           <div class="min-w-0">
             <p class="text-xs text-muted mb-0.5">
@@ -154,9 +169,16 @@ const {
     </div>
 
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
-    <GraficoCard :opcao="opcaoSemanal" :tema="temaGrafico" :altura="280">
+    <GraficoCard
+      :opcao="opcaoSemanal"
+      :tema="temaGrafico"
+      :altura="280"
+    >
       <template #titulo>
-        <UIcon name="i-lucide-chart-line" class="text-primary size-4" />
+        <UIcon
+          name="i-lucide-chart-line"
+          class="text-primary size-4"
+        />
         Evolução Semanal do Preço
         <UBadge variant="soft">
           2021
@@ -167,9 +189,16 @@ const {
     <!-- ── Linha 2: Mensal + Horário ───────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Variação Mensal -->
-      <GraficoCard :opcao="opcaoMensal" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoMensal"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-calendar" class="text-success size-4" />
+          <UIcon
+            name="i-lucide-calendar"
+            class="text-success size-4"
+          />
           Preço por Mês
           <UBadge variant="soft">
             Médio / Min / Máx
@@ -178,9 +207,16 @@ const {
       </GraficoCard>
 
       <!-- Perfil Horário -->
-      <GraficoCard :opcao="opcaoHoraria" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoHoraria"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-clock" class="text-secondary size-4" />
+          <UIcon
+            name="i-lucide-clock"
+            class="text-secondary size-4"
+          />
           Perfil de Consumo por Hora
           <UBadge variant="soft">
             Média do dia
@@ -190,9 +226,16 @@ const {
     </div>
 
     <!-- ── Distribuição de Preços ─────────────────────────────────── -->
-    <GraficoCard :opcao="opcaoDistribuicao" :tema="temaGrafico" :altura="220">
+    <GraficoCard
+      :opcao="opcaoDistribuicao"
+      :tema="temaGrafico"
+      :altura="220"
+    >
       <template #titulo>
-        <UIcon name="i-lucide-bar-chart-3" class="text-warning size-4" />
+        <UIcon
+          name="i-lucide-bar-chart-3"
+          class="text-warning size-4"
+        />
         Distribuição de Preços
         <UBadge variant="soft">
           Faixas de €20/MWh
@@ -201,9 +244,16 @@ const {
     </GraficoCard>
 
     <!-- ── Calendário de Preços ────────────────────────────────────── -->
-    <GraficoCard :opcao="opcaoCalendario" :tema="temaGrafico" :altura="200">
+    <GraficoCard
+      :opcao="opcaoCalendario"
+      :tema="temaGrafico"
+      :altura="200"
+    >
       <template #titulo>
-        <UIcon name="i-lucide-calendar-range" class="text-primary size-4" />
+        <UIcon
+          name="i-lucide-calendar-range"
+          class="text-primary size-4"
+        />
         Mapa de Calor Diário de Preços
         <UBadge variant="soft">
           2021

@@ -147,7 +147,11 @@ const {
 
     <!-- ── Linha 2: Fornecedor + Forma de pagamento ───────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoTarifa" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoTarifa"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-tag"
@@ -157,7 +161,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoPagamento" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoPagamento"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-credit-card"
@@ -170,7 +178,11 @@ const {
 
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoDuracao" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoDuracao"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-timer"
@@ -180,7 +192,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoGorjeta" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoGorjeta"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-hand-coins"
@@ -195,7 +211,12 @@ const {
     </div>
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
-    <GraficoCard :opcao="opcaoHora" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+    <GraficoCard
+      :opcao="opcaoHora"
+      :tema="temaGrafico"
+      :altura="200"
+      msg-sem-dados="Dados de hora indisponíveis para este dataset."
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-clock"

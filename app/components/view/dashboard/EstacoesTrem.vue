@@ -202,7 +202,11 @@ const {
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Estações por País -->
-      <GraficoCard :opcao="opcaoPaises" :tema="temaGrafico" :altura="280">
+      <GraficoCard
+        :opcao="opcaoPaises"
+        :tema="temaGrafico"
+        :altura="280"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-globe"
@@ -213,7 +217,11 @@ const {
       </GraficoCard>
 
       <!-- Tipos de Estação (donut) -->
-      <GraficoCard :opcao="opcaoTipos" :tema="temaGrafico" :altura="280">
+      <GraficoCard
+        :opcao="opcaoTipos"
+        :tema="temaGrafico"
+        :altura="280"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-pie-chart"
@@ -227,7 +235,11 @@ const {
     <!-- ── Linha 2: Categorias + Latitude ─────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Categorias Simplificadas -->
-      <GraficoCard :opcao="opcaoCategorias" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoCategorias"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-layers"
@@ -238,7 +250,11 @@ const {
       </GraficoCard>
 
       <!-- Distribuição por Latitude -->
-      <GraficoCard :opcao="opcaoLatitude" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoLatitude"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-move-vertical"
@@ -253,7 +269,11 @@ const {
     </div>
 
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
-    <GraficoCard :opcao="opcaoLongitude" :tema="temaGrafico" :altura="200">
+    <GraficoCard
+      :opcao="opcaoLongitude"
+      :tema="temaGrafico"
+      :altura="200"
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-move-horizontal"
@@ -267,7 +287,11 @@ const {
     </GraficoCard>
 
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
-    <GraficoCard :opcao="opcaoTiposPorPais" :tema="temaGrafico" :altura="280">
+    <GraficoCard
+      :opcao="opcaoTiposPorPais"
+      :tema="temaGrafico"
+      :altura="280"
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-bar-chart-3"

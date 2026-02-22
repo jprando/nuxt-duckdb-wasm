@@ -2,7 +2,15 @@
   setup
   lang="ts"
 >
-import { BarChart, ChordChart, LineChart, PieChart, RadarChart, SankeyChart, HeatmapChart } from "echarts/charts";
+import {
+  BarChart,
+  ChordChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  SankeyChart,
+} from "echarts/charts";
 import {
   CalendarComponent,
   GridComponent,

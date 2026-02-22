@@ -172,7 +172,11 @@ const {
 
     <!-- ── Linha 2: Distribuição de Preços + Rotas mais caras ───── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoDistribuicaoPreco" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoDistribuicaoPreco"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-bar-chart-3"
@@ -182,7 +186,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoRotasCaras" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoRotasCaras"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-trending-up"
@@ -194,7 +202,11 @@ const {
     </div>
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
-    <GraficoCard :opcao="opcaoEstacoesConectadas" :tema="temaGrafico" :altura="260">
+    <GraficoCard
+      :opcao="opcaoEstacoesConectadas"
+      :tema="temaGrafico"
+      :altura="260"
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-network"
@@ -205,9 +217,16 @@ const {
     </GraficoCard>
 
     <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
-    <GraficoCard :opcao="opcaoChord" :tema="temaGrafico" :altura="400">
+    <GraficoCard
+      :opcao="opcaoChord"
+      :tema="temaGrafico"
+      :altura="400"
+    >
       <template #titulo>
-        <UIcon name="i-lucide-circle-dot" class="text-primary size-4" />
+        <UIcon
+          name="i-lucide-circle-dot"
+          class="text-primary size-4"
+        />
         Rede de Conexões entre Estações
         <UBadge variant="soft">
           Top 10 · Chord

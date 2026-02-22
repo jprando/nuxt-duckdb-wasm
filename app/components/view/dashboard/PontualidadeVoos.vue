@@ -210,7 +210,11 @@ const {
     <!-- ── Linha 1: Companhias + Status ───────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Voos por Companhia Aérea -->
-      <GraficoCard :opcao="opcaoCompanhias" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoCompanhias"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-building"
@@ -221,7 +225,11 @@ const {
       </GraficoCard>
 
       <!-- Status dos Voos -->
-      <GraficoCard :opcao="opcaoStatus" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoStatus"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-pie-chart"
@@ -235,7 +243,11 @@ const {
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Atraso por Dia da Semana -->
-      <GraficoCard :opcao="opcaoDiaSemana" :tema="temaGrafico" :altura="240">
+      <GraficoCard
+        :opcao="opcaoDiaSemana"
+        :tema="temaGrafico"
+        :altura="240"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-calendar-days"
@@ -246,7 +258,11 @@ const {
       </GraficoCard>
 
       <!-- Voos por Mês -->
-      <GraficoCard :opcao="opcaoMensal" :tema="temaGrafico" :altura="240">
+      <GraficoCard
+        :opcao="opcaoMensal"
+        :tema="temaGrafico"
+        :altura="240"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-calendar"
@@ -260,7 +276,11 @@ const {
     <!-- ── Linha 3: Histograma de Atraso + Distância ─────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Distribuição de Atraso na Partida -->
-      <GraficoCard :opcao="opcaoAtrasoPartida" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoAtrasoPartida"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-hourglass"
@@ -271,7 +291,11 @@ const {
       </GraficoCard>
 
       <!-- Distribuição por Grupo de Distância -->
-      <GraficoCard :opcao="opcaoDistancia" :tema="temaGrafico" :altura="260">
+      <GraficoCard
+        :opcao="opcaoDistancia"
+        :tema="temaGrafico"
+        :altura="260"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-map"
@@ -285,7 +309,11 @@ const {
     <!-- ── Linha 4: Aeroportos + Cancelamentos por Companhia ──────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Top 12 Aeroportos de Origem -->
-      <GraficoCard :opcao="opcaoAeroportos" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoAeroportos"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-map-pin"
@@ -296,7 +324,11 @@ const {
       </GraficoCard>
 
       <!-- Taxa de Cancelamento por Companhia -->
-      <GraficoCard :opcao="opcaoCancelamentos" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoCancelamentos"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-ban"
@@ -311,7 +343,12 @@ const {
     </div>
 
     <!-- ── Linha 5: Atraso por Hora do Dia (full width) ──────────── -->
-    <GraficoCard :opcao="opcaoHoraPartida" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+    <GraficoCard
+      :opcao="opcaoHoraPartida"
+      :tema="temaGrafico"
+      :altura="200"
+      msg-sem-dados="Dados de hora indisponíveis para este dataset."
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-clock"
@@ -327,9 +364,16 @@ const {
     <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Radar: Performance Comparativa das Companhias -->
-      <GraficoCard :opcao="opcaoRadar" :tema="temaGrafico" :altura="320">
+      <GraficoCard
+        :opcao="opcaoRadar"
+        :tema="temaGrafico"
+        :altura="320"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-radar" class="text-primary size-4" />
+          <UIcon
+            name="i-lucide-radar"
+            class="text-primary size-4"
+          />
           Performance Comparativa das Companhias
           <UBadge variant="soft">
             Radar
@@ -338,9 +382,16 @@ const {
       </GraficoCard>
 
       <!-- Sankey: Fluxo Companhia → Status do Voo -->
-      <GraficoCard :opcao="opcaoSankey" :tema="temaGrafico" :altura="320">
+      <GraficoCard
+        :opcao="opcaoSankey"
+        :tema="temaGrafico"
+        :altura="320"
+      >
         <template #titulo>
-          <UIcon name="i-lucide-git-merge" class="text-secondary size-4" />
+          <UIcon
+            name="i-lucide-git-merge"
+            class="text-secondary size-4"
+          />
           Fluxo de Voos: Companhia → Status
           <UBadge variant="soft">
             Sankey

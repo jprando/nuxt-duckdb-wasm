@@ -145,7 +145,11 @@ const {
 
     <!-- ── Linha 2: Top peças + Top personagens ───────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoPecas" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoPecas"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-book-open"
@@ -155,7 +159,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoPersonagens" :tema="temaGrafico" :altura="300">
+      <GraficoCard
+        :opcao="opcaoPersonagens"
+        :tema="temaGrafico"
+        :altura="300"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-mic-2"
@@ -168,7 +176,11 @@ const {
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <GraficoCard :opcao="opcaoAto" :tema="temaGrafico" :altura="220">
+      <GraficoCard
+        :opcao="opcaoAto"
+        :tema="temaGrafico"
+        :altura="220"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-layers"
@@ -178,7 +190,11 @@ const {
         </template>
       </GraficoCard>
 
-      <GraficoCard :opcao="opcaoElenco" :tema="temaGrafico" :altura="220">
+      <GraficoCard
+        :opcao="opcaoElenco"
+        :tema="temaGrafico"
+        :altura="220"
+      >
         <template #titulo>
           <UIcon
             name="i-lucide-users-2"
@@ -193,7 +209,11 @@ const {
     </div>
 
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
-    <GraficoCard :opcao="opcaoComprimento" :tema="temaGrafico" :altura="200">
+    <GraficoCard
+      :opcao="opcaoComprimento"
+      :tema="temaGrafico"
+      :altura="200"
+    >
       <template #titulo>
         <UIcon
           name="i-lucide-align-left"
