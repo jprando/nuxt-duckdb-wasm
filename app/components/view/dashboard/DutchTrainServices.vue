@@ -12,7 +12,7 @@ const {
   opcaoPartidasPorHora,
   opcaoDuracaoMediaParada,
   fmtNumero,
-} = useDutchTrainServices();
+} = useTrensHolandeses();
 </script>
 
 <template>

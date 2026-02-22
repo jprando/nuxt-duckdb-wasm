@@ -35,7 +35,7 @@ const DIST_LABELS = [
   "2500+mi",
 ];
 
-export const useOntime = () => {
+export const usePontualidadeVoos = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 

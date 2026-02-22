@@ -15,7 +15,7 @@ const {
   fmtNumero,
   fmtDolar,
   fmtDolarDecimal,
-} = useLocalNYCTaxi();
+} = useTaxiNYCLocal();
 </script>
 
 <template>

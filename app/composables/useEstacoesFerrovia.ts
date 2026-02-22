@@ -19,7 +19,7 @@ const baseChart = {
   tooltip: { trigger: "axis" as const },
 };
 
-export const useTrainStations = () => {
+export const useEstacoesFerrovia = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 

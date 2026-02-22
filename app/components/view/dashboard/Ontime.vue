@@ -20,7 +20,7 @@ const {
   fmtMin,
   fmtPct,
   fmtMi,
-} = useOntime();
+} = usePontualidadeVoos();
 </script>
 
 <template>

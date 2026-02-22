@@ -17,7 +17,7 @@ const baseChart = {
   tooltip: { trigger: "axis" as const },
 };
 
-export const useNYCTaxi2019Apr = () => {
+export const useTaxiNYCJaneiro2010 = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 
@@ -47,9 +47,9 @@ export const useNYCTaxi2019Apr = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = nycTaxi2019AprUrl;
+    const url = nycTaxi2010JanUrl;
 
-    executar(nycTaxi2019AprKpisQuery(url))
+    executar(nycTaxi2010JanKpisQuery(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -61,7 +61,7 @@ export const useNYCTaxi2019Apr = () => {
         carregandoKpis.value = false;
       });
 
-    executar(nycTaxi2019AprTarifaQuery(url))
+    executar(nycTaxi2010JanVendorQuery(url))
       .then((tarifaData) => {
         opcaoTarifa.value = {
           backgroundColor: "transparent",
@@ -73,7 +73,7 @@ export const useNYCTaxi2019Apr = () => {
               type: "pie",
               radius: ["42%", "70%"],
               center: ["50%", "42%"],
-              data: (tarifaData as any[]).map(d => ({ name: d.tarifa, value: d.total })),
+              data: (tarifaData as any[]).map(d => ({ name: d.vendor, value: d.total })),
               label: { show: false },
               emphasis: { label: { show: true, fontWeight: "bold" } },
             },
@@ -81,7 +81,7 @@ export const useNYCTaxi2019Apr = () => {
         };
       });
 
-    executar(nycTaxi2019AprPagamentoQuery(url))
+    executar(nycTaxi2010JanPagamentoQuery(url))
       .then((pagamentoData) => {
         opcaoPagamento.value = {
           backgroundColor: "transparent",
@@ -101,9 +101,9 @@ export const useNYCTaxi2019Apr = () => {
         };
       });
 
-    executar(nycTaxi2019AprDuracaoQuery(url))
+    executar(nycTaxi2010JanDistanciaQuery(url))
       .then((duracaoData) => {
-        const durLabels = (duracaoData as any[]).map(d => `${d.faixa_min}min`);
+        const durLabels = (duracaoData as any[]).map(d => `${d.milhas}min`);
         const durValues = (duracaoData as any[]).map(d => d.total);
         opcaoDuracao.value = {
           ...baseChart,
@@ -114,7 +114,7 @@ export const useNYCTaxi2019Apr = () => {
         };
       });
 
-    executar(nycTaxi2019AprGorjetaQuery(url))
+    executar(nycTaxi2010JanGorjetaQuery(url))
       .then((gorjetaData) => {
         const gorjLabels = (gorjetaData as any[]).map(d => `$${d.faixa}`);
         const gorjValues = (gorjetaData as any[]).map(d => d.total);
@@ -127,7 +127,7 @@ export const useNYCTaxi2019Apr = () => {
         };
       });
 
-    executar(nycTaxi2019AprHoraQuery(url))
+    executar(nycTaxi2010JanHoraQuery(url))
       .then((horaData) => {
         if (!horaData || horaData.length === 0) {
           opcaoHora.value = {};

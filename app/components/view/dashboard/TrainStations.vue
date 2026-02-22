@@ -14,7 +14,7 @@ const {
   opcaoLongitude,
   opcaoTiposPorPais,
   fmtNumero,
-} = useTrainStations();
+} = useEstacoesFerrovia();
 
 watch(
   opcaoPaises,

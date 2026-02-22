@@ -16,7 +16,7 @@ const {
   fmtDolar,
   fmtDolarDecimal,
   fmtMin,
-} = useNYCTaxi2019Apr();
+} = useTaxiNYCAbril2019();
 </script>
 
 <template>

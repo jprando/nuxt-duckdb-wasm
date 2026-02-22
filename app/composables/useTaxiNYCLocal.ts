@@ -17,7 +17,7 @@ const baseChart = {
   tooltip: { trigger: "axis" as const },
 };
 
-export const useLocalNYCTaxi = () => {
+export const useTaxiNYCLocal = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 

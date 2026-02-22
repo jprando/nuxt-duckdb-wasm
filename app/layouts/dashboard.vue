@@ -4,7 +4,7 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
-const { duckDBWasmInfo } = useDuckDb();
+const { duckDBWasmInfo } = useDuckDB();
 
 const _collapsed = ref(false);
 
@@ -18,31 +18,31 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         label: "NYC Taxi Jan/2024",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "550k",
-        to: "/dashboard/localnyctaxi",
+        to: "/dashboard/taxiNYCLocal",
       },
       {
         label: "NYC Taxi Abr/2019",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "7.4Mi",
-        to: "/dashboard/nycTaxi2019Apr",
+        to: "/dashboard/taxiNYCAbril2019",
       },
       {
         label: "NYC Taxi Jan/2010",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "14.8Mi",
-        to: "/dashboard/nycTaxi2010Jan",
+        to: "/dashboard/taxiNYCJaneiro2010",
       },
       {
         label: "Serviços de Trem (Holanda)",
         icon: "i-lucide-train-track",
         badge: _collapsed.value ? undefined : "380k",
-        to: "/dashboard/dutchTrainServices",
+        to: "/dashboard/trensHolandeses",
       },
       {
         label: "Tarifas Ferroviárias",
         icon: "i-lucide-euro",
         badge: _collapsed.value ? undefined : "158k",
-        to: "/dashboard/railwayFares",
+        to: "/dashboard/tarifasFerroviarias",
       },
       {
         label: "Shakespeare",
@@ -54,13 +54,13 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         label: "Estações de Trem",
         icon: "i-lucide-building-2",
         badge: _collapsed.value ? undefined : "578",
-        to: "/dashboard/trainStations",
+        to: "/dashboard/estacoesFerrovia",
       },
       {
         label: "Dados de Voos",
         icon: "i-lucide-plane",
         badge: _collapsed.value ? undefined : "4.3Mi",
-        to: "/dashboard/ontime",
+        to: "/dashboard/pontualidadeVoos",
       },
     ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5" })),
   ];

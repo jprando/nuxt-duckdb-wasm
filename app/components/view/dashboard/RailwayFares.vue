@@ -12,7 +12,7 @@ const {
   opcaoEstacoesConectadas,
   fmtNumero,
   fmtPreco,
-} = useRailwayFares();
+} = useTarifasFerroviarias();
 </script>
 
 <template>
