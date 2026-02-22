@@ -2,14 +2,14 @@
 export const duckDBDataProtocolHTTP = 4; // Protocolo HTTP para leitura de dados (vs. Fetch API ou File API)
 export const duckDBItensPorPagina = 50; // Quantidade de itens a exibir por página na paginação dos resultados
 export const duckDBLogLevelWARNING = 3; // Correspondente a LogLevel.WARNING em @duckdb/duckdb-wasm
-export const localNycTaxiParquetUrl = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2024-01.parquet";
-export const dutchTrainServicesUrl = "r2://teste-nuxt-duckdb-wasm/train_services.parquet";
-export const railwayFaresUrl = "r2://teste-nuxt-duckdb-wasm/tariffs.parquet";
-export const nycTaxi2019AprUrl = "r2://teste-nuxt-duckdb-wasm/taxi_2019_04.parquet";
-export const nycTaxi2010JanUrl = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2010-01.parquet";
+export const taxiNYCLocalUrl = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2024-01.parquet";
+export const trensHolandesUrl = "r2://teste-nuxt-duckdb-wasm/train_services.parquet";
+export const tarifasFerroviariasUrl = "r2://teste-nuxt-duckdb-wasm/tariffs.parquet";
+export const taxiNYCAbril2019Url = "r2://teste-nuxt-duckdb-wasm/taxi_2019_04.parquet";
+export const taxiNYCJaneiro2010Url = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2010-01.parquet";
 export const shakespeareUrl = "r2://teste-nuxt-duckdb-wasm/shakespeare.parquet";
 export const estacoesTremUrl = "r2://teste-nuxt-duckdb-wasm/stations.parquet";
-export const ontimeUrl = "r2://teste-nuxt-duckdb-wasm/ontime.parquet";
+export const pontualidadeVoosUrl = "r2://teste-nuxt-duckdb-wasm/ontime.parquet";
 
 export interface DatasetParquet {
   label: string;
@@ -20,27 +20,27 @@ export interface DatasetParquet {
 export const datasetsParquet: DatasetParquet[] = [
   // Gerado em memória
   { label: "Dados simples (gerado)", url: "", grupo: "Local" },
-  { label: "Parquet local (NYC Taxi)", url: localNycTaxiParquetUrl, grupo: "Local" },
+  { label: "Parquet local (NYC Taxi)", url: taxiNYCLocalUrl, grupo: "Local" },
   // Dados de Táxi (NYC)
   {
     label: "NYC Taxi - Abr/2019",
-    url: nycTaxi2019AprUrl,
+    url: taxiNYCAbril2019Url,
     grupo: "Táxi (NYC)",
   },
   {
     label: "NYC Taxi - Jan/2010",
-    url: nycTaxi2010JanUrl,
+    url: taxiNYCJaneiro2010Url,
     grupo: "Táxi (NYC)",
   },
   // Ferroviário (Holanda)
   {
     label: "Serviços de Trem (Holanda)",
-    url: dutchTrainServicesUrl,
+    url: trensHolandesUrl,
     grupo: "Ferroviário",
   },
   {
     label: "Tarifas Ferroviárias",
-    url: railwayFaresUrl,
+    url: tarifasFerroviariasUrl,
     grupo: "Ferroviário",
   },
   {
@@ -56,7 +56,7 @@ export const datasetsParquet: DatasetParquet[] = [
   },
   {
     label: "Dados de Voos (On-time)",
-    url: ontimeUrl,
+    url: pontualidadeVoosUrl,
     grupo: "Outros",
   },
   // Amostras de Redes Sociais (Metadados)

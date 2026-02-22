@@ -43,7 +43,7 @@ export const useTarifasFerroviarias = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = railwayFaresUrl;
+    const url = tarifasFerroviariasUrl;
 
     executar(railwayFaresKpisConsulta(url))
       .then(([kpisData]) => {

@@ -47,7 +47,7 @@ export const useTaxiNYCLocal = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = localNycTaxiParquetUrl;
+    const url = taxiNYCLocalUrl;
 
     executar(localNYCTaxiKpisConsulta(url))
       .then(([kpisData]) => {
