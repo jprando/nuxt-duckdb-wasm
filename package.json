@@ -33,6 +33,7 @@
     "@nuxt/test-utils": "3.23.0",
     "@nuxt/ui": "^4.4.0",
     "@unhead/vue": "^2.1.4",
+    "@vueuse/nuxt": "14.2.1",
     "css-tree": "^3.1.0",
     "csso": "^5.0.5",
     "mdn-data": "^2.27.1",

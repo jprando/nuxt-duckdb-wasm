@@ -4,6 +4,8 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const { isFullscreen, toggle } = useFullscreen()
+
 const { duckDBWasmInfo, cancelarConsulta, estahCarregando } = useDuckDb();
 
 const _collapsed = ref(false);
@@ -85,6 +87,14 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
     })),
   ];
 });
+
+async function alternarFullscreen() {
+  if (!document.fullscreenElement) {
+    await document.documentElement.requestFullscreen();
+    return;
+  }
+  await document.exitFullscreen();
+}
 </script>
 
 <template>
@@ -149,6 +159,27 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
             </slot>
           </template>
           <template #right>
+            <UButton
+              v-if="isFullscreen"
+              icon="i-lucide-shrink"
+              size="xs"
+              variant="ghost"
+              color="neutral"
+              aria-label="Fechar modo expandido"
+              @click="toggle"
+            />
+            <UButton
+              v-else
+              icon="i-lucide-expand"
+              aria-label="Expandir gráfico"
+              color="neutral"
+              variant="ghost"
+              @click="toggle"
+            />
+            <USeparator
+              orientation="vertical"
+              class="block-5"
+            />
             <UColorModeButton />
             <UButton
               to="https://github.com/jprando/nuxt-duckdb-wasm"

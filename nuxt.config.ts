@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     "nuxt-echarts",
     "nuxt-vitalizer",
     "nuxt-monitoring",
+    "@vueuse/nuxt",
   ],
 
   bunCompile: {
