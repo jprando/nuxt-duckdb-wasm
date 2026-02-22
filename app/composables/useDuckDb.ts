@@ -11,17 +11,31 @@ if (import.meta.client) {
 export const useDuckDb = () => {
   const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
-  const execute = async (sql: string) => {
+  const execute = async (sql: string, signal?: AbortSignal) => {
     if (!db.value) await init();
+    if (signal?.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
     estahCarregando.value = true;
     const conn = await db.value!.connect();
+
+    const onAbort = () => conn.cancelSent();
+    signal?.addEventListener("abort", onAbort);
+
     try {
-      // infoDev("#duckdb:query#", sql);
-      const result = await conn.query(sql);
-      return result.toArray().map((row: any) => sanitizeRow(row.toJSON()));
+      const resultado: any[] = [];
+      const stream = await conn.send(sql);
+
+      for await (const batch of stream) {
+        resultado.push(...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())));
+        if (signal?.aborted) break;
+      }
+
+      if (signal?.aborted) throw new DOMException("Consulta cancelada", "AbortError");
+
+      return resultado;
     } finally {
-      // await conn.close();
+      signal?.removeEventListener("abort", onAbort);
+      await conn.close();
       estahCarregando.value = false;
     }
   };

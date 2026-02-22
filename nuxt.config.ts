@@ -68,7 +68,7 @@ export default defineNuxtConfig({
 
   monitoring: {
     metrics: {
-      enabled: true,
+      enabled: import.meta.dev,
       path: "/metrics",
     },
   },
