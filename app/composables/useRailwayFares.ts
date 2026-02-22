@@ -20,7 +20,9 @@ export const useRailwayFares = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 
-  const temaGrafico = computed(() => (colorMode.value === "dark" ? "dark" : ""));
+  const temaGrafico = computed(
+    () => (colorMode.value === "dark" ? "dark" : "")
+  );
 
   const carregandoKpis = ref(true);
   const erro = ref<string | null>(null);
@@ -56,20 +58,26 @@ export const useRailwayFares = () => {
       });
 
     executar(railwayFaresPriceDistributionQuery(url)).then((data) => {
-      const labels = (data as any[]).map(d => `€${d.price_bucket}`);
-      const values = (data as any[]).map(d => d.count);
+      const rows = data as { count: number; price_bucket: number }[];
+      const labels = rows.map((d) => `€${d.price_bucket}`);
+      const values = rows.map((d) => d.count);
       opcaoDistribuicaoPreco.value = {
         ...baseChart,
         color: [COR_PRIMARIA],
-        xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
+        xAxis: {
+          type: "category",
+          data: labels,
+          axisLabel: { fontSize: 10, rotate: 45 },
+        },
         yAxis: { type: "value", axisLabel: { fontSize: 10 } },
         series: [{ type: "bar", data: values, name: "Nº de Rotas" }],
       };
     });
 
     executar(railwayFaresMostExpensiveRoutesQuery(url)).then((data) => {
-      const routes = (data as any[]).map(d => d.route);
-      const prices = (data as any[]).map(d => d.price);
+      const rows = data as { route: string; price: number }[];
+      const routes = rows.map((d) => d.route);
+      const prices = rows.map((d) => d.price);
       opcaoRotasCaras.value = {
         ...baseChart,
         grid: { ...baseChart.grid, left: 80 },
@@ -80,17 +88,23 @@ export const useRailwayFares = () => {
       };
     });
 
-    executar(railwayFaresBusiestStationsQuery(url)).then((data) => {
-      const stations = (data as any[]).map(d => d.station);
-      const appearances = (data as any[]).map(d => d.appearances);
-      opcaoEstacoesConectadas.value = {
-        ...baseChart,
-        color: [COR_SECUNDARIA],
-        xAxis: { type: "category", data: stations, axisLabel: { fontSize: 10, rotate: 45 } },
-        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-        series: [{ type: "bar", data: appearances, name: "Nº de Conexões" }],
-      };
-    });
+    executar(railwayFaresBusiestStationsQuery(url))
+      .then((data) => {
+        const rows = data as { station: string; appearances: number }[];
+        const stations = rows.map((d) => d.station);
+        const appearances = rows.map((d) => d.appearances);
+        opcaoEstacoesConectadas.value = {
+          ...baseChart,
+          color: [COR_SECUNDARIA],
+          xAxis: {
+            type: "category",
+            data: stations,
+            axisLabel: { fontSize: 10, rotate: 45 },
+          },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+          series: [{ type: "bar", data: appearances, name: "Nº de Conexões" }],
+        };
+      });
   };
 
   onMounted(async () => {

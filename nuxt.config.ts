@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "nuxt-bun-compile",
     "nuxt-echarts",
     "nuxt-vitalizer",
+    "nuxt-monitoring",
   ],
 
   bunCompile: {
@@ -63,6 +64,14 @@ export default defineNuxtConfig({
     charts: ["BarChart", "LineChart", "PieChart"],
     components: ["GridComponent", "TooltipComponent", "LegendComponent"],
     features: ["LabelLayout", "UniversalTransition"],
+  },
+
+  monitoring: {
+    // Metrics collection (enabled by default)
+    metrics: {
+      enabled: true,
+      path: "/metrics",
+    },
   },
 
   eslint: {

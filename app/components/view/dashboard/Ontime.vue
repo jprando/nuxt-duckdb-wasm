@@ -35,7 +35,7 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
       <!-- Total de Voos -->
       <UCard
         :ui="{ body: 'p-4!' }"
@@ -206,7 +206,7 @@ const {
     </div>
 
     <!-- ── Linha 1: Companhias + Status ───────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Voos por Companhia Aérea -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -219,7 +219,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoCompanhias">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -241,7 +241,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoStatus">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -253,7 +253,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Atraso por Dia da Semana -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -266,7 +266,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoDiaSemana">
-          <USkeleton class="h-[240px] w-full rounded-lg" />
+          <USkeleton class="h-60 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -288,7 +288,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoMensal">
-          <USkeleton class="h-[240px] w-full rounded-lg" />
+          <USkeleton class="h-60 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -300,7 +300,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Histograma de Atraso + Distância ─────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Distribuição de Atraso na Partida -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -313,7 +313,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoAtrasoPartida">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -335,7 +335,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoDistancia">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -347,7 +347,7 @@ const {
     </div>
 
     <!-- ── Linha 4: Aeroportos + Cancelamentos por Companhia ──────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Top 12 Aeroportos de Origem -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -360,7 +360,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoAeroportos">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -378,11 +378,14 @@ const {
               name="i-lucide-ban"
               class="text-error size-4"
             />
-            Taxa de Cancelamento por Companhia (%)
+            Taxa de Cancelamento por Companhia
+            <UBadge variant="soft">
+              %
+            </UBadge>
           </h2>
         </template>
         <template v-if="!opcaoCancelamentos">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -401,14 +404,17 @@ const {
             name="i-lucide-clock"
             class="text-primary size-4"
           />
-          Atraso Médio por Hora da Partida (min)
+          Atraso Médio por Hora da Partida
+          <UBadge variant="soft">
+            min
+          </UBadge>
         </h2>
       </template>
       <template v-if="!opcaoHoraPartida">
-        <USkeleton class="h-[200px] w-full rounded-lg" />
+        <USkeleton class="h-50 w-full rounded-lg" />
       </template>
       <template v-else-if="Object.keys(opcaoHoraPartida).length === 0">
-        <div class="h-[200px] flex items-center justify-center">
+        <div class="h-50 flex items-center justify-center">
           <p class="text-sm text-muted">
             Dados de hora indisponíveis para este dataset.
           </p>

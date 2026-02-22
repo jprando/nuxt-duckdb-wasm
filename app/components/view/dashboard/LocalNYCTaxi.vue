@@ -30,7 +30,7 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
       <!-- Total de corridas -->
       <UCard
         :ui="{ body: 'p-4!' }"
@@ -146,7 +146,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
@@ -158,7 +158,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoVendor">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -179,7 +179,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoPassageiros">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -191,7 +191,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Distância + Valor ────────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
@@ -199,11 +199,14 @@ const {
               name="i-lucide-ruler"
               class="text-warning size-4"
             />
-            Distribuição por Distância (milhas)
+            Distribuição por Distância
+            <UBadge variant="soft">
+              milhas
+            </UBadge>
           </h2>
         </template>
         <template v-if="!opcaoDistancia">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -220,11 +223,14 @@ const {
               name="i-lucide-dollar-sign"
               class="text-secondary size-4"
             />
-            Distribuição por Valor (USD)
+            Distribuição por Valor
+            <UBadge variant="soft">
+              USD
+            </UBadge>
           </h2>
         </template>
         <template v-if="!opcaoValor">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -247,10 +253,10 @@ const {
         </h2>
       </template>
       <template v-if="!opcaoHora">
-        <USkeleton class="h-[200px] w-full rounded-lg" />
+        <USkeleton class="h-50 w-full rounded-lg" />
       </template>
       <template v-else-if="Object.keys(opcaoHora).length === 0">
-        <div class="h-[200px] flex items-center justify-center">
+        <div class="h-50 flex items-center justify-center">
           <p class="text-sm text-muted">
             Dados de hora indisponíveis para este dataset.
           </p>

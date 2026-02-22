@@ -12,7 +12,7 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
     [
       { label: "Dados", icon: "i-lucide-table-2", to: "/" },
-    ].map(i => ({...i, class: "text-lg p-2.5 my-1.5"})),
+    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5" })),
     [
       {
         label: "NYC Taxi Jan/2024",
@@ -62,7 +62,7 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         badge: _collapsed.value ? undefined : "4.3Mi",
         to: "/dashboard/ontime",
       },
-    ].map(i => ({...i, class: "text-lg p-2.5 my-1.5"})),
+    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5" })),
   ];
 });
 </script>

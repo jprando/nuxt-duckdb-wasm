@@ -27,7 +27,7 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
       <!-- Total de Rotas -->
       <UCard
         :ui="{ body: 'p-4!' }"
@@ -170,7 +170,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Distribuição de Preços + Rotas mais caras ───── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
@@ -182,7 +182,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoDistribuicaoPreco">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -203,7 +203,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoRotasCaras">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -226,7 +226,7 @@ const {
         </h2>
       </template>
       <template v-if="!opcaoEstacoesConectadas">
-        <USkeleton class="h-[260px] w-full rounded-lg" />
+        <USkeleton class="h-65 w-full rounded-lg" />
       </template>
       <LazyGraficoEChart
         v-else

@@ -15,6 +15,14 @@ const {
   opcaoTiposPorPais,
   fmtNumero,
 } = useTrainStations();
+
+watch(
+  opcaoPaises,
+  (novo) => console.log("#19 opcaoPaises", toValue(novo)),
+  {
+    immediate: true,
+  },
+);
 </script>
 
 <template>
@@ -29,7 +37,7 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
       <!-- Total de Estações -->
       <UCard
         :ui="{ body: 'p-4!' }"
@@ -200,7 +208,7 @@ const {
     </div>
 
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Estações por País -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -213,7 +221,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoPaises">
-          <USkeleton class="h-[280px] w-full rounded-lg" />
+          <USkeleton class="h-70 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -235,7 +243,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoTipos">
-          <USkeleton class="h-[280px] w-full rounded-lg" />
+          <USkeleton class="h-70 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -247,7 +255,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Categorias + Latitude ─────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Categorias Simplificadas -->
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
@@ -260,7 +268,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoCategorias">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -278,11 +286,14 @@ const {
               name="i-lucide-move-vertical"
               class="text-warning size-4"
             />
-            Distribuição Norte–Sul (Latitude)
+            Distribuição Norte–Sul
+            <UBadge variant="soft">
+              Latitude
+            </UBadge>
           </h2>
         </template>
         <template v-if="!opcaoLatitude">
-          <USkeleton class="h-[260px] w-full rounded-lg" />
+          <USkeleton class="h-65 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -301,11 +312,14 @@ const {
             name="i-lucide-move-horizontal"
             class="text-secondary size-4"
           />
-          Distribuição Leste–Oeste (Longitude)
+          Distribuição Leste–Oeste
+          <UBadge variant="soft">
+            Longitude
+          </UBadge>
         </h2>
       </template>
       <template v-if="!opcaoLongitude">
-        <USkeleton class="h-[200px] w-full rounded-lg" />
+        <USkeleton class="h-50 w-full rounded-lg" />
       </template>
       <LazyGraficoEChart
         v-else
@@ -323,14 +337,17 @@ const {
             name="i-lucide-bar-chart-3"
             class="text-primary size-4"
           />
-          Composição por Tipo — Top 6 Países
+          Composição por Tipo
+          <UBadge variant="soft">
+            Top 6 Países
+          </UBadge>
         </h2>
       </template>
       <template v-if="!opcaoTiposPorPais">
-        <USkeleton class="h-[280px] w-full rounded-lg" />
+        <USkeleton class="h-70 w-full rounded-lg" />
       </template>
       <template v-else-if="Object.keys(opcaoTiposPorPais).length === 0">
-        <div class="h-[280px] flex items-center justify-center">
+        <div class="h-70 flex items-center justify-center">
           <p class="text-sm text-muted">
             Dados indisponíveis para este dataset.
           </p>

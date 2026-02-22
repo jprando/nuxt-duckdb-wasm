@@ -3,7 +3,7 @@
   lang="ts"
 >
 const {
-  carregando,
+  carregandoKpis,
   erro,
   kpis,
   temaGrafico,
@@ -15,6 +15,7 @@ const {
   fmtNumero,
   fmtDecimal,
 } = useShakespeare();
+
 </script>
 
 <template>
@@ -29,7 +30,7 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
       <!-- Total de linhas -->
       <UCard
         :ui="{ body: 'p-4!' }"
@@ -46,7 +47,7 @@ const {
             <p class="text-xs text-muted mb-0.5">
               Total de Linhas
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
@@ -74,7 +75,7 @@ const {
             <p class="text-xs text-muted mb-0.5">
               Total de Peças
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
@@ -102,7 +103,7 @@ const {
             <p class="text-xs text-muted mb-0.5">
               Personagens Únicos
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
@@ -130,7 +131,7 @@ const {
             <p class="text-xs text-muted mb-0.5">
               Palavras por Fala
             </p>
-            <template v-if="carregando">
+            <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
@@ -144,7 +145,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Top peças + Top personagens ───────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
@@ -156,7 +157,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoPecas">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -177,7 +178,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoPersonagens">
-          <USkeleton class="h-[300px] w-full rounded-lg" />
+          <USkeleton class="h-75 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -189,7 +190,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
         <template #header>
           <h2 class="text-sm font-semibold flex items-center gap-1.5">
@@ -201,7 +202,7 @@ const {
           </h2>
         </template>
         <template v-if="!opcaoAto">
-          <USkeleton class="h-[220px] w-full rounded-lg" />
+          <USkeleton class="h-55 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -218,11 +219,14 @@ const {
               name="i-lucide-users-2"
               class="text-secondary size-4"
             />
-            Tamanho do Elenco (Top 10 Peças)
+            Tamanho do Elenco
+            <UBadge variant="soft">
+              Top 10 Peças
+            </UBadge>
           </h2>
         </template>
         <template v-if="!opcaoElenco">
-          <USkeleton class="h-[220px] w-full rounded-lg" />
+          <USkeleton class="h-55 w-full rounded-lg" />
         </template>
         <LazyGraficoEChart
           v-else
@@ -241,11 +245,14 @@ const {
             name="i-lucide-align-left"
             class="text-primary size-4"
           />
-          Distribuição do Comprimento das Falas (caracteres)
+          Distribuição do Comprimento das Falas
+          <UBadge variant="soft">
+            caracteres
+          </UBadge>
         </h2>
       </template>
       <template v-if="!opcaoComprimento">
-        <USkeleton class="h-[200px] w-full rounded-lg" />
+        <USkeleton class="h-50 w-full rounded-lg" />
       </template>
       <LazyGraficoEChart
         v-else
