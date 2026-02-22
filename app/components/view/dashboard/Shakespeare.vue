@@ -145,120 +145,65 @@ const {
 
     <!-- ── Linha 2: Top peças + Top personagens ───────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-book-open"
-              class="text-primary size-4"
-            />
-            Top 10 Peças por Nº de Linhas
-          </h2>
+      <GraficoCard :opcao="opcaoPecas" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-book-open"
+            class="text-primary size-4"
+          />
+          Top 10 Peças por Nº de Linhas
         </template>
-        <template v-if="!opcaoPecas">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoPecas"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-mic-2"
-              class="text-success size-4"
-            />
-            Top 15 Personagens mais Falantes
-          </h2>
+      <GraficoCard :opcao="opcaoPersonagens" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-mic-2"
+            class="text-success size-4"
+          />
+          Top 15 Personagens mais Falantes
         </template>
-        <template v-if="!opcaoPersonagens">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoPersonagens"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-layers"
-              class="text-warning size-4"
-            />
-            Linhas por Ato
-          </h2>
+      <GraficoCard :opcao="opcaoAto" :tema="temaGrafico" :altura="220">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-layers"
+            class="text-warning size-4"
+          />
+          Linhas por Ato
         </template>
-        <template v-if="!opcaoAto">
-          <USkeleton class="h-55 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoAto"
-          :tema="temaGrafico"
-          :height="220"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-users-2"
-              class="text-secondary size-4"
-            />
-            Tamanho do Elenco
-            <UBadge variant="soft">
-              Top 10 Peças
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoElenco" :tema="temaGrafico" :altura="220">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-users-2"
+            class="text-secondary size-4"
+          />
+          Tamanho do Elenco
+          <UBadge variant="soft">
+            Top 10 Peças
+          </UBadge>
         </template>
-        <template v-if="!opcaoElenco">
-          <USkeleton class="h-55 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoElenco"
-          :tema="temaGrafico"
-          :height="220"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-align-left"
-            class="text-primary size-4"
-          />
-          Distribuição do Comprimento das Falas
-          <UBadge variant="soft">
-            caracteres
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoComprimento" :tema="temaGrafico" :altura="200">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-align-left"
+          class="text-primary size-4"
+        />
+        Distribuição do Comprimento das Falas
+        <UBadge variant="soft">
+          caracteres
+        </UBadge>
       </template>
-      <template v-if="!opcaoComprimento">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoComprimento"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

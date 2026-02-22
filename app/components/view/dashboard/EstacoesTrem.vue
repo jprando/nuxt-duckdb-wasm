@@ -202,155 +202,82 @@ const {
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Estações por País -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-globe"
-              class="text-primary size-4"
-            />
-            Estações por País
-          </h2>
+      <GraficoCard :opcao="opcaoPaises" :tema="temaGrafico" :altura="280">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-globe"
+            class="text-primary size-4"
+          />
+          Estações por País
         </template>
-        <template v-if="!opcaoPaises">
-          <USkeleton class="h-70 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoPaises"
-          :tema="temaGrafico"
-          :height="280"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Tipos de Estação (donut) -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-pie-chart"
-              class="text-success size-4"
-            />
-            Distribuição por Tipo de Estação
-          </h2>
+      <GraficoCard :opcao="opcaoTipos" :tema="temaGrafico" :altura="280">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-pie-chart"
+            class="text-success size-4"
+          />
+          Distribuição por Tipo de Estação
         </template>
-        <template v-if="!opcaoTipos">
-          <USkeleton class="h-70 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoTipos"
-          :tema="temaGrafico"
-          :height="280"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 2: Categorias + Latitude ─────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Categorias Simplificadas -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-layers"
-              class="text-warning size-4"
-            />
-            Categorias de Estação
-          </h2>
+      <GraficoCard :opcao="opcaoCategorias" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-layers"
+            class="text-warning size-4"
+          />
+          Categorias de Estação
         </template>
-        <template v-if="!opcaoCategorias">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoCategorias"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Distribuição por Latitude -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-move-vertical"
-              class="text-warning size-4"
-            />
-            Distribuição Norte–Sul
-            <UBadge variant="soft">
-              Latitude
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoLatitude" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-move-vertical"
+            class="text-warning size-4"
+          />
+          Distribuição Norte–Sul
+          <UBadge variant="soft">
+            Latitude
+          </UBadge>
         </template>
-        <template v-if="!opcaoLatitude">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoLatitude"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-move-horizontal"
-            class="text-secondary size-4"
-          />
-          Distribuição Leste–Oeste
-          <UBadge variant="soft">
-            Longitude
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoLongitude" :tema="temaGrafico" :altura="200">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-move-horizontal"
+          class="text-secondary size-4"
+        />
+        Distribuição Leste–Oeste
+        <UBadge variant="soft">
+          Longitude
+        </UBadge>
       </template>
-      <template v-if="!opcaoLongitude">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoLongitude"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-bar-chart-3"
-            class="text-primary size-4"
-          />
-          Composição por Tipo
-          <UBadge variant="soft">
-            Top 6 Países
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoTiposPorPais" :tema="temaGrafico" :altura="280">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-bar-chart-3"
+          class="text-primary size-4"
+        />
+        Composição por Tipo
+        <UBadge variant="soft">
+          Top 6 Países
+        </UBadge>
       </template>
-      <template v-if="!opcaoTiposPorPais">
-        <USkeleton class="h-70 w-full rounded-lg" />
-      </template>
-      <template v-else-if="Object.keys(opcaoTiposPorPais).length === 0">
-        <div class="h-70 flex items-center justify-center">
-          <p class="text-sm text-muted">
-            Dados indisponíveis para este dataset.
-          </p>
-        </div>
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoTiposPorPais"
-        :tema="temaGrafico"
-        :height="280"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

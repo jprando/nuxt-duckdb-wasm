@@ -148,108 +148,53 @@ const {
     <!-- ── Linha 1: Dimensões + NSFW ──────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Top 10 Dimensões -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-frame" class="text-primary size-4" />
-            Dimensões Mais Usadas
-            <UBadge variant="soft">
-              Top 10
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoDimensoes" :tema="temaGrafico" :altura="280">
+        <template #titulo>
+          <UIcon name="i-lucide-frame" class="text-primary size-4" />
+          Dimensões Mais Usadas
+          <UBadge variant="soft">
+            Top 10
+          </UBadge>
         </template>
-        <template v-if="!opcaoDimensoes">
-          <USkeleton class="h-70 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoDimensoes"
-          :tema="temaGrafico"
-          :height="280"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Classificação NSFW -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-shield" class="text-error size-4" />
-            Classificação de Segurança (NSFW)
-          </h2>
+      <GraficoCard :opcao="opcaoNsfw" :tema="temaGrafico" :altura="280">
+        <template #titulo>
+          <UIcon name="i-lucide-shield" class="text-error size-4" />
+          Classificação de Segurança (NSFW)
         </template>
-        <template v-if="!opcaoNsfw">
-          <USkeleton class="h-70 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoNsfw"
-          :tema="temaGrafico"
-          :height="280"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 2: Steps + Samplers ──────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Distribuição de Steps -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-sliders-horizontal" class="text-warning size-4" />
-            Distribuição de Steps de Inferência
-          </h2>
+      <GraficoCard :opcao="opcaoSteps" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon name="i-lucide-sliders-horizontal" class="text-warning size-4" />
+          Distribuição de Steps de Inferência
         </template>
-        <template v-if="!opcaoSteps">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoSteps"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Samplers -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-cpu" class="text-secondary size-4" />
-            Algoritmo de Sampling Usado
-          </h2>
+      <GraficoCard :opcao="opcaoSampler" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon name="i-lucide-cpu" class="text-secondary size-4" />
+          Algoritmo de Sampling Usado
         </template>
-        <template v-if="!opcaoSampler">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoSampler"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-clock" class="text-success size-4" />
-          Atividade de Geração por Hora do Dia
-          <UBadge variant="soft">
-            UTC
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoAtividade" :tema="temaGrafico" :altura="220">
+      <template #titulo>
+        <UIcon name="i-lucide-clock" class="text-success size-4" />
+        Atividade de Geração por Hora do Dia
+        <UBadge variant="soft">
+          UTC
+        </UBadge>
       </template>
-      <template v-if="!opcaoAtividade">
-        <USkeleton class="h-55 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoAtividade"
-        :tema="temaGrafico"
-        :height="220"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

@@ -172,91 +172,47 @@ const {
 
     <!-- ── Linha 2: Distribuição de Preços + Rotas mais caras ───── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-bar-chart-3"
-              class="text-primary size-4"
-            />
-            Distribuição de Preços
-          </h2>
+      <GraficoCard :opcao="opcaoDistribuicaoPreco" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-bar-chart-3"
+            class="text-primary size-4"
+          />
+          Distribuição de Preços
         </template>
-        <template v-if="!opcaoDistribuicaoPreco">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoDistribuicaoPreco"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-trending-up"
-              class="text-tertiary size-4"
-            />
-            Top 10 Rotas mais Caras
-          </h2>
+      <GraficoCard :opcao="opcaoRotasCaras" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-trending-up"
+            class="text-tertiary size-4"
+          />
+          Top 10 Rotas mais Caras
         </template>
-        <template v-if="!opcaoRotasCaras">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoRotasCaras"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-network"
-            class="text-success size-4"
-          />
-          Top 10 Estações com mais Conexões
-        </h2>
+    <GraficoCard :opcao="opcaoEstacoesConectadas" :tema="temaGrafico" :altura="260">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-network"
+          class="text-success size-4"
+        />
+        Top 10 Estações com mais Conexões
       </template>
-      <template v-if="!opcaoEstacoesConectadas">
-        <USkeleton class="h-65 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoEstacoesConectadas"
-        :tema="temaGrafico"
-        :height="260"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-circle-dot" class="text-primary size-4" />
-          Rede de Conexões entre Estações
-          <UBadge variant="soft">
-            Top 10 · Chord
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoChord" :tema="temaGrafico" :altura="400">
+      <template #titulo>
+        <UIcon name="i-lucide-circle-dot" class="text-primary size-4" />
+        Rede de Conexões entre Estações
+        <UBadge variant="soft">
+          Top 10 · Chord
+        </UBadge>
       </template>
-      <template v-if="!opcaoChord">
-        <USkeleton class="h-100 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoChord"
-        :tema="temaGrafico"
-        :height="400"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

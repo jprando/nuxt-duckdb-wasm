@@ -210,271 +210,143 @@ const {
     <!-- ── Linha 1: Companhias + Status ───────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Voos por Companhia Aérea -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-building"
-              class="text-primary size-4"
-            />
-            Voos por Companhia Aérea
-          </h2>
+      <GraficoCard :opcao="opcaoCompanhias" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-building"
+            class="text-primary size-4"
+          />
+          Voos por Companhia Aérea
         </template>
-        <template v-if="!opcaoCompanhias">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoCompanhias"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Status dos Voos -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-pie-chart"
-              class="text-success size-4"
-            />
-            Status dos Voos
-          </h2>
+      <GraficoCard :opcao="opcaoStatus" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-pie-chart"
+            class="text-success size-4"
+          />
+          Status dos Voos
         </template>
-        <template v-if="!opcaoStatus">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoStatus"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Atraso por Dia da Semana -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-calendar-days"
-              class="text-warning size-4"
-            />
-            Atraso Médio por Dia da Semana
-          </h2>
+      <GraficoCard :opcao="opcaoDiaSemana" :tema="temaGrafico" :altura="240">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-calendar-days"
+            class="text-warning size-4"
+          />
+          Atraso Médio por Dia da Semana
         </template>
-        <template v-if="!opcaoDiaSemana">
-          <USkeleton class="h-60 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoDiaSemana"
-          :tema="temaGrafico"
-          :height="240"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Voos por Mês -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-calendar"
-              class="text-primary size-4"
-            />
-            Voos por Mês
-          </h2>
+      <GraficoCard :opcao="opcaoMensal" :tema="temaGrafico" :altura="240">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-calendar"
+            class="text-primary size-4"
+          />
+          Voos por Mês
         </template>
-        <template v-if="!opcaoMensal">
-          <USkeleton class="h-60 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoMensal"
-          :tema="temaGrafico"
-          :height="240"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Histograma de Atraso + Distância ─────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Distribuição de Atraso na Partida -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-hourglass"
-              class="text-error size-4"
-            />
-            Distribuição do Atraso na Partida
-          </h2>
+      <GraficoCard :opcao="opcaoAtrasoPartida" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-hourglass"
+            class="text-error size-4"
+          />
+          Distribuição do Atraso na Partida
         </template>
-        <template v-if="!opcaoAtrasoPartida">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoAtrasoPartida"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Distribuição por Grupo de Distância -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-map"
-              class="text-secondary size-4"
-            />
-            Voos por Faixa de Distância
-          </h2>
+      <GraficoCard :opcao="opcaoDistancia" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-map"
+            class="text-secondary size-4"
+          />
+          Voos por Faixa de Distância
         </template>
-        <template v-if="!opcaoDistancia">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoDistancia"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 4: Aeroportos + Cancelamentos por Companhia ──────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Top 12 Aeroportos de Origem -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-map-pin"
-              class="text-success size-4"
-            />
-            Top 12 Aeroportos de Origem
-          </h2>
+      <GraficoCard :opcao="opcaoAeroportos" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-map-pin"
+            class="text-success size-4"
+          />
+          Top 12 Aeroportos de Origem
         </template>
-        <template v-if="!opcaoAeroportos">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoAeroportos"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Taxa de Cancelamento por Companhia -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-ban"
-              class="text-error size-4"
-            />
-            Taxa de Cancelamento por Companhia
-            <UBadge variant="soft">
-              %
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoCancelamentos" :tema="temaGrafico" :altura="300">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-ban"
+            class="text-error size-4"
+          />
+          Taxa de Cancelamento por Companhia
+          <UBadge variant="soft">
+            %
+          </UBadge>
         </template>
-        <template v-if="!opcaoCancelamentos">
-          <USkeleton class="h-75 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoCancelamentos"
-          :tema="temaGrafico"
-          :height="300"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 5: Atraso por Hora do Dia (full width) ──────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-clock"
-            class="text-primary size-4"
-          />
-          Atraso Médio por Hora da Partida
-          <UBadge variant="soft">
-            min
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoHoraPartida" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-clock"
+          class="text-primary size-4"
+        />
+        Atraso Médio por Hora da Partida
+        <UBadge variant="soft">
+          min
+        </UBadge>
       </template>
-      <template v-if="!opcaoHoraPartida">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <template v-else-if="Object.keys(opcaoHoraPartida).length === 0">
-        <div class="h-50 flex items-center justify-center">
-          <p class="text-sm text-muted">
-            Dados de hora indisponíveis para este dataset.
-          </p>
-        </div>
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoHoraPartida"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Radar: Performance Comparativa das Companhias -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-radar" class="text-primary size-4" />
-            Performance Comparativa das Companhias
-            <UBadge variant="soft">
-              Radar
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoRadar" :tema="temaGrafico" :altura="320">
+        <template #titulo>
+          <UIcon name="i-lucide-radar" class="text-primary size-4" />
+          Performance Comparativa das Companhias
+          <UBadge variant="soft">
+            Radar
+          </UBadge>
         </template>
-        <template v-if="!opcaoRadar">
-          <USkeleton class="h-80 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoRadar"
-          :tema="temaGrafico"
-          :height="320"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Sankey: Fluxo Companhia → Status do Voo -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-git-merge" class="text-secondary size-4" />
-            Fluxo de Voos: Companhia → Status
-            <UBadge variant="soft">
-              Sankey
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoSankey" :tema="temaGrafico" :altura="320">
+        <template #titulo>
+          <UIcon name="i-lucide-git-merge" class="text-secondary size-4" />
+          Fluxo de Voos: Companhia → Status
+          <UBadge variant="soft">
+            Sankey
+          </UBadge>
         </template>
-        <template v-if="!opcaoSankey">
-          <USkeleton class="h-80 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoSankey"
-          :tema="temaGrafico"
-          :height="320"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
   </div>
 </template>

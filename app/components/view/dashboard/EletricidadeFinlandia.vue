@@ -154,116 +154,61 @@ const {
     </div>
 
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-chart-line" class="text-primary size-4" />
-          Evolução Semanal do Preço
-          <UBadge variant="soft">
-            2021
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoSemanal" :tema="temaGrafico" :altura="280">
+      <template #titulo>
+        <UIcon name="i-lucide-chart-line" class="text-primary size-4" />
+        Evolução Semanal do Preço
+        <UBadge variant="soft">
+          2021
+        </UBadge>
       </template>
-      <template v-if="!opcaoSemanal">
-        <USkeleton class="h-70 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoSemanal"
-        :tema="temaGrafico"
-        :height="280"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Linha 2: Mensal + Horário ───────────────────────────────── -->
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
       <!-- Variação Mensal -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-calendar" class="text-success size-4" />
-            Preço por Mês
-            <UBadge variant="soft">
-              Médio / Min / Máx
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoMensal" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon name="i-lucide-calendar" class="text-success size-4" />
+          Preço por Mês
+          <UBadge variant="soft">
+            Médio / Min / Máx
+          </UBadge>
         </template>
-        <template v-if="!opcaoMensal">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoMensal"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
       <!-- Perfil Horário -->
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon name="i-lucide-clock" class="text-secondary size-4" />
-            Perfil de Consumo por Hora
-            <UBadge variant="soft">
-              Média do dia
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoHoraria" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon name="i-lucide-clock" class="text-secondary size-4" />
+          Perfil de Consumo por Hora
+          <UBadge variant="soft">
+            Média do dia
+          </UBadge>
         </template>
-        <template v-if="!opcaoHoraria">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoHoraria"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Distribuição de Preços ─────────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-bar-chart-3" class="text-warning size-4" />
-          Distribuição de Preços
-          <UBadge variant="soft">
-            Faixas de €20/MWh
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoDistribuicao" :tema="temaGrafico" :altura="220">
+      <template #titulo>
+        <UIcon name="i-lucide-bar-chart-3" class="text-warning size-4" />
+        Distribuição de Preços
+        <UBadge variant="soft">
+          Faixas de €20/MWh
+        </UBadge>
       </template>
-      <template v-if="!opcaoDistribuicao">
-        <USkeleton class="h-55 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoDistribuicao"
-        :tema="temaGrafico"
-        :height="220"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Calendário de Preços ────────────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon name="i-lucide-calendar-range" class="text-primary size-4" />
-          Mapa de Calor Diário de Preços
-          <UBadge variant="soft">
-            2021
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoCalendario" :tema="temaGrafico" :altura="200">
+      <template #titulo>
+        <UIcon name="i-lucide-calendar-range" class="text-primary size-4" />
+        Mapa de Calor Diário de Preços
+        <UBadge variant="soft">
+          2021
+        </UBadge>
       </template>
-      <template v-if="!opcaoCalendario">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoCalendario"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

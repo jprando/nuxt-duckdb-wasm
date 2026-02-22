@@ -355,7 +355,7 @@ export const usePontualidadeVoos = () => {
             top: 8,
             bottom: 8,
             left: 8,
-            right: 8,
+            right: 90,
             nodeWidth: 12,
             nodeGap: 10,
             label: { fontSize: 10 },

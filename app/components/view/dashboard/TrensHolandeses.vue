@@ -115,101 +115,50 @@ const {
 
     <!-- ── Linha 2: Tipo + Estações ─────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-pie-chart"
-              class="text-primary size-4"
-            />
-            Serviços por Tipo de Trem
-          </h2>
+      <GraficoCard :opcao="opcaoTipo" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-pie-chart"
+            class="text-primary size-4"
+          />
+          Serviços por Tipo de Trem
         </template>
-        <template v-if="!opcaoTipo">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoTipo"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-bar-chart-big"
-              class="text-success size-4"
-            />
-            Top 10 Estações mais Movimentadas
-          </h2>
+      <GraficoCard :opcao="opcaoEstacoesMovimentadas" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-bar-chart-big"
+            class="text-success size-4"
+          />
+          Top 10 Estações mais Movimentadas
         </template>
-        <template v-if="!opcaoEstacoesMovimentadas">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoEstacoesMovimentadas"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-timer"
-            class="text-warning size-4"
-          />
-          Duração Média da Parada
-          <UBadge variant="soft">
-            Top 10 Estações
-          </UBadge>
-        </h2>
+    <GraficoCard :opcao="opcaoDuracaoMediaParada" :tema="temaGrafico" :altura="260">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-timer"
+          class="text-warning size-4"
+        />
+        Duração Média da Parada
+        <UBadge variant="soft">
+          Top 10 Estações
+        </UBadge>
       </template>
-      <template v-if="!opcaoDuracaoMediaParada">
-        <USkeleton class="h-65 w-full rounded-lg" />
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoDuracaoMediaParada"
-        :tema="temaGrafico"
-        :height="260"
-      />
-    </UCard>
+    </GraficoCard>
 
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-clock"
-            class="text-primary size-4"
-          />
-          Partidas por Hora do Dia
-        </h2>
+    <GraficoCard :opcao="opcaoPartidasPorHora" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-clock"
+          class="text-primary size-4"
+        />
+        Partidas por Hora do Dia
       </template>
-      <template v-if="!opcaoPartidasPorHora">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <template v-else-if="Object.keys(opcaoPartidasPorHora).length === 0">
-        <div class="h-50 flex items-center justify-center">
-          <p class="text-sm text-muted">
-            Dados de hora indisponíveis para este dataset.
-          </p>
-        </div>
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoPartidasPorHora"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>

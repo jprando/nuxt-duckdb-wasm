@@ -147,124 +147,62 @@ const {
 
     <!-- ── Linha 2: Fornecedor + Forma de pagamento ───────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-tag"
-              class="text-primary size-4"
-            />
-            Corridas por Fornecedor
-          </h2>
+      <GraficoCard :opcao="opcaoTarifa" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-tag"
+            class="text-primary size-4"
+          />
+          Corridas por Fornecedor
         </template>
-        <template v-if="!opcaoTarifa">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoTarifa"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-credit-card"
-              class="text-success size-4"
-            />
-            Corridas por Forma de Pagamento
-          </h2>
+      <GraficoCard :opcao="opcaoPagamento" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-credit-card"
+            class="text-success size-4"
+          />
+          Corridas por Forma de Pagamento
         </template>
-        <template v-if="!opcaoPagamento">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoPagamento"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
     <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-timer"
-              class="text-success size-4"
-            />
-            Distribuição por Duração da Corrida
-          </h2>
+      <GraficoCard :opcao="opcaoDuracao" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-timer"
+            class="text-success size-4"
+          />
+          Distribuição por Duração da Corrida
         </template>
-        <template v-if="!opcaoDuracao">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoDuracao"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
 
-      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-        <template #header>
-          <h2 class="text-sm font-semibold flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-hand-coins"
-              class="text-warning size-4"
-            />
-            Distribuição de Gorjeta
-            <UBadge variant="soft">
-              USD
-            </UBadge>
-          </h2>
+      <GraficoCard :opcao="opcaoGorjeta" :tema="temaGrafico" :altura="260">
+        <template #titulo>
+          <UIcon
+            name="i-lucide-hand-coins"
+            class="text-warning size-4"
+          />
+          Distribuição de Gorjeta
+          <UBadge variant="soft">
+            USD
+          </UBadge>
         </template>
-        <template v-if="!opcaoGorjeta">
-          <USkeleton class="h-65 w-full rounded-lg" />
-        </template>
-        <LazyGraficoEChart
-          v-else
-          :option="opcaoGorjeta"
-          :tema="temaGrafico"
-          :height="260"
-        />
-      </UCard>
+      </GraficoCard>
     </div>
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
-    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
-      <template #header>
-        <h2 class="text-sm font-semibold flex items-center gap-1.5">
-          <UIcon
-            name="i-lucide-clock"
-            class="text-primary size-4"
-          />
-          Corridas por Hora do Dia
-        </h2>
+    <GraficoCard :opcao="opcaoHora" :tema="temaGrafico" :altura="200" msg-sem-dados="Dados de hora indisponíveis para este dataset.">
+      <template #titulo>
+        <UIcon
+          name="i-lucide-clock"
+          class="text-primary size-4"
+        />
+        Corridas por Hora do Dia
       </template>
-      <template v-if="!opcaoHora">
-        <USkeleton class="h-50 w-full rounded-lg" />
-      </template>
-      <template v-else-if="Object.keys(opcaoHora).length === 0">
-        <div class="h-50 flex items-center justify-center">
-          <p class="text-sm text-muted">
-            Dados de hora indisponíveis para este dataset.
-          </p>
-        </div>
-      </template>
-      <LazyGraficoEChart
-        v-else
-        :option="opcaoHora"
-        :tema="temaGrafico"
-        :height="200"
-      />
-    </UCard>
+    </GraficoCard>
   </div>
 </template>
