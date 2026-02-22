@@ -54,9 +54,6 @@ async () => {
     await _db.instantiate(bundle.mainModule, pthreadWorkerUrl);
     db.value = _db;
 
-    // Registrar datasets R2 no VFS com AsyncBuffer persistente e preaquecer o
-    // footer de cada arquivo (range request leve ~50KB). Queries subsequentes
-    // pulam esse round trip e vão direto para os column chunks.
     const conn = await _db.connect();
     // await conn.close();
 

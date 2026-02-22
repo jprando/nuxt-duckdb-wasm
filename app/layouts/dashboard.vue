@@ -66,6 +66,18 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         badge: _collapsed.value ? undefined : "4.3Mi",
         to: "/dashboard/pontualidadeVoos",
       },
+      {
+        label: "Eletricidade Finlândia",
+        icon: "i-lucide-zap",
+        badge: _collapsed.value ? undefined : "7,9k",
+        to: "/dashboard/eletricidadeFinlandia",
+      },
+      {
+        label: "DiffusionDB",
+        icon: "i-lucide-image",
+        badge: _collapsed.value ? undefined : "2Mi",
+        to: "/dashboard/diffusionDB",
+      },
     ].map(i => ({
       ...i,
       class: "text-lg p-2.5 my-1.5",

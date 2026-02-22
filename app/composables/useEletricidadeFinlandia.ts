@@ -1,0 +1,203 @@
+interface Kpis {
+  total_registros: number;
+  preco_medio: number;
+  preco_minimo: number;
+  preco_maximo: number;
+  desvio_padrao: number;
+}
+
+const COR_PRIMARIA = "#3b82f6";
+const COR_SECUNDARIA = "#10b981";
+const COR_TERCIARIA = "#f59e0b";
+const COR_QUATERNARIA = "#8b5cf6";
+
+const baseChart = {
+  backgroundColor: "transparent",
+  grid: { top: 32, right: 16, bottom: 48, left: 64 },
+  tooltip: { trigger: "axis" as const },
+};
+
+const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+export const useEletricidadeFinlandia = () => {
+  const { executar, init } = useDuckDb();
+  const colorMode = useColorMode();
+
+  const temaGrafico = computed(() => colorMode.value === "dark" ? "dark" : "");
+
+  // ─── Estado ───────────────────────────────────────────────────────────────
+
+  const carregandoKpis = ref(true);
+  const erro = ref<string | null>(null);
+
+  const kpis = ref<Kpis>({
+    total_registros: 0,
+    preco_medio: 0,
+    preco_minimo: 0,
+    preco_maximo: 0,
+    desvio_padrao: 0,
+  });
+
+  const opcaoMensal = ref<Record<string, unknown> | null>(null);
+  const opcaoHoraria = ref<Record<string, unknown> | null>(null);
+  const opcaoSemanal = ref<Record<string, unknown> | null>(null);
+  const opcaoDistribuicao = ref<Record<string, unknown> | null>(null);
+
+  // ─── Carregamento ─────────────────────────────────────────────────────────
+
+  const carregarDados = () => {
+    carregandoKpis.value = true;
+    erro.value = null;
+
+    const url = eletricidadeFinlandiaUrl;
+
+    executar(eletricidadeFinlandiaKpisConsulta(url))
+      .then(([row]) => {
+        kpis.value = row as Kpis;
+      })
+      .catch((e) => {
+        erro.value = `Erro ao carregar dados: ${e}`;
+        console.error(e);
+      })
+      .finally(() => {
+        carregandoKpis.value = false;
+      });
+
+    executar(eletricidadeFinlandiaMensalConsulta(url))
+      .then((data) => {
+        const rows = data as any[];
+        const labels = rows.map(d => MESES[(d.mes as number) - 1]);
+        opcaoMensal.value = {
+          ...baseChart,
+          legend: { top: 4, textStyle: { fontSize: 10 } },
+          xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "€/MWh", nameTextStyle: { fontSize: 10 } },
+          series: [
+            {
+              type: "bar",
+              name: "Médio",
+              data: rows.map(d => d.preco_medio),
+              itemStyle: { color: COR_PRIMARIA },
+            },
+            {
+              type: "line",
+              name: "Máximo",
+              data: rows.map(d => d.preco_max),
+              itemStyle: { color: COR_TERCIARIA },
+              lineStyle: { width: 2 },
+            },
+            {
+              type: "line",
+              name: "Mínimo",
+              data: rows.map(d => d.preco_min),
+              itemStyle: { color: COR_SECUNDARIA },
+              lineStyle: { width: 2 },
+            },
+          ],
+        };
+      });
+
+    executar(eletricidadeFinlandiaHorariaConsulta(url))
+      .then((data) => {
+        const rows = data as any[];
+        opcaoHoraria.value = {
+          ...baseChart,
+          color: [COR_QUATERNARIA],
+          xAxis: {
+            type: "category",
+            data: rows.map(d => `${String(d.hora as number).padStart(2, "0")}h`),
+            axisLabel: { fontSize: 10 },
+          },
+          yAxis: {
+            type: "value",
+            axisLabel: { fontSize: 10 },
+            name: "€/MWh",
+            nameTextStyle: { fontSize: 10 },
+          },
+          series: [{ type: "bar", data: rows.map(d => d.preco_medio), name: "Preço Médio" }],
+        };
+      });
+
+    executar(eletricidadeFinlandiaSemanaisConsulta(url))
+      .then((data) => {
+        const rows = data as any[];
+        opcaoSemanal.value = {
+          backgroundColor: "transparent",
+          grid: { top: 40, right: 16, bottom: 32, left: 64 },
+          legend: { top: 4, textStyle: { fontSize: 10 } },
+          tooltip: { trigger: "axis" as const },
+          xAxis: {
+            type: "category",
+            data: rows.map(d => d.semana),
+            axisLabel: { fontSize: 8, rotate: 45, interval: 3 },
+          },
+          yAxis: {
+            type: "value",
+            axisLabel: { fontSize: 10 },
+            name: "€/MWh",
+            nameTextStyle: { fontSize: 10 },
+          },
+          series: [
+            {
+              type: "line",
+              name: "Médio",
+              data: rows.map(d => d.preco_medio),
+              smooth: true,
+              itemStyle: { color: COR_PRIMARIA },
+              lineStyle: { width: 2 },
+              areaStyle: { color: `${COR_PRIMARIA}33` },
+            },
+            {
+              type: "line",
+              name: "Máximo",
+              data: rows.map(d => d.preco_max),
+              smooth: true,
+              itemStyle: { color: COR_TERCIARIA },
+              lineStyle: { width: 1.5, type: "dashed" as const },
+            },
+          ],
+        };
+      });
+
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(url))
+      .then((data) => {
+        const rows = data as any[];
+        opcaoDistribuicao.value = {
+          ...baseChart,
+          grid: { top: 16, right: 16, bottom: 56, left: 64 },
+          color: [COR_SECUNDARIA],
+          xAxis: {
+            type: "category",
+            data: rows.map(d => `${d.faixa_inicio}–${(d.faixa_inicio as number) + 20}`),
+            axisLabel: { fontSize: 10, rotate: 45 },
+          },
+          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+          series: [{ type: "bar", data: rows.map(d => d.total), name: "Horas" }],
+        };
+      });
+  };
+
+  onMounted(async () => {
+    await init();
+    carregarDados();
+  });
+
+  // ─── Formatação ───────────────────────────────────────────────────────────
+
+  const fmtNumero = (n: number) => numeroSemCasaDecimal.format(n);
+  const fmtEuro = (n: number) =>
+    new Intl.NumberFormat("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+
+  return {
+    carregandoKpis,
+    erro,
+    kpis,
+    temaGrafico,
+    opcaoMensal,
+    opcaoHoraria,
+    opcaoSemanal,
+    opcaoDistribuicao,
+    fmtNumero,
+    fmtEuro,
+  };
+};

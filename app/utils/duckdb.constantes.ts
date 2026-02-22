@@ -14,6 +14,9 @@ export const taxiNYCJaneiro2010Parquet = "yellow_tripdata_2010-01.parquet";
 export const shakespeareParquet = "shakespeare.parquet";
 export const estacoesTremParquet = "stations.parquet";
 export const pontualidadeVoosParquet = "ontime.parquet";
+export const eletricidadeFinlandiaParquet = "electricity_finland_2021.parquet";
+export const diffusionDBParquet = "diffusiondb_meta.parquet";
+export const precosAcoesParquet = "prices_sample.parquet";
 
 export const listaParquets = [
   taxiNYCLocalParquet,
@@ -24,6 +27,9 @@ export const listaParquets = [
   shakespeareParquet,
   estacoesTremParquet,
   pontualidadeVoosParquet,
+  eletricidadeFinlandiaParquet,
+  diffusionDBParquet,
+  precosAcoesParquet,
 ];
 
 // Mapeamento URL → nome para registro em lote no VFS (usado em duckdb.init.ts)
@@ -32,7 +38,7 @@ export const nomeUrlParquetsR2 = listaParquets.map((nome) => ({
   url: `${r2BaseUrl}/${nome}`,
 }));
 
-// Ordem deve ser idêntica à de datasetNomes acima
+// Ordem deve ser idêntica à de listaParquets acima
 export const [
   taxiNYCLocalUrl,
   trensHolandesUrl,
@@ -42,7 +48,13 @@ export const [
   shakespeareUrl,
   estacoesTremUrl,
   pontualidadeVoosUrl,
+  eletricidadeFinlandiaUrl,
+  diffusionDBUrl,
+  precosAcoesUrl,
 ] = listaParquets.map((nome) => `${r2BaseUrl}/${nome}`) as [
+  string,
+  string,
+  string,
   string,
   string,
   string,
@@ -101,22 +113,22 @@ export const datasetsParquet: DatasetParquet[] = [
     url: pontualidadeVoosUrl,
     grupo: "Outros",
   },
-  // Amostras de Redes Sociais (Metadados)
+  // IA Generativa
   {
-    label: "Amostra de Posts (HackerNews)",
-    url: "https://huggingface.co/datasets/poloclub/diffusiondb/resolve/main/metadata.parquet",
-    grupo: "Redes Sociais",
+    label: "DiffusionDB (IA Generativa)",
+    url: diffusionDBUrl,
+    grupo: "IA Generativa",
   },
-  // Dados Financeiros (DuckDB Sample Data - Direto do S3 Público)
+  // Dados Financeiros
   {
     label: "Preços de Ações (Amostra)",
-    url: "https://duckdb.org/data/prices.parquet",
+    url: precosAcoesUrl,
     grupo: "Financeiro",
   },
-  // GitHub Raw (Datasets de teste da comunidade)
+  // Energia
   {
     label: "Eletricidade Finlândia (Histórico)",
-    url: "https://raw.githubusercontent.com/kimmolinna/parquet_public/master/2021.parquet",
+    url: eletricidadeFinlandiaUrl,
     grupo: "Energia",
   },
 ];
