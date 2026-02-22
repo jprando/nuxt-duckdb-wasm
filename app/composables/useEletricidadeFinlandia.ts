@@ -42,6 +42,7 @@ export const useEletricidadeFinlandia = () => {
   const opcaoHoraria = ref<Record<string, unknown> | null>(null);
   const opcaoSemanal = ref<Record<string, unknown> | null>(null);
   const opcaoDistribuicao = ref<Record<string, unknown> | null>(null);
+  const opcaoCalendario = ref<Record<string, unknown> | null>(null);
 
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
@@ -175,6 +176,50 @@ export const useEletricidadeFinlandia = () => {
           series: [{ type: "bar", data: rows.map(d => d.total), name: "Horas" }],
         };
       });
+
+    executar(eletricidadeFinlandiaCalendarioConsulta(url))
+      .then((data) => {
+        const rows = data as { dia: string; preco_medio: number }[];
+        const valores = rows.map(d => d.preco_medio);
+        const minVal = Math.min(...valores);
+        const maxVal = Math.max(...valores);
+        opcaoCalendario.value = {
+          backgroundColor: "transparent",
+          tooltip: {
+            trigger: "item",
+            formatter: (p: any) => `${p.value[0]}<br/>€${p.value[1]}/MWh`,
+          },
+          visualMap: {
+            min: minVal,
+            max: maxVal,
+            calculable: true,
+            orient: "horizontal",
+            left: "center",
+            top: 4,
+            itemWidth: 12,
+            itemHeight: 120,
+            textStyle: { fontSize: 10 },
+            inRange: { color: ["#3b82f6", "#f59e0b", "#f43f5e"] },
+          },
+          calendar: {
+            range: "2021",
+            top: 56,
+            left: 36,
+            right: 8,
+            bottom: 8,
+            cellSize: ["auto", 14],
+            itemStyle: { borderWidth: 0.5 },
+            dayLabel: { show: true, fontSize: 9, firstDay: 1 },
+            monthLabel: { show: true, fontSize: 10 },
+            yearLabel: { show: false },
+          },
+          series: [{
+            type: "heatmap",
+            coordinateSystem: "calendar",
+            data: rows.map(d => [d.dia, d.preco_medio]),
+          }],
+        };
+      });
   };
 
   onMounted(async () => {
@@ -197,6 +242,7 @@ export const useEletricidadeFinlandia = () => {
     opcaoHoraria,
     opcaoSemanal,
     opcaoDistribuicao,
+    opcaoCalendario,
     fmtNumero,
     fmtEuro,
   };

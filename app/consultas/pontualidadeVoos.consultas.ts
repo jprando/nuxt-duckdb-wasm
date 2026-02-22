@@ -112,3 +112,33 @@ export const ontimeHoraPartidaConsulta = (url: string) => `
   HAVING hora BETWEEN 0 AND 23
   ORDER BY hora
 `;
+
+export const ontimeRadarCompanhiasConsulta = (url: string) => `
+  SELECT
+    Carrier,
+    COUNT(*) AS total_voos,
+    ROUND(SUM(CASE WHEN Cancelled = 0 AND Depdel15 = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS pct_pontual,
+    ROUND(SUM(Cancelled) * 100.0 / COUNT(*), 2) AS pct_cancelado,
+    ROUND(AVG(CASE WHEN Depdelay > 0 THEN Depdelay ELSE NULL END), 1) AS atraso_medio,
+    ROUND(AVG(Distance), 0) AS distancia_media
+  FROM '${url}'
+  GROUP BY Carrier
+  HAVING COUNT(*) > 50000
+  ORDER BY total_voos DESC
+  LIMIT 8
+`;
+
+export const ontimeSankeyConsulta = (url: string) => `
+  SELECT
+    Carrier AS companhia,
+    CASE
+      WHEN Cancelled = 1 THEN 'Cancelado'
+      WHEN Diverted  = 1 THEN 'Desviado'
+      WHEN Depdel15  = 1 THEN 'Atrasado (>15min)'
+      ELSE 'Pontual'
+    END AS status,
+    COUNT(*) AS total
+  FROM '${url}'
+  GROUP BY Carrier, status
+  ORDER BY Carrier, total DESC
+`;

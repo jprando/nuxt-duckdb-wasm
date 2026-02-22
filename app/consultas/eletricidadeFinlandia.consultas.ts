@@ -48,3 +48,12 @@ export const eletricidadeFinlandiaDistribuicaoConsulta = (url: string) => `
   GROUP BY faixa_inicio
   ORDER BY faixa_inicio
 `;
+
+export const eletricidadeFinlandiaCalendarioConsulta = (url: string) => `
+  SELECT
+    CAST(DATE_TRUNC('day', time) AS DATE) AS dia,
+    ROUND(AVG(price), 2) AS preco_medio
+  FROM '${url}'
+  GROUP BY dia
+  ORDER BY dia
+`;

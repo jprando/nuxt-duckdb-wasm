@@ -48,3 +48,28 @@ export const railwayFaresBusiestStationsConsulta = (url: string) => `
   ORDER BY appearances DESC
   LIMIT 10;
 `;
+
+// Chord: conexões entre as 10 estações mais movimentadas
+export const railwayFaresChordConsulta = (url: string) => `
+  WITH top_stations AS (
+    SELECT station FROM (
+      SELECT Station1 AS station FROM read_parquet('${url}')
+      UNION ALL
+      SELECT Station2 AS station FROM read_parquet('${url}')
+    ) t
+    GROUP BY station
+    ORDER BY COUNT(*) DESC
+    LIMIT 10
+  )
+  SELECT
+    LEAST(Station1, Station2) AS src,
+    GREATEST(Station1, Station2) AS dst,
+    COUNT(*) AS total,
+    ROUND(AVG(Price), 0) AS preco_medio
+  FROM read_parquet('${url}')
+  WHERE Station1 IN (SELECT station FROM top_stations)
+    AND Station2 IN (SELECT station FROM top_stations)
+    AND Station1 != Station2
+  GROUP BY src, dst
+  ORDER BY total DESC
+`;

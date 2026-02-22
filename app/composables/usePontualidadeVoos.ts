@@ -64,6 +64,8 @@ export const usePontualidadeVoos = () => {
   const opcaoAeroportos = ref<Record<string, unknown> | null>(null);
   const opcaoCancelamentos = ref<Record<string, unknown> | null>(null);
   const opcaoHoraPartida = ref<Record<string, unknown> | null>(null);
+  const opcaoRadar = ref<Record<string, unknown> | null>(null);
+  const opcaoSankey = ref<Record<string, unknown> | null>(null);
 
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
@@ -284,6 +286,92 @@ export const usePontualidadeVoos = () => {
       .catch(() => {
         opcaoHoraPartida.value = {};
       });
+
+    executar(ontimeRadarCompanhiasConsulta(url))
+      .then((data) => {
+        const rows = data as any[];
+        // Calcula máximos dinâmicos para os indicadores
+        const maxAtraso = Math.max(...rows.map(d => d.atraso_medio ?? 0), 1);
+        const maxDist = Math.max(...rows.map(d => d.distancia_media ?? 0), 1);
+        opcaoRadar.value = {
+          backgroundColor: "transparent",
+          tooltip: { trigger: "item" },
+          legend: {
+            bottom: 0,
+            type: "scroll",
+            textStyle: { fontSize: 10 },
+          },
+          radar: {
+            indicator: [
+              { name: "Pontualidade (%)", max: 100 },
+              { name: "Dist. Média (mi)", max: maxDist },
+              { name: "Atraso Médio (min)", max: maxAtraso },
+              { name: "Taxa Cancelamento\n(inversa)", max: 100 },
+            ],
+            radius: "60%",
+            center: ["50%", "46%"],
+            axisName: { fontSize: 10 },
+          },
+          series: [{
+            type: "radar",
+            data: rows.map(d => ({
+              name: d.carrier,
+              value: [
+                d.pct_pontual ?? 0,
+                d.distancia_media ?? 0,
+                d.atraso_medio ?? 0,
+                // taxa cancelamento invertida: 100 = nunca cancela, 0 = sempre cancela
+                Math.max(0, 100 - (d.pct_cancelado ?? 0) * 20),
+              ],
+            })),
+          }],
+        };
+      });
+
+    executar(ontimeSankeyConsulta(url))
+      .then((data) => {
+        const rows = data as { companhia: string; status: string; total: number }[];
+        const companhias = [...new Set(rows.map(d => d.companhia))];
+        const statuses = [...new Set(rows.map(d => d.status))];
+        const COR_SANKEY_STATUS: Record<string, string> = {
+          "Pontual": COR_SECUNDARIA,
+          "Atrasado (>15min)": COR_TERCIARIA,
+          "Cancelado": "#f43f5e",
+          "Desviado": COR_QUATERNARIA,
+        };
+        opcaoSankey.value = {
+          backgroundColor: "transparent",
+          tooltip: {
+            trigger: "item",
+            formatter: (p: any) => {
+              if (p.dataType === "edge") {
+                return `${p.data.source} → ${p.data.target}<br/>${new Intl.NumberFormat("pt-BR").format(p.data.value)} voos`;
+              }
+              return p.name;
+            },
+          },
+          series: [{
+            type: "sankey",
+            top: 8,
+            bottom: 8,
+            left: 8,
+            right: 8,
+            nodeWidth: 12,
+            nodeGap: 10,
+            label: { fontSize: 10 },
+            lineStyle: { opacity: 0.35, curveness: 0.5 },
+            nodes: [
+              ...companhias.map(c => ({ name: c, itemStyle: { color: COR_PRIMARIA } })),
+              ...statuses.map(s => ({ name: s, itemStyle: { color: COR_SANKEY_STATUS[s] ?? "#94a3b8" } })),
+            ],
+            edges: rows.map(d => ({
+              source: d.companhia,
+              target: d.status,
+              value: d.total,
+            })),
+          }],
+        };
+      });
   };
 
   onMounted(async () => {
@@ -312,6 +400,8 @@ export const usePontualidadeVoos = () => {
     opcaoAeroportos,
     opcaoCancelamentos,
     opcaoHoraPartida,
+    opcaoRadar,
+    opcaoSankey,
     fmtNumero,
     fmtMin,
     fmtPct,

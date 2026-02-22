@@ -38,6 +38,7 @@ export const useTarifasFerroviarias = () => {
   const opcaoDistribuicaoPreco = ref<Record<string, unknown> | null>(null);
   const opcaoRotasCaras = ref<Record<string, unknown> | null>(null);
   const opcaoEstacoesConectadas = ref<Record<string, unknown> | null>(null);
+  const opcaoChord = ref<Record<string, unknown> | null>(null);
 
   const carregarDados = () => {
     carregandoKpis.value = true;
@@ -105,6 +106,39 @@ export const useTarifasFerroviarias = () => {
           series: [{ type: "bar", data: appearances, name: "Nº de Conexões" }],
         };
       });
+
+    executar(railwayFaresChordConsulta(url))
+      .then((data) => {
+        const rows = data as { src: string; dst: string; total: number; preco_medio: number }[];
+        const nodesSet = new Set<string>();
+        rows.forEach(d => { nodesSet.add(d.src); nodesSet.add(d.dst); });
+        const nodes = [...nodesSet].map(name => ({ name }));
+        opcaoChord.value = {
+          backgroundColor: "transparent",
+          tooltip: {
+            trigger: "item",
+            formatter: (p: any) => {
+              if (p.dataType === "edge") {
+                return `${p.data.source} ↔ ${p.data.target}<br/>${p.data.value} rotas · €${p.data.preco_medio} médio`;
+              }
+              return p.name;
+            },
+          },
+          series: [{
+            type: "chord",
+            radius: ["55%", "65%"],
+            center: ["50%", "50%"],
+            label: { fontSize: 10 },
+            nodes,
+            edges: rows.map(d => ({
+              source: d.src,
+              target: d.dst,
+              value: d.total,
+              preco_medio: d.preco_medio,
+            })),
+          }],
+        };
+      });
   };
 
   onMounted(async () => {
@@ -123,6 +157,7 @@ export const useTarifasFerroviarias = () => {
     opcaoDistribuicaoPreco,
     opcaoRotasCaras,
     opcaoEstacoesConectadas,
+    opcaoChord,
     fmtNumero,
     fmtPreco,
   };

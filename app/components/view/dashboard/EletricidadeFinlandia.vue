@@ -11,6 +11,7 @@ const {
   opcaoHoraria,
   opcaoSemanal,
   opcaoDistribuicao,
+  opcaoCalendario,
   fmtNumero,
   fmtEuro,
 } = useEletricidadeFinlandia();
@@ -240,6 +241,28 @@ const {
         :option="opcaoDistribuicao"
         :tema="temaGrafico"
         :height="220"
+      />
+    </UCard>
+
+    <!-- ── Calendário de Preços ────────────────────────────────────── -->
+    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
+      <template #header>
+        <h2 class="text-sm font-semibold flex items-center gap-1.5">
+          <UIcon name="i-lucide-calendar-range" class="text-primary size-4" />
+          Mapa de Calor Diário de Preços
+          <UBadge variant="soft">
+            2021
+          </UBadge>
+        </h2>
+      </template>
+      <template v-if="!opcaoCalendario">
+        <USkeleton class="h-50 w-full rounded-lg" />
+      </template>
+      <LazyGraficoEChart
+        v-else
+        :option="opcaoCalendario"
+        :tema="temaGrafico"
+        :height="200"
       />
     </UCard>
   </div>

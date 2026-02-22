@@ -16,6 +16,8 @@ const {
   opcaoAeroportos,
   opcaoCancelamentos,
   opcaoHoraPartida,
+  opcaoRadar,
+  opcaoSankey,
   fmtNumero,
   fmtMin,
   fmtPct,
@@ -427,5 +429,52 @@ const {
         :height="200"
       />
     </UCard>
+
+    <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+      <!-- Radar: Performance Comparativa das Companhias -->
+      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
+        <template #header>
+          <h2 class="text-sm font-semibold flex items-center gap-1.5">
+            <UIcon name="i-lucide-radar" class="text-primary size-4" />
+            Performance Comparativa das Companhias
+            <UBadge variant="soft">
+              Radar
+            </UBadge>
+          </h2>
+        </template>
+        <template v-if="!opcaoRadar">
+          <USkeleton class="h-80 w-full rounded-lg" />
+        </template>
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoRadar"
+          :tema="temaGrafico"
+          :height="320"
+        />
+      </UCard>
+
+      <!-- Sankey: Fluxo Companhia → Status do Voo -->
+      <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
+        <template #header>
+          <h2 class="text-sm font-semibold flex items-center gap-1.5">
+            <UIcon name="i-lucide-git-merge" class="text-secondary size-4" />
+            Fluxo de Voos: Companhia → Status
+            <UBadge variant="soft">
+              Sankey
+            </UBadge>
+          </h2>
+        </template>
+        <template v-if="!opcaoSankey">
+          <USkeleton class="h-80 w-full rounded-lg" />
+        </template>
+        <LazyGraficoEChart
+          v-else
+          :option="opcaoSankey"
+          :tema="temaGrafico"
+          :height="320"
+        />
+      </UCard>
+    </div>
   </div>
 </template>

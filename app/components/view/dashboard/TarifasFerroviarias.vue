@@ -10,6 +10,7 @@ const {
   opcaoDistribuicaoPreco,
   opcaoRotasCaras,
   opcaoEstacoesConectadas,
+  opcaoChord,
   fmtNumero,
   fmtPreco,
 } = useTarifasFerroviarias();
@@ -233,6 +234,28 @@ const {
         :option="opcaoEstacoesConectadas"
         :tema="temaGrafico"
         :height="260"
+      />
+    </UCard>
+
+    <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
+    <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
+      <template #header>
+        <h2 class="text-sm font-semibold flex items-center gap-1.5">
+          <UIcon name="i-lucide-circle-dot" class="text-primary size-4" />
+          Rede de Conexões entre Estações
+          <UBadge variant="soft">
+            Top 10 · Chord
+          </UBadge>
+        </h2>
+      </template>
+      <template v-if="!opcaoChord">
+        <USkeleton class="h-100 w-full rounded-lg" />
+      </template>
+      <LazyGraficoEChart
+        v-else
+        :option="opcaoChord"
+        :tema="temaGrafico"
+        :height="400"
       />
     </UCard>
   </div>
