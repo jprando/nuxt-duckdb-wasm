@@ -31,6 +31,6 @@ useHead({
       </div>
     </template>
 
-    <ViewDashboardRailwayFares />
+    <ViewDashboardTarifasFerroviarias />
   </NuxtLayout>
 </template>

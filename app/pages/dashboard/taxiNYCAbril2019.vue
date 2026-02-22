@@ -33,6 +33,6 @@ definePageMeta({ layout: "dashboard" });
       </div>
     </template>
 
-    <ViewDashboardNYCTaxi2019Apr />
+    <ViewDashboardTaxiNYCAbril2019 />
   </NuxtLayout>
 </template>

@@ -27,6 +27,6 @@ definePageMeta({ layout: "dashboard" });
       </div>
     </template>
 
-    <ViewDashboardOntime />
+    <ViewDashboardPontualidadeVoos />
   </NuxtLayout>
 </template>

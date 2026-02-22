@@ -35,6 +35,6 @@ useHead({
       </div>
     </template>
 
-    <ViewDashboardDutchTrainServices />
+    <ViewDashboardTrensHolandeses />
   </NuxtLayout>
 </template>
