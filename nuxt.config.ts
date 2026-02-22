@@ -67,7 +67,6 @@ export default defineNuxtConfig({
   },
 
   monitoring: {
-    // Metrics collection (enabled by default)
     metrics: {
       enabled: true,
       path: "/metrics",
