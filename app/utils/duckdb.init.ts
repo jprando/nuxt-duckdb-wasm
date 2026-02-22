@@ -1,7 +1,10 @@
+import { datasetsR2, duckDBDataProtocolHTTP, duckDBLogLevelWARNING } from "./duckdb.constantes";
+
 export const duckDBWasmIniciar = (
   db: ShallowRef<unknown>,
   estahCarregando: WritableComputedRef<boolean>,
   duckDBWasmInfo: Ref<string>,
+  warmupAtual: Ref<number>,
 ) =>
 async () => {
   // console.clear();
@@ -51,19 +54,22 @@ async () => {
 
     await _db.instantiate(bundle.mainModule, pthreadWorkerUrl);
     db.value = _db;
+
+    // Registrar datasets R2 no VFS com AsyncBuffer persistente e preaquecer o
+    // footer de cada arquivo (range request leve ~50KB). Queries subsequentes
+    // pulam esse round trip e vão direto para os column chunks.
     const conn = await _db.connect();
-    // ESTOU CIENTE QUE HA CREDENCIAIS NO CODIGO ABAIXO
-    // SAO CREDENCIAIS SOMENTE LEITURA PARA ARQUIVOS PARQUET DE TESTE
-    // await conn.query(`
-    //   INSTALL httpfs;
-    //   LOAD httpfs;
-    //   CREATE SECRET (
-    //     TYPE r2,
-    //     KEY_ID '795bc4564e26558db20d054f10ab0f7a',
-    //     SECRET '3511e0909dfb4902485b5d5be2676742e22d5a5ef90fb2cd9ae09f16db987f03',
-    //     ACCOUNT_ID '4948c0330a30de25bd62ed74721e547b'
-    //   );
-    // `);
+    for (const { nome, url } of datasetsR2) {
+     await _db.registerFileURL(nome, url, duckDBDataProtocolHTTP, false);
+    }
+    await Promise.allSettled(
+      datasetsR2.map(({ nome }) =>
+        conn.query(`SELECT COUNT(*) FROM '${nome}'`).then(() => {
+          warmupAtual.value++;
+        }),
+      ),
+    );
+    await conn.close();
 
     const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1]
       ?? "desconhecido";

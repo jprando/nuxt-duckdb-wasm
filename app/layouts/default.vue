@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-const { duckDBWasmInfo } = useDuckDb();
+const { duckDBWasmInfo, warmupAtual, warmupTotal } = useDuckDb();
 </script>
 
 <template>
@@ -87,8 +87,15 @@ const { duckDBWasmInfo } = useDuckDb();
           </p>
         </template>
         <template #right>
+          <UProgress
+            v-if="warmupAtual < warmupTotal"
+            v-model="warmupAtual"
+            :max="warmupTotal"
+            size="sm"
+            class="w-20"
+          />
           <span
-            v-if="duckDBWasmInfo"
+            v-else-if="duckDBWasmInfo"
             class="text-[0.67rem] sm:text-xs text-dimmed inline"
           >
             {{ duckDBWasmInfo }}

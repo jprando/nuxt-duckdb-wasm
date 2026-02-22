@@ -71,7 +71,7 @@ export const usePontualidadeVoos = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = pontualidadeVoosUrl;
+    const url = pontualidadeVoosNome;
 
     executar(ontimeKpisConsulta(url))
       .then(([kpisData]) => {

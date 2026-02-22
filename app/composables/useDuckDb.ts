@@ -1,6 +1,8 @@
 const db = shallowRef<any>(null);
 const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
+const warmupAtual = ref(0);
+const warmupTotal = datasetsR2.length;
 
 let timerDebounce: number | undefined;
 let _controller = new AbortController();
@@ -10,7 +12,7 @@ if (import.meta.client) {
 }
 
 export const useDuckDb = () => {
-  const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
+  const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo, warmupAtual);
 
   const cancelarConsulta = () => {
     // console.info("#16 cancelarConsulta:invocado");
@@ -100,6 +102,8 @@ export const useDuckDb = () => {
     cancelarConsulta,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
+    warmupAtual: readonly(warmupAtual),
+    warmupTotal,
     obterDadosSimples,
     obterDadosSimplesQuantidade,
     obterDadosParquet,

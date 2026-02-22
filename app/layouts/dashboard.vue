@@ -4,7 +4,7 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
-const { duckDBWasmInfo, cancelarConsulta } = useDuckDb();
+const { duckDBWasmInfo, cancelarConsulta, warmupAtual, warmupTotal } = useDuckDb();
 
 const _collapsed = ref(false);
 
@@ -110,8 +110,15 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         <template #footer>
           <div class="min-w-full flex flex-col gap-2 items-center">
             <USeparator />
+            <UProgress
+              v-if="warmupAtual < warmupTotal && !_collapsed"
+              v-model="warmupAtual"
+              :max="datasetNomes"
+              size="sm"
+              class="w-full"
+            />
             <span
-              v-if="duckDBWasmInfo"
+              v-else-if="duckDBWasmInfo"
               class="text-[0.65rem] text-muted truncate transition-shadow"
               :class="_collapsed ? '[writing-mode:vertical-rl] rotate-180' : ''"
             >

@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   ssr: false,
 
+  imports: {
+    dirs: ["consultas"],
+  },
+
   modules: [
     "@nuxt/eslint",
     "@nuxt/ui",

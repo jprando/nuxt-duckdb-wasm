@@ -168,6 +168,40 @@ pnpm format            # Format code before committing
 - Para documentacao, modulos, deploy e conceitos do Nuxt, use o MCP `nuxt`.
 - Para componentes, composables, exemplos e temas do Nuxt UI, use o MCP `nuxt-ui`.
 
+## Ferramentas de Desenvolvimento Disponiveis
+
+### Servidor de Desenvolvimento
+- O usuario (desenvolvedor) geralmente executa `pnpm dev` e o projeto roda em `http://localhost:3000`
+- O servidor pode ja estar rodando quando voce iniciar uma sessao
+
+### Acesso ao Navegador (Google Chrome MCP)
+- O MCP **chrome-devtools** (`mcp__chrome-devtools__*`) esta disponivel para interagir com o Chrome
+- Use-o para: inspecionar o console do navegador, capturar screenshots, navegar entre paginas, verificar erros de runtime, monitorar requisicoes de rede
+- Util para verificar bugs visuais, erros de hidratacao, requisicoes HTTP aos arquivos parquet, e comportamento do DuckDB WASM no browser
+- Ferramentas-chave: `take_screenshot`, `list_console_messages`, `list_network_requests`, `navigate_page`, `evaluate_script`
+
+### Playwright (Testes e Automacao de Browser)
+- O MCP **playwright** (`mcp__plugin_playwright_playwright__*`) esta disponivel para automacao de browser
+- O CLI `playwright` tambem esta instalado na maquina (`pnpm playwright`)
+- Use para testes E2E, verificacao de comportamento de UI, e interacao programatica com o app
+
+### DuckDB CLI
+- O CLI do `duckdb` esta instalado na maquina e disponivel via Bash
+- Use para: inspecionar arquivos parquet (`DESCRIBE`, `parquet_schema`, `parquet_metadata`), testar queries localmente, gerar arquivos parquet otimizados com `COPY ... TO ... (FORMAT PARQUET, ...)`
+- Para acessar arquivos no R2 privado, carregar httpfs primeiro: `INSTALL httpfs; LOAD httpfs; CREATE SECRET (...)`
+
+### Wrangler CLI (Cloudflare)
+- O CLI `wrangler` esta instalado na maquina, logado na conta Cloudflare do usuario, e disponivel via Bash
+- Use para gerenciar recursos Cloudflare: R2, Workers, D1, KV, etc.
+- **IMPORTANTE**: sempre adicionar `--remote` para operar no ambiente remoto real (sem a flag, o wrangler usa emulador local e as operacoes nao refletem no R2)
+- Comandos R2 mais usados:
+  ```bash
+  wrangler r2 object put BUCKET/chave.parquet --file=local.parquet --remote
+  wrangler r2 object get BUCKET/chave.parquet --remote
+  wrangler r2 object delete BUCKET/chave.parquet --remote
+  ```
+- Bucket do projeto: `teste-nuxt-duckdb-wasm`
+
 # Regras do Projeto (Nuxt + TypeScript)
 
 - Utilize sempre TypeScript com tipagem estrita.

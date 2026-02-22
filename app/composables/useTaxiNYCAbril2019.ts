@@ -47,7 +47,7 @@ export const useTaxiNYCAbril2019 = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = taxiNYCAbril2019Url;
+    const url = taxiNYCAbril2019Nome;
 
     executar(nycTaxi2019AprKpisConsulta(url))
       .then(([kpisData]) => {
