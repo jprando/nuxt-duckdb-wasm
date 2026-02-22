@@ -12,7 +12,11 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
     [
       { label: "Dados", icon: "i-lucide-table-2", to: "/" },
-    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5", onSelect: cancelarConsulta })),
+    ].map(i => ({
+      ...i,
+      class: "text-lg p-2.5 my-1.5",
+      onSelect: cancelarConsulta,
+    })),
     [
       {
         label: "NYC Taxi Jan/2024",
@@ -54,7 +58,7 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         label: "Estações de Trem",
         icon: "i-lucide-building-2",
         badge: _collapsed.value ? undefined : "578",
-        to: "/dashboard/estacoesFerrovia",
+        to: "/dashboard/estacoesTrem",
       },
       {
         label: "Dados de Voos",
@@ -62,7 +66,11 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         badge: _collapsed.value ? undefined : "4.3Mi",
         to: "/dashboard/pontualidadeVoos",
       },
-    ].map(i => ({ ...i, class: "text-lg p-2.5 my-1.5", onSelect: cancelarConsulta })),
+    ].map(i => ({
+      ...i,
+      class: "text-lg p-2.5 my-1.5",
+      onSelect: cancelarConsulta,
+    })),
   ];
 });
 </script>

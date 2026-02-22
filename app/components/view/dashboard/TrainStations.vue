@@ -14,7 +14,7 @@ const {
   opcaoLongitude,
   opcaoTiposPorPais,
   fmtNumero,
-} = useEstacoesFerrovia();
+} = useEstacoesTrem();
 </script>
 
 <template>

@@ -9,10 +9,7 @@ import {
   TooltipComponent,
 } from "echarts/components";
 import { init, use } from "echarts/core";
-import {
-  LabelLayout,
-  UniversalTransition,
-} from "echarts/features";
+import { LabelLayout, UniversalTransition } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
 
 use([

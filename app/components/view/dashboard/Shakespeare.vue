@@ -15,7 +15,6 @@ const {
   fmtNumero,
   fmtDecimal,
 } = useShakespeare();
-
 </script>
 
 <template>

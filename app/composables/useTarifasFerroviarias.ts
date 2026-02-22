@@ -21,7 +21,7 @@ export const useTarifasFerroviarias = () => {
   const colorMode = useColorMode();
 
   const temaGrafico = computed(
-    () => (colorMode.value === "dark" ? "dark" : "")
+    () => (colorMode.value === "dark" ? "dark" : ""),
   );
 
   const carregandoKpis = ref(true);

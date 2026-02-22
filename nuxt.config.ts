@@ -51,7 +51,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      exclude: ["@duckdb/duckdb-wasm"],
+      exclude: ["@duckdb/duckdb-wasm", "echarts"],
     },
 
     worker: {

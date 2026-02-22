@@ -92,7 +92,14 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.total);
         opcaoCompanhias.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
+          grid: {
+            top: 16,
+            right: 32,
+            bottom: 8,
+            left: 40,
+            outerBounds: { top: 16, right: 32, bottom: 8, left: 40 },
+            outerBoundsContain: "axisLabel",
+          },
           color: [COR_PRIMARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -199,7 +206,14 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.total);
         opcaoAeroportos.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
+          grid: {
+            top: 16,
+            right: 32,
+            bottom: 8,
+            left: 40,
+            outerBounds: { top: 16, right: 32, bottom: 8, left: 40 },
+            outerBoundsContain: "axisLabel",
+          },
           color: [COR_SECUNDARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -219,7 +233,14 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.taxa_cancelamento);
         opcaoCancelamentos.value = {
           ...baseChart,
-          grid: { top: 16, right: 48, bottom: 8, left: 40, outerBounds: true },
+          grid: {
+            top: 16,
+            right: 48,
+            bottom: 8,
+            left: 40,
+            outerBounds: { top: 16, right: 48, bottom: 8, left: 40 },
+            outerBoundsContain: "axisLabel",
+          },
           color: ["#f43f5e"],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "%", nameTextStyle: { fontSize: 10 } },

@@ -15,11 +15,11 @@ const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 32, right: 16, bottom: 48, left: 56, outerBounds: true },
+  grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
 };
 
-export const useEstacoesFerrovia = () => {
+export const useEstacoesTrem = () => {
   const { executar, init } = useDuckDb();
   const colorMode = useColorMode();
 
@@ -73,7 +73,14 @@ export const useEstacoesFerrovia = () => {
         const values = rows.map(d => d.total);
         opcaoPaises.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
+          grid: {
+            top: 16,
+            right: 32,
+            bottom: 8,
+            left: 40,
+            outerBounds: { top: 16, right: 32, bottom: 8, left: 40 },
+            outerBoundsContain: "axisLabel",
+          },
           color: [COR_PRIMARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -176,7 +183,14 @@ export const useEstacoesFerrovia = () => {
           backgroundColor: "transparent",
           tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
           legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
-          grid: { top: 32, right: 16, bottom: 80, left: 40, outerBounds: true },
+          grid: {
+            top: 32,
+            right: 16,
+            bottom: 80,
+            left: 40,
+            outerBounds: { top: 32, right: 16, bottom: 80, left: 40 },
+            outerBoundsContain: "axisLabel",
+          },
           xAxis: {
             type: "category",
             data: countries,

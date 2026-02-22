@@ -256,71 +256,71 @@ Acessivel em `http://localhost:3000/metrics` durante o desenvolvimento. Retorna 
 
 **CPU e Processo**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
-| `process_cpu_user_seconds_total` | counter | Tempo total de CPU em modo usuario |
-| `process_cpu_system_seconds_total` | counter | Tempo total de CPU em modo sistema |
-| `process_cpu_seconds_total` | counter | Tempo total de CPU (usuario + sistema) |
-| `process_start_time_seconds` | gauge | Timestamp de inicio do processo |
-| `process_resident_memory_bytes` | gauge | Memoria residente (RAM fisica utilizada) |
-| `process_virtual_memory_bytes` | gauge | Memoria virtual total alocada |
-| `process_heap_bytes` | gauge | Tamanho total do heap do processo |
-| `process_open_fds` | gauge | Descritores de arquivo abertos |
-| `process_max_fds` | gauge | Limite maximo de descritores de arquivo |
+| Metrica                            | Tipo    | Descricao                                |
+| ---------------------------------- | ------- | ---------------------------------------- |
+| `process_cpu_user_seconds_total`   | counter | Tempo total de CPU em modo usuario       |
+| `process_cpu_system_seconds_total` | counter | Tempo total de CPU em modo sistema       |
+| `process_cpu_seconds_total`        | counter | Tempo total de CPU (usuario + sistema)   |
+| `process_start_time_seconds`       | gauge   | Timestamp de inicio do processo          |
+| `process_resident_memory_bytes`    | gauge   | Memoria residente (RAM fisica utilizada) |
+| `process_virtual_memory_bytes`     | gauge   | Memoria virtual total alocada            |
+| `process_heap_bytes`               | gauge   | Tamanho total do heap do processo        |
+| `process_open_fds`                 | gauge   | Descritores de arquivo abertos           |
+| `process_max_fds`                  | gauge   | Limite maximo de descritores de arquivo  |
 
 **Event Loop do Node.js**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
-| `nodejs_eventloop_lag_seconds` | gauge | Lag atual do event loop |
-| `nodejs_eventloop_lag_min_seconds` | gauge | Minimo de delay registrado |
-| `nodejs_eventloop_lag_max_seconds` | gauge | Maximo de delay registrado |
-| `nodejs_eventloop_lag_mean_seconds` | gauge | Media dos delays registrados |
-| `nodejs_eventloop_lag_stddev_seconds` | gauge | Desvio padrao dos delays |
-| `nodejs_eventloop_lag_p50_seconds` | gauge | Percentil 50 (mediana) dos delays |
-| `nodejs_eventloop_lag_p90_seconds` | gauge | Percentil 90 dos delays |
-| `nodejs_eventloop_lag_p99_seconds` | gauge | Percentil 99 dos delays |
+| Metrica                               | Tipo  | Descricao                         |
+| ------------------------------------- | ----- | --------------------------------- |
+| `nodejs_eventloop_lag_seconds`        | gauge | Lag atual do event loop           |
+| `nodejs_eventloop_lag_min_seconds`    | gauge | Minimo de delay registrado        |
+| `nodejs_eventloop_lag_max_seconds`    | gauge | Maximo de delay registrado        |
+| `nodejs_eventloop_lag_mean_seconds`   | gauge | Media dos delays registrados      |
+| `nodejs_eventloop_lag_stddev_seconds` | gauge | Desvio padrao dos delays          |
+| `nodejs_eventloop_lag_p50_seconds`    | gauge | Percentil 50 (mediana) dos delays |
+| `nodejs_eventloop_lag_p90_seconds`    | gauge | Percentil 90 dos delays           |
+| `nodejs_eventloop_lag_p99_seconds`    | gauge | Percentil 99 dos delays           |
 
 **Handles e Recursos Ativos (libuv)**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
+| Metrica                         | Tipo  | Descricao                                              |
+| ------------------------------- | ----- | ------------------------------------------------------ |
 | `nodejs_active_resources{type}` | gauge | Recursos ativos por tipo (MessagePort, PipeWrap, etc.) |
-| `nodejs_active_resources_total` | gauge | Total de recursos ativos |
-| `nodejs_active_handles{type}` | gauge | Handles libuv ativos por tipo (Server, Socket, etc.) |
-| `nodejs_active_handles_total` | gauge | Total de handles ativos |
-| `nodejs_active_requests_total` | gauge | Total de requisicoes libuv ativas |
+| `nodejs_active_resources_total` | gauge | Total de recursos ativos                               |
+| `nodejs_active_handles{type}`   | gauge | Handles libuv ativos por tipo (Server, Socket, etc.)   |
+| `nodejs_active_handles_total`   | gauge | Total de handles ativos                                |
+| `nodejs_active_requests_total`  | gauge | Total de requisicoes libuv ativas                      |
 
 **Heap Memory (Node.js)**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
-| `nodejs_heap_size_total_bytes` | gauge | Tamanho total do heap V8 |
-| `nodejs_heap_size_used_bytes` | gauge | Heap V8 utilizado |
-| `nodejs_external_memory_bytes` | gauge | Memoria externa ao heap V8 |
-| `nodejs_heap_space_size_total_bytes{space}` | gauge | Tamanho total por espaco de heap (new, old, code, large_object, trusted, etc.) |
-| `nodejs_heap_space_size_used_bytes{space}` | gauge | Bytes usados por espaco de heap |
-| `nodejs_heap_space_size_available_bytes{space}` | gauge | Bytes disponiveis por espaco de heap |
+| Metrica                                         | Tipo  | Descricao                                                                      |
+| ----------------------------------------------- | ----- | ------------------------------------------------------------------------------ |
+| `nodejs_heap_size_total_bytes`                  | gauge | Tamanho total do heap V8                                                       |
+| `nodejs_heap_size_used_bytes`                   | gauge | Heap V8 utilizado                                                              |
+| `nodejs_external_memory_bytes`                  | gauge | Memoria externa ao heap V8                                                     |
+| `nodejs_heap_space_size_total_bytes{space}`     | gauge | Tamanho total por espaco de heap (new, old, code, large_object, trusted, etc.) |
+| `nodejs_heap_space_size_used_bytes{space}`      | gauge | Bytes usados por espaco de heap                                                |
+| `nodejs_heap_space_size_available_bytes{space}` | gauge | Bytes disponiveis por espaco de heap                                           |
 
 **Garbage Collection**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
+| Metrica                            | Tipo      | Descricao                                                         |
+| ---------------------------------- | --------- | ----------------------------------------------------------------- |
 | `nodejs_gc_duration_seconds{kind}` | histogram | Duracao do GC por tipo: `major`, `minor`, `incremental`, `weakcb` |
 
 **Informacoes do Runtime**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
+| Metrica                                          | Tipo  | Descricao                     |
+| ------------------------------------------------ | ----- | ----------------------------- |
 | `nodejs_version_info{version,major,minor,patch}` | gauge | Versao do Node.js em execucao |
 
 **Metricas HTTP (requisicoes ao servidor Nitro)**
 
-| Metrica | Tipo | Descricao |
-|---|---|---|
-| `http_request_total{method,route,status_code}` | counter | Total de requisicoes HTTP por rota e status |
-| `http_request_duration_seconds{method,route,status_code}` | gauge | Duracao das requisicoes HTTP em segundos |
-| `http_active_requests` | gauge | Requisicoes HTTP em andamento no momento |
+| Metrica                                                   | Tipo    | Descricao                                   |
+| --------------------------------------------------------- | ------- | ------------------------------------------- |
+| `http_request_total{method,route,status_code}`            | counter | Total de requisicoes HTTP por rota e status |
+| `http_request_duration_seconds{method,route,status_code}` | gauge   | Duracao das requisicoes HTTP em segundos    |
+| `http_active_requests`                                    | gauge   | Requisicoes HTTP em andamento no momento    |
 
 ### Exemplo de uso com curl
 
@@ -334,10 +334,10 @@ Para coletar as metricas com Prometheus, adicione ao `prometheus.yml`:
 
 ```yaml
 scrape_configs:
-  - job_name: 'nuxt-duckdb-wasm'
+  - job_name: "nuxt-duckdb-wasm"
     static_configs:
-      - targets: ['localhost:3000']
-    metrics_path: '/metrics'
+      - targets: ["localhost:3000"]
+    metrics_path: "/metrics"
     scrape_interval: 15s
 ```
 
