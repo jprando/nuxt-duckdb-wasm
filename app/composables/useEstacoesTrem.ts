@@ -52,7 +52,7 @@ export const useEstacoesTrem = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = estacoesTremNome;
+    const url = estacoesTremUrl;
 
     executar(estacoesTremKpisConsulta(url))
       .then(([kpisData]) => {

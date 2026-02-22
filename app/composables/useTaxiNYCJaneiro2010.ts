@@ -47,7 +47,7 @@ export const useTaxiNYCJaneiro2010 = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = taxiNYCJaneiro2010Nome;
+    const url = taxiNYCJaneiro2010Url;
 
     executar(nycTaxi2010JanKpisConsulta(url))
       .then(([kpisData]) => {

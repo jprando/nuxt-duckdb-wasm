@@ -1,4 +1,8 @@
-import { datasetsR2, duckDBDataProtocolHTTP, duckDBLogLevelWARNING } from "./duckdb.constantes";
+import {
+  duckDBDataProtocolHTTP,
+  duckDBLogLevelWARNING,
+  nomeUrlParquetsR2,
+} from "./duckdb.constantes";
 
 export const duckDBWasmIniciar = (
   db: ShallowRef<unknown>,
@@ -18,8 +22,9 @@ async () => {
 
     const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles();
 
-    const version = JSDELIVR_BUNDLES.mvp!.mainModule.match(/duckdb-wasm@([\d.\-\w]+)\//)
-      ?.[1] ?? "latest";
+    const version =
+      JSDELIVR_BUNDLES.mvp!.mainModule.match(/duckdb-wasm@([\d.\-\w]+)\//)
+        ?.[1] ?? "latest";
 
     // // COI bundle desabilitado: extensões (parquet, etc.) não são compiladas com shared memory,
     // // causando LinkError em wasm_threads. Bug aberto: https://github.com/duckdb/duckdb-wasm/issues/1916
@@ -59,20 +64,26 @@ async () => {
     // footer de cada arquivo (range request leve ~50KB). Queries subsequentes
     // pulam esse round trip e vão direto para os column chunks.
     const conn = await _db.connect();
-    for (const { nome, url } of datasetsR2) {
-     await _db.registerFileURL(nome, url, duckDBDataProtocolHTTP, false);
-    }
-    await Promise.allSettled(
-      datasetsR2.map(({ nome }) =>
-        conn.query(`SELECT COUNT(*) FROM '${nome}'`).then(() => {
-          warmupAtual.value++;
-        }),
-      ),
-    );
-    await conn.close();
 
-    const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1]
-      ?? "desconhecido";
+    setTimeout(async () => {
+      warmupAtual.value = 0;
+
+      for (const { nome, url } of nomeUrlParquetsR2) {
+        await _db.registerFileURL(nome, url, duckDBDataProtocolHTTP, false);
+      }
+
+      await Promise.allSettled(
+        nomeUrlParquetsR2.map(({ nome }) =>
+          conn.query(`SELECT COUNT(*) FROM '${nome}'`).then(() => {
+            warmupAtual.value++;
+          })
+        ),
+      );
+    }, 7_000);
+    // await conn.close();
+
+    const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1] ??
+      "desconhecido";
     duckDBWasmInfo.value = `DuckDB WASM v${version} (${tipo})`;
     // infoDev(duckDBWasmInfo.value);
   } catch (error) {

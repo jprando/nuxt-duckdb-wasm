@@ -88,9 +88,9 @@ const { duckDBWasmInfo, warmupAtual, warmupTotal } = useDuckDb();
         </template>
         <template #right>
           <UProgress
-            v-if="warmupAtual < warmupTotal"
+            v-if="!warmupAtual || warmupAtual < warmupTotal"
             v-model="warmupAtual"
-            :max="warmupTotal"
+            :max="!warmupTotal ? 100 : warmupTotal"
             size="sm"
             class="w-20"
           />

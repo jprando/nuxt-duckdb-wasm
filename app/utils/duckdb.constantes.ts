@@ -6,28 +6,31 @@ export const duckDBLogLevelWARNING = 3; // Correspondente a LogLevel.WARNING em 
 const r2BaseUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev";
 
 // Nomes curtos registrados no VFS do DuckDB (usados nas queries após registerFileURL)
-export const taxiNYCLocalNome = "yellow_tripdata_2024-01.parquet";
-export const trensHolandesNome = "train_services.parquet";
-export const tarifasFerroviariasNome = "tariffs.parquet";
-export const taxiNYCAbril2019Nome = "taxi_2019_04.parquet";
-export const taxiNYCJaneiro2010Nome = "yellow_tripdata_2010-01.parquet";
-export const shakespeareNome = "shakespeare.parquet";
-export const estacoesTremNome = "stations.parquet";
-export const pontualidadeVoosNome = "ontime.parquet";
+export const taxiNYCLocalParquet = "yellow_tripdata_2024-01.parquet";
+export const trensHolandesParquet = "train_services.parquet";
+export const tarifasFerroviariasParquet = "tariffs.parquet";
+export const taxiNYCAbril2019Parquet = "taxi_2019_04.parquet";
+export const taxiNYCJaneiro2010Parquet = "yellow_tripdata_2010-01.parquet";
+export const shakespeareParquet = "shakespeare.parquet";
+export const estacoesTremParquet = "stations.parquet";
+export const pontualidadeVoosParquet = "ontime.parquet";
 
-export const datasetNomes = [
-  taxiNYCLocalNome,
-  trensHolandesNome,
-  tarifasFerroviariasNome,
-  taxiNYCAbril2019Nome,
-  taxiNYCJaneiro2010Nome,
-  shakespeareNome,
-  estacoesTremNome,
-  pontualidadeVoosNome,
+export const listaParquets = [
+  taxiNYCLocalParquet,
+  trensHolandesParquet,
+  tarifasFerroviariasParquet,
+  taxiNYCAbril2019Parquet,
+  taxiNYCJaneiro2010Parquet,
+  shakespeareParquet,
+  estacoesTremParquet,
+  pontualidadeVoosParquet,
 ];
 
 // Mapeamento URL → nome para registro em lote no VFS (usado em duckdb.init.ts)
-export const datasetsR2 = datasetNomes.map((nome) => ({ nome, url: `${r2BaseUrl}/${nome}` }));
+export const nomeUrlParquetsR2 = listaParquets.map((nome) => ({
+  nome,
+  url: `${r2BaseUrl}/${nome}`,
+}));
 
 // Ordem deve ser idêntica à de datasetNomes acima
 export const [
@@ -39,8 +42,16 @@ export const [
   shakespeareUrl,
   estacoesTremUrl,
   pontualidadeVoosUrl,
-] = datasetNomes.map((nome) => `${r2BaseUrl}/${nome}`) as [string, string, string, string, string, string, string, string];
-
+] = listaParquets.map((nome) => `${r2BaseUrl}/${nome}`) as [
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+  string,
+];
 
 export interface DatasetParquet {
   label: string;

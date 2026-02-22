@@ -2,7 +2,7 @@ const db = shallowRef<any>(null);
 const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
 const warmupAtual = ref<number|null>(0);
-const warmupTotal = datasetsR2.length;
+const warmupTotal = nomeUrlParquetsR2.length;
 
 let timerDebounce: number | undefined;
 let _controller = new AbortController();
@@ -47,9 +47,9 @@ export const useDuckDb = () => {
       return resultado;
     } finally {
       sinalEfetivo.removeEventListener("abort", onAbort);
-      await conn.close();
-      estahCarregando.value = false;
+      // await conn.close();
       warmupAtual.value = warmupTotal;
+      estahCarregando.value = false;
     }
   };
 

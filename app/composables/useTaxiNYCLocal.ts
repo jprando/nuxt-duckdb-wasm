@@ -47,7 +47,7 @@ export const useTaxiNYCLocal = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = taxiNYCLocalNome;
+    const url = taxiNYCLocalUrl;
 
     executar(localNYCTaxiKpisConsulta(url))
       .then(([kpisData]) => {

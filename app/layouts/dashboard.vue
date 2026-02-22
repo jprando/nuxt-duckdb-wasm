@@ -110,11 +110,11 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
 
         <template #footer>
           <div class="min-w-full flex flex-col gap-2 items-center">
-            <USeparator />
+            <!-- <USeparator /> -->
             <UProgress
               v-if="!warmupAtual || warmupAtual < warmupTotal && !_collapsed"
               v-model="warmupAtual"
-              :max="!warmupAtual ? [''] : datasetNomes"
+              :max="!warmupAtual ? 100 : listaParquets"
               animation="swing"
               size="sm"
               class="w-full"

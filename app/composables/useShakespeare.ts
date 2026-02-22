@@ -55,7 +55,7 @@ export const useShakespeare = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = shakespeareNome;
+    const url = shakespeareUrl;
 
     executar(shakespeareKpisConsulta(url))
       .then(([kpisData]) => {

@@ -44,7 +44,7 @@ export const useTrensHolandeses = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = trensHolandesNome;
+    const url = trensHolandesUrl;
 
     executar(dutchTrainServicesKpisConsulta(url))
       .then(([kpisData]) => {
