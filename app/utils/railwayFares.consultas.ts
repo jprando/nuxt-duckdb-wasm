@@ -1,5 +1,5 @@
 // KPI's
-export const railwayFaresKpisQuery = (url: string) => `
+export const railwayFaresKpisConsulta = (url: string) => `
   WITH stations AS (
       SELECT Station1 as station FROM read_parquet('${url}')
       UNION
@@ -14,7 +14,7 @@ export const railwayFaresKpisQuery = (url: string) => `
 `;
 
 // Gráfico de Distribuição de Preços
-export const railwayFaresPriceDistributionQuery = (url: string) => `
+export const railwayFaresPriceDistributionConsulta = (url: string) => `
   SELECT
       floor(Price / 20) * 20 as price_bucket,
       COUNT(*) as count
@@ -24,7 +24,7 @@ export const railwayFaresPriceDistributionQuery = (url: string) => `
 `;
 
 // Gráfico de Rotas mais Caras
-export const railwayFaresMostExpensiveRoutesQuery = (url: string) => `
+export const railwayFaresMostExpensiveRoutesConsulta = (url: string) => `
   SELECT
       Station1 || ' → ' || Station2 as route,
       Price
@@ -34,7 +34,7 @@ export const railwayFaresMostExpensiveRoutesQuery = (url: string) => `
 `;
 
 // Gráfico de Estações mais Conectadas
-export const railwayFaresBusiestStationsQuery = (url: string) => `
+export const railwayFaresBusiestStationsConsulta = (url: string) => `
   WITH all_stations AS (
       SELECT Station1 as station FROM read_parquet('${url}')
       UNION ALL

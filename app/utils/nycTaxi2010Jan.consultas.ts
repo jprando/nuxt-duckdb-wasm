@@ -1,4 +1,4 @@
-export const nycTaxi2010JanKpisQuery = (url: string) => `
+export const nycTaxi2010JanKpisConsulta = (url: string) => `
   SELECT
       COUNT(*)                                                              AS total_trips,
       ROUND(AVG(date_diff('minute', Pickup_datetime::TIMESTAMP, Dropoff_datetime::TIMESTAMP)), 1) AS avg_duration_min,
@@ -8,7 +8,7 @@ export const nycTaxi2010JanKpisQuery = (url: string) => `
   WHERE Dropoff_datetime::TIMESTAMP > Pickup_datetime::TIMESTAMP
 `;
 
-export const nycTaxi2010JanVendorQuery = (url: string) => `
+export const nycTaxi2010JanVendorConsulta = (url: string) => `
   SELECT
     CASE Vendor_id
       WHEN 'VTS' THEN 'VTS (Verifone)'
@@ -23,7 +23,7 @@ export const nycTaxi2010JanVendorQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const nycTaxi2010JanPagamentoQuery = (url: string) => `
+export const nycTaxi2010JanPagamentoConsulta = (url: string) => `
   SELECT
     CASE UPPER(Payment_type)
       WHEN 'CAS' THEN 'Dinheiro'
@@ -39,7 +39,7 @@ export const nycTaxi2010JanPagamentoQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const nycTaxi2010JanDistanciaQuery = (url: string) => `
+export const nycTaxi2010JanDistanciaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Trip_distance) AS INTEGER) AS milhas,
     COUNT(*)                              AS total
@@ -51,7 +51,7 @@ export const nycTaxi2010JanDistanciaQuery = (url: string) => `
   ORDER BY milhas
 `;
 
-export const nycTaxi2010JanGorjetaQuery = (url: string) => `
+export const nycTaxi2010JanGorjetaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Tip_amount / 2) * 2 AS INTEGER) AS faixa,
     COUNT(*) AS total
@@ -63,7 +63,7 @@ export const nycTaxi2010JanGorjetaQuery = (url: string) => `
   ORDER BY faixa
 `;
 
-export const nycTaxi2010JanHoraQuery = (url: string) => `
+export const nycTaxi2010JanHoraConsulta = (url: string) => `
   SELECT
     EXTRACT(HOUR FROM Pickup_datetime::TIMESTAMP) AS hora,
     COUNT(*) AS total

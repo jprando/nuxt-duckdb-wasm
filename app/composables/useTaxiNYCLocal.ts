@@ -49,7 +49,7 @@ export const useTaxiNYCLocal = () => {
 
     const url = `${window.location.origin}${localNycTaxiParquetUrl}`;
 
-    executar(localNYCTaxiKpisQuery(url))
+    executar(localNYCTaxiKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -61,7 +61,7 @@ export const useTaxiNYCLocal = () => {
         carregandoKpis.value = false;
       });
 
-    executar(localNYCTaxiVendorQuery(url))
+    executar(localNYCTaxiVendorConsulta(url))
       .then((vendorData) => {
         opcaoVendor.value = {
           backgroundColor: "transparent",
@@ -81,7 +81,7 @@ export const useTaxiNYCLocal = () => {
         };
       });
 
-    executar(localNYCTaxiPassageirosQuery(url))
+    executar(localNYCTaxiPassageirosConsulta(url))
       .then((passageirosData) => {
         const paxLabels = (passageirosData as any[]).map(d => `${d.passageiros} pax`);
         const paxValues = (passageirosData as any[]).map(d => d.total);
@@ -94,7 +94,7 @@ export const useTaxiNYCLocal = () => {
         };
       });
 
-    executar(localNYCTaxiDistanciaQuery(url))
+    executar(localNYCTaxiDistanciaConsulta(url))
       .then((distanciaData) => {
         const distLabels = (distanciaData as any[]).map(d => `${d.milhas}mi`);
         const distValues = (distanciaData as any[]).map(d => d.total);
@@ -107,7 +107,7 @@ export const useTaxiNYCLocal = () => {
         };
       });
 
-    executar(localNYCTaxiValorQuery(url))
+    executar(localNYCTaxiValorConsulta(url))
       .then((valorData) => {
         const valorLabels = (valorData as any[]).map(d => `$${d.faixa}`);
         const valorValues = (valorData as any[]).map(d => d.total);
@@ -120,7 +120,7 @@ export const useTaxiNYCLocal = () => {
         };
       });
 
-    executar(localNYCTaxiHoraQuery(url))
+    executar(localNYCTaxiHoraConsulta(url))
       .then((horaData) => {
         if (!horaData || horaData.length === 0) {
           opcaoHora.value = {};

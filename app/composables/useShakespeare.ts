@@ -57,7 +57,7 @@ export const useShakespeare = () => {
 
     const url = shakespeareUrl;
 
-    executar(shakespeareKpisQuery(url))
+    executar(shakespeareKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       }).catch((e) => {
@@ -68,7 +68,7 @@ export const useShakespeare = () => {
         carregandoKpis.value = false;
       });
 
-    executar(shakespearePecasQuery(url))
+    executar(shakespearePecasConsulta(url))
       .then((data) => {
         const rows = data as { peca: string; total: number }[];
         const pecas = rows.map((d) => d.peca).reverse();
@@ -82,7 +82,7 @@ export const useShakespeare = () => {
         };
       });
 
-    executar(shakespearePersonagensQuery(url))
+    executar(shakespearePersonagensConsulta(url))
       .then((data) => {
         const rows = data as { personagem: string; total: number }[];
         const personagens = rows.map((d) => d.personagem).reverse();
@@ -107,7 +107,7 @@ export const useShakespeare = () => {
         };
       });
 
-    executar(shakespeareAtoQuery(url))
+    executar(shakespeareAtoConsulta(url))
       .then((data) => {
         const rows = data as { ato: string; total: number }[];
         const atos = rows.map((d) => `Ato ${d.ato}`);
@@ -132,7 +132,7 @@ export const useShakespeare = () => {
         };
       });
 
-    executar(shakespeareElencoQuery(url))
+    executar(shakespeareElencoConsulta(url))
       .then((data) => {
         const rows = data as { peca: string; personagens: number }[];
         const pecas = rows.map((d) => d.peca).reverse();
@@ -157,7 +157,7 @@ export const useShakespeare = () => {
         };
       });
 
-    executar(shakespeareComprimentoQuery(url))
+    executar(shakespeareComprimentoConsulta(url))
       .then((data) => {
         const rows = data as { faixa: number; total: number }[];
         const labels = rows.map((d) => `${d.faixa}–${d.faixa + 19}`);

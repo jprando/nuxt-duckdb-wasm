@@ -1,5 +1,5 @@
 // KPI's
-export const dutchTrainServicesKpisQuery = (url: string) => `
+export const dutchTrainServicesKpisConsulta = (url: string) => `
   SELECT
     COUNT(DISTINCT Service_id) as total_services,
     COUNT(DISTINCT Station_name) as total_stations,
@@ -8,7 +8,7 @@ export const dutchTrainServicesKpisQuery = (url: string) => `
 `;
 
 // Gráfico de Tipos de Trem
-export const dutchTrainServicesTypeQuery = (url: string) => `
+export const dutchTrainServicesTypeConsulta = (url: string) => `
   SELECT
     Type,
     COUNT(*) as total
@@ -18,7 +18,7 @@ export const dutchTrainServicesTypeQuery = (url: string) => `
 `;
 
 // Gráfico de Estações mais movimentadas
-export const dutchTrainServicesBusiestStationsQuery = (url: string) => `
+export const dutchTrainServicesBusiestStationsConsulta = (url: string) => `
   SELECT
     Station_name,
     COUNT(*) AS count
@@ -29,7 +29,7 @@ export const dutchTrainServicesBusiestStationsQuery = (url: string) => `
 `;
 
 // Gráfico de Partidas por Hora
-export const dutchTrainServicesDeparturesByHourQuery = (url: string) => `
+export const dutchTrainServicesDeparturesByHourConsulta = (url: string) => `
   SELECT
     EXTRACT(hour FROM Departure_time) AS hora,
     COUNT(*) AS total
@@ -40,7 +40,7 @@ export const dutchTrainServicesDeparturesByHourQuery = (url: string) => `
 `;
 
 // Gráfico de Duração Média de Parada nas 10 Estações mais Movimentadas
-export const dutchTrainServicesAvgStopDurationQuery = (url: string) => `
+export const dutchTrainServicesAvgStopDurationConsulta = (url: string) => `
   WITH station_counts AS (
     SELECT
       Station_name,

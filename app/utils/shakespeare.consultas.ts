@@ -1,4 +1,4 @@
-export const shakespeareKpisQuery = (url: string) => `
+export const shakespeareKpisConsulta = (url: string) => `
   SELECT
     COUNT(*)                                                          AS total_lines,
     COUNT(DISTINCT Play_name)                                         AS total_plays,
@@ -9,7 +9,7 @@ export const shakespeareKpisQuery = (url: string) => `
     AND TRIM(Text_entry) != ''
 `;
 
-export const shakespearePecasQuery = (url: string) => `
+export const shakespearePecasConsulta = (url: string) => `
   SELECT
     Play_name AS peca,
     COUNT(*)  AS total
@@ -19,7 +19,7 @@ export const shakespearePecasQuery = (url: string) => `
   LIMIT 10
 `;
 
-export const shakespearePersonagensQuery = (url: string) => `
+export const shakespearePersonagensConsulta = (url: string) => `
   SELECT
     Speaker   AS personagem,
     COUNT(*)  AS total
@@ -31,7 +31,7 @@ export const shakespearePersonagensQuery = (url: string) => `
   LIMIT 15
 `;
 
-export const shakespeareAtoQuery = (url: string) => `
+export const shakespeareAtoConsulta = (url: string) => `
   SELECT
     SPLIT_PART(Line_number, '.', 1) AS ato,
     COUNT(*)                        AS total
@@ -42,7 +42,7 @@ export const shakespeareAtoQuery = (url: string) => `
   ORDER BY ato
 `;
 
-export const shakespeareElencoQuery = (url: string) => `
+export const shakespeareElencoConsulta = (url: string) => `
   SELECT
     Play_name                       AS peca,
     COUNT(DISTINCT Speaker)         AS personagens
@@ -54,7 +54,7 @@ export const shakespeareElencoQuery = (url: string) => `
   LIMIT 10
 `;
 
-export const shakespeareComprimentoQuery = (url: string) => `
+export const shakespeareComprimentoConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(LENGTH(Text_entry) / 20) * 20 AS INTEGER) AS faixa,
     COUNT(*) AS total

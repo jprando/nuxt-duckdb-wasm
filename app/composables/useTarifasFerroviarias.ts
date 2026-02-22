@@ -45,7 +45,7 @@ export const useTarifasFerroviarias = () => {
 
     const url = railwayFaresUrl;
 
-    executar(railwayFaresKpisQuery(url))
+    executar(railwayFaresKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -57,7 +57,7 @@ export const useTarifasFerroviarias = () => {
         carregandoKpis.value = false;
       });
 
-    executar(railwayFaresPriceDistributionQuery(url)).then((data) => {
+    executar(railwayFaresPriceDistributionConsulta(url)).then((data) => {
       const rows = data as { count: number; price_bucket: number }[];
       const labels = rows.map((d) => `€${d.price_bucket}`);
       const values = rows.map((d) => d.count);
@@ -74,7 +74,7 @@ export const useTarifasFerroviarias = () => {
       };
     });
 
-    executar(railwayFaresMostExpensiveRoutesQuery(url)).then((data) => {
+    executar(railwayFaresMostExpensiveRoutesConsulta(url)).then((data) => {
       const rows = data as { route: string; price: number }[];
       const routes = rows.map((d) => d.route);
       const prices = rows.map((d) => d.price);
@@ -88,7 +88,7 @@ export const useTarifasFerroviarias = () => {
       };
     });
 
-    executar(railwayFaresBusiestStationsQuery(url))
+    executar(railwayFaresBusiestStationsConsulta(url))
       .then((data) => {
         const rows = data as { station: string; appearances: number }[];
         const stations = rows.map((d) => d.station);

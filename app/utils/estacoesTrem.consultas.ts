@@ -1,4 +1,4 @@
-export const trainStationsKpisQuery = (url: string) => `
+export const estacoesTremKpisConsulta = (url: string) => `
   SELECT
     COUNT(*)                                                                            AS total_estacoes,
     COUNT(DISTINCT Country)                                                             AS total_paises,
@@ -9,7 +9,7 @@ export const trainStationsKpisQuery = (url: string) => `
   FROM '${url}'
 `;
 
-export const trainStationsPaisesQuery = (url: string) => `
+export const estacoesTremPaisesConsulta = (url: string) => `
   SELECT
     Country,
     COUNT(*) AS total
@@ -19,7 +19,7 @@ export const trainStationsPaisesQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const trainStationsTiposQuery = (url: string) => `
+export const estacoesTremTiposConsulta = (url: string) => `
   SELECT
     Type,
     COUNT(*) AS total
@@ -29,7 +29,7 @@ export const trainStationsTiposQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const trainStationsCategoriasQuery = (url: string) => `
+export const estacoesTremCategoriasConsulta = (url: string) => `
   SELECT
     CASE
       WHEN Type = 'megastation'               THEN 'Mega Estação'
@@ -47,7 +47,7 @@ export const trainStationsCategoriasQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const trainStationsLatitudeQuery = (url: string) => `
+export const estacoesTremLatitudeConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Geo_lat) AS INTEGER) AS faixa_lat,
     COUNT(*) AS total
@@ -57,7 +57,7 @@ export const trainStationsLatitudeQuery = (url: string) => `
   ORDER BY faixa_lat
 `;
 
-export const trainStationsLongitudeQuery = (url: string) => `
+export const estacoesTremLongitudeConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Geo_lng / 2) * 2 AS INTEGER) AS faixa_lng,
     COUNT(*) AS total
@@ -67,7 +67,7 @@ export const trainStationsLongitudeQuery = (url: string) => `
   ORDER BY faixa_lng
 `;
 
-export const trainStationsTiposPorPaisQuery = (url: string) => `
+export const estacoesTremTiposPorPaisConsulta = (url: string) => `
   SELECT
     Country,
     Type,

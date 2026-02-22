@@ -1,4 +1,4 @@
-export const localNYCTaxiKpisQuery = (url: string) => `
+export const localNYCTaxiKpisConsulta = (url: string) => `
   SELECT
     COUNT(*)                        AS total_trips,
     ROUND(AVG(trip_distance), 2)    AS avg_distance,
@@ -7,7 +7,7 @@ export const localNYCTaxiKpisQuery = (url: string) => `
   FROM '${url}'
 `;
 
-export const localNYCTaxiVendorQuery = (url: string) => `
+export const localNYCTaxiVendorConsulta = (url: string) => `
   SELECT
     'Vendor ' || CAST(vendor_id AS VARCHAR) AS vendor,
     COUNT(*)                                AS total
@@ -17,7 +17,7 @@ export const localNYCTaxiVendorQuery = (url: string) => `
   ORDER BY vendor_id
 `;
 
-export const localNYCTaxiPassageirosQuery = (url: string) => `
+export const localNYCTaxiPassageirosConsulta = (url: string) => `
   SELECT
     CAST(passenger_count AS INTEGER) AS passageiros,
     COUNT(*)                         AS total
@@ -28,7 +28,7 @@ export const localNYCTaxiPassageirosQuery = (url: string) => `
   ORDER BY passageiros
 `;
 
-export const localNYCTaxiDistanciaQuery = (url: string) => `
+export const localNYCTaxiDistanciaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(trip_distance) AS INTEGER) AS milhas,
     COUNT(*)                              AS total
@@ -40,7 +40,7 @@ export const localNYCTaxiDistanciaQuery = (url: string) => `
   ORDER BY milhas
 `;
 
-export const localNYCTaxiValorQuery = (url: string) => `
+export const localNYCTaxiValorConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(total_amount / 10) * 10 AS INTEGER) AS faixa,
     COUNT(*)                                       AS total
@@ -52,7 +52,7 @@ export const localNYCTaxiValorQuery = (url: string) => `
   ORDER BY faixa
 `;
 
-export const localNYCTaxiHoraQuery = (url: string) => `
+export const localNYCTaxiHoraConsulta = (url: string) => `
   SELECT
     CAST(EXTRACT(HOUR FROM pickup_datetime) AS INTEGER) AS hora,
     COUNT(*)                                            AS total

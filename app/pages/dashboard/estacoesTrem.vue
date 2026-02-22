@@ -29,6 +29,6 @@ definePageMeta({ layout: "dashboard" });
       </div>
     </template>
 
-    <ViewDashboardTrainStations />
+    <ViewDashboardEstacoesTrem />
   </NuxtLayout>
 </template>

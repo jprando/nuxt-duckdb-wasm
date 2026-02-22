@@ -46,7 +46,7 @@ export const useTrensHolandeses = () => {
 
     const url = dutchTrainServicesUrl;
 
-    executar(dutchTrainServicesKpisQuery(url))
+    executar(dutchTrainServicesKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -58,7 +58,7 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false;
       });
 
-    executar(dutchTrainServicesTypeQuery(url)).then((typeData) => {
+    executar(dutchTrainServicesTypeConsulta(url)).then((typeData) => {
       opcaoTipo.value = {
         backgroundColor: "transparent",
         color: PALETA,
@@ -77,7 +77,7 @@ export const useTrensHolandeses = () => {
       };
     });
 
-    executar(dutchTrainServicesBusiestStationsQuery(url)).then((stationsData) => {
+    executar(dutchTrainServicesBusiestStationsConsulta(url)).then((stationsData) => {
       const stationLabels = (stationsData as any[]).map(d => d.station_name);
       const stationValues = (stationsData as any[]).map(d => d.count);
       opcaoEstacoesMovimentadas.value = {
@@ -89,7 +89,7 @@ export const useTrensHolandeses = () => {
       };
     });
 
-    executar(dutchTrainServicesDeparturesByHourQuery(url)).then((departuresData) => {
+    executar(dutchTrainServicesDeparturesByHourConsulta(url)).then((departuresData) => {
       const hourLabels = (departuresData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
       const hourValues = (departuresData as any[]).map(d => d.total);
       opcaoPartidasPorHora.value = {
@@ -112,7 +112,7 @@ export const useTrensHolandeses = () => {
       };
     });
 
-    executar(dutchTrainServicesAvgStopDurationQuery(url)).then((stopDurationData) => {
+    executar(dutchTrainServicesAvgStopDurationConsulta(url)).then((stopDurationData) => {
       const stopLabels = (stopDurationData as any[]).map(d => d.station_name);
       const stopValues = (stopDurationData as any[]).map(d => d.avg_stop_seconds);
       opcaoDuracaoMediaParada.value = {

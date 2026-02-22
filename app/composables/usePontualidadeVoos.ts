@@ -73,7 +73,7 @@ export const usePontualidadeVoos = () => {
 
     const url = ontimeUrl;
 
-    executar(ontimeKpisQuery(url))
+    executar(ontimeKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -85,7 +85,7 @@ export const usePontualidadeVoos = () => {
         carregandoKpis.value = false;
       });
 
-    executar(ontimeCompanhiasQuery(url))
+    executar(ontimeCompanhiasConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => d.carrier);
@@ -112,7 +112,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeStatusQuery(url))
+    executar(ontimeStatusConsulta(url))
       .then((data) => {
         opcaoStatus.value = {
           backgroundColor: "transparent",
@@ -132,7 +132,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeDiaSemanaQuery(url))
+    executar(ontimeDiaSemanaConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => DIAS_SEMANA[(d.dayofweek as number) - 1] ?? `D${d.dayofweek}`);
@@ -146,7 +146,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeMensalQuery(url))
+    executar(ontimeMensalConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => MESES[(d.month as number) - 1] ?? `M${d.month}`);
@@ -171,7 +171,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeAtrasoPartidaQuery(url))
+    executar(ontimeAtrasoPartidaConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => `${d.faixa_min}min`);
@@ -185,7 +185,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeDistanciaQuery(url))
+    executar(ontimeDistanciaConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => DIST_LABELS[(d.distancegroup as number) - 1] ?? `G${d.distancegroup}`);
@@ -199,7 +199,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeAeroportosQuery(url))
+    executar(ontimeAeroportosConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => d.origin);
@@ -226,7 +226,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeCancelamentosQuery(url))
+    executar(ontimeCancelamentosConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => d.carrier);
@@ -253,7 +253,7 @@ export const usePontualidadeVoos = () => {
         };
       });
 
-    executar(ontimeHoraPartidaQuery(url))
+    executar(ontimeHoraPartidaConsulta(url))
       .then((data) => {
         if (!data || data.length === 0) {
           opcaoHoraPartida.value = {};

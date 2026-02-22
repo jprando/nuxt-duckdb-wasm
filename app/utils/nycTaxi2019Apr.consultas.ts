@@ -1,4 +1,4 @@
-export const nycTaxi2019AprKpisQuery = (url: string) => `
+export const nycTaxi2019AprKpisConsulta = (url: string) => `
   SELECT
     COUNT(*)                                                   AS total_trips,
     ROUND(AVG(date_diff('minute', Pickup_at, Dropoff_at)), 1)  AS avg_duration_min,
@@ -8,7 +8,7 @@ export const nycTaxi2019AprKpisQuery = (url: string) => `
   WHERE Dropoff_at > Pickup_at
 `;
 
-export const nycTaxi2019AprTarifaQuery = (url: string) => `
+export const nycTaxi2019AprTarifaConsulta = (url: string) => `
   SELECT
     CASE Rate_code_id
       WHEN 1 THEN 'Padrão'
@@ -26,7 +26,7 @@ export const nycTaxi2019AprTarifaQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const nycTaxi2019AprPagamentoQuery = (url: string) => `
+export const nycTaxi2019AprPagamentoConsulta = (url: string) => `
   SELECT
     CASE Payment_type
       WHEN 1 THEN 'Crédito'
@@ -43,7 +43,7 @@ export const nycTaxi2019AprPagamentoQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const nycTaxi2019AprDuracaoQuery = (url: string) => `
+export const nycTaxi2019AprDuracaoConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(date_diff('minute', Pickup_at, Dropoff_at) / 5) * 5 AS INTEGER) AS faixa_min,
     COUNT(*) AS total
@@ -56,7 +56,7 @@ export const nycTaxi2019AprDuracaoQuery = (url: string) => `
   ORDER BY faixa_min
 `;
 
-export const nycTaxi2019AprGorjetaQuery = (url: string) => `
+export const nycTaxi2019AprGorjetaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Tip_amount / 2) * 2 AS INTEGER) AS faixa,
     COUNT(*) AS total
@@ -68,7 +68,7 @@ export const nycTaxi2019AprGorjetaQuery = (url: string) => `
   ORDER BY faixa
 `;
 
-export const nycTaxi2019AprHoraQuery = (url: string) => `
+export const nycTaxi2019AprHoraConsulta = (url: string) => `
   SELECT
     CAST(EXTRACT(HOUR FROM Pickup_at) AS INTEGER) AS hora,
     COUNT(*) AS total

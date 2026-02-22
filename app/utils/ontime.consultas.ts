@@ -1,4 +1,4 @@
-export const ontimeKpisQuery = (url: string) => `
+export const ontimeKpisConsulta = (url: string) => `
   SELECT
     COUNT(*)                                                                                          AS total_voos,
     ROUND(AVG(Distance), 0)                                                                           AS distancia_media,
@@ -9,7 +9,7 @@ export const ontimeKpisQuery = (url: string) => `
   FROM '${url}'
 `;
 
-export const ontimeCompanhiasQuery = (url: string) => `
+export const ontimeCompanhiasConsulta = (url: string) => `
   SELECT
     Carrier,
     COUNT(*) AS total
@@ -19,7 +19,7 @@ export const ontimeCompanhiasQuery = (url: string) => `
   LIMIT 15
 `;
 
-export const ontimeStatusQuery = (url: string) => `
+export const ontimeStatusConsulta = (url: string) => `
   SELECT
     CASE
       WHEN Cancelled = 1 THEN 'Cancelado'
@@ -33,7 +33,7 @@ export const ontimeStatusQuery = (url: string) => `
   ORDER BY total DESC
 `;
 
-export const ontimeDiaSemanaQuery = (url: string) => `
+export const ontimeDiaSemanaConsulta = (url: string) => `
   SELECT
     Dayofweek,
     ROUND(AVG(CASE WHEN Depdelay > 0 THEN Depdelay ELSE NULL END), 1) AS atraso_medio,
@@ -44,7 +44,7 @@ export const ontimeDiaSemanaQuery = (url: string) => `
   ORDER BY Dayofweek
 `;
 
-export const ontimeMensalQuery = (url: string) => `
+export const ontimeMensalConsulta = (url: string) => `
   SELECT
     Month,
     COUNT(*) AS total,
@@ -54,7 +54,7 @@ export const ontimeMensalQuery = (url: string) => `
   ORDER BY Month
 `;
 
-export const ontimeAtrasoPartidaQuery = (url: string) => `
+export const ontimeAtrasoPartidaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Depdelay / 15) * 15 AS INTEGER) AS faixa_min,
     COUNT(*) AS total
@@ -67,7 +67,7 @@ export const ontimeAtrasoPartidaQuery = (url: string) => `
   ORDER BY faixa_min
 `;
 
-export const ontimeDistanciaQuery = (url: string) => `
+export const ontimeDistanciaConsulta = (url: string) => `
   SELECT
     Distancegroup,
     COUNT(*) AS total
@@ -77,7 +77,7 @@ export const ontimeDistanciaQuery = (url: string) => `
   ORDER BY Distancegroup
 `;
 
-export const ontimeAeroportosQuery = (url: string) => `
+export const ontimeAeroportosConsulta = (url: string) => `
   SELECT
     Origin,
     COUNT(*) AS total
@@ -87,7 +87,7 @@ export const ontimeAeroportosQuery = (url: string) => `
   LIMIT 12
 `;
 
-export const ontimeCancelamentosQuery = (url: string) => `
+export const ontimeCancelamentosConsulta = (url: string) => `
   SELECT
     Carrier,
     ROUND(SUM(Cancelled) * 100.0 / COUNT(*), 2) AS taxa_cancelamento,
@@ -99,7 +99,7 @@ export const ontimeCancelamentosQuery = (url: string) => `
   LIMIT 12
 `;
 
-export const ontimeHoraPartidaQuery = (url: string) => `
+export const ontimeHoraPartidaConsulta = (url: string) => `
   SELECT
     CAST(FLOOR(Crsdeptime / 100) AS INTEGER) AS hora,
     ROUND(AVG(CASE WHEN Depdelay > 0 THEN Depdelay ELSE NULL END), 1) AS atraso_medio,

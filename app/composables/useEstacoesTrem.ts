@@ -52,9 +52,9 @@ export const useEstacoesTrem = () => {
     carregandoKpis.value = true;
     erro.value = null;
 
-    const url = trainStationsUrl;
+    const url = estacoesTremUrl;
 
-    executar(trainStationsKpisQuery(url))
+    executar(estacoesTremKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -66,7 +66,7 @@ export const useEstacoesTrem = () => {
         carregandoKpis.value = false;
       });
 
-    executar(trainStationsPaisesQuery(url))
+    executar(estacoesTremPaisesConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const labels = rows.map(d => d.country);
@@ -93,7 +93,7 @@ export const useEstacoesTrem = () => {
         };
       });
 
-    executar(trainStationsTiposQuery(url))
+    executar(estacoesTremTiposConsulta(url))
       .then((data) => {
         opcaoTipos.value = {
           backgroundColor: "transparent",
@@ -113,7 +113,7 @@ export const useEstacoesTrem = () => {
         };
       });
 
-    executar(trainStationsCategoriasQuery(url))
+    executar(estacoesTremCategoriasConsulta(url))
       .then((data) => {
         opcaoCategorias.value = {
           backgroundColor: "transparent",
@@ -133,7 +133,7 @@ export const useEstacoesTrem = () => {
         };
       });
 
-    executar(trainStationsLatitudeQuery(url))
+    executar(estacoesTremLatitudeConsulta(url))
       .then((data) => {
         const labels = (data as any[]).map(d => `${d.faixa_lat}°N`);
         const values = (data as any[]).map(d => d.total);
@@ -146,7 +146,7 @@ export const useEstacoesTrem = () => {
         };
       });
 
-    executar(trainStationsLongitudeQuery(url))
+    executar(estacoesTremLongitudeConsulta(url))
       .then((data) => {
         const labels = (data as any[]).map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`);
         const values = (data as any[]).map(d => d.total);
@@ -159,7 +159,7 @@ export const useEstacoesTrem = () => {
         };
       });
 
-    executar(trainStationsTiposPorPaisQuery(url))
+    executar(estacoesTremTiposPorPaisConsulta(url))
       .then((data) => {
         const rows = data as any[];
         const countries = [...new Set(rows.map(d => d.country))];

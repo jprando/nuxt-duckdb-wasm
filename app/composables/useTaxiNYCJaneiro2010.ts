@@ -49,7 +49,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
     const url = nycTaxi2010JanUrl;
 
-    executar(nycTaxi2010JanKpisQuery(url))
+    executar(nycTaxi2010JanKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -61,7 +61,7 @@ export const useTaxiNYCJaneiro2010 = () => {
         carregandoKpis.value = false;
       });
 
-    executar(nycTaxi2010JanVendorQuery(url))
+    executar(nycTaxi2010JanVendorConsulta(url))
       .then((tarifaData) => {
         opcaoTarifa.value = {
           backgroundColor: "transparent",
@@ -81,7 +81,7 @@ export const useTaxiNYCJaneiro2010 = () => {
         };
       });
 
-    executar(nycTaxi2010JanPagamentoQuery(url))
+    executar(nycTaxi2010JanPagamentoConsulta(url))
       .then((pagamentoData) => {
         opcaoPagamento.value = {
           backgroundColor: "transparent",
@@ -101,7 +101,7 @@ export const useTaxiNYCJaneiro2010 = () => {
         };
       });
 
-    executar(nycTaxi2010JanDistanciaQuery(url))
+    executar(nycTaxi2010JanDistanciaConsulta(url))
       .then((duracaoData) => {
         const durLabels = (duracaoData as any[]).map(d => `${d.milhas}min`);
         const durValues = (duracaoData as any[]).map(d => d.total);
@@ -114,7 +114,7 @@ export const useTaxiNYCJaneiro2010 = () => {
         };
       });
 
-    executar(nycTaxi2010JanGorjetaQuery(url))
+    executar(nycTaxi2010JanGorjetaConsulta(url))
       .then((gorjetaData) => {
         const gorjLabels = (gorjetaData as any[]).map(d => `$${d.faixa}`);
         const gorjValues = (gorjetaData as any[]).map(d => d.total);
@@ -127,7 +127,7 @@ export const useTaxiNYCJaneiro2010 = () => {
         };
       });
 
-    executar(nycTaxi2010JanHoraQuery(url))
+    executar(nycTaxi2010JanHoraConsulta(url))
       .then((horaData) => {
         if (!horaData || horaData.length === 0) {
           opcaoHora.value = {};

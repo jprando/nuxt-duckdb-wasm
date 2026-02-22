@@ -8,7 +8,7 @@ export const railwayFaresUrl = "https://blobs.duckdb.org/tariffs.parquet";
 export const nycTaxi2019AprUrl = "https://blobs.duckdb.org/data/taxi_2019_04.parquet";
 export const nycTaxi2010JanUrl = "https://blobs.duckdb.org/data/yellow_tripdata_2010-01.parquet";
 export const shakespeareUrl = "https://blobs.duckdb.org/data/shakespeare.parquet";
-export const trainStationsUrl = "https://blobs.duckdb.org/stations.parquet";
+export const estacoesTremUrl = "https://blobs.duckdb.org/stations.parquet";
 export const ontimeUrl = "https://blobs.duckdb.org/data/ontime.parquet";
 
 export interface DatasetParquet {
@@ -45,7 +45,7 @@ export const datasetsParquet: DatasetParquet[] = [
   },
   {
     label: "Estações de Trem",
-    url: trainStationsUrl,
+    url: estacoesTremUrl,
     grupo: "Ferroviário",
   },
   // Outros

@@ -49,7 +49,7 @@ export const useTaxiNYCAbril2019 = () => {
 
     const url = nycTaxi2019AprUrl;
 
-    executar(nycTaxi2019AprKpisQuery(url))
+    executar(nycTaxi2019AprKpisConsulta(url))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -61,7 +61,7 @@ export const useTaxiNYCAbril2019 = () => {
         carregandoKpis.value = false;
       });
 
-    executar(nycTaxi2019AprTarifaQuery(url))
+    executar(nycTaxi2019AprTarifaConsulta(url))
       .then((tarifaData) => {
         opcaoTarifa.value = {
           backgroundColor: "transparent",
@@ -81,7 +81,7 @@ export const useTaxiNYCAbril2019 = () => {
         };
       });
 
-    executar(nycTaxi2019AprPagamentoQuery(url))
+    executar(nycTaxi2019AprPagamentoConsulta(url))
       .then((pagamentoData) => {
         opcaoPagamento.value = {
           backgroundColor: "transparent",
@@ -101,7 +101,7 @@ export const useTaxiNYCAbril2019 = () => {
         };
       });
 
-    executar(nycTaxi2019AprDuracaoQuery(url))
+    executar(nycTaxi2019AprDuracaoConsulta(url))
       .then((duracaoData) => {
         const durLabels = (duracaoData as any[]).map(d => `${d.faixa_min}min`);
         const durValues = (duracaoData as any[]).map(d => d.total);
@@ -114,7 +114,7 @@ export const useTaxiNYCAbril2019 = () => {
         };
       });
 
-    executar(nycTaxi2019AprGorjetaQuery(url))
+    executar(nycTaxi2019AprGorjetaConsulta(url))
       .then((gorjetaData) => {
         const gorjLabels = (gorjetaData as any[]).map(d => `$${d.faixa}`);
         const gorjValues = (gorjetaData as any[]).map(d => d.total);
@@ -127,7 +127,7 @@ export const useTaxiNYCAbril2019 = () => {
         };
       });
 
-    executar(nycTaxi2019AprHoraQuery(url))
+    executar(nycTaxi2019AprHoraConsulta(url))
       .then((horaData) => {
         if (!horaData || horaData.length === 0) {
           opcaoHora.value = {};
