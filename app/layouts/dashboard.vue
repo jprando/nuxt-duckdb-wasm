@@ -118,7 +118,6 @@ async function alternarFullscreen() {
     <UDashboardGroup>
       <UDashboardSidebar
         collapsible
-
         :class="{ 'w-fit': !_collapsed }"
         @update:collapsed="(valor) => _collapsed = valor"
       >
@@ -166,7 +165,7 @@ async function alternarFullscreen() {
         </template>
       </UDashboardSidebar>
 
-      <UDashboardPanel>
+      <UDashboardPanel class="bg-linear-to-br from-default dark:to-muted light:to-accented">
         <UDashboardNavbar>
           <template #left>
             <slot name="titulo">
