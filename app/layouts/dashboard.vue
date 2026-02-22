@@ -16,7 +16,15 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
       { label: "Dados", icon: "i-lucide-table-2", to: "/" },
     ].map(i => ({
       ...i,
-      class: "text-lg p-2.5 my-1.5",
+      class: [
+        "text-md",
+        "my-1.5",
+        "-mx-1",
+        "p-2.5",
+        _collapsed.value ? "w-10" : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
       onSelect: cancelarConsulta,
     })),
     [
@@ -82,7 +90,15 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
       },
     ].map(i => ({
       ...i,
-      class: "text-lg p-2.5 my-1.5",
+      class: [
+        "text-md",
+        "my-1.5",
+        "-mx-1",
+        "p-2.5",
+        _collapsed.value ? "w-10" : "",
+      ]
+        .filter(Boolean)
+        .join(" "),
       onSelect: cancelarConsulta,
     })),
   ];
@@ -102,6 +118,7 @@ async function alternarFullscreen() {
     <UDashboardGroup>
       <UDashboardSidebar
         collapsible
+
         :class="{ 'w-fit': !_collapsed }"
         @update:collapsed="(valor) => _collapsed = valor"
       >
