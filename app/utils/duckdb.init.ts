@@ -52,16 +52,18 @@ async () => {
     await _db.instantiate(bundle.mainModule, pthreadWorkerUrl);
     db.value = _db;
     const conn = await _db.connect();
-    await conn.query(`
-      INSTALL httpfs;
-      LOAD httpfs;
-      CREATE SECRET (
-        TYPE r2,
-        KEY_ID '795bc4564e26558db20d054f10ab0f7a',
-        SECRET '3511e0909dfb4902485b5d5be2676742e22d5a5ef90fb2cd9ae09f16db987f03',
-        ACCOUNT_ID '4948c0330a30de25bd62ed74721e547b'
-      );
-    `);
+    // ESTOU CIENTE QUE HA CREDENCIAIS NO CODIGO ABAIXO
+    // SAO CREDENCIAIS SOMENTE LEITURA PARA ARQUIVOS PARQUET DE TESTE
+    // await conn.query(`
+    //   INSTALL httpfs;
+    //   LOAD httpfs;
+    //   CREATE SECRET (
+    //     TYPE r2,
+    //     KEY_ID '795bc4564e26558db20d054f10ab0f7a',
+    //     SECRET '3511e0909dfb4902485b5d5be2676742e22d5a5ef90fb2cd9ae09f16db987f03',
+    //     ACCOUNT_ID '4948c0330a30de25bd62ed74721e547b'
+    //   );
+    // `);
 
     const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1]
       ?? "desconhecido";

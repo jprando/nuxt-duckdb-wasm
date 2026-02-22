@@ -32,11 +32,11 @@ export const useDuckDb = () => {
     try {
       const resultado: any[] = [];
       const stream = await conn.send(sql);
-
+      // const consultaId = crypto.randomUUID();
       for await (const batch of stream) {
         resultado.push(...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())));
         if (sinalEfetivo.aborted) break;
-        // console.info("#39 duckdb:batch:readed");
+        // console.info("#39 duckdb:batch:readed",consultaId);
       }
 
       if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");

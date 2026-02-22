@@ -3,20 +3,21 @@
 **/*.local.*
 
 # Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
 .cache
+.data
+.nitro
+.nuxt
+.output
+.wrangler
 dist
 
 # Node dependencies
-node_modules
 .pnpm-store
+node_modules
 
 # Logs
-logs
 *.log
+logs
 
 # Misc
 .DS_Store
@@ -24,9 +25,9 @@ logs
 .idea
 
 # Local env files
+!.env.example
 .env
 .env.*
-!.env.example
 
 # Test coverage
 coverage/

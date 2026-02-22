@@ -2,14 +2,14 @@
 export const duckDBDataProtocolHTTP = 4; // Protocolo HTTP para leitura de dados (vs. Fetch API ou File API)
 export const duckDBItensPorPagina = 50; // Quantidade de itens a exibir por página na paginação dos resultados
 export const duckDBLogLevelWARNING = 3; // Correspondente a LogLevel.WARNING em @duckdb/duckdb-wasm
-export const taxiNYCLocalUrl = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2024-01.parquet";
-export const trensHolandesUrl = "r2://teste-nuxt-duckdb-wasm/train_services.parquet";
-export const tarifasFerroviariasUrl = "r2://teste-nuxt-duckdb-wasm/tariffs.parquet";
-export const taxiNYCAbril2019Url = "r2://teste-nuxt-duckdb-wasm/taxi_2019_04.parquet";
-export const taxiNYCJaneiro2010Url = "r2://teste-nuxt-duckdb-wasm/yellow_tripdata_2010-01.parquet";
-export const shakespeareUrl = "r2://teste-nuxt-duckdb-wasm/shakespeare.parquet";
-export const estacoesTremUrl = "r2://teste-nuxt-duckdb-wasm/stations.parquet";
-export const pontualidadeVoosUrl = "r2://teste-nuxt-duckdb-wasm/ontime.parquet";
+export const taxiNYCLocalUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/yellow_tripdata_2024-01.parquet";
+export const trensHolandesUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/train_services.parquet";
+export const tarifasFerroviariasUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/tariffs.parquet";
+export const taxiNYCAbril2019Url = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/taxi_2019_04.parquet";
+export const taxiNYCJaneiro2010Url = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/yellow_tripdata_2010-01.parquet";
+export const shakespeareUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/shakespeare.parquet";
+export const estacoesTremUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/stations.parquet";
+export const pontualidadeVoosUrl = "https://pub-1407a0cd06da4125aec80dc262085591.r2.dev/ontime.parquet";
 
 export interface DatasetParquet {
   label: string;
