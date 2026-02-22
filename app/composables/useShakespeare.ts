@@ -20,10 +20,10 @@ const PALETA = [
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 16, right: 24, bottom: 8, left: 8, containLabel: false },
+  grid: { top: 16, right: 24, bottom: 8, left: 8 },
   tooltip: { trigger: "axis" as const },
 };
-// grid: { top: 16, right: 24, bottom: 8, left: 8, containLabel: false },
+// grid: { top: 16, right: 24, bottom: 8, left: 8 },
 
 export const useShakespeare = () => {
   const { executar, init } = useDuckDb();
@@ -96,7 +96,6 @@ export const useShakespeare = () => {
             right: 24,
             bottom: 8,
             left: 8,
-            containLabel: false,
           },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
           yAxis: {
@@ -122,7 +121,6 @@ export const useShakespeare = () => {
             right: 16,
             bottom: 32,
             left: 56,
-            containLabel: false,
           },
           xAxis: {
             type: "category",
@@ -148,7 +146,6 @@ export const useShakespeare = () => {
             right: 24,
             bottom: 8,
             left: 8,
-            containLabel: false,
           },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
           yAxis: {
@@ -174,7 +171,6 @@ export const useShakespeare = () => {
             right: 16,
             bottom: 48,
             left: 56,
-            containLabel: false,
           },
           xAxis: {
             type: "category",

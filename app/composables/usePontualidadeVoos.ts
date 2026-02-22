@@ -15,7 +15,7 @@ const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 32, right: 16, bottom: 48, left: 56, containLabel: false },
+  grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
 };
 
@@ -92,7 +92,7 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.total);
         opcaoCompanhias.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, containLabel: true },
+          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
           color: [COR_PRIMARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -146,7 +146,7 @@ export const usePontualidadeVoos = () => {
         const totais = rows.map(d => d.total);
         opcaoMensal.value = {
           ...baseChart,
-          grid: { top: 16, right: 16, bottom: 40, left: 64, containLabel: false },
+          grid: { top: 16, right: 16, bottom: 40, left: 64 },
           color: [COR_PRIMARIA],
           xAxis: { type: "category", data: labels, boundaryGap: false, axisLabel: { fontSize: 11 } },
           yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -199,7 +199,7 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.total);
         opcaoAeroportos.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, containLabel: true },
+          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
           color: [COR_SECUNDARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -219,7 +219,7 @@ export const usePontualidadeVoos = () => {
         const values = rows.map(d => d.taxa_cancelamento);
         opcaoCancelamentos.value = {
           ...baseChart,
-          grid: { top: 16, right: 48, bottom: 8, left: 40, containLabel: true },
+          grid: { top: 16, right: 48, bottom: 8, left: 40, outerBounds: true },
           color: ["#f43f5e"],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "%", nameTextStyle: { fontSize: 10 } },
@@ -243,7 +243,7 @@ export const usePontualidadeVoos = () => {
         const atrasos = rows.map(d => d.atraso_medio ?? 0);
         opcaoHoraPartida.value = {
           ...baseChart,
-          grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
+          grid: { top: 16, right: 16, bottom: 48, left: 64 },
           color: [COR_PRIMARIA],
           xAxis: { type: "category", data: labels, boundaryGap: false, axisLabel: { fontSize: 11 } },
           yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "min", nameTextStyle: { fontSize: 10 } },

@@ -15,7 +15,7 @@ const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 32, right: 16, bottom: 48, left: 56, containLabel: false },
+  grid: { top: 32, right: 16, bottom: 48, left: 56, outerBounds: true },
   tooltip: { trigger: "axis" as const },
 };
 
@@ -73,7 +73,7 @@ export const useEstacoesFerrovia = () => {
         const values = rows.map(d => d.total);
         opcaoPaises.value = {
           ...baseChart,
-          grid: { top: 16, right: 32, bottom: 8, left: 40, containLabel: true },
+          grid: { top: 16, right: 32, bottom: 8, left: 40, outerBounds: true },
           color: [COR_PRIMARIA],
           tooltip: { trigger: "axis" as const },
           xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -176,7 +176,7 @@ export const useEstacoesFerrovia = () => {
           backgroundColor: "transparent",
           tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
           legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
-          grid: { top: 32, right: 16, bottom: 80, left: 40, containLabel: true },
+          grid: { top: 32, right: 16, bottom: 80, left: 40, outerBounds: true },
           xAxis: {
             type: "category",
             data: countries,

@@ -12,7 +12,7 @@ const COR_TERCIARIA = "#f59e0b";
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 32, right: 16, bottom: 48, left: 56, containLabel: false },
+  grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
 };
 

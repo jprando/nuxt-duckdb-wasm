@@ -13,7 +13,7 @@ const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#
 
 const baseChart = {
   backgroundColor: "transparent",
-  grid: { top: 32, right: 16, bottom: 48, left: 56, containLabel: false },
+  grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
 };
 
@@ -130,7 +130,7 @@ export const useTaxiNYCLocal = () => {
         const horaValues = (horaData as any[]).map(d => d.total);
         opcaoHora.value = {
           ...baseChart,
-          grid: { top: 16, right: 16, bottom: 48, left: 64, containLabel: false },
+          grid: { top: 16, right: 16, bottom: 48, left: 64 },
           color: [COR_PRIMARIA],
           xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
           yAxis: { type: "value", axisLabel: { fontSize: 10 } },

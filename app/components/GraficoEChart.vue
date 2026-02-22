@@ -11,7 +11,6 @@ import {
 import { init, use } from "echarts/core";
 import {
   LabelLayout,
-  LegacyGridContainLabel,
   UniversalTransition,
 } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
@@ -25,7 +24,6 @@ use([
   LegendComponent,
   LabelLayout,
   UniversalTransition,
-  LegacyGridContainLabel,
   SVGRenderer,
 ]);
 
