@@ -19,7 +19,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -30,10 +30,10 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+    <div class="grade-kpis">
       <!-- Total de Imagens -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-image"
@@ -41,14 +41,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Imagens
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_imagens) }}
               </p>
             </template>
@@ -58,7 +58,7 @@ const {
 
       <!-- Usuários Únicos -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-users"
@@ -66,14 +66,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Usuários Únicos
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_usuarios) }}
               </p>
             </template>
@@ -83,7 +83,7 @@ const {
 
       <!-- Taxa NSFW -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
             <UIcon
               name="i-lucide-shield-alert"
@@ -91,14 +91,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Taxa NSFW
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtDecimal(kpis.pct_nsfw) }}%
               </p>
             </template>
@@ -108,7 +108,7 @@ const {
 
       <!-- Steps Médio -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-sliders"
@@ -116,14 +116,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Steps Médios
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtDecimal(kpis.steps_medio) }}
               </p>
             </template>
@@ -133,7 +133,7 @@ const {
 
       <!-- Período -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-calendar-range"
@@ -141,7 +141,7 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Período
             </p>
             <template v-if="carregandoKpis">
@@ -151,7 +151,7 @@ const {
               <p class="text-sm font-bold text-highlighted leading-tight">
                 {{ fmtData(kpis.periodo_inicio) }}
               </p>
-              <p class="text-xs text-muted">
+              <p class="subtexto-kpi">
                 até {{ fmtData(kpis.periodo_fim) }}
               </p>
             </template>
@@ -161,7 +161,7 @@ const {
     </div>
 
     <!-- ── Linha 1: Dimensões + NSFW ──────────────────────────────── -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Top 10 Dimensões -->
       <GraficoCard
         :opcao="opcaoDimensoes"
@@ -197,7 +197,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Steps + Samplers ──────────────────────────────── -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Distribuição de Steps -->
       <GraficoCard
         :opcao="opcaoSteps"
@@ -248,3 +248,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

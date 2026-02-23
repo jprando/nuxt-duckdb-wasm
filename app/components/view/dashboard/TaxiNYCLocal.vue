@@ -19,7 +19,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -30,13 +30,13 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+    <div class="grade-kpis">
       <!-- Total de corridas -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-car"
@@ -44,14 +44,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Corridas
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_trips) }}
               </p>
             </template>
@@ -62,9 +62,9 @@ const {
       <!-- Distância média -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-map-pin"
@@ -72,14 +72,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Distância Média
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ kpis.avg_distance }}
                 <span class="text-sm font-normal text-muted">mi</span>
               </p>
@@ -91,9 +91,9 @@ const {
       <!-- Valor médio -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-circle-dollar-sign"
@@ -101,14 +101,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Valor Médio
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtDolarDecimal(kpis.avg_amount) }}
               </p>
             </template>
@@ -119,9 +119,9 @@ const {
       <!-- Receita total -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-trending-up"
@@ -129,14 +129,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Receita Total
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-28" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtDolar(kpis.total_revenue) }}
               </p>
             </template>
@@ -146,7 +146,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <GraficoCard
         :opcao="opcaoVendor"
         :tema="temaGrafico"
@@ -177,7 +177,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Distância + Valor ────────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <GraficoCard
         :opcao="opcaoDistancia"
         :tema="temaGrafico"
@@ -230,3 +230,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

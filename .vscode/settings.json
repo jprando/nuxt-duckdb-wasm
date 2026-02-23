@@ -14,5 +14,6 @@
     "*.csv": "duckdb.dataFileViewer",
     "*.tsv": "duckdb.dataFileViewer"
   },
-  "duckdb.defaultDatabase": "memory"
+  "duckdb.defaultDatabase": "memory",
+  "css.lint.unknownAtRules": "ignore"
 }

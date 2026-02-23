@@ -18,7 +18,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -29,13 +29,13 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+    <div class="grade-kpis">
       <!-- Total de Estações -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-building-2"
@@ -43,14 +43,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Estações
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_estacoes) }}
               </p>
             </template>
@@ -61,9 +61,9 @@ const {
       <!-- Países Cobertos -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-globe"
@@ -71,14 +71,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Países Cobertos
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_paises) }}
               </p>
             </template>
@@ -89,9 +89,9 @@ const {
       <!-- Tipos de Estação -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-layers"
@@ -99,14 +99,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Tipos de Estação
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-14" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_tipos) }}
               </p>
             </template>
@@ -117,9 +117,9 @@ const {
       <!-- Megaestações -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-star"
@@ -127,14 +127,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Megaestações
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-14" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.megaestacoes) }}
               </p>
             </template>
@@ -145,9 +145,9 @@ const {
       <!-- Estações na Holanda -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-info/10 shrink-0">
             <UIcon
               name="i-lucide-train"
@@ -155,14 +155,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Estações na Holanda
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.estacoes_nl) }}
               </p>
             </template>
@@ -173,9 +173,9 @@ const {
       <!-- Estações Intercidade -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
             <UIcon
               name="i-lucide-zap"
@@ -183,14 +183,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Estações Intercidade
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.estacoes_intercidade) }}
               </p>
             </template>
@@ -200,7 +200,7 @@ const {
     </div>
 
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Estações por País -->
       <GraficoCard
         :opcao="opcaoPaises"
@@ -233,7 +233,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Categorias + Latitude ─────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Categorias Simplificadas -->
       <GraficoCard
         :opcao="opcaoCategorias"
@@ -305,3 +305,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

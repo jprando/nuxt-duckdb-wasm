@@ -60,8 +60,8 @@ onUnmounted(() => {
   <!-- Card normal -->
   <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
     <template #header>
-      <div class="flex items-center justify-between gap-2">
-        <h2 class="text-sm font-semibold flex items-center gap-1.5 min-w-0 overflow-hidden">
+      <div class="cabecalho-card">
+        <h2 class="titulo-card">
           <slot name="titulo" />
         </h2>
         <UButton
@@ -84,10 +84,10 @@ onUnmounted(() => {
     </template>
     <div
       v-else-if="semDados"
-      class="flex items-center justify-center"
+      class="card-sem-dados"
       :style="{ height: altura + 'px' }"
     >
-      <p class="text-sm text-muted">
+      <p class="msg-sem-dados">
         {{ msgSemDados }}
       </p>
     </div>
@@ -104,18 +104,18 @@ onUnmounted(() => {
     <Transition name="grafico-expandido">
       <div
         v-if="expandido"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        class="overlay-expandido"
       >
         <!-- Backdrop -->
         <div
-          class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          class="backdrop-expandido"
           @click="fecharExpandido"
         />
         <!-- Card expandido -->
-        <div class="relative z-10 w-full h-full flex flex-col bg-default border border-default rounded-xl shadow-2xl overflow-hidden">
+        <div class="card-expandido">
           <!-- Header -->
-          <div class="flex items-center justify-between px-4 py-3 border-b border-default shrink-0">
-            <h2 class="text-sm font-semibold flex items-center gap-1.5">
+          <div class="cabecalho-expandido">
+            <h2 class="titulo-expandido">
               <slot name="titulo" />
             </h2>
             <UButton
@@ -128,12 +128,12 @@ onUnmounted(() => {
             />
           </div>
           <!-- Corpo -->
-          <div class="flex-1 p-4 min-h-0">
+          <div class="corpo-expandido">
             <div
               v-if="semDados"
-              class="h-full flex items-center justify-center"
+              class="expandido-sem-dados"
             >
-              <p class="text-sm text-muted">
+              <p class="msg-sem-dados">
                 {{ msgSemDados }}
               </p>
             </div>
@@ -151,6 +151,52 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+@reference "../assets/css/main.css";
+
+.cabecalho-card {
+  @apply flex items-center justify-between gap-2;
+}
+
+.titulo-card {
+  @apply text-sm font-semibold flex items-center gap-1.5 min-w-0 overflow-hidden;
+}
+
+.card-sem-dados {
+  @apply flex items-center justify-center;
+}
+
+.msg-sem-dados {
+  @apply text-sm text-muted;
+}
+
+.overlay-expandido {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+}
+
+.backdrop-expandido {
+  @apply absolute inset-0 bg-black/60 backdrop-blur-sm;
+}
+
+.card-expandido {
+  @apply relative z-10 w-full h-full flex flex-col bg-default border border-default rounded-xl shadow-2xl overflow-hidden;
+}
+
+.cabecalho-expandido {
+  @apply flex items-center justify-between px-4 py-3 border-b border-default shrink-0;
+}
+
+.titulo-expandido {
+  @apply text-sm font-semibold flex items-center gap-1.5;
+}
+
+.corpo-expandido {
+  @apply flex-1 p-4 min-h-0;
+}
+
+.expandido-sem-dados {
+  @apply h-full flex items-center justify-center;
+}
+
 .grafico-expandido-enter-active,
 .grafico-expandido-leave-active {
   transition: opacity 0.2s ease;

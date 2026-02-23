@@ -2,8 +2,6 @@
   setup
   lang="ts"
 >
-import { computed } from "vue";
-
 interface DataRecord {
   [key: string]: any;
 }
@@ -26,13 +24,13 @@ const props = defineProps<{
 <template>
   <div
     v-if="registros.length === 0"
-    class="text-center text-gray-500 py-4"
+    class="tabela-vazia"
   >
     Nenhum registro
   </div>
   <div
     v-else
-    class="w-full h-full min-h-0 overflow-auto"
+    class="tabela-container"
   >
     <UTable
       :loading="props.estahCarregando"
@@ -57,6 +55,17 @@ const props = defineProps<{
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
+.tabela-vazia {
+  @apply text-center py-4;
+  color: var(--ui-text-muted);
+}
+
+.tabela-container {
+  @apply w-full h-full min-h-0 overflow-auto;
+}
+
 /* Força a DIV interna do UTable a herdar a altura do container */
 :deep(>div[data-slot="root"]) {
   height: 100%;

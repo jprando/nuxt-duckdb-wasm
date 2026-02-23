@@ -64,7 +64,7 @@ onMounted(init);
 <template>
   <NuxtLayout>
     <template #header>
-      <div class="flex flex-col gap-4">
+      <div class="cabecalho-dataset-dados">
         <SeletorDataset
           v-model:dataset-selecionado="datasetSelecionado"
           :loading="estahCarregando"
@@ -101,3 +101,11 @@ onMounted(init);
     </template>
   </NuxtLayout>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.cabecalho-dataset-dados {
+  @apply flex flex-col gap-4;
+}
+</style>

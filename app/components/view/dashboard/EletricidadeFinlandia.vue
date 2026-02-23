@@ -18,7 +18,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -29,10 +29,10 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+    <div class="grade-kpis">
       <!-- Total de Registros -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-zap"
@@ -40,14 +40,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Registros Horários
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_registros) }}
               </p>
             </template>
@@ -57,7 +57,7 @@ const {
 
       <!-- Preço Médio -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-trending-up"
@@ -65,17 +65,17 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Preço Médio
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtEuro(kpis.preco_medio) }}
               </p>
-              <p class="text-xs text-muted">
+              <p class="subtexto-kpi">
                 €/MWh
               </p>
             </template>
@@ -85,7 +85,7 @@ const {
 
       <!-- Preço Máximo -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
             <UIcon
               name="i-lucide-arrow-up"
@@ -93,17 +93,17 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Pico Máximo
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtEuro(kpis.preco_maximo) }}
               </p>
-              <p class="text-xs text-muted">
+              <p class="subtexto-kpi">
                 €/MWh
               </p>
             </template>
@@ -113,7 +113,7 @@ const {
 
       <!-- Preço Mínimo -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-arrow-down"
@@ -121,17 +121,17 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Mínimo Registrado
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtEuro(kpis.preco_minimo) }}
               </p>
-              <p class="text-xs text-muted">
+              <p class="subtexto-kpi">
                 €/MWh
               </p>
             </template>
@@ -141,7 +141,7 @@ const {
 
       <!-- Desvio Padrão -->
       <UCard :ui="{ body: 'p-4!' }">
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-bar-chart-2"
@@ -149,17 +149,17 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Desvio Padrão
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtEuro(kpis.desvio_padrao) }}
               </p>
-              <p class="text-xs text-muted">
+              <p class="subtexto-kpi">
                 €/MWh
               </p>
             </template>
@@ -187,7 +187,7 @@ const {
     </GraficoCard>
 
     <!-- ── Linha 2: Mensal + Horário ───────────────────────────────── -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Variação Mensal -->
       <GraficoCard
         :opcao="opcaoMensal"
@@ -262,3 +262,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

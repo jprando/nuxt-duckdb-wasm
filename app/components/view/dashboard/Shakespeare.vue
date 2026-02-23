@@ -18,7 +18,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -29,13 +29,13 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+    <div class="grade-kpis">
       <!-- Total de linhas -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-scroll-text"
@@ -43,14 +43,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Linhas
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_lines) }}
               </p>
             </template>
@@ -61,9 +61,9 @@ const {
       <!-- Total de peças -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-book-open"
@@ -71,14 +71,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Peças
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_plays) }}
               </p>
             </template>
@@ -89,9 +89,9 @@ const {
       <!-- Total de personagens -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-users"
@@ -99,14 +99,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Personagens Únicos
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_speakers) }}
               </p>
             </template>
@@ -117,9 +117,9 @@ const {
       <!-- Média de palavras por fala -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-message-square"
@@ -127,14 +127,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Palavras por Fala
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-16" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtDecimal(kpis.avg_words_per_line) }}
               </p>
             </template>
@@ -144,7 +144,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Top peças + Top personagens ───────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <GraficoCard
         :opcao="opcaoPecas"
         :tema="temaGrafico"
@@ -175,7 +175,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <GraficoCard
         :opcao="opcaoAto"
         :tema="temaGrafico"
@@ -227,3 +227,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

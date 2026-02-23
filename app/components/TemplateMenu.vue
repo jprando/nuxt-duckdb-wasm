@@ -39,7 +39,7 @@
       variant="subtle"
       trailing-icon="i-lucide-chevron-down"
       size="xs"
-      class="-mb-1.5 font-semibold rounded-full truncate"
+      class="botao-menu"
       :class="[open && 'bg-primary/15']"
       :ui="{
         trailingIcon: [
@@ -50,3 +50,10 @@
     />
   </UDropdownMenu>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+.botao-menu {
+  @apply -mb-1.5 font-semibold rounded-full truncate;
+}
+</style>

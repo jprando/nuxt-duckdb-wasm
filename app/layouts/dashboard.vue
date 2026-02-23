@@ -126,10 +126,10 @@ async function alternarFullscreen() {
             v-if="!collapsed"
             to="/"
           >
-            <AppLogo class="h-5 w-auto" />
+            <AppLogo class="logo-aplicacao" />
           </NuxtLink>
           <UDashboardSidebarCollapse
-            class="text-dimmed absolute top-5"
+            class="botao-colapso-sidebar"
             :icon="collapsed && 'i-simple-icons:nuxtdotjs'"
             :class="{ 'right-2': !collapsed, 'right-3': collapsed }"
           />
@@ -142,11 +142,11 @@ async function alternarFullscreen() {
         <UNavigationMenu
           :items="navItens"
           orientation="vertical"
-          class="w-full data-[orientation=vertical]:w-full"
+          class="menu-navegacao-vertical"
         />
 
         <template #footer>
-          <div class="min-w-full flex flex-col gap-2 items-center">
+          <div class="rodape-sidebar">
             <!-- <USeparator /> -->
             <UProgress
               v-if="estahCarregando && !_collapsed"
@@ -156,7 +156,7 @@ async function alternarFullscreen() {
             />
             <span
               v-else-if="duckDBWasmInfo"
-              class="text-[0.65rem] text-muted truncate transition-shadow"
+              class="info-versao-duckdb"
               :class="_collapsed ? '[writing-mode:vertical-rl] rotate-180' : ''"
             >
               {{ duckDBWasmInfo }}
@@ -165,11 +165,11 @@ async function alternarFullscreen() {
         </template>
       </UDashboardSidebar>
 
-      <UDashboardPanel class="bg-linear-to-br from-default dark:to-muted light:to-accented">
+      <UDashboardPanel class="painel-principal">
         <UDashboardNavbar>
           <template #left>
             <slot name="titulo">
-              <h1 class="text-sm font-semibold text-highlighted truncate">
+              <h1 class="titulo-dashboard">
                 Dashboard
               </h1>
             </slot>
@@ -208,10 +208,46 @@ async function alternarFullscreen() {
           </template>
         </UDashboardNavbar>
 
-        <UMain class="flex-1 overflow-y-auto">
+        <UMain class="area-conteudo">
           <slot />
         </UMain>
       </UDashboardPanel>
     </UDashboardGroup>
   </UApp>
 </template>
+
+<style scoped>
+@reference "../assets/css/main.css";
+
+.painel-principal {
+  @apply bg-linear-to-br from-default dark:to-muted light:to-accented;
+}
+
+.logo-aplicacao {
+  @apply h-5 w-auto;
+}
+
+.botao-colapso-sidebar {
+  @apply text-dimmed absolute top-5;
+}
+
+.menu-navegacao-vertical {
+  @apply w-full data-[orientation=vertical]:w-full;
+}
+
+.rodape-sidebar {
+  @apply min-w-full flex flex-col gap-2 items-center;
+}
+
+.info-versao-duckdb {
+  @apply text-[0.65rem] text-muted truncate transition-shadow;
+}
+
+.titulo-dashboard {
+  @apply text-sm font-semibold text-highlighted truncate;
+}
+
+.area-conteudo {
+  @apply flex-1 overflow-y-auto;
+}
+</style>

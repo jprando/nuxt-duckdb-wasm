@@ -12,12 +12,12 @@ useHead({
 <template>
   <NuxtLayout name="dashboard">
     <template #titulo>
-      <div class="flex items-center gap-2 cursor-default">
+      <div class="dashboard-cabecalho-titulo">
         <UIcon
           name="i-lucide-train-track"
-          class="text-primary shrink-0"
+          class="dashboard-icone-secao"
         />
-        <h1 class="text-sm font-semibold text-highlighted truncate">
+        <h1 class="dashboard-titulo-secao">
           Serviços de Trem
         </h1>
         <UBadge

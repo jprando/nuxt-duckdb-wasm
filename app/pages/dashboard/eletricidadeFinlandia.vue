@@ -8,12 +8,12 @@ definePageMeta({ layout: "dashboard" });
 <template>
   <NuxtLayout name="dashboard">
     <template #titulo>
-      <div class="flex items-center gap-2 cursor-default">
+      <div class="dashboard-cabecalho-titulo">
         <UIcon
           name="i-lucide-zap"
-          class="text-primary shrink-0"
+          class="dashboard-icone-secao"
         />
-        <h1 class="text-sm font-semibold text-highlighted truncate">
+        <h1 class="dashboard-titulo-secao">
           Eletricidade Finlândia
         </h1>
         <UBadge
@@ -28,7 +28,7 @@ definePageMeta({ layout: "dashboard" });
             color="primary"
             variant="subtle"
             size="sm"
-            class="cursor-pointer"
+            class="dashboard-badge-info"
           />
         </UTooltip>
       </div>

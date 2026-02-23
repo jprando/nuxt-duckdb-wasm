@@ -7,14 +7,14 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 
 <template>
   <UApp>
-    <div class="h-dvh flex flex-col overflow-hidden">
+    <div class="pagina-principal">
       <UHeader
         :toggle="false"
         :ui="{ root: 'h-12!', container: 'h-full' }"
       >
         <template #left>
           <NuxtLink to="/">
-            <AppLogo class="w-auto h-6 shrink-0" />
+            <AppLogo class="logo-aplicacao" />
           </NuxtLink>
         </template>
 
@@ -41,10 +41,10 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
         </template>
       </UHeader>
 
-      <UMain class="flex-1 flex flex-col min-h-0">
-        <UContainer class="flex flex-1 flex-col min-h-0 pt-0 px-0.5 sm:pt-3">
+      <UMain class="area-principal">
+        <UContainer class="container-conteudo">
           <UCard
-            class="flex-1 flex flex-col min-h-0"
+            class="card-conteudo"
             :ui="{
               header: 'p-2 sm:px-6',
               root: 'flex-1 flex flex-col min-h-0 ring-0! sm:ring-1!',
@@ -68,11 +68,11 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
       </UMain>
 
       <USeparator
-        class="relative md:top-2 p-0! -mt-1! lg:mt-0!"
+        class="separador-rodape"
         icon="i-simple-icons-nuxtdotjs"
       />
       <UFooter
-        class="hidden md:block"
+        class="rodape-pagina"
         :ui="{
           container:
             'w-full max-w-(--ui-container) mx-auto px-0 sm:py-2 flex sm:gap-x-3 py-0!',
@@ -82,7 +82,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
         }"
       >
         <template #left>
-          <p class="text-sm text-muted">
+          <p class="texto-copyright">
             Built with Nuxt UI • © {{ new Date().getFullYear() }}
           </p>
         </template>
@@ -94,7 +94,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
           />
           <span
             v-else-if="duckDBWasmInfo"
-            class="text-[0.67rem] sm:text-xs text-dimmed inline"
+            class="info-versao-duckdb"
           >
             {{ duckDBWasmInfo }}
           </span>
@@ -103,3 +103,43 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
     </div>
   </UApp>
 </template>
+
+<style scoped>
+@reference "../assets/css/main.css";
+
+.pagina-principal {
+  @apply h-dvh flex flex-col overflow-hidden bg-linear-to-br from-default dark:to-muted light:to-accented;
+}
+
+.logo-aplicacao {
+  @apply w-auto h-6 shrink-0;
+}
+
+.area-principal {
+  @apply flex-1 flex flex-col min-h-0;
+}
+
+.container-conteudo {
+  @apply flex flex-1 flex-col min-h-0 pt-0 px-0.5 sm:pt-3;
+}
+
+.card-conteudo {
+  @apply flex-1 flex flex-col min-h-0;
+}
+
+.separador-rodape {
+  @apply relative md:top-2 p-0! -mt-1! lg:mt-0!;
+}
+
+.rodape-pagina {
+  @apply hidden md:block;
+}
+
+.texto-copyright {
+  @apply text-sm text-muted;
+}
+
+.info-versao-duckdb {
+  @apply text-[0.67rem] sm:text-xs text-dimmed inline;
+}
+</style>

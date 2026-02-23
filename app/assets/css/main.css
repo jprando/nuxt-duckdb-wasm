@@ -1,6 +1,48 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* ── Classes globais de KPI (usadas em todos os dashboards) ── */
+.conteudo-view {
+  @apply p-4 md:p-6 space-y-5;
+}
+
+.card-kpi {
+  @apply overflow-hidden;
+}
+
+.item-kpi {
+  @apply flex items-start gap-3;
+}
+
+.label-kpi {
+  @apply text-xs text-muted mb-0.5;
+}
+
+.valor-kpi {
+  @apply text-2xl font-bold text-highlighted leading-tight;
+}
+
+.subtexto-kpi {
+  @apply text-xs text-muted;
+}
+
+/* ── Classes globais de cabeçalho de seção (NuxtLayout name="dashboard") ── */
+.dashboard-cabecalho-titulo {
+  @apply flex items-center gap-2 cursor-default;
+}
+
+.dashboard-icone-secao {
+  @apply text-primary shrink-0;
+}
+
+.dashboard-titulo-secao {
+  @apply text-sm font-semibold text-highlighted truncate;
+}
+
+.dashboard-badge-info {
+  @apply cursor-pointer;
+}
+
 @theme static {
   --font-sans: "Public Sans", sans-serif;
 

@@ -17,7 +17,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -28,13 +28,13 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+    <div class="grade-kpis">
       <!-- Total de Rotas -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-route"
@@ -42,14 +42,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Rotas
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_routes) }}
               </p>
             </template>
@@ -60,9 +60,9 @@ const {
       <!-- Total de Estações -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-building"
@@ -70,14 +70,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Nº de Estações
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_stations) }}
               </p>
             </template>
@@ -88,9 +88,9 @@ const {
       <!-- Preço Médio -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-euro"
@@ -98,14 +98,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Preço Médio
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtPreco(kpis.avg_price) }}
               </p>
             </template>
@@ -116,9 +116,9 @@ const {
       <!-- Preço Mínimo -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
             <UIcon
               name="i-lucide-arrow-down-right"
@@ -126,14 +126,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Preço Mínimo
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtPreco(kpis.min_price) }}
               </p>
             </template>
@@ -144,9 +144,9 @@ const {
       <!-- Preço Máximo -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-info/10 shrink-0">
             <UIcon
               name="i-lucide-arrow-up-right"
@@ -154,14 +154,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Preço Máximo
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtPreco(kpis.max_price) }}
               </p>
             </template>
@@ -171,7 +171,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Distribuição de Preços + Rotas mais caras ───── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <GraficoCard
         :opcao="opcaoDistribuicaoPreco"
         :tema="temaGrafico"
@@ -235,3 +235,15 @@ const {
     </GraficoCard>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>

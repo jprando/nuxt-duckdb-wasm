@@ -15,10 +15,10 @@ const rodapeQuantidadeRegistros = computed(() =>
 </script>
 
 <template>
-  <div class="flex justify-between">
+  <div class="rodape-info">
     <span
       v-if="tempoExecucaoMs != null"
-      class="text-neutral-400"
+      class="texto-rodape"
     >
       {{
         tempoExecucaoMs < 1000
@@ -27,8 +27,24 @@ const rodapeQuantidadeRegistros = computed(() =>
       }}
     </span>
     <span v-else>&nbsp;</span>
-    <span class="text-neutral-400">
+    <span class="contagem-rodape">
       {{ rodapeQuantidadeRegistros }}
     </span>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.rodape-info {
+  @apply flex justify-between;
+}
+
+.texto-rodape {
+  color: var(--ui-text-muted);
+}
+
+.contagem-rodape {
+  color: var(--ui-text-muted);
+}
+</style>

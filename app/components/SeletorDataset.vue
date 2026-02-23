@@ -33,9 +33,9 @@ const itensAgrupados = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-row items-end gap-2">
+  <div class="seletor-container">
     <div class="flex-1">
-      <label class="text-sm font-medium text-neutral-250 mb-1 block">
+      <label class="seletor-label">
         Datasets
       </label>
       <USelectMenu
@@ -57,7 +57,7 @@ const itensAgrupados = computed(() => {
       size="xl"
       :disabled="!datasetSelecionado"
       :loading="loading"
-      class="justify-center w-28 min-w-28 max-w-28"
+      class="botao-carregar"
       @click="emit('carregar')"
     >
       <span class="truncate">
@@ -66,3 +66,20 @@ const itensAgrupados = computed(() => {
     </UButton>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.seletor-container {
+  @apply flex flex-row items-end gap-2;
+}
+
+.seletor-label {
+  @apply text-sm font-medium mb-1 block;
+  color: var(--ui-text-muted);
+}
+
+.botao-carregar {
+  @apply justify-center w-28 min-w-28 max-w-28;
+}
+</style>

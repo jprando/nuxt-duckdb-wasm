@@ -26,7 +26,7 @@ const {
 </script>
 
 <template>
-  <div class="p-4 md:p-6 space-y-5">
+  <div class="conteudo-view">
     <!-- ── Erro ───────────────────────────────────────────────────── -->
     <UAlert
       v-if="erro"
@@ -37,13 +37,13 @@ const {
     />
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+    <div class="grade-kpis">
       <!-- Total de Voos -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-primary/10 shrink-0">
             <UIcon
               name="i-lucide-plane"
@@ -51,14 +51,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Total de Voos
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-28" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtNumero(kpis.total_voos) }}
               </p>
             </template>
@@ -69,9 +69,9 @@ const {
       <!-- % Voos Pontuais -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-success/10 shrink-0">
             <UIcon
               name="i-lucide-check-circle"
@@ -79,14 +79,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Voos Pontuais
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtPct(kpis.pct_pontuais) }}
               </p>
             </template>
@@ -97,9 +97,9 @@ const {
       <!-- Taxa de Cancelamento -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-error/10 shrink-0">
             <UIcon
               name="i-lucide-ban"
@@ -107,14 +107,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Taxa de Cancelamento
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtPct(kpis.taxa_cancelamento) }}
               </p>
             </template>
@@ -125,9 +125,9 @@ const {
       <!-- Atraso Médio — Partida -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-warning/10 shrink-0">
             <UIcon
               name="i-lucide-timer"
@@ -135,14 +135,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Atraso Médio Partida
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtMin(kpis.atraso_medio_partida) }}
               </p>
             </template>
@@ -153,9 +153,9 @@ const {
       <!-- Atraso Médio — Chegada -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
             <UIcon
               name="i-lucide-alarm-clock"
@@ -163,14 +163,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Atraso Médio Chegada
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-20" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtMin(kpis.atraso_medio_chegada) }}
               </p>
             </template>
@@ -181,9 +181,9 @@ const {
       <!-- Distância Média -->
       <UCard
         :ui="{ body: 'p-4!' }"
-        class="overflow-hidden"
+        class="card-kpi"
       >
-        <div class="flex items-start gap-3">
+        <div class="item-kpi">
           <div class="p-2 rounded-lg bg-info/10 shrink-0">
             <UIcon
               name="i-lucide-ruler"
@@ -191,14 +191,14 @@ const {
             />
           </div>
           <div class="min-w-0">
-            <p class="text-xs text-muted mb-0.5">
+            <p class="label-kpi">
               Distância Média
             </p>
             <template v-if="carregandoKpis">
               <USkeleton class="h-7 w-24" />
             </template>
             <template v-else>
-              <p class="text-2xl font-bold text-highlighted leading-tight">
+              <p class="valor-kpi">
                 {{ fmtMi(kpis.distancia_media) }}
               </p>
             </template>
@@ -208,7 +208,7 @@ const {
     </div>
 
     <!-- ── Linha 1: Companhias + Status ───────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Voos por Companhia Aérea -->
       <GraficoCard
         :opcao="opcaoCompanhias"
@@ -241,7 +241,7 @@ const {
     </div>
 
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Atraso por Dia da Semana -->
       <GraficoCard
         :opcao="opcaoDiaSemana"
@@ -274,7 +274,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Histograma de Atraso + Distância ─────────────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Distribuição de Atraso na Partida -->
       <GraficoCard
         :opcao="opcaoAtrasoPartida"
@@ -307,7 +307,7 @@ const {
     </div>
 
     <!-- ── Linha 4: Aeroportos + Cancelamentos por Companhia ──────── -->
-    <div class="grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos">
       <!-- Top 12 Aeroportos de Origem -->
       <GraficoCard
         :opcao="opcaoAeroportos"
@@ -362,7 +362,7 @@ const {
     </GraficoCard>
 
     <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="grade-graficos-xl">
       <!-- Radar: Performance Comparativa das Companhias -->
       <GraficoCard
         :opcao="opcaoRadar"
@@ -401,3 +401,19 @@ const {
     </div>
   </div>
 </template>
+
+<style scoped>
+@reference "tailwindcss";
+
+.grade-kpis {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+}
+
+.grade-graficos {
+  @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
+}
+
+.grade-graficos-xl {
+  @apply grid grid-cols-1 xl:grid-cols-2 gap-4;
+}
+</style>
