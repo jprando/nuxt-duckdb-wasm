@@ -4,9 +4,12 @@
 >
 import { BarChart } from "echarts/charts";
 import { use } from "echarts/core";
-import EChartBase from "./GraficoEChartBase.vue";
+// import EChartBase from "./GraficoEChartBase.vue";
 
-use([BarChart]);
+const LazyEChartBase = defineLazyHydrationComponent(
+  "visible",
+  () => import("./GraficoEChartBase.vue"),
+);
 
 withDefaults(
   defineProps<{
@@ -19,10 +22,14 @@ withDefaults(
     tema: "",
   },
 );
+
+onMounted(() => {
+  use([BarChart]);
+});
 </script>
 
 <template>
-  <EChartBase
+  <LazyEChartBase
     :option="option"
     :height="height"
     :tema="tema"

@@ -4,9 +4,12 @@
 >
 import { ChordChart } from "echarts/charts";
 import { use } from "echarts/core";
-import EChartBase from "./GraficoEChartBase.vue";
+// import EChartBase from "./GraficoEChartBase.vue";
 
-use([ChordChart]);
+const LazyEChartBase = defineLazyHydrationComponent(
+  "visible",
+  () => import("./GraficoEChartBase.vue"),
+);
 
 withDefaults(
   defineProps<{
@@ -19,10 +22,14 @@ withDefaults(
     tema: "",
   },
 );
+
+onMounted(() => {
+  use([ChordChart]);
+});
 </script>
 
 <template>
-  <EChartBase
+  <LazyEChartBase
     :option="option"
     :height="height"
     :tema="tema"

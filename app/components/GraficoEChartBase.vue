@@ -2,14 +2,14 @@
   setup
   lang="ts"
 >
-import {
-  BarChart,
-  HeatmapChart,
-  LineChart,
-  PieChart,
-  RadarChart,
-  SankeyChart,
-} from "echarts/charts";
+// import {
+//   BarChart,
+//   HeatmapChart,
+//   LineChart,
+//   PieChart,
+//   RadarChart,
+//   SankeyChart,
+// } from "echarts/charts";
 import {
   CalendarComponent,
   GridComponent,
@@ -23,12 +23,12 @@ import { LabelLayout, UniversalTransition } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
 
 use([
-  BarChart,
-  HeatmapChart,
-  LineChart,
-  PieChart,
-  RadarChart,
-  SankeyChart,
+  // BarChart,
+  // HeatmapChart,
+  // LineChart,
+  // PieChart,
+  // RadarChart,
+  // SankeyChart,
   CalendarComponent,
   GridComponent,
   LegendComponent,

@@ -5,9 +5,12 @@
 import { HeatmapChart } from "echarts/charts";
 import { CalendarComponent, VisualMapComponent } from "echarts/components";
 import { use } from "echarts/core";
-import EChartBase from "./GraficoEChartBase.vue";
+// import EChartBase from "./GraficoEChartBase.vue";
 
-use([HeatmapChart, CalendarComponent, VisualMapComponent]);
+const LazyEChartBase = defineLazyHydrationComponent(
+  "visible",
+  () => import("./GraficoEChartBase.vue"),
+);
 
 withDefaults(
   defineProps<{
@@ -20,10 +23,14 @@ withDefaults(
     tema: "",
   },
 );
+
+onMounted(() => {
+  use([HeatmapChart, CalendarComponent, VisualMapComponent]);
+})
 </script>
 
 <template>
-  <EChartBase
+  <LazyEChartBase
     :option="option"
     :height="height"
     :tema="tema"

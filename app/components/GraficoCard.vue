@@ -2,6 +2,10 @@
   setup
   lang="ts"
 >
+const LazyGraficoEChart = defineAsyncComponent(() =>
+  import("~/components/GraficoEChart.vue")
+);
+
 const props = withDefaults(
   defineProps<{
     configuracao: Record<string, unknown> | null;
@@ -20,7 +24,8 @@ const expandido = ref(false);
 const alturaExpandida = ref(0);
 
 const semDados = computed(
-  () => props.configuracao !== null && Object.keys(props.configuracao).length === 0,
+  () =>
+    props.configuracao !== null && Object.keys(props.configuracao).length === 0,
 );
 
 const calcularAlturaExpandida = () => {

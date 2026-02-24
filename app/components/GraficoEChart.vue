@@ -2,8 +2,6 @@
   setup
   lang="ts"
 >
-import { computed, resolveComponent } from "vue";
-
 const props = withDefaults(
   defineProps<{
     option: Record<string, unknown>;
@@ -33,21 +31,45 @@ const chartType = computed(() => {
 const componentName = computed(() => {
   switch (chartType.value) {
     case "bar":
-      return resolveComponent("LazyGraficoEChartBarra");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartBarra.vue")
+      );
+      // return resolveComponent("GraficoEChartBarra");
     case "line":
-      return resolveComponent("LazyGraficoEChartLinha");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartLinha.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartLinha");
     case "pie":
-      return resolveComponent("LazyGraficoEChartPizza");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartPizza.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartPizza");
     case "radar":
-      return resolveComponent("LazyGraficoEChartRadar");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartRadar.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartRadar");
     case "heatmap":
-      return resolveComponent("LazyGraficoEChartHeatmap");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartHeatmap.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartHeatmap");
     case "sankey":
-      return resolveComponent("LazyGraficoEChartSankey");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartSankey.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartSankey");
     case "chord":
-      return resolveComponent("LazyGraficoEChartChord");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartChord.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartChord");
     default:
-      return resolveComponent("LazyGraficoEChartBarra");
+      return defineAsyncComponent(async () =>
+        import("~/components/GraficoEChartBarra.vue")
+      );
+      // return resolveComponent("LazyGraficoEChartBarra");
   }
 });
 </script>
