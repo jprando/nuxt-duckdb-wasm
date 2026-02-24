@@ -3,15 +3,6 @@
   lang="ts"
 >
 import {
-  BarChart,
-  ChordChart,
-  HeatmapChart,
-  LineChart,
-  PieChart,
-  RadarChart,
-  SankeyChart,
-} from "echarts/charts";
-import {
   CalendarComponent,
   GridComponent,
   LegendComponent,
@@ -22,14 +13,8 @@ import { init, use } from "echarts/core";
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
 
+// Initialize base components
 use([
-  BarChart,
-  ChordChart,
-  LineChart,
-  PieChart,
-  RadarChart,
-  SankeyChart,
-  HeatmapChart,
   CalendarComponent,
   GridComponent,
   TooltipComponent,
@@ -56,9 +41,38 @@ const containerRef = ref<HTMLDivElement | null>(null);
 let chart: ReturnType<typeof init> | null = null;
 let resizeObserver: ResizeObserver | null = null;
 
-const initChart = () => {
+// Dynamically load only required chart types based on the option
+const loadRequiredCharts = async (option: any) => {
+  const types = new Set<string>();
+  if (Array.isArray(option.series)) {
+    option.series.forEach((s: any) => { if (s.type) types.add(s.type); });
+  } else if (option.series && option.series.type) {
+    types.add(option.series.type);
+  }
+
+  const chartsToLoad: Promise<any>[] = [];
+  
+  if (types.has("bar")) chartsToLoad.push(import("echarts/charts").then(m => m.BarChart));
+  if (types.has("line")) chartsToLoad.push(import("echarts/charts").then(m => m.LineChart));
+  if (types.has("pie")) chartsToLoad.push(import("echarts/charts").then(m => m.PieChart));
+  if (types.has("radar")) chartsToLoad.push(import("echarts/charts").then(m => m.RadarChart));
+  if (types.has("heatmap")) chartsToLoad.push(import("echarts/charts").then(m => m.HeatmapChart));
+  if (types.has("sankey")) chartsToLoad.push(import("echarts/charts").then(m => m.SankeyChart));
+  if (types.has("chord")) chartsToLoad.push(import("echarts/charts").then(m => m.ChordChart));
+
+  if (chartsToLoad.length > 0) {
+    const modules = await Promise.all(chartsToLoad);
+    use(modules);
+  }
+};
+
+const initChart = async () => {
   if (!containerRef.value) return;
-  chart = init(containerRef.value, props.tema || undefined);
+  await loadRequiredCharts(props.option);
+  
+  if (!chart) {
+    chart = init(containerRef.value, props.tema || undefined);
+  }
   chart.setOption(props.option);
 };
 
@@ -81,13 +95,15 @@ onUnmounted(() => {
   chart = null;
 });
 
-watch(() => props.option, (novaOpcao) => {
+watch(() => props.option, async (novaOpcao) => {
+  await loadRequiredCharts(novaOpcao);
   if (!chart) return;
   chart.setOption(novaOpcao, { notMerge: true });
 }, { deep: false });
 
-watch(() => props.tema, (novoTema) => {
+watch(() => props.tema, () => {
   chart?.dispose();
+  chart = null;
   initChart();
 });
 </script>

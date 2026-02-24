@@ -63,7 +63,6 @@ onUnmounted(() => {
       <div
         class="cabecalho-card"
         tabindex="1"
-        @touchend="abrirExpandido"
         @dblclick="abrirExpandido"
       >
         <h2 class="titulo-card">
@@ -129,7 +128,6 @@ onUnmounted(() => {
           <template #header>
             <div
               class="flex items-center justify-between"
-              @touchend="fecharExpandido"
               @dblclick="fecharExpandido"
             >
               <h2 class="titulo-expandido">
