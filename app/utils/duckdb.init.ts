@@ -2,7 +2,7 @@ import { duckDBDataProtocolHTTP, duckDBLogLevelWARNING, nomeUrlParquetsR2 } from
 
 export const duckDBWasmIniciar = (
   db: ShallowRef<unknown>,
-  estahCarregando: WritableComputedRef<boolean>,
+  estahCarregando: Ref<boolean>,
   duckDBWasmInfo: Ref<string>,
 ) =>
 async () => {

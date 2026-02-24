@@ -1,9 +1,7 @@
 const db = shallowRef<any>(null);
 const estahCarregando = ref(false);
 const duckDBWasmInfo = ref("...");
-
-let timerDebounce: number | undefined;
-let _controller = new AbortController();
+const parquetsRegistrados = new Set<string>();
 
 if (import.meta.client) {
   window.addEventListener("pagehide", () => duckDBWasmEncerrar(db));
@@ -12,41 +10,44 @@ if (import.meta.client) {
 export const useDuckDb = () => {
   const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
-  const cancelarConsulta = () => {
-    // console.info("#16 cancelarConsulta:invocado");
-    _controller.abort();
-    _controller = new AbortController();
-  };
-
-  const execute = async (sql: string, signal?: AbortSignal) => {
-    const sinalEfetivo = signal ?? _controller.signal;
+  const execute = async (sql: string) => {
     if (!db.value) await init();
-    if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
 
     estahCarregando.value = true;
     const conn = await db.value!.connect();
 
-    const onAbort = () => conn.cancelSent();
-    sinalEfetivo.addEventListener("abort", onAbort);
-
     try {
       const resultado: any[] = [];
       const stream = await conn.send(sql);
-      // const consultaId = crypto.randomUUID();
       for await (const batch of stream) {
         resultado.push(...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())));
-        if (sinalEfetivo.aborted) break;
-        // console.info("#39 duckdb:batch:readed",consultaId);
       }
-
-      if (sinalEfetivo.aborted) throw new DOMException("Consulta cancelada", "AbortError");
-
       return resultado;
     } finally {
-      sinalEfetivo.removeEventListener("abort", onAbort);
       // await conn.close();
       estahCarregando.value = false;
     }
+  };
+
+  const registrarParquet = async (url: string): Promise<string> => {
+    if (!db.value) await init();
+
+    const nomeArquivo = url.split("/").pop()!;
+    if (parquetsRegistrados.has(nomeArquivo)) return nomeArquivo;
+
+    const cache = await caches.open("parquet-cache-v1");
+    let response = await cache.match(url);
+
+    if (!response) {
+      response = await fetch(url);
+      await cache.put(url, response.clone());
+    }
+
+    const buffer = await response.arrayBuffer();
+    await db.value!.registerFileBuffer(nomeArquivo, new Uint8Array(buffer));
+    parquetsRegistrados.add(nomeArquivo);
+
+    return nomeArquivo;
   };
 
   const obterDadosSimples = async (
@@ -73,22 +74,20 @@ export const useDuckDb = () => {
   ) => {
     if (!url) return [];
 
-    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+    const nomeArquivo = await registrarParquet(url);
     const registros: any[] = await execute(
-      selectDadosParquet(absoluteUrl, pagina, itensPorPagina),
+      selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
     );
 
     return registros;
   };
 
-  const obterDadosParquetQuantidade = async (
-    url: string = "",
-  ) => {
+  const obterDadosParquetQuantidade = async (url: string = "") => {
     if (!url) return 0;
 
-    const absoluteUrl = url.startsWith("/") ? `${window.location.origin}${url}` : url;
+    const nomeArquivo = await registrarParquet(url);
     const [quantidade]: [{ total?: number }] = await execute(
-      `FROM '${absoluteUrl}' SELECT COUNT() AS total`,
+      `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
     );
 
     return quantidade?.total ?? 0;
@@ -97,7 +96,7 @@ export const useDuckDb = () => {
   return {
     init,
     executar: execute,
-    cancelarConsulta,
+    registrarParquet,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,
     obterDadosSimples,

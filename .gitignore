@@ -24,6 +24,7 @@ logs
 .fleet
 .idea
 .playwright-mcp
+.serena
 
 # Local env files
 !.env.example
@@ -39,3 +40,5 @@ test-results/
 
 # binario gerado pelo bun build --compile
 nuxtbin
+
+*.parquet
