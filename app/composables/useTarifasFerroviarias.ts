@@ -37,8 +37,8 @@ export const useTarifasFerroviarias = () => {
 
   const opcaoDistribuicaoPreco = ref<Record<string, unknown> | null>(null);
   const opcaoRotasCaras = ref<Record<string, unknown> | null>(null);
-  const opcaoEstacoesConectadas = ref<Record<string, unknown> | null>(null);
-  const opcaoChord = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoEstacoesConectadas = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoChord = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -77,7 +77,7 @@ export const useTarifasFerroviarias = () => {
     const rows = data as { station: string; appearances: number }[];
     const stations = rows.map(d => d.station);
     const appearances = rows.map(d => d.appearances);
-    opcaoEstacoesConectadas.value = {
+    configuracaoGraficoEstacoesConectadas.value = {
       ...baseChart,
       color: [COR_SECUNDARIA],
       xAxis: {
@@ -98,7 +98,7 @@ export const useTarifasFerroviarias = () => {
       nodesSet.add(d.dst);
     });
     const nodes = [...nodesSet].map(name => ({ name }));
-    opcaoChord.value = {
+    configuracaoGraficoChord.value = {
       backgroundColor: "transparent",
       tooltip: {
         trigger: "item",
@@ -167,8 +167,8 @@ export const useTarifasFerroviarias = () => {
     temaGrafico,
     opcaoDistribuicaoPreco,
     opcaoRotasCaras,
-    opcaoEstacoesConectadas,
-    opcaoChord,
+    configuracaoGraficoEstacoesConectadas,
+    configuracaoGraficoChord,
     fmtNumero,
     fmtPreco,
   };

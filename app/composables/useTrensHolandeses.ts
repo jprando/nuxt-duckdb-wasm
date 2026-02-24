@@ -39,8 +39,8 @@ export const useTrensHolandeses = () => {
 
   const opcaoTipo = ref<Record<string, unknown> | null>(null);
   const opcaoEstacoesMovimentadas = ref<Record<string, unknown> | null>(null);
-  const opcaoPartidasPorHora = ref<Record<string, unknown> | null>(null);
-  const opcaoDuracaoMediaParada = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoPartidasPorHora = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDuracaoMediaParada = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ export const useTrensHolandeses = () => {
   const configurarGraficoPartidasPorHora = (data: any[]) => {
     const hourLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const hourValues = (data as any[]).map(d => d.total);
-    opcaoPartidasPorHora.value = {
+    configuracaoGraficoPartidasPorHora.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
@@ -101,7 +101,7 @@ export const useTrensHolandeses = () => {
   const configurarGraficoDuracaoMediaParada = (data: any[]) => {
     const stopLabels = (data as any[]).map(d => d.station_name);
     const stopValues = (data as any[]).map(d => d.avg_stop_seconds);
-    opcaoDuracaoMediaParada.value = {
+    configuracaoGraficoDuracaoMediaParada.value = {
       ...baseChart,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -151,8 +151,8 @@ export const useTrensHolandeses = () => {
     temaGrafico,
     opcaoTipo,
     opcaoEstacoesMovimentadas,
-    opcaoPartidasPorHora,
-    opcaoDuracaoMediaParada,
+    configuracaoGraficoPartidasPorHora,
+    configuracaoGraficoDuracaoMediaParada,
     fmtNumero,
   };
 };

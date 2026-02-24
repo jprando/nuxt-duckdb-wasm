@@ -45,9 +45,9 @@ export const useShakespeare = () => {
 
   const opcaoPecas = ref<Record<string, unknown> | null>(null);
   const opcaoPersonagens = ref<Record<string, unknown> | null>(null);
-  const opcaoAto = ref<Record<string, unknown> | null>(null);
-  const opcaoElenco = ref<Record<string, unknown> | null>(null);
-  const opcaoComprimento = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoAto = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoElenco = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoComprimento = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -92,7 +92,7 @@ export const useShakespeare = () => {
     const rows = data as { ato: string; total: number }[];
     const atos = rows.map(d => `Ato ${d.ato}`);
     const totais = rows.map(d => d.total);
-    opcaoAto.value = {
+    configuracaoGraficoAto.value = {
       backgroundColor: "transparent",
       color: [COR_TERCIARIA],
       tooltip: { trigger: "axis" },
@@ -116,7 +116,7 @@ export const useShakespeare = () => {
     const rows = data as { peca: string; personagens: number }[];
     const pecas = rows.map(d => d.peca).reverse();
     const totais = rows.map(d => d.personagens).reverse();
-    opcaoElenco.value = {
+    configuracaoGraficoElenco.value = {
       backgroundColor: "transparent",
       color: [COR_QUATERNARIA],
       tooltip: { trigger: "axis" },
@@ -140,7 +140,7 @@ export const useShakespeare = () => {
     const rows = data as { faixa: number; total: number }[];
     const labels = rows.map(d => `${d.faixa}–${d.faixa + 19}`);
     const totais = rows.map(d => d.total);
-    opcaoComprimento.value = {
+    configuracaoGraficoComprimento.value = {
       backgroundColor: "transparent",
       color: [PALETA[4]],
       tooltip: { trigger: "axis" },
@@ -208,9 +208,9 @@ export const useShakespeare = () => {
     temaGrafico,
     opcaoPecas,
     opcaoPersonagens,
-    opcaoAto,
-    opcaoElenco,
-    opcaoComprimento,
+    configuracaoGraficoAto,
+    configuracaoGraficoElenco,
+    configuracaoGraficoComprimento,
     fmtNumero,
     fmtDecimal,
   };

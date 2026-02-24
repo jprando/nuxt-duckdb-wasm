@@ -2,19 +2,19 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoDimensoes,
-  opcaoNsfw,
-  opcaoSteps,
-  opcaoSampler,
-  opcaoAtividade,
+  configuracaoGraficoDimensoes,
+  configuracaoGraficoNsfw,
+  configuracaoGraficoSteps,
+  configuracaoGraficoSampler,
+  configuracaoGraficoAtividade,
   fmtNumero,
   fmtDecimal,
 } = useDiffusionDB();
@@ -79,7 +79,7 @@ const {
     <div class="grade-graficos">
       <!-- Top 10 Dimensões -->
       <GraficoCard
-        :opcao="opcaoDimensoes"
+        :opcao="configuracaoGraficoDimensoes"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -97,7 +97,7 @@ const {
 
       <!-- Classificação NSFW -->
       <GraficoCard
-        :opcao="opcaoNsfw"
+        :opcao="configuracaoGraficoNsfw"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -115,7 +115,7 @@ const {
     <div class="grade-graficos">
       <!-- Distribuição de Steps -->
       <GraficoCard
-        :opcao="opcaoSteps"
+        :opcao="configuracaoGraficoSteps"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -130,7 +130,7 @@ const {
 
       <!-- Samplers -->
       <GraficoCard
-        :opcao="opcaoSampler"
+        :opcao="configuracaoGraficoSampler"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -146,7 +146,7 @@ const {
 
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoAtividade"
+      :opcao="configuracaoGraficoAtividade"
       :tema="temaGrafico"
       :altura="220"
     >

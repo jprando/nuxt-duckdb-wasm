@@ -2,19 +2,17 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoPecas,
-  opcaoPersonagens,
-  opcaoAto,
-  opcaoElenco,
-  opcaoComprimento,
+  configuracaoGraficoAto,
+  configuracaoGraficoElenco,
+  configuracaoGraficoComprimento,
   fmtNumero,
   fmtDecimal,
 } = useShakespeare();
@@ -69,7 +67,7 @@ const {
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="opcaoAto"
+        :opcao="configuracaoGraficoAto"
         :tema="temaGrafico"
         :altura="220"
       >
@@ -83,7 +81,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="opcaoElenco"
+        :opcao="configuracaoGraficoElenco"
         :tema="temaGrafico"
         :altura="220"
       >
@@ -102,7 +100,7 @@ const {
 
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoComprimento"
+      :opcao="configuracaoGraficoComprimento"
       :tema="temaGrafico"
       :altura="200"
     >

@@ -2,19 +2,19 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoMensal,
-  opcaoHoraria,
-  opcaoSemanal,
-  opcaoDistribuicao,
-  opcaoCalendario,
+  configuracaoGraficoMensal,
+  configuracaoGraficoHoraria,
+  configuracaoGraficoSemanal,
+  configuracaoGraficoDistribuicao,
+  configuracaoGraficoCalendario,
   fmtNumero,
   fmtEuro,
 } = useEletricidadeFinlandia();
@@ -88,7 +88,7 @@ const {
 
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoSemanal"
+      :opcao="configuracaoGraficoSemanal"
       :tema="temaGrafico"
       :altura="280"
     >
@@ -108,7 +108,7 @@ const {
     <div class="grade-graficos">
       <!-- Variação Mensal -->
       <GraficoCard
-        :opcao="opcaoMensal"
+        :opcao="configuracaoGraficoMensal"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -126,7 +126,7 @@ const {
 
       <!-- Perfil Horário -->
       <GraficoCard
-        :opcao="opcaoHoraria"
+        :opcao="configuracaoGraficoHoraria"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -145,7 +145,7 @@ const {
 
     <!-- ── Distribuição de Preços ─────────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoDistribuicao"
+      :opcao="configuracaoGraficoDistribuicao"
       :tema="temaGrafico"
       :altura="220"
     >
@@ -163,7 +163,7 @@ const {
 
     <!-- ── Calendário de Preços ────────────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoCalendario"
+      :opcao="configuracaoGraficoCalendario"
       :tema="temaGrafico"
       :altura="200"
     >

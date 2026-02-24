@@ -41,9 +41,9 @@ export const useTaxiNYCAbril2019 = () => {
 
   const opcaoTarifa = ref<Record<string, unknown> | null>(null);
   const opcaoPagamento = ref<Record<string, unknown> | null>(null);
-  const opcaoDuracao = ref<Record<string, unknown> | null>(null);
-  const opcaoGorjeta = ref<Record<string, unknown> | null>(null);
-  const opcaoHora = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDuracao = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoGorjeta = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -88,7 +88,7 @@ export const useTaxiNYCAbril2019 = () => {
   const configurarGraficoDuracao = (data: any[]) => {
     const durLabels = (data as any[]).map(d => `${d.faixa_min}min`);
     const durValues = (data as any[]).map(d => d.total);
-    opcaoDuracao.value = {
+    configuracaoGraficoDuracao.value = {
       ...baseChart,
       color: [COR_SECUNDARIA],
       xAxis: { type: "category", data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -100,7 +100,7 @@ export const useTaxiNYCAbril2019 = () => {
   const configurarGraficoGorjeta = (data: any[]) => {
     const gorjLabels = (data as any[]).map(d => `$${d.faixa}`);
     const gorjValues = (data as any[]).map(d => d.total);
-    opcaoGorjeta.value = {
+    configuracaoGraficoGorjeta.value = {
       ...baseChart,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: gorjLabels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -111,12 +111,12 @@ export const useTaxiNYCAbril2019 = () => {
 
   const configurarGraficoHora = (data: any[]) => {
     if (!data || data.length === 0) {
-      opcaoHora.value = {};
+      configuracaoGraficoHora.value = {};
       return;
     }
     const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const horaValues = (data as any[]).map(d => d.total);
-    opcaoHora.value = {
+    configuracaoGraficoHora.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
@@ -164,7 +164,7 @@ export const useTaxiNYCAbril2019 = () => {
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))
       .then(configurarGraficoHora)
       .catch(() => {
-        opcaoHora.value = {};
+        configuracaoGraficoHora.value = {};
       });
   };
 
@@ -187,9 +187,9 @@ export const useTaxiNYCAbril2019 = () => {
     temaGrafico,
     opcaoTarifa,
     opcaoPagamento,
-    opcaoDuracao,
-    opcaoGorjeta,
-    opcaoHora,
+    configuracaoGraficoDuracao,
+    configuracaoGraficoGorjeta,
+    configuracaoGraficoHora,
     fmtNumero,
     fmtDolar,
     fmtDolarDecimal,

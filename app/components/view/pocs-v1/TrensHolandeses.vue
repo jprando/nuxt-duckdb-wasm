@@ -2,18 +2,16 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoTipo,
-  opcaoEstacoesMovimentadas,
-  opcaoPartidasPorHora,
-  opcaoDuracaoMediaParada,
+  configuracaoGraficoPartidasPorHora,
+  configuracaoGraficoDuracaoMediaParada,
   fmtNumero,
 } = useTrensHolandeses();
 </script>
@@ -67,7 +65,7 @@ const {
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
     <GraficoCard
-      :opcao="opcaoDuracaoMediaParada"
+      :opcao="configuracaoGraficoDuracaoMediaParada"
       :tema="temaGrafico"
       :altura="260"
     >
@@ -85,7 +83,7 @@ const {
 
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoPartidasPorHora"
+      :opcao="configuracaoGraficoPartidasPorHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."

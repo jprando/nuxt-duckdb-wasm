@@ -2,20 +2,20 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoPaises,
-  opcaoTipos,
-  opcaoCategorias,
-  opcaoLatitude,
-  opcaoLongitude,
-  opcaoTiposPorPais,
+  configuracaoGraficoPaises,
+  configuracaoGraficoTipos,
+  configuracaoGraficoCategorias,
+  configuracaoGraficoLatitude,
+  configuracaoGraficoLongitude,
+  configuracaoGraficoTiposPorPais,
   fmtNumero,
 } = useEstacoesTrem();
 </script>
@@ -84,7 +84,7 @@ const {
     <div class="grade-graficos">
       <!-- Estações por País -->
       <GraficoCard
-        :opcao="opcaoPaises"
+        :opcao="configuracaoGraficoPaises"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -99,7 +99,7 @@ const {
 
       <!-- Tipos de Estação (donut) -->
       <GraficoCard
-        :opcao="opcaoTipos"
+        :opcao="configuracaoGraficoTipos"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -117,7 +117,7 @@ const {
     <div class="grade-graficos">
       <!-- Categorias Simplificadas -->
       <GraficoCard
-        :opcao="opcaoCategorias"
+        :opcao="configuracaoGraficoCategorias"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -132,7 +132,7 @@ const {
 
       <!-- Distribuição por Latitude -->
       <GraficoCard
-        :opcao="opcaoLatitude"
+        :opcao="configuracaoGraficoLatitude"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -151,7 +151,7 @@ const {
 
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoLongitude"
+      :opcao="configuracaoGraficoLongitude"
       :tema="temaGrafico"
       :altura="200"
     >
@@ -169,7 +169,7 @@ const {
 
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
     <GraficoCard
-      :opcao="opcaoTiposPorPais"
+      :opcao="configuracaoGraficoTiposPorPais"
       :tema="temaGrafico"
       :altura="280"
     >

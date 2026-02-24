@@ -55,15 +55,15 @@ export const usePontualidadeVoos = () => {
 
   const opcaoCompanhias = ref<Record<string, unknown> | null>(null);
   const opcaoStatus = ref<Record<string, unknown> | null>(null);
-  const opcaoDiaSemana = ref<Record<string, unknown> | null>(null);
-  const opcaoMensal = ref<Record<string, unknown> | null>(null);
-  const opcaoAtrasoPartida = ref<Record<string, unknown> | null>(null);
-  const opcaoDistancia = ref<Record<string, unknown> | null>(null);
-  const opcaoAeroportos = ref<Record<string, unknown> | null>(null);
-  const opcaoCancelamentos = ref<Record<string, unknown> | null>(null);
-  const opcaoHoraPartida = ref<Record<string, unknown> | null>(null);
-  const opcaoRadar = ref<Record<string, unknown> | null>(null);
-  const opcaoSankey = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDiaSemana = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoMensal = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoAtrasoPartida = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDistancia = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoAeroportos = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoCancelamentos = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoHoraPartida = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoRadar = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoSankey = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -116,7 +116,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => DIAS_SEMANA[(d.dayofweek as number) - 1] ?? `D${d.dayofweek}`);
     const atrasos = rows.map(d => d.atraso_medio ?? 0);
-    opcaoDiaSemana.value = {
+    configuracaoGraficoDiaSemana.value = {
       ...baseChart,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
@@ -129,7 +129,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => MESES[(d.month as number) - 1] ?? `M${d.month}`);
     const totais = rows.map(d => d.total);
-    opcaoMensal.value = {
+    configuracaoGraficoMensal.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 40, left: 64 },
       color: [COR_PRIMARIA],
@@ -153,7 +153,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => `${d.faixa_min}min`);
     const values = rows.map(d => d.total);
-    opcaoAtrasoPartida.value = {
+    configuracaoGraficoAtrasoPartida.value = {
       ...baseChart,
       color: ["#f43f5e"],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 9, rotate: 45 } },
@@ -166,7 +166,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => DIST_LABELS[(d.distancegroup as number) - 1] ?? `G${d.distancegroup}`);
     const values = rows.map(d => d.total);
-    opcaoDistancia.value = {
+    configuracaoGraficoDistancia.value = {
       ...baseChart,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 9, rotate: 30 } },
@@ -179,7 +179,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => d.origin);
     const values = rows.map(d => d.total);
-    opcaoAeroportos.value = {
+    configuracaoGraficoAeroportos.value = {
       ...baseChart,
       grid: {
         top: 16,
@@ -205,7 +205,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const labels = rows.map(d => d.carrier);
     const values = rows.map(d => d.taxa_cancelamento);
-    opcaoCancelamentos.value = {
+    configuracaoGraficoCancelamentos.value = {
       ...baseChart,
       grid: {
         top: 16,
@@ -229,13 +229,13 @@ export const usePontualidadeVoos = () => {
 
   const configurarGraficoHoraPartida = (data: any[]) => {
     if (!data || data.length === 0) {
-      opcaoHoraPartida.value = {};
+      configuracaoGraficoHoraPartida.value = {};
       return;
     }
     const rows = data as any[];
     const labels = rows.map(d => `${String(d.hora).padStart(2, "0")}h`);
     const atrasos = rows.map(d => d.atraso_medio ?? 0);
-    opcaoHoraPartida.value = {
+    configuracaoGraficoHoraPartida.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
@@ -259,7 +259,7 @@ export const usePontualidadeVoos = () => {
     const rows = data as any[];
     const maxAtraso = Math.ceil(Math.max(...rows.map(d => d.atraso_medio ?? 0), 10) / 10) * 10;
     const maxDist = Math.ceil(Math.max(...rows.map(d => d.distancia_media ?? 0), 500) / 500) * 500;
-    opcaoRadar.value = {
+    configuracaoGraficoRadar.value = {
       backgroundColor: "transparent",
       tooltip: { trigger: "item" },
       legend: {
@@ -304,7 +304,7 @@ export const usePontualidadeVoos = () => {
       "Cancelado": "#f43f5e",
       "Desviado": COR_QUATERNARIA,
     };
-    opcaoSankey.value = {
+    configuracaoGraficoSankey.value = {
       backgroundColor: "transparent",
       tooltip: {
         trigger: "item",
@@ -372,7 +372,7 @@ export const usePontualidadeVoos = () => {
     executar(ontimeHoraPartidaConsulta(nomeArquivo))
       .then(configurarGraficoHoraPartida)
       .catch(() => {
-        opcaoHoraPartida.value = {};
+        configuracaoGraficoHoraPartida.value = {};
       });
     executar(ontimeRadarCompanhiasConsulta(nomeArquivo)).then(configurarGraficoRadar);
     executar(ontimeSankeyConsulta(nomeArquivo)).then(configurarGraficoSankey);
@@ -397,15 +397,15 @@ export const usePontualidadeVoos = () => {
     temaGrafico,
     opcaoCompanhias,
     opcaoStatus,
-    opcaoDiaSemana,
-    opcaoMensal,
-    opcaoAtrasoPartida,
-    opcaoDistancia,
-    opcaoAeroportos,
-    opcaoCancelamentos,
-    opcaoHoraPartida,
-    opcaoRadar,
-    opcaoSankey,
+    configuracaoGraficoDiaSemana,
+    configuracaoGraficoMensal,
+    configuracaoGraficoAtrasoPartida,
+    configuracaoGraficoDistancia,
+    configuracaoGraficoAeroportos,
+    configuracaoGraficoCancelamentos,
+    configuracaoGraficoHoraPartida,
+    configuracaoGraficoRadar,
+    configuracaoGraficoSankey,
     fmtNumero,
     fmtMin,
     fmtPct,

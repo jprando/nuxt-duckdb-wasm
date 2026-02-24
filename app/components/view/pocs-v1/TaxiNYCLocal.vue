@@ -2,19 +2,19 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoVendor,
-  opcaoPassageiros,
-  opcaoDistancia,
-  opcaoValor,
-  opcaoHora,
+  configuracaoGraficoVendor,
+  configuracaoGraficoPassageiros,
+  configuracaoGraficoDistancia,
+  configuracaoGraficoValor,
+  configuracaoGraficoHora,
   fmtNumero,
   fmtDolar,
   fmtDolarDecimal,
@@ -80,7 +80,7 @@ const {
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="opcaoVendor"
+        :opcao="configuracaoGraficoVendor"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -94,7 +94,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="opcaoPassageiros"
+        :opcao="configuracaoGraficoPassageiros"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -111,7 +111,7 @@ const {
     <!-- ── Linha 3: Distância + Valor ────────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="opcaoDistancia"
+        :opcao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -128,7 +128,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="opcaoValor"
+        :opcao="configuracaoGraficoValor"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -147,7 +147,7 @@ const {
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoHora"
+      :opcao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."

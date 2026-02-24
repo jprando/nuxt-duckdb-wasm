@@ -35,13 +35,13 @@ Antes da otimização, o projeto estava gerando um **arquivo JavaScript de 666 K
 
 ### 🤔 Por que isso era um problema?
 
-| Impacto | Descrição |
-|---------|-----------|
-| ⏱️ **Tempo de Load** | Usuários esperavam **mais de 2s** para baixar este arquivo |
-| 📱 **Dispositivos Móveis** | 3G/4G lento = até **10-15s** para carregar |
-| 🌍 **Internet Lenta** | Em regiões com banda limitada: impacto crítico |
-| 🎯 **Core Web Vitals** | Reduz **LCP** (Largest Contentful Paint) |
-| 💾 **Cache Browser** | Arquivo grande = menos espaço em cache |
+| Impacto                    | Descrição                                                  |
+| -------------------------- | ---------------------------------------------------------- |
+| ⏱️ **Tempo de Load**        | Usuários esperavam **mais de 2s** para baixar este arquivo |
+| 📱 **Dispositivos Móveis** | 3G/4G lento = até **10-15s** para carregar                 |
+| 🌍 **Internet Lenta**      | Em regiões com banda limitada: impacto crítico             |
+| 🎯 **Core Web Vitals**     | Reduz **LCP** (Largest Contentful Paint)                   |
+| 💾 **Cache Browser**       | Arquivo grande = menos espaço em cache                     |
 
 ### 🔗 Raiz Causa
 
@@ -63,12 +63,12 @@ ECharts (300+ KB) bundlado no chunk principal
 
 ### 🎯 Objetivos Alcançados
 
-| Objetivo | Prioridade | Status |
-|----------|-----------|--------|
-| Reduzir tamanho do maior arquivo JS | 🔴 Crítica | ✅ 666KB → 222KB |
-| Melhorar LCP (Core Web Vitals) | 🔴 Crítica | ✅ ~2s mais rápido |
-| Code splitting automático | 🟡 Alta | ✅ 40 chunks menores |
-| Manter DX (Developer Experience) | 🟡 Alta | ✅ Sem mudanças visuais |
+| Objetivo                            | Prioridade | Status                  |
+| ----------------------------------- | ---------- | ----------------------- |
+| Reduzir tamanho do maior arquivo JS | 🔴 Crítica | ✅ 666KB → 222KB        |
+| Melhorar LCP (Core Web Vitals)      | 🔴 Crítica | ✅ ~2s mais rápido      |
+| Code splitting automático           | 🟡 Alta    | ✅ 40 chunks menores    |
+| Manter DX (Developer Experience)    | 🟡 Alta    | ✅ Sem mudanças visuais |
 
 ### 💰 Business Impact
 
@@ -139,16 +139,18 @@ Bundle Principal (222 KB)
 ### 🔧 Técnica: `defineAsyncComponent`
 
 **O que é?**
+
 - Função Vue 3 que carrega componentes dinamicamente via `import()`
 - Automáticamente cria um novo chunk Webpack/Vite
 - Componente renderiza quando Promise é resolvida
 
 **Sintaxe:**
+
 ```typescript
 // ✅ Recomendado: Lazy loading com fallback
 const GraficoCard = defineAsyncComponent(() =>
   import("~/components/GraficoCard.vue")
-)
+);
 
 // ✅ Com loading e error states (melhor UX)
 const GraficoCard = defineAsyncComponent({
@@ -156,17 +158,17 @@ const GraficoCard = defineAsyncComponent({
   loadingComponent: LoadingSkeleton,
   errorComponent: ErrorFallback,
   delay: 200,
-  timeout: 10000
-})
+  timeout: 10000,
+});
 ```
 
 ### 🌲 Tree Shaking vs Code Splitting
 
-| Técnica | Quando Usar | Benefício |
-|---------|-----------|-----------|
-| 🌲 **Tree Shaking** | Código não utilizado em geral | Remove linhas mortas |
+| Técnica               | Quando Usar                   | Benefício                 |
+| --------------------- | ----------------------------- | ------------------------- |
+| 🌲 **Tree Shaking**   | Código não utilizado em geral | Remove linhas mortas      |
 | 📦 **Code Splitting** | Bibliotecas grandes (ECharts) | Carrega só quando precisa |
-| ⚡ **Ambas** | Otimização máxima | RECOMENDADO |
+| ⚡ **Ambas**          | Otimização máxima             | RECOMENDADO               |
 
 ---
 
@@ -182,16 +184,17 @@ export default defineNuxtConfig({
     // 🚫 Excluir componentes pesados da auto-importação
     dirs: [
       {
-        path: '~/components',
-        ignore: ['Grafico*'],  // Padrão glob
+        path: "~/components",
+        ignore: ["Grafico*"], // Padrão glob
       },
     ],
   },
   // ... resto da config
-})
+});
 ```
 
 **Por que?**
+
 - ✅ Componentes `Grafico*` não são auto-importados
 - ✅ ECharts não é bundlado automaticamente
 - ✅ Desenvolvedor precisa importar explicitamente (consciente)
@@ -207,17 +210,18 @@ export default defineNuxtConfig({
  */
 
 export const LazyGraficoCard = defineAsyncComponent(() =>
-  import('~/components/GraficoCard.vue')
+  import("~/components/GraficoCard.vue")
 );
 
 export const LazyGraficoEChart = defineAsyncComponent(() =>
-  import('~/components/GraficoEChart.vue')
+  import("~/components/GraficoEChart.vue")
 );
 
 // ... etc para outros componentes Grafico*
 ```
 
 **Benefícios:**
+
 - 📚 Centralizado (fácil manutenção)
 - 🔄 Reutilizável (import um, usa em vários lugares)
 - 📖 Auto-documented (clara a intenção)
@@ -227,19 +231,22 @@ export const LazyGraficoEChart = defineAsyncComponent(() =>
 **Exemplo:** `app/components/view/pocs-v1/TaxiNYCLocal.vue`
 
 ```vue
-<script setup lang="ts">
-import { defineAsyncComponent } from "vue"
+<script
+  setup
+  lang="ts"
+>
+import { defineAsyncComponent } from "vue";
 
 // Lazy loading explícito
 const GraficoCard = defineAsyncComponent(() =>
   import("~/components/GraficoCard.vue")
-)
+);
 
 const {
   carregandoKpis,
   opcaoVendor,
   // ... resto dos dados
-} = useTaxiNYCLocal()
+} = useTaxiNYCLocal();
 </script>
 
 <template>
@@ -266,11 +273,11 @@ const {
 
 ```typescript
 // Vue 3 Composition API official pattern
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent } from "vue";
 
 const HeavyComponent = defineAsyncComponent(() =>
-  import('./HeavyComponent.vue')
-)
+  import("./HeavyComponent.vue")
+);
 ```
 
 - ✅ Documentado oficialmente
@@ -316,12 +323,12 @@ Desenvolvedor **não precisa mudar** o template:
 
 ### ❌ Alternativas Consideradas
 
-| Alternativa | Prós | Contras | Decisão |
-|-------------|------|---------|---------|
-| **Dynamic Import** | Manual control | Verbose, errors | ❌ Rejeitado |
-| **Nuxt `<ClientOnly>`** | Simples | Sem SSR benefit | ❌ Rejeitado |
-| **Route-based splitting** | Automático | Não funciona em componentes | ❌ Rejeitado |
-| **`defineAsyncComponent`** | Automático, simples, oficial | — | ✅ **ESCOLHIDO** |
+| Alternativa                | Prós                         | Contras                     | Decisão          |
+| -------------------------- | ---------------------------- | --------------------------- | ---------------- |
+| **Dynamic Import**         | Manual control               | Verbose, errors             | ❌ Rejeitado     |
+| **Nuxt `<ClientOnly>`**    | Simples                      | Sem SSR benefit             | ❌ Rejeitado     |
+| **Route-based splitting**  | Automático                   | Não funciona em componentes | ❌ Rejeitado     |
+| **`defineAsyncComponent`** | Automático, simples, oficial | —                           | ✅ **ESCOLHIDO** |
 
 ---
 
@@ -387,20 +394,20 @@ Mobile (3G):
 
 ### 🎯 Imediatos (Pós-Deploy)
 
-| Benefício | Descrição | Evidência |
-|-----------|-----------|-----------|
-| 🚀 **Faster Initial Load** | Usuários esperam menos | LCP -50% |
-| 📈 **Better SEO** | Google considera velocidade | + ranking |
-| 💾 **Menor Cache** | Menos bandwidth | -300 KB/user |
-| ✅ **Green CWV Score** | Todos os metrics "Good" | Aprovado |
+| Benefício                  | Descrição                   | Evidência    |
+| -------------------------- | --------------------------- | ------------ |
+| 🚀 **Faster Initial Load** | Usuários esperam menos      | LCP -50%     |
+| 📈 **Better SEO**          | Google considera velocidade | + ranking    |
+| 💾 **Menor Cache**         | Menos bandwidth             | -300 KB/user |
+| ✅ **Green CWV Score**     | Todos os metrics "Good"     | Aprovado     |
 
 ### 🔮 Futuros (Após Monitoria)
 
-| Benefício | Descrição | Métrica |
-|-----------|-----------|---------|
-| 👥 **Conversão** | Usuários entram + rápido | +X% conversão |
-| ⏱️ **Bounce Rate** | Menos desistências | -Y% abandono |
-| 💰 **Custo** | Menos bandwidth pago | -R$ por mês |
+| Benefício         | Descrição                | Métrica       |
+| ----------------- | ------------------------ | ------------- |
+| 👥 **Conversão**  | Usuários entram + rápido | +X% conversão |
+| ⏱️ **Bounce Rate** | Menos desistências       | -Y% abandono  |
+| 💰 **Custo**      | Menos bandwidth pago     | -R$ por mês   |
 
 ---
 
@@ -410,29 +417,37 @@ Mobile (3G):
 
 Se criar um novo componente grande (> 100KB):
 
-- [ ] 1. Adicionar ao padrão `ignore` no `nuxt.config.ts` (se apropriado)
-- [ ] 2. Criar export em `app/utils/lazy-components.ts`
-- [ ] 3. Importar explicitamente em pages/views
-- [ ] 4. Testar com DevTools Network (deve criar novo chunk)
-- [ ] 5. Documentar em `docs/componentes/`
+-
+  1. [ ] Adicionar ao padrão `ignore` no `nuxt.config.ts` (se apropriado)
+-
+  2. [ ] Criar export em `app/utils/lazy-components.ts`
+-
+  3. [ ] Importar explicitamente em pages/views
+-
+  4. [ ] Testar com DevTools Network (deve criar novo chunk)
+-
+  5. [ ] Documentar em `docs/componentes/`
 
 ### 🔧 Template Reusável
 
 ```typescript
 // app/utils/lazy-components.ts
 export const LazyMeuComponentePesado = defineAsyncComponent(() =>
-  import('~/components/MeuComponentePesado.vue')
+  import("~/components/MeuComponentePesado.vue")
 );
 ```
 
 ```vue
 <!-- app/components/view/minha-pagina.vue -->
-<script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+<script
+  setup
+  lang="ts"
+>
+import { defineAsyncComponent } from "vue";
 
 const MeuComponentePesado = defineAsyncComponent(() =>
-  import('~/components/MeuComponentePesado.vue')
-)
+  import("~/components/MeuComponentePesado.vue")
+);
 </script>
 
 <template>
@@ -446,32 +461,32 @@ const MeuComponentePesado = defineAsyncComponent(() =>
 
 ### ✅ Vantagens
 
-| Vantagem | Explicação |
-|----------|-----------|
+| Vantagem                    | Explicação                   |
+| --------------------------- | ---------------------------- |
 | 📦 **Menor bundle inicial** | ECharts não bloqueia inicial |
-| ⚡ **Mais rápido** | LCP melhorado (~50%) |
-| 🎯 **Progressive Load** | Carrega conforme necessário |
-| 🔄 **Cache eficiente** | Chunks menores cache melhor |
-| 📖 **Fácil de manter** | Um arquivo, múltiplos uses |
+| ⚡ **Mais rápido**          | LCP melhorado (~50%)         |
+| 🎯 **Progressive Load**     | Carrega conforme necessário  |
+| 🔄 **Cache eficiente**      | Chunks menores cache melhor  |
+| 📖 **Fácil de manter**      | Um arquivo, múltiplos uses   |
 
 ### ⚠️ Trade-offs
 
-| Trade-off | Impacto | Mitigação |
-|-----------|---------|-----------|
-| ⏳ **Delay ao acessar gráficos** | ~200-500ms | Insignificante vs 50% de ganho |
-| 🐛 **Mais chunks** | Overhead de requisições | Minimal (parallel download) |
-| 🔧 **Complexidade dev** | Precisa importar manualmente | Documentado aqui |
+| Trade-off                        | Impacto                      | Mitigação                      |
+| -------------------------------- | ---------------------------- | ------------------------------ |
+| ⏳ **Delay ao acessar gráficos** | ~200-500ms                   | Insignificante vs 50% de ganho |
+| 🐛 **Mais chunks**               | Overhead de requisições      | Minimal (parallel download)    |
+| 🔧 **Complexidade dev**          | Precisa importar manualmente | Documentado aqui               |
 
 ### 🤔 Quando NÃO Usar
 
 ```typescript
 // ❌ Componentes pequenos (< 10KB)
-const Icon = defineAsyncComponent(() => import('./Icon.vue'))  // Desnecessário
+const Icon = defineAsyncComponent(() => import("./Icon.vue")); // Desnecessário
 
 // ✅ Use para componentes pesados
 const EChartsVisualization = defineAsyncComponent(() =>
-  import('./EChartsVisualization.vue')
-)
+  import("./EChartsVisualization.vue")
+);
 ```
 
 ---
@@ -479,18 +494,22 @@ const EChartsVisualization = defineAsyncComponent(() =>
 ## 📚 Referências
 
 ### Vue 3 Oficial
+
 - 🔗 [defineAsyncComponent Documentation](https://vuejs.org/guide/components/async.html)
 - 🔗 [Suspense Component](https://vuejs.org/guide/built-ins/suspense.html)
 
 ### Nuxt 4
+
 - 🔗 [Nuxt Components Auto-import](https://nuxt.com/docs/guide/concepts/auto-imports#components)
 - 🔗 [Dynamic Imports in Nuxt](https://nuxt.com/docs/getting-started/features#auto-imports)
 
 ### Performance
+
 - 🔗 [Web Vitals - Google](https://web.dev/vitals/)
 - 🔗 [Code Splitting - Webpack](https://webpack.js.org/guides/code-splitting/)
 
 ### ECharts
+
 - 🔗 [ECharts Official](https://echarts.apache.org/)
 - 🔗 [ECharts Bundle Size](https://github.com/apache/echarts/issues)
 
@@ -515,6 +534,7 @@ const EChartsVisualization = defineAsyncComponent(() =>
 ### 💬 Questions?
 
 Para dúvidas sobre implementação:
+
 1. Consultar este documento
 2. Verificar commit `6b47ddc`
 3. Analisar `app/utils/lazy-components.ts`

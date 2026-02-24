@@ -39,16 +39,16 @@ export const useTaxiNYCLocal = () => {
     periodo_fim: "",
   });
 
-  const opcaoVendor = ref<Record<string, unknown> | null>(null);
-  const opcaoPassageiros = ref<Record<string, unknown> | null>(null);
-  const opcaoDistancia = ref<Record<string, unknown> | null>(null);
-  const opcaoValor = ref<Record<string, unknown> | null>(null);
-  const opcaoHora = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoVendor = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoPassageiros = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDistancia = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoValor = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
   const configurarGraficoVendor = (data: any[]) => {
-    opcaoVendor.value = {
+    configuracaoGraficoVendor.value = {
       backgroundColor: "transparent",
       color: PALETA,
       tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
@@ -69,7 +69,7 @@ export const useTaxiNYCLocal = () => {
   const configurarGraficoPassageiros = (data: any[]) => {
     const paxLabels = (data as any[]).map(d => `${d.passageiros} pax`);
     const paxValues = (data as any[]).map(d => d.total);
-    opcaoPassageiros.value = {
+    configuracaoGraficoPassageiros.value = {
       ...baseChart,
       color: [COR_SECUNDARIA],
       xAxis: { type: "category", data: paxLabels, axisLabel: { fontSize: 11 } },
@@ -81,7 +81,7 @@ export const useTaxiNYCLocal = () => {
   const configurarGraficoDistancia = (data: any[]) => {
     const distLabels = (data as any[]).map(d => `${d.milhas}mi`);
     const distValues = (data as any[]).map(d => d.total);
-    opcaoDistancia.value = {
+    configuracaoGraficoDistancia.value = {
       ...baseChart,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -93,7 +93,7 @@ export const useTaxiNYCLocal = () => {
   const configurarGraficoValor = (data: any[]) => {
     const valorLabels = (data as any[]).map(d => `$${d.faixa}`);
     const valorValues = (data as any[]).map(d => d.total);
-    opcaoValor.value = {
+    configuracaoGraficoValor.value = {
       ...baseChart,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: valorLabels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -104,12 +104,12 @@ export const useTaxiNYCLocal = () => {
 
   const configurarGraficoHora = (data: any[]) => {
     if (!data || data.length === 0) {
-      opcaoHora.value = {};
+      configuracaoGraficoHora.value = {};
       return;
     }
     const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const horaValues = (data as any[]).map(d => d.total);
-    opcaoHora.value = {
+    configuracaoGraficoHora.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
@@ -157,7 +157,7 @@ export const useTaxiNYCLocal = () => {
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
       .then(configurarGraficoHora)
       .catch(() => {
-        opcaoHora.value = {};
+        configuracaoGraficoHora.value = {};
       });
   };
 
@@ -177,11 +177,11 @@ export const useTaxiNYCLocal = () => {
     erro,
     kpis,
     temaGrafico,
-    opcaoVendor,
-    opcaoPassageiros,
-    opcaoDistancia,
-    opcaoValor,
-    opcaoHora,
+    configuracaoGraficoVendor,
+    configuracaoGraficoPassageiros,
+    configuracaoGraficoDistancia,
+    configuracaoGraficoValor,
+    configuracaoGraficoHora,
     fmtNumero,
     fmtDolar,
     fmtDolarDecimal,

@@ -2,25 +2,23 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoCompanhias,
-  opcaoStatus,
-  opcaoDiaSemana,
-  opcaoMensal,
-  opcaoAtrasoPartida,
-  opcaoDistancia,
-  opcaoAeroportos,
-  opcaoCancelamentos,
-  opcaoHoraPartida,
-  opcaoRadar,
-  opcaoSankey,
+  configuracaoGraficoDiaSemana,
+  configuracaoGraficoMensal,
+  configuracaoGraficoAtrasoPartida,
+  configuracaoGraficoDistancia,
+  configuracaoGraficoAeroportos,
+  configuracaoGraficoCancelamentos,
+  configuracaoGraficoHoraPartida,
+  configuracaoGraficoRadar,
+  configuracaoGraficoSankey,
   fmtNumero,
   fmtMin,
   fmtPct,
@@ -91,7 +89,7 @@ const {
     <div class="grade-graficos">
       <!-- Atraso por Dia da Semana -->
       <GraficoCard
-        :opcao="opcaoDiaSemana"
+        :opcao="configuracaoGraficoDiaSemana"
         :tema="temaGrafico"
         :altura="240"
       >
@@ -106,7 +104,7 @@ const {
 
       <!-- Voos por Mês -->
       <GraficoCard
-        :opcao="opcaoMensal"
+        :opcao="configuracaoGraficoMensal"
         :tema="temaGrafico"
         :altura="240"
       >
@@ -124,7 +122,7 @@ const {
     <div class="grade-graficos">
       <!-- Distribuição de Atraso na Partida -->
       <GraficoCard
-        :opcao="opcaoAtrasoPartida"
+        :opcao="configuracaoGraficoAtrasoPartida"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -139,7 +137,7 @@ const {
 
       <!-- Distribuição por Grupo de Distância -->
       <GraficoCard
-        :opcao="opcaoDistancia"
+        :opcao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -157,7 +155,7 @@ const {
     <div class="grade-graficos">
       <!-- Top 12 Aeroportos de Origem -->
       <GraficoCard
-        :opcao="opcaoAeroportos"
+        :opcao="configuracaoGraficoAeroportos"
         :tema="temaGrafico"
         :altura="300"
       >
@@ -172,7 +170,7 @@ const {
 
       <!-- Taxa de Cancelamento por Companhia -->
       <GraficoCard
-        :opcao="opcaoCancelamentos"
+        :opcao="configuracaoGraficoCancelamentos"
         :tema="temaGrafico"
         :altura="300"
       >
@@ -191,7 +189,7 @@ const {
 
     <!-- ── Linha 5: Atraso por Hora do Dia (full width) ──────────── -->
     <GraficoCard
-      :opcao="opcaoHoraPartida"
+      :opcao="configuracaoGraficoHoraPartida"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."
@@ -212,7 +210,7 @@ const {
     <div class="grade-graficos-xl">
       <!-- Radar: Performance Comparativa das Companhias -->
       <GraficoCard
-        :opcao="opcaoRadar"
+        :opcao="configuracaoGraficoRadar"
         :tema="temaGrafico"
         :altura="320"
       >
@@ -230,7 +228,7 @@ const {
 
       <!-- Sankey: Fluxo Companhia → Status do Voo -->
       <GraficoCard
-        :opcao="opcaoSankey"
+        :opcao="configuracaoGraficoSankey"
         :tema="temaGrafico"
         :altura="320"
       >

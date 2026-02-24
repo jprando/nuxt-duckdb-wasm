@@ -2,18 +2,16 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoDistribuicaoPreco,
-  opcaoRotasCaras,
-  opcaoEstacoesConectadas,
-  opcaoChord,
+  configuracaoGraficoEstacoesConectadas,
+  configuracaoGraficoChord,
   fmtNumero,
   fmtPreco,
 } = useTarifasFerroviarias();
@@ -72,7 +70,7 @@ const {
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
     <GraficoCard
-      :opcao="opcaoEstacoesConectadas"
+      :opcao="configuracaoGraficoEstacoesConectadas"
       :tema="temaGrafico"
       :altura="260"
     >
@@ -87,7 +85,7 @@ const {
 
     <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoChord"
+      :opcao="configuracaoGraficoChord"
       :tema="temaGrafico"
       :altura="400"
     >

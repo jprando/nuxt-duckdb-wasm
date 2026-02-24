@@ -19,10 +19,10 @@ export default defineNuxtConfig({
     // Desabilitar auto-import de componentes com gráficos para reduzir bundle (~300KB do ECharts)
     dirs: [
       {
-        path: '~/components',
+        path: "~/components",
         // Excluir GraficoCard e todos os GraficoEChart* da auto-importação
         // Usar app/utils/lazy-components.ts para import explícito com defineAsyncComponent
-        ignore: ['Grafico*'],
+        ignore: ["Grafico*"],
       },
     ],
   },

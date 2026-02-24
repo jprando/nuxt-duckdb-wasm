@@ -39,12 +39,12 @@ export const useEstacoesTrem = () => {
     estacoes_intercidade: 0,
   });
 
-  const opcaoPaises = ref<Record<string, unknown> | null>(null);
-  const opcaoTipos = ref<Record<string, unknown> | null>(null);
-  const opcaoCategorias = ref<Record<string, unknown> | null>(null);
-  const opcaoLatitude = ref<Record<string, unknown> | null>(null);
-  const opcaoLongitude = ref<Record<string, unknown> | null>(null);
-  const opcaoTiposPorPais = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoPaises = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoTipos = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoCategorias = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoLatitude = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoLongitude = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoTiposPorPais = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -52,7 +52,7 @@ export const useEstacoesTrem = () => {
     const rows = data as any[];
     const labels = rows.map(d => d.country);
     const values = rows.map(d => d.total);
-    opcaoPaises.value = {
+    configuracaoGraficoPaises.value = {
       ...baseChart,
       grid: {
         top: 16,
@@ -75,7 +75,7 @@ export const useEstacoesTrem = () => {
   };
 
   const configurarGraficoTipos = (data: any[]) => {
-    opcaoTipos.value = {
+    configuracaoGraficoTipos.value = {
       backgroundColor: "transparent",
       color: PALETA,
       tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
@@ -94,7 +94,7 @@ export const useEstacoesTrem = () => {
   };
 
   const configurarGraficoCategorias = (data: any[]) => {
-    opcaoCategorias.value = {
+    configuracaoGraficoCategorias.value = {
       backgroundColor: "transparent",
       color: PALETA,
       tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
@@ -115,7 +115,7 @@ export const useEstacoesTrem = () => {
   const configurarGraficoLatitude = (data: any[]) => {
     const labels = (data as any[]).map(d => `${d.faixa_lat}°N`);
     const values = (data as any[]).map(d => d.total);
-    opcaoLatitude.value = {
+    configuracaoGraficoLatitude.value = {
       ...baseChart,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -127,7 +127,7 @@ export const useEstacoesTrem = () => {
   const configurarGraficoLongitude = (data: any[]) => {
     const labels = (data as any[]).map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`);
     const values = (data as any[]).map(d => d.total);
-    opcaoLongitude.value = {
+    configuracaoGraficoLongitude.value = {
       ...baseChart,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
@@ -155,7 +155,7 @@ export const useEstacoesTrem = () => {
       itemStyle: { color: PALETA[i % PALETA.length] },
     }));
 
-    opcaoTiposPorPais.value = {
+    configuracaoGraficoTiposPorPais.value = {
       backgroundColor: "transparent",
       tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
       legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
@@ -220,12 +220,12 @@ export const useEstacoesTrem = () => {
     erro,
     kpis,
     temaGrafico,
-    opcaoPaises,
-    opcaoTipos,
-    opcaoCategorias,
-    opcaoLatitude,
-    opcaoLongitude,
-    opcaoTiposPorPais,
+    configuracaoGraficoPaises,
+    configuracaoGraficoTipos,
+    configuracaoGraficoCategorias,
+    configuracaoGraficoLatitude,
+    configuracaoGraficoLongitude,
+    configuracaoGraficoTiposPorPais,
     fmtNumero,
   };
 };

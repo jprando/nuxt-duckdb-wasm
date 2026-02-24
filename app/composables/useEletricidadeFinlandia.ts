@@ -42,18 +42,18 @@ export const useEletricidadeFinlandia = () => {
     periodo_fim: "",
   });
 
-  const opcaoMensal = ref<Record<string, unknown> | null>(null);
-  const opcaoHoraria = ref<Record<string, unknown> | null>(null);
-  const opcaoSemanal = ref<Record<string, unknown> | null>(null);
-  const opcaoDistribuicao = ref<Record<string, unknown> | null>(null);
-  const opcaoCalendario = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoMensal = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoHoraria = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoSemanal = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDistribuicao = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoCalendario = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
   const configurarGraficoMensal = (data: any[]) => {
     const rows = data as any[];
     const labels = rows.map(d => MESES[(d.mes as number) - 1]);
-    opcaoMensal.value = {
+    configuracaoGraficoMensal.value = {
       ...baseChart,
       legend: { top: 4, textStyle: { fontSize: 10 } },
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
@@ -85,7 +85,7 @@ export const useEletricidadeFinlandia = () => {
 
   const configurarGraficoHoraria = (data: any[]) => {
     const rows = data as any[];
-    opcaoHoraria.value = {
+    configuracaoGraficoHoraria.value = {
       ...baseChart,
       color: [COR_QUATERNARIA],
       xAxis: {
@@ -105,7 +105,7 @@ export const useEletricidadeFinlandia = () => {
 
   const configurarGraficoSemanal = (data: any[]) => {
     const rows = data as any[];
-    opcaoSemanal.value = {
+    configuracaoGraficoSemanal.value = {
       backgroundColor: "transparent",
       grid: { top: 40, right: 16, bottom: 32, left: 64 },
       legend: { top: 4, textStyle: { fontSize: 10 } },
@@ -145,7 +145,7 @@ export const useEletricidadeFinlandia = () => {
 
   const configurarGraficoDistribuicao = (data: any[]) => {
     const rows = data as any[];
-    opcaoDistribuicao.value = {
+    configuracaoGraficoDistribuicao.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 56, left: 64 },
       color: [COR_SECUNDARIA],
@@ -164,7 +164,7 @@ export const useEletricidadeFinlandia = () => {
     const valores = rows.map(d => d.preco_medio);
     const minVal = Math.min(...valores);
     const maxVal = Math.max(...valores);
-    opcaoCalendario.value = {
+    configuracaoGraficoCalendario.value = {
       backgroundColor: "transparent",
       tooltip: {
         trigger: "item",
@@ -246,11 +246,11 @@ export const useEletricidadeFinlandia = () => {
     erro,
     kpis,
     temaGrafico,
-    opcaoMensal,
-    opcaoHoraria,
-    opcaoSemanal,
-    opcaoDistribuicao,
-    opcaoCalendario,
+    configuracaoGraficoMensal,
+    configuracaoGraficoHoraria,
+    configuracaoGraficoSemanal,
+    configuracaoGraficoDistribuicao,
+    configuracaoGraficoCalendario,
     fmtNumero,
     fmtEuro,
   };

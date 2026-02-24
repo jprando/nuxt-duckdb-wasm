@@ -16,9 +16,11 @@ docs/
 ### 🎯 Componentes
 
 #### [Lazy Loading de Componentes](./componentes/lazy-loading-componentes.md)
+
 > 🚀 Otimização de bundle através de `defineAsyncComponent`
 
 **Tópicos Cobertos:**
+
 - 🎯 Problema: Bundle de 666 KB
 - 💡 Solução: Code splitting com lazy loading
 - 🛠️ Implementação passo a passo
@@ -26,6 +28,7 @@ docs/
 - 🔄 Como reutilizar em novos componentes
 
 **Bom para:**
+
 - ✅ Entender por que componentes pesados precisam de lazy loading
 - ✅ Implementar novo componente pesado
 - ✅ Otimizar bundle em geral
@@ -65,12 +68,14 @@ Todos os documentos nesta pasta seguem:
 ## 🔗 Referências do Projeto
 
 ### Arquivos Principais
+
 - `CLAUDE.md` - Instruções para agentes IA
 - `nuxt.config.ts` - Configuração principal
 - `app/utils/lazy-components.ts` - Componentes lazy
 - `app/components/view/pocs-v1/` - Páginas de exemplo
 
 ### Commits Relevantes
+
 - `6b47ddc` - perf(bundle): lazy load ECharts components
 
 ---

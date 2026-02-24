@@ -40,11 +40,11 @@ export const useDiffusionDB = () => {
     periodo_fim: "",
   });
 
-  const opcaoDimensoes = ref<Record<string, unknown> | null>(null);
-  const opcaoNsfw = ref<Record<string, unknown> | null>(null);
-  const opcaoSteps = ref<Record<string, unknown> | null>(null);
-  const opcaoSampler = ref<Record<string, unknown> | null>(null);
-  const opcaoAtividade = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoDimensoes = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoNsfw = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoSteps = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoSampler = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoAtividade = ref<Record<string, unknown> | null>(null);
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
@@ -52,7 +52,7 @@ export const useDiffusionDB = () => {
     const rows = data as any[];
     const labels = rows.map(d => d.dimensao).reverse();
     const values = rows.map(d => d.total).reverse();
-    opcaoDimensoes.value = {
+    configuracaoGraficoDimensoes.value = {
       ...baseChart,
       color: [COR_PRIMARIA],
       xAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -62,7 +62,7 @@ export const useDiffusionDB = () => {
   };
 
   const configurarGraficoNsfw = (data: any[]) => {
-    opcaoNsfw.value = {
+    configuracaoGraficoNsfw.value = {
       backgroundColor: "transparent",
       color: PALETA_NSFW,
       tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
@@ -82,7 +82,7 @@ export const useDiffusionDB = () => {
 
   const configurarGraficoSteps = (data: any[]) => {
     const rows = data as any[];
-    opcaoSteps.value = {
+    configuracaoGraficoSteps.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 56 },
       color: [COR_TERCIARIA],
@@ -100,7 +100,7 @@ export const useDiffusionDB = () => {
     const rows = data as any[];
     const labels = rows.map(d => d.nome_sampler).reverse();
     const values = rows.map(d => d.total).reverse();
-    opcaoSampler.value = {
+    configuracaoGraficoSampler.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 8, left: 72 },
       color: [COR_QUATERNARIA],
@@ -113,7 +113,7 @@ export const useDiffusionDB = () => {
 
   const configurarGraficoAtividadeHoraria = (data: any[]) => {
     const rows = data as any[];
-    opcaoAtividade.value = {
+    configuracaoGraficoAtividade.value = {
       ...baseChart,
       grid: { top: 16, right: 16, bottom: 48, left: 72 },
       color: [COR_SECUNDARIA],
@@ -172,11 +172,11 @@ export const useDiffusionDB = () => {
     erro,
     kpis,
     temaGrafico,
-    opcaoDimensoes,
-    opcaoNsfw,
-    opcaoSteps,
-    opcaoSampler,
-    opcaoAtividade,
+    configuracaoGraficoDimensoes,
+    configuracaoGraficoNsfw,
+    configuracaoGraficoSteps,
+    configuracaoGraficoSampler,
+    configuracaoGraficoAtividade,
     fmtNumero,
     fmtDecimal,
     fmtData,

@@ -2,19 +2,17 @@
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue"
-
-const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
+const GraficoCard = defineAsyncComponent(() =>
+  import("~/components/GraficoCard.vue")
+);
 const {
   carregandoKpis,
   erro,
   kpis,
   temaGrafico,
-  opcaoTarifa,
-  opcaoPagamento,
-  opcaoDuracao,
-  opcaoGorjeta,
-  opcaoHora,
+  configuracaoGraficoDuracao,
+  configuracaoGraficoGorjeta,
+  configuracaoGraficoHora,
   fmtNumero,
   fmtDolar,
   fmtDolarDecimal,
@@ -80,7 +78,7 @@ const {
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="opcaoDuracao"
+        :opcao="configuracaoGraficoDuracao"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -94,7 +92,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="opcaoGorjeta"
+        :opcao="configuracaoGraficoGorjeta"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -113,7 +111,7 @@ const {
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
     <GraficoCard
-      :opcao="opcaoHora"
+      :opcao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."
