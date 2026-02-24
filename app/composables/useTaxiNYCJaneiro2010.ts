@@ -3,6 +3,8 @@ interface Kpis {
   avg_duration_min: number;
   avg_tip: number;
   total_revenue: number;
+  periodo_inicio: string;
+  periodo_fim: string;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -33,6 +35,8 @@ export const useTaxiNYCJaneiro2010 = () => {
     avg_duration_min: 0,
     avg_tip: 0,
     total_revenue: 0,
+    periodo_inicio: "",
+    periodo_fim: "",
   });
 
   const opcaoTarifa = ref<Record<string, unknown> | null>(null);

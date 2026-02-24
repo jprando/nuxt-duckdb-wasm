@@ -30,142 +30,57 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de Registros -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-zap"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Registros Horários
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_registros) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Médio -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-trending-up"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Preço Médio
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtEuro(kpis.preco_medio) }}
-              </p>
-              <p class="subtexto-kpi">
-                €/MWh
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Máximo -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon
-              name="i-lucide-arrow-up"
-              class="size-5 text-error"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Pico Máximo
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtEuro(kpis.preco_maximo) }}
-              </p>
-              <p class="subtexto-kpi">
-                €/MWh
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Mínimo -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-arrow-down"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Mínimo Registrado
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtEuro(kpis.preco_minimo) }}
-              </p>
-              <p class="subtexto-kpi">
-                €/MWh
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Desvio Padrão -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-bar-chart-2"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Desvio Padrão
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtEuro(kpis.desvio_padrao) }}
-              </p>
-              <p class="subtexto-kpi">
-                €/MWh
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
+      <KpiCard
+        label="Registros Horários"
+        icon="i-lucide-zap"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_registros)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Preço Médio"
+        icon="i-lucide-trending-up"
+        cor="success"
+        :valor="fmtEuro(kpis.preco_medio)"
+        subtexto="€/MWh"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Pico Máximo"
+        icon="i-lucide-arrow-up"
+        cor="error"
+        :valor="fmtEuro(kpis.preco_maximo)"
+        subtexto="€/MWh"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Mínimo Registrado"
+        icon="i-lucide-arrow-down"
+        cor="warning"
+        :valor="fmtEuro(kpis.preco_minimo)"
+        subtexto="€/MWh"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Desvio Padrão"
+        icon="i-lucide-bar-chart-2"
+        cor="secondary"
+        :valor="fmtEuro(kpis.desvio_padrao)"
+        subtexto="€/MWh"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Período"
+        icon="i-lucide-calendar-range"
+        cor="info"
+        :valor="formatarData(kpis.periodo_inicio)"
+        :subtexto="`até ${formatarData(kpis.periodo_fim)}`"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+        :pequeno="true"
+      />
     </div>
 
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
@@ -267,7 +182,7 @@ const {
 @reference "tailwindcss";
 
 .grade-kpis {
-  @apply grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3;
+  @apply grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-3;
 }
 
 .grade-graficos {

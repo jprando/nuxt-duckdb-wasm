@@ -3,7 +3,9 @@ export const nycTaxi2010JanKpisConsulta = (url: string) => `
       COUNT(*)                                                              AS total_trips,
       ROUND(AVG(date_diff('minute', Pickup_datetime::TIMESTAMP, Dropoff_datetime::TIMESTAMP)), 1) AS avg_duration_min,
       ROUND(AVG(Tip_amount), 2)                                             AS avg_tip,
-      ROUND(SUM(Total_amount), 0)                                           AS total_revenue
+      ROUND(SUM(Total_amount), 0)                                           AS total_revenue,
+      CAST(MIN(Pickup_datetime::TIMESTAMP) AS VARCHAR)                      AS periodo_inicio,
+      CAST(MAX(Dropoff_datetime::TIMESTAMP) AS VARCHAR)                     AS periodo_fim
   FROM '${url}'
   WHERE Dropoff_datetime::TIMESTAMP > Pickup_datetime::TIMESTAMP
 `;

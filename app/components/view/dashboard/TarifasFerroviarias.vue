@@ -29,176 +29,42 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de Rotas -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-route"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Rotas
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_routes) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Total de Estações -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-building"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Nº de Estações
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_stations) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Médio -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-euro"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Preço Médio
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtPreco(kpis.avg_price) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Mínimo -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon
-              name="i-lucide-arrow-down-right"
-              class="size-5 text-error"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Preço Mínimo
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtPreco(kpis.min_price) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Preço Máximo -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-info/10 shrink-0">
-            <UIcon
-              name="i-lucide-arrow-up-right"
-              class="size-5 text-info"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Preço Máximo
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtPreco(kpis.max_price) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-    </div>
-
-    <!-- ── Linha 2: Distribuição de Preços + Rotas mais caras ───── -->
-    <div class="grade-graficos">
-      <GraficoCard
-        :opcao="opcaoDistribuicaoPreco"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-bar-chart-3"
-            class="text-primary size-4"
-          />
-          Distribuição de Preços
-        </template>
-      </GraficoCard>
-
-      <GraficoCard
-        :opcao="opcaoRotasCaras"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-trending-up"
-            class="text-tertiary size-4"
-          />
-          Top 10 Rotas mais Caras
-        </template>
-      </GraficoCard>
+      <KpiCard
+        label="Total de Rotas"
+        icon="i-lucide-route"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_routes)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Nº de Estações"
+        icon="i-lucide-building"
+        cor="success"
+        :valor="fmtNumero(kpis.total_stations)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Preço Médio"
+        icon="i-lucide-euro"
+        cor="warning"
+        :valor="fmtPreco(kpis.avg_price)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Preço Mínimo"
+        icon="i-lucide-arrow-down-right"
+        cor="error"
+        :valor="fmtPreco(kpis.min_price)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Preço Máximo"
+        icon="i-lucide-arrow-up-right"
+        cor="info"
+        :valor="fmtPreco(kpis.max_price)"
+        :carregando="carregandoKpis"
+      />
     </div>
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->

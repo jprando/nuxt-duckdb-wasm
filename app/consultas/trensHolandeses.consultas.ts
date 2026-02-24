@@ -1,9 +1,11 @@
 // KPI's
 export const dutchTrainServicesKpisConsulta = (url: string) => `
   SELECT
-    COUNT(DISTINCT Service_id) as total_services,
-    COUNT(DISTINCT Station_name) as total_stations,
-    COUNT(DISTINCT Train_number) as total_trains
+    COUNT(DISTINCT Service_id)                    AS total_services,
+    COUNT(DISTINCT Station_name)                  AS total_stations,
+    COUNT(DISTINCT Train_number)                  AS total_trains,
+    CAST(MIN(Departure_time) AS VARCHAR)          AS periodo_inicio,
+    CAST(MAX(Departure_time) AS VARCHAR)          AS periodo_fim
   FROM read_parquet('${url}');
 `;
 

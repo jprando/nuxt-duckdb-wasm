@@ -1,9 +1,11 @@
 export const localNYCTaxiKpisConsulta = (url: string) => `
   SELECT
-    COUNT(*)                        AS total_trips,
-    ROUND(AVG(trip_distance), 2)    AS avg_distance,
-    ROUND(AVG(total_amount), 2)     AS avg_amount,
-    ROUND(SUM(total_amount), 0)     AS total_revenue
+    COUNT(*)                                    AS total_trips,
+    ROUND(AVG(trip_distance), 2)                AS avg_distance,
+    ROUND(AVG(total_amount), 2)                 AS avg_amount,
+    ROUND(SUM(total_amount), 0)                 AS total_revenue,
+    CAST(MIN(pickup_datetime) AS VARCHAR)        AS periodo_inicio,
+    CAST(MAX(pickup_datetime) AS VARCHAR)        AS periodo_fim
   FROM '${url}'
 `;
 

@@ -2,6 +2,8 @@ interface Kpis {
   total_services: number;
   total_stations: number;
   total_trains: number;
+  periodo_inicio: string;
+  periodo_fim: string;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -31,6 +33,8 @@ export const useTrensHolandeses = () => {
     total_services: 0,
     total_stations: 0,
     total_trains: 0,
+    periodo_inicio: "",
+    periodo_fim: "",
   });
 
   const opcaoTipo = ref<Record<string, unknown> | null>(null);

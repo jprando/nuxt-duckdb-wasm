@@ -30,173 +30,51 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de Estações -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-building-2"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Estações
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_estacoes) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Países Cobertos -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-globe"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Países Cobertos
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-16" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_paises) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Tipos de Estação -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-layers"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Tipos de Estação
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-14" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_tipos) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Megaestações -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-star"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Megaestações
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-14" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.megaestacoes) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Estações na Holanda -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-info/10 shrink-0">
-            <UIcon
-              name="i-lucide-train"
-              class="size-5 text-info"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Estações na Holanda
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.estacoes_nl) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Estações Intercidade -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon
-              name="i-lucide-zap"
-              class="size-5 text-error"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Estações Intercidade
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.estacoes_intercidade) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
+      <KpiCard
+        label="Total de Estações"
+        icon="i-lucide-building-2"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_estacoes)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Países Cobertos"
+        icon="i-lucide-globe"
+        cor="success"
+        :valor="fmtNumero(kpis.total_paises)"
+        :carregando="carregandoKpis"
+        esqueleto="w-16"
+      />
+      <KpiCard
+        label="Tipos de Estação"
+        icon="i-lucide-layers"
+        cor="warning"
+        :valor="fmtNumero(kpis.total_tipos)"
+        :carregando="carregandoKpis"
+        esqueleto="w-14"
+      />
+      <KpiCard
+        label="Megaestações"
+        icon="i-lucide-star"
+        cor="secondary"
+        :valor="fmtNumero(kpis.megaestacoes)"
+        :carregando="carregandoKpis"
+        esqueleto="w-14"
+      />
+      <KpiCard
+        label="Estações na Holanda"
+        icon="i-lucide-train"
+        cor="info"
+        :valor="fmtNumero(kpis.estacoes_nl)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Estações Intercidade"
+        icon="i-lucide-zap"
+        cor="error"
+        :valor="fmtNumero(kpis.estacoes_intercidade)"
+        :carregando="carregandoKpis"
+      />
     </div>
 
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->

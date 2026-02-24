@@ -3,7 +3,7 @@
 
 /* ── Classes globais de KPI (usadas em todos os dashboards) ── */
 .conteudo-view {
-  @apply p-4 md:p-6 space-y-5;
+  @apply p-4 pb-10 md:p-6 md:pb-10 space-y-5;
 }
 
 .card-kpi {
@@ -24,6 +24,11 @@
 
 .subtexto-kpi {
   @apply text-xs text-muted;
+}
+
+/* ── Layout do painel principal ── */
+.painel-principal {
+  @apply bg-linear-to-br from-default dark:to-muted light:to-accented;
 }
 
 /* ── Classes globais de cabeçalho de seção (NuxtLayout name="dashboard") ── */

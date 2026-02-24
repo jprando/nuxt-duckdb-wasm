@@ -28,120 +28,38 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de serviços -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-train-track"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Serviços
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_services) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Total de Estações -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-building"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Estações
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_stations) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Total de Trens -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-train-front"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Trens
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_trains) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-    </div>
-
-    <!-- ── Linha 2: Tipo + Estações ─────────────────────────── -->
-    <div class="grade-graficos">
-      <GraficoCard
-        :opcao="opcaoTipo"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-pie-chart"
-            class="text-primary size-4"
-          />
-          Serviços por Tipo de Trem
-        </template>
-      </GraficoCard>
-
-      <GraficoCard
-        :opcao="opcaoEstacoesMovimentadas"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-bar-chart-big"
-            class="text-success size-4"
-          />
-          Top 10 Estações mais Movimentadas
-        </template>
-      </GraficoCard>
+      <KpiCard
+        label="Total de Serviços"
+        icon="i-lucide-train-track"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_services)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Total de Estações"
+        icon="i-lucide-building"
+        cor="success"
+        :valor="fmtNumero(kpis.total_stations)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Total de Trens"
+        icon="i-lucide-train-front"
+        cor="warning"
+        :valor="fmtNumero(kpis.total_trains)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Período"
+        icon="i-lucide-calendar-range"
+        cor="secondary"
+        :valor="formatarData(kpis.periodo_inicio)"
+        :subtexto="`até ${formatarData(kpis.periodo_fim)}`"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+        :pequeno="true"
+      />
     </div>
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->

@@ -4,7 +4,9 @@ export const eletricidadeFinlandiaKpisConsulta = (url: string) => `
     ROUND(AVG(price), 2)   AS preco_medio,
     ROUND(MIN(price), 2)   AS preco_minimo,
     ROUND(MAX(price), 2)   AS preco_maximo,
-    ROUND(STDDEV(price), 2) AS desvio_padrao
+    ROUND(STDDEV(price), 2)         AS desvio_padrao,
+    CAST(MIN(time) AS VARCHAR)      AS periodo_inicio,
+    CAST(MAX(time) AS VARCHAR)      AS periodo_fim
   FROM '${url}'
 `;
 

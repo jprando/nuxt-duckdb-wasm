@@ -32,148 +32,46 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de corridas -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-car"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Corridas
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_trips) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Duração média -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-timer"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Duração Média
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtMin(kpis.avg_duration_min) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Gorjeta média -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-hand-coins"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Gorjeta Média
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDolarDecimal(kpis.avg_tip) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Receita total -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-trending-up"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Receita Total
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-28" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDolar(kpis.total_revenue) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-    </div>
-
-    <!-- ── Linha 2: Tipo de tarifa + Forma de pagamento ───────────── -->
-    <div class="grade-graficos">
-      <GraficoCard
-        :opcao="opcaoTarifa"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-tag"
-            class="text-primary size-4"
-          />
-          Corridas por Tipo de Tarifa
-        </template>
-      </GraficoCard>
-
-      <GraficoCard
-        :opcao="opcaoPagamento"
-        :tema="temaGrafico"
-        :altura="260"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-credit-card"
-            class="text-success size-4"
-          />
-          Corridas por Forma de Pagamento
-        </template>
-      </GraficoCard>
+      <KpiCard
+        label="Total de Corridas"
+        icon="i-lucide-car"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_trips)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Duração Média"
+        icon="i-lucide-timer"
+        cor="success"
+        :valor="fmtMin(kpis.avg_duration_min)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Gorjeta Média"
+        icon="i-lucide-hand-coins"
+        cor="warning"
+        :valor="fmtDolarDecimal(kpis.avg_tip)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Receita Total"
+        icon="i-lucide-trending-up"
+        cor="secondary"
+        :valor="fmtDolar(kpis.total_revenue)"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+      />
+      <KpiCard
+        label="Período"
+        icon="i-lucide-calendar-range"
+        cor="info"
+        :valor="formatarData(kpis.periodo_inicio)"
+        :subtexto="`até ${formatarData(kpis.periodo_fim)}`"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+        :pequeno="true"
+      />
     </div>
 
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
@@ -232,7 +130,7 @@ const {
 @reference "tailwindcss";
 
 .grade-kpis {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3;
 }
 
 .grade-graficos {

@@ -30,148 +30,37 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de linhas -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-scroll-text"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Linhas
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_lines) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Total de peças -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-book-open"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Peças
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-16" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_plays) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Total de personagens -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-users"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Personagens Únicos
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_speakers) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Média de palavras por fala -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-message-square"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Palavras por Fala
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-16" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDecimal(kpis.avg_words_per_line) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-    </div>
-
-    <!-- ── Linha 2: Top peças + Top personagens ───────────────────── -->
-    <div class="grade-graficos">
-      <GraficoCard
-        :opcao="opcaoPecas"
-        :tema="temaGrafico"
-        :altura="300"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-book-open"
-            class="text-primary size-4"
-          />
-          Top 10 Peças por Nº de Linhas
-        </template>
-      </GraficoCard>
-
-      <GraficoCard
-        :opcao="opcaoPersonagens"
-        :tema="temaGrafico"
-        :altura="300"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-mic-2"
-            class="text-success size-4"
-          />
-          Top 15 Personagens mais Falantes
-        </template>
-      </GraficoCard>
+      <KpiCard
+        label="Total de Linhas"
+        icon="i-lucide-scroll-text"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_lines)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Total de Peças"
+        icon="i-lucide-book-open"
+        cor="success"
+        :valor="fmtNumero(kpis.total_plays)"
+        :carregando="carregandoKpis"
+        esqueleto="w-16"
+      />
+      <KpiCard
+        label="Personagens Únicos"
+        icon="i-lucide-users"
+        cor="warning"
+        :valor="fmtNumero(kpis.total_speakers)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Palavras por Fala"
+        icon="i-lucide-message-square"
+        cor="secondary"
+        :valor="fmtDecimal(kpis.avg_words_per_line)"
+        :carregando="carregandoKpis"
+        esqueleto="w-16"
+      />
     </div>
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->

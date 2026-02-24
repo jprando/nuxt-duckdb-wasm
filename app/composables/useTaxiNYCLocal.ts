@@ -3,6 +3,8 @@ interface Kpis {
   avg_distance: number;
   avg_amount: number;
   total_revenue: number;
+  periodo_inicio: string;
+  periodo_fim: string;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -33,6 +35,8 @@ export const useTaxiNYCLocal = () => {
     avg_distance: 0,
     avg_amount: 0,
     total_revenue: 0,
+    periodo_inicio: "",
+    periodo_fim: "",
   });
 
   const opcaoVendor = ref<Record<string, unknown> | null>(null);

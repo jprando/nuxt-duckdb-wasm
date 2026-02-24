@@ -25,3 +25,5 @@ export const euroSemCasaDecimal = new Intl.NumberFormat("de-DE", {
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });
+
+export const formatarData = (s: string) => (s ? s.slice(0, 10) : "—");

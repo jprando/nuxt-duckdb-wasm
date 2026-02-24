@@ -38,206 +38,50 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de Voos -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-plane"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Voos
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-28" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_voos) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- % Voos Pontuais -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-check-circle"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Voos Pontuais
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtPct(kpis.pct_pontuais) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Taxa de Cancelamento -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon
-              name="i-lucide-ban"
-              class="size-5 text-error"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Taxa de Cancelamento
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtPct(kpis.taxa_cancelamento) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Atraso Médio — Partida -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-timer"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Atraso Médio Partida
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtMin(kpis.atraso_medio_partida) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Atraso Médio — Chegada -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-alarm-clock"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Atraso Médio Chegada
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtMin(kpis.atraso_medio_chegada) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Distância Média -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-info/10 shrink-0">
-            <UIcon
-              name="i-lucide-ruler"
-              class="size-5 text-info"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Distância Média
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtMi(kpis.distancia_media) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-    </div>
-
-    <!-- ── Linha 1: Companhias + Status ───────────────────────────── -->
-    <div class="grade-graficos">
-      <!-- Voos por Companhia Aérea -->
-      <GraficoCard
-        :opcao="opcaoCompanhias"
-        :tema="temaGrafico"
-        :altura="300"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-building"
-            class="text-primary size-4"
-          />
-          Voos por Companhia Aérea
-        </template>
-      </GraficoCard>
-
-      <!-- Status dos Voos -->
-      <GraficoCard
-        :opcao="opcaoStatus"
-        :tema="temaGrafico"
-        :altura="300"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-pie-chart"
-            class="text-success size-4"
-          />
-          Status dos Voos
-        </template>
-      </GraficoCard>
+      <KpiCard
+        label="Total de Voos"
+        icon="i-lucide-plane"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_voos)"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+      />
+      <KpiCard
+        label="Voos Pontuais"
+        icon="i-lucide-check-circle"
+        cor="success"
+        :valor="fmtPct(kpis.pct_pontuais)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Taxa de Cancelamento"
+        icon="i-lucide-ban"
+        cor="error"
+        :valor="fmtPct(kpis.taxa_cancelamento)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Atraso Médio Partida"
+        icon="i-lucide-timer"
+        cor="warning"
+        :valor="fmtMin(kpis.atraso_medio_partida)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Atraso Médio Chegada"
+        icon="i-lucide-alarm-clock"
+        cor="secondary"
+        :valor="fmtMin(kpis.atraso_medio_chegada)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Distância Média"
+        icon="i-lucide-ruler"
+        cor="info"
+        :valor="fmtMi(kpis.distancia_media)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
     </div>
 
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->

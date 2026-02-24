@@ -14,7 +14,6 @@ const {
   opcaoAtividade,
   fmtNumero,
   fmtDecimal,
-  fmtData,
 } = useDiffusionDB();
 </script>
 
@@ -31,133 +30,46 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de Imagens -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-image"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Imagens
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_imagens) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Usuários Únicos -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-users"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Usuários Únicos
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_usuarios) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Taxa NSFW -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-error/10 shrink-0">
-            <UIcon
-              name="i-lucide-shield-alert"
-              class="size-5 text-error"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Taxa NSFW
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-16" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDecimal(kpis.pct_nsfw) }}%
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Steps Médio -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-sliders"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Steps Médios
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-16" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDecimal(kpis.steps_medio) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Período -->
-      <UCard :ui="{ body: 'p-4!' }">
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-calendar-range"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Período
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-28" />
-            </template>
-            <template v-else>
-              <p class="text-sm font-bold text-highlighted leading-tight">
-                {{ fmtData(kpis.periodo_inicio) }}
-              </p>
-              <p class="subtexto-kpi">
-                até {{ fmtData(kpis.periodo_fim) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
+      <KpiCard
+        label="Total de Imagens"
+        icon="i-lucide-image"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_imagens)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Usuários Únicos"
+        icon="i-lucide-users"
+        cor="success"
+        :valor="fmtNumero(kpis.total_usuarios)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Taxa NSFW"
+        icon="i-lucide-shield-alert"
+        cor="error"
+        :valor="`${fmtDecimal(kpis.pct_nsfw)}%`"
+        :carregando="carregandoKpis"
+        esqueleto="w-16"
+      />
+      <KpiCard
+        label="Steps Médios"
+        icon="i-lucide-sliders"
+        cor="warning"
+        :valor="fmtDecimal(kpis.steps_medio)"
+        :carregando="carregandoKpis"
+        esqueleto="w-16"
+      />
+      <KpiCard
+        label="Período"
+        icon="i-lucide-calendar-range"
+        cor="secondary"
+        :valor="formatarData(kpis.periodo_inicio)"
+        :subtexto="`até ${formatarData(kpis.periodo_fim)}`"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+        :pequeno="true"
+      />
     </div>
 
     <!-- ── Linha 1: Dimensões + NSFW ──────────────────────────────── -->

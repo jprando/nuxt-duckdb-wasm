@@ -31,118 +31,47 @@ const {
 
     <!-- ── KPI Cards ──────────────────────────────────────────────── -->
     <div class="grade-kpis">
-      <!-- Total de corridas -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-primary/10 shrink-0">
-            <UIcon
-              name="i-lucide-car"
-              class="size-5 text-primary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Total de Corridas
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-24" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtNumero(kpis.total_trips) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Distância média -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-success/10 shrink-0">
-            <UIcon
-              name="i-lucide-map-pin"
-              class="size-5 text-success"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Distância Média
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ kpis.avg_distance }}
-                <span class="text-sm font-normal text-muted">mi</span>
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Valor médio -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-warning/10 shrink-0">
-            <UIcon
-              name="i-lucide-circle-dollar-sign"
-              class="size-5 text-warning"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Valor Médio
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-20" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDolarDecimal(kpis.avg_amount) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Receita total -->
-      <UCard
-        :ui="{ body: 'p-4!' }"
-        class="card-kpi"
-      >
-        <div class="item-kpi">
-          <div class="p-2 rounded-lg bg-secondary/10 shrink-0">
-            <UIcon
-              name="i-lucide-trending-up"
-              class="size-5 text-secondary"
-            />
-          </div>
-          <div class="min-w-0">
-            <p class="label-kpi">
-              Receita Total
-            </p>
-            <template v-if="carregandoKpis">
-              <USkeleton class="h-7 w-28" />
-            </template>
-            <template v-else>
-              <p class="valor-kpi">
-                {{ fmtDolar(kpis.total_revenue) }}
-              </p>
-            </template>
-          </div>
-        </div>
-      </UCard>
+      <KpiCard
+        label="Total de Corridas"
+        icon="i-lucide-car"
+        cor="primary"
+        :valor="fmtNumero(kpis.total_trips)"
+        :carregando="carregandoKpis"
+        esqueleto="w-24"
+      />
+      <KpiCard
+        label="Distância Média"
+        icon="i-lucide-map-pin"
+        cor="success"
+        :valor="kpis.avg_distance"
+        unidade="mi"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Valor Médio"
+        icon="i-lucide-circle-dollar-sign"
+        cor="warning"
+        :valor="fmtDolarDecimal(kpis.avg_amount)"
+        :carregando="carregandoKpis"
+      />
+      <KpiCard
+        label="Receita Total"
+        icon="i-lucide-trending-up"
+        cor="secondary"
+        :valor="fmtDolar(kpis.total_revenue)"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+      />
+      <KpiCard
+        label="Período"
+        icon="i-lucide-calendar-range"
+        cor="info"
+        :valor="formatarData(kpis.periodo_inicio)"
+        :subtexto="`até ${formatarData(kpis.periodo_fim)}`"
+        :carregando="carregandoKpis"
+        esqueleto="w-28"
+        :pequeno="true"
+      />
     </div>
 
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
@@ -235,7 +164,7 @@ const {
 @reference "tailwindcss";
 
 .grade-kpis {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-3;
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-3;
 }
 
 .grade-graficos {

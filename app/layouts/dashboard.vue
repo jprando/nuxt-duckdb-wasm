@@ -219,10 +219,6 @@ async function alternarFullscreen() {
 <style scoped>
 @reference "../assets/css/main.css";
 
-.painel-principal {
-  @apply bg-linear-to-br from-default dark:to-muted light:to-accented;
-}
-
 .logo-aplicacao {
   @apply h-5 w-auto;
 }

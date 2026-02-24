@@ -4,6 +4,8 @@ interface Kpis {
   preco_minimo: number;
   preco_maximo: number;
   desvio_padrao: number;
+  periodo_inicio: string;
+  periodo_fim: string;
 }
 
 const COR_PRIMARIA = "#3b82f6";
@@ -36,6 +38,8 @@ export const useEletricidadeFinlandia = () => {
     preco_minimo: 0,
     preco_maximo: 0,
     desvio_padrao: 0,
+    periodo_inicio: "",
+    periodo_fim: "",
   });
 
   const opcaoMensal = ref<Record<string, unknown> | null>(null);
