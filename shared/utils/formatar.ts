@@ -26,4 +26,15 @@ export const euroSemCasaDecimal = new Intl.NumberFormat("de-DE", {
   maximumFractionDigits: 0,
 });
 
-export const formatarData = (s: string) => (s ? s.slice(0, 10) : "—");
+const _formatarData = Intl.DateTimeFormat("pt-BR");
+export const formatarData = (valor: string | Date) => {
+  if (!valor) return "-";
+
+  if (typeof valor === "string") {
+    const valorData = new Date(valor);
+    if (isNaN(Number(valorData))) return "-";
+    return _formatarData.format(valorData);
+  }
+
+  return _formatarData.format(valor);
+};
