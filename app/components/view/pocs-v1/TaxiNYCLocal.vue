@@ -2,6 +2,9 @@
   setup
   lang="ts"
 >
+import { defineAsyncComponent } from "vue"
+
+const GraficoCard = defineAsyncComponent(() => import("~/components/GraficoCard.vue"))
 const {
   carregandoKpis,
   erro,

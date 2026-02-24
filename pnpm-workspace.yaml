@@ -1,6 +1,6 @@
 ignoredBuiltDependencies:
-  - "@parcel/watcher"
-  - "@tailwindcss/oxide"
+  - '@parcel/watcher'
+  - '@tailwindcss/oxide'
   - esbuild
   - unrs-resolver
   - vue-demi
@@ -9,3 +9,6 @@ onlyBuiltDependencies:
   - dprint
   - sharp
   - nuxt-bun-compile
+
+overrides:
+  minimatch@<10.2.1: '>=10.2.1'
