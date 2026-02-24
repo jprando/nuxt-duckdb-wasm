@@ -166,52 +166,52 @@ async function alternarFullscreen() {
       </UDashboardSidebar>
 
       <UDashboardPanel class="painel-principal">
-        <UDashboardNavbar
-          class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800"
-          :ui="{ wrapper: 'bg-transparent', root: 'bg-transparent' }"
-        >
-          <template #left>
-            <slot name="titulo">
-              <h1 class="titulo-dashboard">
-                Dashboard
-              </h1>
-            </slot>
-          </template>
-          <template #right>
-            <UButton
-              v-if="isFullscreen"
-              icon="i-lucide-shrink"
-              size="xs"
-              variant="ghost"
-              color="neutral"
-              aria-label="Fechar modo expandido"
-              @click="toggle"
-            />
-            <UButton
-              v-else
-              icon="i-lucide-expand"
-              aria-label="Expandir gráfico"
-              color="neutral"
-              variant="ghost"
-              @click="toggle"
-            />
-            <USeparator
-              orientation="vertical"
-              class="block-5"
-            />
-            <UColorModeButton />
-            <UButton
-              to="https://github.com/jprando/nuxt-duckdb-wasm"
-              target="_blank"
-              icon="i-simple-icons-github"
-              aria-label="GitHub"
-              color="neutral"
-              variant="ghost"
-            />
-          </template>
-        </UDashboardNavbar>
-
         <UMain class="area-conteudo">
+          <UDashboardNavbar
+            class="z-50 sticky top-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800"
+            :ui="{ wrapper: 'bg-transparent', root: 'bg-transparent' }"
+          >
+            <template #left>
+              <slot name="titulo">
+                <h1 class="titulo-dashboard">
+                  Dashboard
+                </h1>
+              </slot>
+            </template>
+            <template #right>
+              <UButton
+                v-if="isFullscreen"
+                icon="i-lucide-shrink"
+                size="xs"
+                variant="ghost"
+                color="neutral"
+                aria-label="Fechar modo expandido"
+                @click="toggle"
+              />
+              <UButton
+                v-else
+                icon="i-lucide-expand"
+                aria-label="Expandir gráfico"
+                color="neutral"
+                variant="ghost"
+                @click="toggle"
+              />
+              <USeparator
+                orientation="vertical"
+                class="block-5"
+              />
+              <UColorModeButton />
+              <UButton
+                to="https://github.com/jprando/nuxt-duckdb-wasm"
+                target="_blank"
+                icon="i-simple-icons-github"
+                aria-label="GitHub"
+                color="neutral"
+                variant="ghost"
+              />
+            </template>
+          </UDashboardNavbar>
+
           <slot />
         </UMain>
       </UDashboardPanel>
