@@ -71,7 +71,7 @@ onUnmounted(() => {
         <UButton
           icon="i-lucide-expand"
           size="xs"
-          variant="soft"
+          variant="ghost"
           color="neutral"
           class="shrink-0"
           aria-label="Expandir gráfico"

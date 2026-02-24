@@ -19,8 +19,12 @@ const props = withDefaults(
 const chartType = computed(() => {
   let type = "bar";
   if (Array.isArray(props.option?.series) && props.option.series.length > 0) {
-    type = (props.option.series[0] as Record<string, unknown>).type as string || "bar";
-  } else if (props.option?.series && (props.option.series as Record<string, unknown>).type) {
+    type = (props.option.series[0] as Record<string, unknown>).type as string
+      || "bar";
+  } else if (
+    props.option?.series
+    && (props.option.series as Record<string, unknown>).type
+  ) {
     type = (props.option.series as Record<string, unknown>).type as string;
   }
   return type;

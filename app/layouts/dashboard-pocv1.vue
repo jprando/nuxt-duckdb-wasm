@@ -109,7 +109,7 @@ const route = useRoute();
 
 const scrollParaItemAtivo = async () => {
   await nextTick();
-  const itemAtivo = menuRef.value?.querySelector('[aria-current="page"]');
+  const itemAtivo = menuRef.value?.querySelector("[aria-current=\"page\"]");
   itemAtivo?.scrollIntoView({ block: "nearest", behavior: "smooth" });
 };
 

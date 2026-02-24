@@ -257,8 +257,8 @@ export const usePontualidadeVoos = () => {
 
   const configurarGraficoRadar = (data: any[]) => {
     const rows = data as any[];
-    const maxAtraso = Math.max(...rows.map(d => d.atraso_medio ?? 0), 1);
-    const maxDist = Math.max(...rows.map(d => d.distancia_media ?? 0), 1);
+    const maxAtraso = Math.ceil(Math.max(...rows.map(d => d.atraso_medio ?? 0), 10) / 10) * 10;
+    const maxDist = Math.ceil(Math.max(...rows.map(d => d.distancia_media ?? 0), 500) / 500) * 500;
     opcaoRadar.value = {
       backgroundColor: "transparent",
       tooltip: { trigger: "item" },

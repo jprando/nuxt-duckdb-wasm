@@ -20,7 +20,9 @@ export const useDuckDb = () => {
       const resultado: any[] = [];
       const stream = await conn.send(sql);
       for await (const batch of stream) {
-        resultado.push(...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())));
+        resultado.push(
+          ...batch.toArray().map((row: any) => sanitizeRow(row.toJSON())),
+        );
       }
       return resultado;
     } finally {
@@ -31,23 +33,73 @@ export const useDuckDb = () => {
 
   const registrarParquet = async (url: string): Promise<string> => {
     if (!db.value) await init();
-
     const nomeArquivo = url.split("/").pop()!;
     if (parquetsRegistrados.has(nomeArquivo)) return nomeArquivo;
 
-    const cache = await caches.open("parquet-cache-v1");
-    let response = await cache.match(url);
+    let buffer: ArrayBuffer | undefined;
 
-    if (!response) {
-      response = await fetch(url);
+    // 1. Tentar Cache API
+    try {
+      const cache = await caches.open("parquet-cache-v1");
+      const cached = await cache.match(url);
+      if (cached) {
+        console.info("Encontrou o arquivo no Cache API");
+
+        buffer = await cached.arrayBuffer();
+      }
+      if (!buffer) {
+        console.info("Nao encontrou o arquivo no Cache API");
+      }
+    } catch {
+      /* ignorar */
+      console.info("Tentou ler do Cache API e deu erro!");
+    }
+
+    // 2. Tentar OPFS
+    if (!buffer) {
       try {
-        await cache.put(url, response.clone());
+        const root = await navigator.storage.getDirectory();
+        const handle = await root.getFileHandle(nomeArquivo);
+        buffer = await (await handle.getFile()).arrayBuffer();
       } catch {
-        // Arquivo muito grande para o Cache API — prosseguir sem cache
+        /* arquivo não existe no OPFS */
+        console.info("Nao encontrou o arquivo no OPFS");
       }
     }
 
-    const buffer = await response.arrayBuffer();
+    // 3. Fetch e persistir
+    if (!buffer) {
+      const fetchedBuffer = await fetch(url).then((r) => r.arrayBuffer());
+
+      // Tentar Cache API
+      try {
+        const cache = await caches.open("parquet-cache-v1");
+        await cache.put(url, new Response(fetchedBuffer.slice(0)));
+        console.info("Registrou o arquivo no Cache API");
+      } catch {
+        // Cache API falhou (arquivo muito grande) — tentar OPFS
+        console.info("Cache API falhou (arquivo muito grande) — tentar OPFS");
+
+        try {
+          debugger;
+          const root = await navigator.storage.getDirectory();
+          const handle = await root.getFileHandle(nomeArquivo, {
+            create: true,
+          });
+          const writable = await handle.createWritable();
+          await writable.write(fetchedBuffer);
+          await writable.close();
+        } catch {
+          /* sem cache — prosseguir mesmo assim */
+          console.info(
+            "Ocorreu um erro ao tentar registrar o arquivo no OPFS\nprosseguir sem cache",
+          );
+        }
+      }
+
+      buffer = fetchedBuffer;
+    }
+
     await db.value!.registerFileBuffer(nomeArquivo, new Uint8Array(buffer));
     parquetsRegistrados.add(nomeArquivo);
 
@@ -76,7 +128,6 @@ export const useDuckDb = () => {
     itensPorPagina: number = duckDBItensPorPagina,
     url: string = "",
   ) => {
-
     if (!url) return [];
     const nomeArquivo = await registrarParquet(url);
     const registros: any[] = await executar(
