@@ -2,8 +2,13 @@
   setup
   lang="ts"
 >
-const LazyGraficoEChart = defineAsyncComponent(() =>
-  import("~/components/GraficoEChart.vue")
+// const LazyGraficoEChart = defineAsyncComponent(() =>
+//   import("~/components/GraficoEChart.vue")
+// );
+
+const LazyGraficoEChart = defineLazyHydrationComponent(
+  "visible",
+  () => import("~/components/GraficoEChart.vue"),
 );
 
 const props = withDefaults(

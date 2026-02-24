@@ -31,6 +31,11 @@ const chartType = computed(() => {
 const componentName = computed(() => {
   switch (chartType.value) {
     case "bar":
+      // ? porque nao funciona ?
+      // return defineLazyHydrationComponent(
+      //   "visible",
+      //   async () => import("~/components/GraficoEChartBarra.vue"),
+      // );
       return defineAsyncComponent(async () =>
         import("~/components/GraficoEChartBarra.vue")
       );
