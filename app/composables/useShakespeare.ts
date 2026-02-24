@@ -26,7 +26,7 @@ const baseChart = {
 // grid: { top: 16, right: 24, bottom: 8, left: 8 },
 
 export const useShakespeare = () => {
-  const { executar, init } = useDuckDb();
+  const { executar, init, registrarParquet } = useDuckDb();
   const colorMode = useColorMode();
 
   const temaGrafico = computed(() => colorMode.value === "dark" ? "dark" : "");
@@ -49,15 +49,127 @@ export const useShakespeare = () => {
   const opcaoElenco = ref<Record<string, unknown> | null>(null);
   const opcaoComprimento = ref<Record<string, unknown> | null>(null);
 
+  // ─── Configuração dos Gráficos ────────────────────────────────────────────
+
+  const configurarGraficoPecas = (data: any[]) => {
+    const rows = data as { peca: string; total: number }[];
+    const pecas = rows.map(d => d.peca).reverse();
+    const totais = rows.map(d => d.total).reverse();
+    opcaoPecas.value = {
+      ...baseChart,
+      color: [COR_PRIMARIA],
+      xAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      yAxis: { type: "category", data: pecas, axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: totais, name: "Linhas" }],
+    };
+  };
+
+  const configurarGraficoPersonagens = (data: any[]) => {
+    const rows = data as { personagem: string; total: number }[];
+    const personagens = rows.map(d => d.personagem).reverse();
+    const totais = rows.map(d => d.total).reverse();
+    opcaoPersonagens.value = {
+      backgroundColor: "transparent",
+      color: [COR_SECUNDARIA],
+      tooltip: { trigger: "axis" },
+      grid: {
+        top: 16,
+        right: 24,
+        bottom: 8,
+        left: 8,
+      },
+      xAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      yAxis: {
+        type: "category",
+        data: personagens,
+        axisLabel: { fontSize: 10 },
+      },
+      series: [{ type: "bar", data: totais, name: "Falas" }],
+    };
+  };
+
+  const configurarGraficoAto = (data: any[]) => {
+    const rows = data as { ato: string; total: number }[];
+    const atos = rows.map(d => `Ato ${d.ato}`);
+    const totais = rows.map(d => d.total);
+    opcaoAto.value = {
+      backgroundColor: "transparent",
+      color: [COR_TERCIARIA],
+      tooltip: { trigger: "axis" },
+      grid: {
+        top: 16,
+        right: 16,
+        bottom: 32,
+        left: 56,
+      },
+      xAxis: {
+        type: "category",
+        data: atos,
+        axisLabel: { fontSize: 11 },
+      },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: totais, name: "Linhas" }],
+    };
+  };
+
+  const configurarGraficoElenco = (data: any[]) => {
+    const rows = data as { peca: string; personagens: number }[];
+    const pecas = rows.map(d => d.peca).reverse();
+    const totais = rows.map(d => d.personagens).reverse();
+    opcaoElenco.value = {
+      backgroundColor: "transparent",
+      color: [COR_QUATERNARIA],
+      tooltip: { trigger: "axis" },
+      grid: {
+        top: 16,
+        right: 24,
+        bottom: 8,
+        left: 8,
+      },
+      xAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      yAxis: {
+        type: "category",
+        data: pecas,
+        axisLabel: { fontSize: 10 },
+      },
+      series: [{ type: "bar", data: totais, name: "Personagens" }],
+    };
+  };
+
+  const configurarGraficoComprimento = (data: any[]) => {
+    const rows = data as { faixa: number; total: number }[];
+    const labels = rows.map(d => `${d.faixa}–${d.faixa + 19}`);
+    const totais = rows.map(d => d.total);
+    opcaoComprimento.value = {
+      backgroundColor: "transparent",
+      color: [PALETA[4]],
+      tooltip: { trigger: "axis" },
+      grid: {
+        top: 16,
+        right: 16,
+        bottom: 48,
+        left: 56,
+      },
+      xAxis: {
+        type: "category",
+        data: labels,
+        axisLabel: { fontSize: 9, rotate: 45 },
+      },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: totais, name: "Linhas" }],
+    };
+  };
+
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
-  const carregarDados = () => {
+  const carregarDados = async () => {
     carregandoKpis.value = true;
     erro.value = null;
 
     const url = shakespeareUrl;
+    const nomeArquivo = await registrarParquet(url);
 
-    executar(shakespeareKpisConsulta(url))
+    executar(shakespeareKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       }).catch((e) => {
@@ -68,119 +180,11 @@ export const useShakespeare = () => {
         carregandoKpis.value = false;
       });
 
-    executar(shakespearePecasConsulta(url))
-      .then((data) => {
-        const rows = data as { peca: string; total: number }[];
-        const pecas = rows.map(d => d.peca).reverse();
-        const totais = rows.map(d => d.total).reverse();
-        opcaoPecas.value = {
-          ...baseChart,
-          color: [COR_PRIMARIA],
-          xAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          yAxis: { type: "category", data: pecas, axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: totais, name: "Linhas" }],
-        };
-      });
-
-    executar(shakespearePersonagensConsulta(url))
-      .then((data) => {
-        const rows = data as { personagem: string; total: number }[];
-        const personagens = rows.map(d => d.personagem).reverse();
-        const totais = rows.map(d => d.total).reverse();
-        opcaoPersonagens.value = {
-          backgroundColor: "transparent",
-          color: [COR_SECUNDARIA],
-          tooltip: { trigger: "axis" },
-          grid: {
-            top: 16,
-            right: 24,
-            bottom: 8,
-            left: 8,
-          },
-          xAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          yAxis: {
-            type: "category",
-            data: personagens,
-            axisLabel: { fontSize: 10 },
-          },
-          series: [{ type: "bar", data: totais, name: "Falas" }],
-        };
-      });
-
-    executar(shakespeareAtoConsulta(url))
-      .then((data) => {
-        const rows = data as { ato: string; total: number }[];
-        const atos = rows.map(d => `Ato ${d.ato}`);
-        const totais = rows.map(d => d.total);
-        opcaoAto.value = {
-          backgroundColor: "transparent",
-          color: [COR_TERCIARIA],
-          tooltip: { trigger: "axis" },
-          grid: {
-            top: 16,
-            right: 16,
-            bottom: 32,
-            left: 56,
-          },
-          xAxis: {
-            type: "category",
-            data: atos,
-            axisLabel: { fontSize: 11 },
-          },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: totais, name: "Linhas" }],
-        };
-      });
-
-    executar(shakespeareElencoConsulta(url))
-      .then((data) => {
-        const rows = data as { peca: string; personagens: number }[];
-        const pecas = rows.map(d => d.peca).reverse();
-        const totais = rows.map(d => d.personagens).reverse();
-        opcaoElenco.value = {
-          backgroundColor: "transparent",
-          color: [COR_QUATERNARIA],
-          tooltip: { trigger: "axis" },
-          grid: {
-            top: 16,
-            right: 24,
-            bottom: 8,
-            left: 8,
-          },
-          xAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          yAxis: {
-            type: "category",
-            data: pecas,
-            axisLabel: { fontSize: 10 },
-          },
-          series: [{ type: "bar", data: totais, name: "Personagens" }],
-        };
-      });
-
-    executar(shakespeareComprimentoConsulta(url))
-      .then((data) => {
-        const rows = data as { faixa: number; total: number }[];
-        const labels = rows.map(d => `${d.faixa}–${d.faixa + 19}`);
-        const totais = rows.map(d => d.total);
-        opcaoComprimento.value = {
-          backgroundColor: "transparent",
-          color: [PALETA[4]],
-          tooltip: { trigger: "axis" },
-          grid: {
-            top: 16,
-            right: 16,
-            bottom: 48,
-            left: 56,
-          },
-          xAxis: {
-            type: "category",
-            data: labels,
-            axisLabel: { fontSize: 9, rotate: 45 },
-          },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: totais, name: "Linhas" }],
-        };
-      });
+    executar(shakespearePecasConsulta(nomeArquivo)).then(configurarGraficoPecas);
+    executar(shakespearePersonagensConsulta(nomeArquivo)).then(configurarGraficoPersonagens);
+    executar(shakespeareAtoConsulta(nomeArquivo)).then(configurarGraficoAto);
+    executar(shakespeareElencoConsulta(nomeArquivo)).then(configurarGraficoElenco);
+    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(configurarGraficoComprimento);
   };
 
   onMounted(async () => {

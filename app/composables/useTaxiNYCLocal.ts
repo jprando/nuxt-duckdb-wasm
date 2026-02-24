@@ -20,7 +20,7 @@ const baseChart = {
 };
 
 export const useTaxiNYCLocal = () => {
-  const { executar, init } = useDuckDb();
+  const { executar, init, registrarParquet } = useDuckDb();
   const colorMode = useColorMode();
 
   const temaGrafico = computed(() => colorMode.value === "dark" ? "dark" : "");
@@ -45,15 +45,100 @@ export const useTaxiNYCLocal = () => {
   const opcaoValor = ref<Record<string, unknown> | null>(null);
   const opcaoHora = ref<Record<string, unknown> | null>(null);
 
+  // ─── Configuração dos Gráficos ────────────────────────────────────────────
+
+  const configurarGraficoVendor = (data: any[]) => {
+    opcaoVendor.value = {
+      backgroundColor: "transparent",
+      color: PALETA,
+      tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
+      legend: { bottom: 0, type: "scroll" },
+      series: [
+        {
+          type: "pie",
+          radius: ["42%", "70%"],
+          center: ["50%", "42%"],
+          data: (data as any[]).map(d => ({ name: d.vendor, value: d.total })),
+          label: { show: false },
+          emphasis: { label: { show: true, fontWeight: "bold" } },
+        },
+      ],
+    };
+  };
+
+  const configurarGraficoPassageiros = (data: any[]) => {
+    const paxLabels = (data as any[]).map(d => `${d.passageiros} pax`);
+    const paxValues = (data as any[]).map(d => d.total);
+    opcaoPassageiros.value = {
+      ...baseChart,
+      color: [COR_SECUNDARIA],
+      xAxis: { type: "category", data: paxLabels, axisLabel: { fontSize: 11 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: paxValues, name: "Corridas", barMaxWidth: 48 }],
+    };
+  };
+
+  const configurarGraficoDistancia = (data: any[]) => {
+    const distLabels = (data as any[]).map(d => `${d.milhas}mi`);
+    const distValues = (data as any[]).map(d => d.total);
+    opcaoDistancia.value = {
+      ...baseChart,
+      color: [COR_TERCIARIA],
+      xAxis: { type: "category", data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: distValues, name: "Corridas" }],
+    };
+  };
+
+  const configurarGraficoValor = (data: any[]) => {
+    const valorLabels = (data as any[]).map(d => `$${d.faixa}`);
+    const valorValues = (data as any[]).map(d => d.total);
+    opcaoValor.value = {
+      ...baseChart,
+      color: [COR_QUATERNARIA],
+      xAxis: { type: "category", data: valorLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: valorValues, name: "Corridas" }],
+    };
+  };
+
+  const configurarGraficoHora = (data: any[]) => {
+    if (!data || data.length === 0) {
+      opcaoHora.value = {};
+      return;
+    }
+    const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
+    const horaValues = (data as any[]).map(d => d.total);
+    opcaoHora.value = {
+      ...baseChart,
+      grid: { top: 16, right: 16, bottom: 48, left: 64 },
+      color: [COR_PRIMARIA],
+      xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [
+        {
+          type: "line",
+          data: horaValues,
+          name: "Corridas",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 5,
+          areaStyle: { opacity: 0.15 },
+        },
+      ],
+    };
+  };
+
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
-  const carregarDados = () => {
+  const carregarDados = async () => {
     carregandoKpis.value = true;
     erro.value = null;
 
     const url = taxiNYCLocalUrl;
+    const nomeArquivo = await registrarParquet(url);
 
-    executar(localNYCTaxiKpisConsulta(url))
+    executar(localNYCTaxiKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -65,92 +150,12 @@ export const useTaxiNYCLocal = () => {
         carregandoKpis.value = false;
       });
 
-    executar(localNYCTaxiVendorConsulta(url))
-      .then((vendorData) => {
-        opcaoVendor.value = {
-          backgroundColor: "transparent",
-          color: PALETA,
-          tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-          legend: { bottom: 0, type: "scroll" },
-          series: [
-            {
-              type: "pie",
-              radius: ["42%", "70%"],
-              center: ["50%", "42%"],
-              data: (vendorData as any[]).map(d => ({ name: d.vendor, value: d.total })),
-              label: { show: false },
-              emphasis: { label: { show: true, fontWeight: "bold" } },
-            },
-          ],
-        };
-      });
-
-    executar(localNYCTaxiPassageirosConsulta(url))
-      .then((passageirosData) => {
-        const paxLabels = (passageirosData as any[]).map(d => `${d.passageiros} pax`);
-        const paxValues = (passageirosData as any[]).map(d => d.total);
-        opcaoPassageiros.value = {
-          ...baseChart,
-          color: [COR_SECUNDARIA],
-          xAxis: { type: "category", data: paxLabels, axisLabel: { fontSize: 11 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: paxValues, name: "Corridas", barMaxWidth: 48 }],
-        };
-      });
-
-    executar(localNYCTaxiDistanciaConsulta(url))
-      .then((distanciaData) => {
-        const distLabels = (distanciaData as any[]).map(d => `${d.milhas}mi`);
-        const distValues = (distanciaData as any[]).map(d => d.total);
-        opcaoDistancia.value = {
-          ...baseChart,
-          color: [COR_TERCIARIA],
-          xAxis: { type: "category", data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: distValues, name: "Corridas" }],
-        };
-      });
-
-    executar(localNYCTaxiValorConsulta(url))
-      .then((valorData) => {
-        const valorLabels = (valorData as any[]).map(d => `$${d.faixa}`);
-        const valorValues = (valorData as any[]).map(d => d.total);
-        opcaoValor.value = {
-          ...baseChart,
-          color: [COR_QUATERNARIA],
-          xAxis: { type: "category", data: valorLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: valorValues, name: "Corridas" }],
-        };
-      });
-
-    executar(localNYCTaxiHoraConsulta(url))
-      .then((horaData) => {
-        if (!horaData || horaData.length === 0) {
-          opcaoHora.value = {};
-          return;
-        }
-        const horaLabels = (horaData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
-        const horaValues = (horaData as any[]).map(d => d.total);
-        opcaoHora.value = {
-          ...baseChart,
-          grid: { top: 16, right: 16, bottom: 48, left: 64 },
-          color: [COR_PRIMARIA],
-          xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [
-            {
-              type: "line",
-              data: horaValues,
-              name: "Corridas",
-              smooth: true,
-              symbol: "circle",
-              symbolSize: 5,
-              areaStyle: { opacity: 0.15 },
-            },
-          ],
-        };
-      })
+    executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(configurarGraficoVendor);
+    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(configurarGraficoPassageiros);
+    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(configurarGraficoDistancia);
+    executar(localNYCTaxiValorConsulta(nomeArquivo)).then(configurarGraficoValor);
+    executar(localNYCTaxiHoraConsulta(nomeArquivo))
+      .then(configurarGraficoHora)
       .catch(() => {
         opcaoHora.value = {};
       });

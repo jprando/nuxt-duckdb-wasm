@@ -10,7 +10,7 @@ if (import.meta.client) {
 export const useDuckDb = () => {
   const init = duckDBWasmIniciar(db, estahCarregando, duckDBWasmInfo);
 
-  const execute = async (sql: string) => {
+  const executar = async (sql: string) => {
     if (!db.value) await init();
 
     estahCarregando.value = true;
@@ -40,7 +40,11 @@ export const useDuckDb = () => {
 
     if (!response) {
       response = await fetch(url);
-      await cache.put(url, response.clone());
+      try {
+        await cache.put(url, response.clone());
+      } catch {
+        // Arquivo muito grande para o Cache API — prosseguir sem cache
+      }
     }
 
     const buffer = await response.arrayBuffer();
@@ -54,14 +58,14 @@ export const useDuckDb = () => {
     pagina: number = 1,
     itensPorPagina: number = duckDBItensPorPagina,
   ) => {
-    const registros: any[] = await execute(
+    const registros: any[] = await executar(
       selectDadosSimples(pagina, itensPorPagina),
     );
     return registros;
   };
 
   const obterDadosSimplesQuantidade = async () => {
-    const [quantidade]: [{ total?: number }] = await execute(
+    const [quantidade]: [{ total?: number }] = await executar(
       "FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0",
     );
     return quantidade?.total ?? 0;
@@ -72,10 +76,10 @@ export const useDuckDb = () => {
     itensPorPagina: number = duckDBItensPorPagina,
     url: string = "",
   ) => {
-    if (!url) return [];
 
+    if (!url) return [];
     const nomeArquivo = await registrarParquet(url);
-    const registros: any[] = await execute(
+    const registros: any[] = await executar(
       selectDadosParquet(nomeArquivo, pagina, itensPorPagina),
     );
 
@@ -86,7 +90,7 @@ export const useDuckDb = () => {
     if (!url) return 0;
 
     const nomeArquivo = await registrarParquet(url);
-    const [quantidade]: [{ total?: number }] = await execute(
+    const [quantidade]: [{ total?: number }] = await executar(
       `FROM '${nomeArquivo}' SELECT COUNT() AS total`,
     );
 
@@ -95,7 +99,7 @@ export const useDuckDb = () => {
 
   return {
     init,
-    executar: execute,
+    executar,
     registrarParquet,
     estahCarregando: readonly(estahCarregando),
     duckDBWasmInfo: duckDBWasmInfo,

@@ -22,7 +22,7 @@ const baseChart = {
 const MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 export const useEletricidadeFinlandia = () => {
-  const { executar, init } = useDuckDb();
+  const { executar, init, registrarParquet } = useDuckDb();
   const colorMode = useColorMode();
 
   const temaGrafico = computed(() => colorMode.value === "dark" ? "dark" : "");
@@ -48,15 +48,170 @@ export const useEletricidadeFinlandia = () => {
   const opcaoDistribuicao = ref<Record<string, unknown> | null>(null);
   const opcaoCalendario = ref<Record<string, unknown> | null>(null);
 
+  // ─── Configuração dos Gráficos ────────────────────────────────────────────
+
+  const configurarGraficoMensal = (data: any[]) => {
+    const rows = data as any[];
+    const labels = rows.map(d => MESES[(d.mes as number) - 1]);
+    opcaoMensal.value = {
+      ...baseChart,
+      legend: { top: 4, textStyle: { fontSize: 10 } },
+      xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "€/MWh", nameTextStyle: { fontSize: 10 } },
+      series: [
+        {
+          type: "bar",
+          name: "Médio",
+          data: rows.map(d => d.preco_medio),
+          itemStyle: { color: COR_PRIMARIA },
+        },
+        {
+          type: "line",
+          name: "Máximo",
+          data: rows.map(d => d.preco_max),
+          itemStyle: { color: COR_TERCIARIA },
+          lineStyle: { width: 2 },
+        },
+        {
+          type: "line",
+          name: "Mínimo",
+          data: rows.map(d => d.preco_min),
+          itemStyle: { color: COR_SECUNDARIA },
+          lineStyle: { width: 2 },
+        },
+      ],
+    };
+  };
+
+  const configurarGraficoHoraria = (data: any[]) => {
+    const rows = data as any[];
+    opcaoHoraria.value = {
+      ...baseChart,
+      color: [COR_QUATERNARIA],
+      xAxis: {
+        type: "category",
+        data: rows.map(d => `${String(d.hora as number).padStart(2, "0")}h`),
+        axisLabel: { fontSize: 10 },
+      },
+      yAxis: {
+        type: "value",
+        axisLabel: { fontSize: 10 },
+        name: "€/MWh",
+        nameTextStyle: { fontSize: 10 },
+      },
+      series: [{ type: "bar", data: rows.map(d => d.preco_medio), name: "Preço Médio" }],
+    };
+  };
+
+  const configurarGraficoSemanal = (data: any[]) => {
+    const rows = data as any[];
+    opcaoSemanal.value = {
+      backgroundColor: "transparent",
+      grid: { top: 40, right: 16, bottom: 32, left: 64 },
+      legend: { top: 4, textStyle: { fontSize: 10 } },
+      tooltip: { trigger: "axis" as const },
+      xAxis: {
+        type: "category",
+        data: rows.map(d => d.semana),
+        axisLabel: { fontSize: 8, rotate: 45, interval: 3 },
+      },
+      yAxis: {
+        type: "value",
+        axisLabel: { fontSize: 10 },
+        name: "€/MWh",
+        nameTextStyle: { fontSize: 10 },
+      },
+      series: [
+        {
+          type: "line",
+          name: "Médio",
+          data: rows.map(d => d.preco_medio),
+          smooth: true,
+          itemStyle: { color: COR_PRIMARIA },
+          lineStyle: { width: 2 },
+          areaStyle: { color: `${COR_PRIMARIA}33` },
+        },
+        {
+          type: "line",
+          name: "Máximo",
+          data: rows.map(d => d.preco_max),
+          smooth: true,
+          itemStyle: { color: COR_TERCIARIA },
+          lineStyle: { width: 1.5, type: "dashed" as const },
+        },
+      ],
+    };
+  };
+
+  const configurarGraficoDistribuicao = (data: any[]) => {
+    const rows = data as any[];
+    opcaoDistribuicao.value = {
+      ...baseChart,
+      grid: { top: 16, right: 16, bottom: 56, left: 64 },
+      color: [COR_SECUNDARIA],
+      xAxis: {
+        type: "category",
+        data: rows.map(d => `${d.faixa_inicio}–${(d.faixa_inicio as number) + 20}`),
+        axisLabel: { fontSize: 10, rotate: 45 },
+      },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: rows.map(d => d.total), name: "Horas" }],
+    };
+  };
+
+  const configurarGraficoCalendario = (data: any[]) => {
+    const rows = data as { dia: string; preco_medio: number }[];
+    const valores = rows.map(d => d.preco_medio);
+    const minVal = Math.min(...valores);
+    const maxVal = Math.max(...valores);
+    opcaoCalendario.value = {
+      backgroundColor: "transparent",
+      tooltip: {
+        trigger: "item",
+        formatter: (p: any) => `${p.value[0]}<br/>€${p.value[1]}/MWh`,
+      },
+      visualMap: {
+        min: minVal,
+        max: maxVal,
+        calculable: true,
+        orient: "horizontal",
+        left: "center",
+        top: 4,
+        itemWidth: 12,
+        itemHeight: 120,
+        textStyle: { fontSize: 10 },
+        inRange: { color: ["#3b82f6", "#f59e0b", "#f43f5e"] },
+      },
+      calendar: {
+        range: "2021",
+        top: 56,
+        left: 36,
+        right: 8,
+        bottom: 8,
+        cellSize: ["auto", 14],
+        itemStyle: { borderWidth: 0.5 },
+        dayLabel: { show: true, fontSize: 9, firstDay: 1 },
+        monthLabel: { show: true, fontSize: 10 },
+        yearLabel: { show: false },
+      },
+      series: [{
+        type: "heatmap",
+        coordinateSystem: "calendar",
+        data: rows.map(d => [d.dia, d.preco_medio]),
+      }],
+    };
+  };
+
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
-  const carregarDados = () => {
+  const carregarDados = async () => {
     carregandoKpis.value = true;
     erro.value = null;
 
     const url = eletricidadeFinlandiaUrl;
+    const nomeArquivo = await registrarParquet(url);
 
-    executar(eletricidadeFinlandiaKpisConsulta(url))
+    executar(eletricidadeFinlandiaKpisConsulta(nomeArquivo))
       .then(([row]) => {
         kpis.value = row as Kpis;
       })
@@ -68,162 +223,11 @@ export const useEletricidadeFinlandia = () => {
         carregandoKpis.value = false;
       });
 
-    executar(eletricidadeFinlandiaMensalConsulta(url))
-      .then((data) => {
-        const rows = data as any[];
-        const labels = rows.map(d => MESES[(d.mes as number) - 1]);
-        opcaoMensal.value = {
-          ...baseChart,
-          legend: { top: 4, textStyle: { fontSize: 10 } },
-          xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "€/MWh", nameTextStyle: { fontSize: 10 } },
-          series: [
-            {
-              type: "bar",
-              name: "Médio",
-              data: rows.map(d => d.preco_medio),
-              itemStyle: { color: COR_PRIMARIA },
-            },
-            {
-              type: "line",
-              name: "Máximo",
-              data: rows.map(d => d.preco_max),
-              itemStyle: { color: COR_TERCIARIA },
-              lineStyle: { width: 2 },
-            },
-            {
-              type: "line",
-              name: "Mínimo",
-              data: rows.map(d => d.preco_min),
-              itemStyle: { color: COR_SECUNDARIA },
-              lineStyle: { width: 2 },
-            },
-          ],
-        };
-      });
-
-    executar(eletricidadeFinlandiaHorariaConsulta(url))
-      .then((data) => {
-        const rows = data as any[];
-        opcaoHoraria.value = {
-          ...baseChart,
-          color: [COR_QUATERNARIA],
-          xAxis: {
-            type: "category",
-            data: rows.map(d => `${String(d.hora as number).padStart(2, "0")}h`),
-            axisLabel: { fontSize: 10 },
-          },
-          yAxis: {
-            type: "value",
-            axisLabel: { fontSize: 10 },
-            name: "€/MWh",
-            nameTextStyle: { fontSize: 10 },
-          },
-          series: [{ type: "bar", data: rows.map(d => d.preco_medio), name: "Preço Médio" }],
-        };
-      });
-
-    executar(eletricidadeFinlandiaSemanaisConsulta(url))
-      .then((data) => {
-        const rows = data as any[];
-        opcaoSemanal.value = {
-          backgroundColor: "transparent",
-          grid: { top: 40, right: 16, bottom: 32, left: 64 },
-          legend: { top: 4, textStyle: { fontSize: 10 } },
-          tooltip: { trigger: "axis" as const },
-          xAxis: {
-            type: "category",
-            data: rows.map(d => d.semana),
-            axisLabel: { fontSize: 8, rotate: 45, interval: 3 },
-          },
-          yAxis: {
-            type: "value",
-            axisLabel: { fontSize: 10 },
-            name: "€/MWh",
-            nameTextStyle: { fontSize: 10 },
-          },
-          series: [
-            {
-              type: "line",
-              name: "Médio",
-              data: rows.map(d => d.preco_medio),
-              smooth: true,
-              itemStyle: { color: COR_PRIMARIA },
-              lineStyle: { width: 2 },
-              areaStyle: { color: `${COR_PRIMARIA}33` },
-            },
-            {
-              type: "line",
-              name: "Máximo",
-              data: rows.map(d => d.preco_max),
-              smooth: true,
-              itemStyle: { color: COR_TERCIARIA },
-              lineStyle: { width: 1.5, type: "dashed" as const },
-            },
-          ],
-        };
-      });
-
-    executar(eletricidadeFinlandiaDistribuicaoConsulta(url))
-      .then((data) => {
-        const rows = data as any[];
-        opcaoDistribuicao.value = {
-          ...baseChart,
-          grid: { top: 16, right: 16, bottom: 56, left: 64 },
-          color: [COR_SECUNDARIA],
-          xAxis: {
-            type: "category",
-            data: rows.map(d => `${d.faixa_inicio}–${(d.faixa_inicio as number) + 20}`),
-            axisLabel: { fontSize: 10, rotate: 45 },
-          },
-          yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-          series: [{ type: "bar", data: rows.map(d => d.total), name: "Horas" }],
-        };
-      });
-
-    executar(eletricidadeFinlandiaCalendarioConsulta(url))
-      .then((data) => {
-        const rows = data as { dia: string; preco_medio: number }[];
-        const valores = rows.map(d => d.preco_medio);
-        const minVal = Math.min(...valores);
-        const maxVal = Math.max(...valores);
-        opcaoCalendario.value = {
-          backgroundColor: "transparent",
-          tooltip: {
-            trigger: "item",
-            formatter: (p: any) => `${p.value[0]}<br/>€${p.value[1]}/MWh`,
-          },
-          visualMap: {
-            min: minVal,
-            max: maxVal,
-            calculable: true,
-            orient: "horizontal",
-            left: "center",
-            top: 4,
-            itemWidth: 12,
-            itemHeight: 120,
-            textStyle: { fontSize: 10 },
-            inRange: { color: ["#3b82f6", "#f59e0b", "#f43f5e"] },
-          },
-          calendar: {
-            range: "2021",
-            top: 56,
-            left: 36,
-            right: 8,
-            bottom: 8,
-            cellSize: ["auto", 14],
-            itemStyle: { borderWidth: 0.5 },
-            dayLabel: { show: true, fontSize: 9, firstDay: 1 },
-            monthLabel: { show: true, fontSize: 10 },
-            yearLabel: { show: false },
-          },
-          series: [{
-            type: "heatmap",
-            coordinateSystem: "calendar",
-            data: rows.map(d => [d.dia, d.preco_medio]),
-          }],
-        };
-      });
+    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(configurarGraficoMensal);
+    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(configurarGraficoHoraria);
+    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(configurarGraficoSemanal);
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(configurarGraficoDistribuicao);
+    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(configurarGraficoCalendario);
   };
 
   onMounted(async () => {

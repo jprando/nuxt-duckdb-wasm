@@ -3,18 +3,38 @@
   lang="ts"
 >
 import {
+  BarChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  SankeyChart,
+} from "echarts/charts";
+import {
+  CalendarComponent,
   GridComponent,
   LegendComponent,
+  RadarComponent,
   TooltipComponent,
+  VisualMapComponent,
 } from "echarts/components";
 import { init, use } from "echarts/core";
 import { LabelLayout, UniversalTransition } from "echarts/features";
 import { SVGRenderer } from "echarts/renderers";
 
 use([
+  BarChart,
+  HeatmapChart,
+  LineChart,
+  PieChart,
+  RadarChart,
+  SankeyChart,
+  CalendarComponent,
   GridComponent,
-  TooltipComponent,
   LegendComponent,
+  RadarComponent,
+  TooltipComponent,
+  VisualMapComponent,
   LabelLayout,
   UniversalTransition,
   SVGRenderer,

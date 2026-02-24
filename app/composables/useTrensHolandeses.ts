@@ -19,7 +19,7 @@ const baseChart = {
 };
 
 export const useTrensHolandeses = () => {
-  const { executar, init } = useDuckDb();
+  const { executar, init, registrarParquet } = useDuckDb();
   const colorMode = useColorMode();
 
   const temaGrafico = computed(() => (colorMode.value === "dark" ? "dark" : ""));
@@ -42,15 +42,84 @@ export const useTrensHolandeses = () => {
   const opcaoPartidasPorHora = ref<Record<string, unknown> | null>(null);
   const opcaoDuracaoMediaParada = ref<Record<string, unknown> | null>(null);
 
+  // ─── Configuração dos Gráficos ────────────────────────────────────────────
+
+  const configurarGraficoTipo = (data: any[]) => {
+    opcaoTipo.value = {
+      backgroundColor: "transparent",
+      color: PALETA,
+      tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
+      legend: { bottom: 0, type: "scroll" },
+      series: [
+        {
+          type: "pie",
+          radius: ["42%", "70%"],
+          center: ["50%", "42%"],
+          data: (data as any[]).map(d => ({ name: d.type, value: d.total })),
+          label: { show: false },
+          emphasis: { label: { show: true, fontWeight: "bold" } },
+        },
+      ],
+    };
+  };
+
+  const configurarGraficoEstacoesMovimentadas = (data: any[]) => {
+    const stationLabels = (data as any[]).map(d => d.station_name);
+    const stationValues = (data as any[]).map(d => d.count);
+    opcaoEstacoesMovimentadas.value = {
+      ...baseChart,
+      color: [COR_SECUNDARIA],
+      xAxis: { type: "category", data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [{ type: "bar", data: stationValues, name: "Eventos" }],
+    };
+  };
+
+  const configurarGraficoPartidasPorHora = (data: any[]) => {
+    const hourLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
+    const hourValues = (data as any[]).map(d => d.total);
+    opcaoPartidasPorHora.value = {
+      ...baseChart,
+      grid: { top: 16, right: 16, bottom: 48, left: 64 },
+      color: [COR_PRIMARIA],
+      xAxis: { type: "category", data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      series: [
+        {
+          type: "line",
+          data: hourValues,
+          name: "Partidas",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 5,
+          areaStyle: { opacity: 0.15 },
+        },
+      ],
+    };
+  };
+
+  const configurarGraficoDuracaoMediaParada = (data: any[]) => {
+    const stopLabels = (data as any[]).map(d => d.station_name);
+    const stopValues = (data as any[]).map(d => d.avg_stop_seconds);
+    opcaoDuracaoMediaParada.value = {
+      ...baseChart,
+      color: [COR_TERCIARIA],
+      xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: "value", axisLabel: { fontSize: 10, formatter: "{value}s" } },
+      series: [{ type: "bar", data: stopValues, name: "Duração Média (s)" }],
+    };
+  };
+
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
-  const carregarDados = () => {
+  const carregarDados = async () => {
     carregandoKpis.value = true;
     erro.value = null;
 
     const url = trensHolandesUrl;
+    const nomeArquivo = await registrarParquet(url);
 
-    executar(dutchTrainServicesKpisConsulta(url))
+    executar(dutchTrainServicesKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
         kpis.value = kpisData as Kpis;
       })
@@ -62,71 +131,10 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false;
       });
 
-    executar(dutchTrainServicesTypeConsulta(url)).then((typeData) => {
-      opcaoTipo.value = {
-        backgroundColor: "transparent",
-        color: PALETA,
-        tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-        legend: { bottom: 0, type: "scroll" },
-        series: [
-          {
-            type: "pie",
-            radius: ["42%", "70%"],
-            center: ["50%", "42%"],
-            data: (typeData as any[]).map(d => ({ name: d.type, value: d.total })),
-            label: { show: false },
-            emphasis: { label: { show: true, fontWeight: "bold" } },
-          },
-        ],
-      };
-    });
-
-    executar(dutchTrainServicesBusiestStationsConsulta(url)).then((stationsData) => {
-      const stationLabels = (stationsData as any[]).map(d => d.station_name);
-      const stationValues = (stationsData as any[]).map(d => d.count);
-      opcaoEstacoesMovimentadas.value = {
-        ...baseChart,
-        color: [COR_SECUNDARIA],
-        xAxis: { type: "category", data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-        series: [{ type: "bar", data: stationValues, name: "Eventos" }],
-      };
-    });
-
-    executar(dutchTrainServicesDeparturesByHourConsulta(url)).then((departuresData) => {
-      const hourLabels = (departuresData as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
-      const hourValues = (departuresData as any[]).map(d => d.total);
-      opcaoPartidasPorHora.value = {
-        ...baseChart,
-        grid: { top: 16, right: 16, bottom: 48, left: 64 },
-        color: [COR_PRIMARIA],
-        xAxis: { type: "category", data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-        yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-        series: [
-          {
-            type: "line",
-            data: hourValues,
-            name: "Partidas",
-            smooth: true,
-            symbol: "circle",
-            symbolSize: 5,
-            areaStyle: { opacity: 0.15 },
-          },
-        ],
-      };
-    });
-
-    executar(dutchTrainServicesAvgStopDurationConsulta(url)).then((stopDurationData) => {
-      const stopLabels = (stopDurationData as any[]).map(d => d.station_name);
-      const stopValues = (stopDurationData as any[]).map(d => d.avg_stop_seconds);
-      opcaoDuracaoMediaParada.value = {
-        ...baseChart,
-        color: [COR_TERCIARIA],
-        xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-        yAxis: { type: "value", axisLabel: { fontSize: 10, formatter: "{value}s" } },
-        series: [{ type: "bar", data: stopValues, name: "Duração Média (s)" }],
-      };
-    });
+    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(configurarGraficoTipo);
+    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(configurarGraficoEstacoesMovimentadas);
+    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(configurarGraficoPartidasPorHora);
+    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(configurarGraficoDuracaoMediaParada);
   };
 
   onMounted(async () => {

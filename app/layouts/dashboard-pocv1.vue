@@ -104,6 +104,18 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
   ];
 });
 
+const menuRef = ref<HTMLElement | null>(null);
+const route = useRoute();
+
+const scrollParaItemAtivo = async () => {
+  await nextTick();
+  const itemAtivo = menuRef.value?.querySelector('[aria-current="page"]');
+  itemAtivo?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+};
+
+watch(() => route.path, scrollParaItemAtivo);
+onMounted(scrollParaItemAtivo);
+
 async function alternarFullscreen() {
   if (!document.fullscreenElement) {
     await document.documentElement.requestFullscreen();
@@ -139,11 +151,13 @@ async function alternarFullscreen() {
           <UDashboardSidebarToggle variant="soft" />
         </template>
 
-        <UNavigationMenu
-          :items="navItens"
-          orientation="vertical"
-          class="menu-navegacao-vertical"
-        />
+        <div ref="menuRef">
+          <UNavigationMenu
+            :items="navItens"
+            orientation="vertical"
+            class="menu-navegacao-vertical"
+          />
+        </div>
 
         <template #footer>
           <div class="rodape-sidebar">
@@ -152,7 +166,7 @@ async function alternarFullscreen() {
               v-if="estahCarregando && !_collapsed"
               animation="swing"
               size="sm"
-              class="w-full"
+              class="w-full mb-4"
             />
             <span
               v-else-if="duckDBWasmInfo"
