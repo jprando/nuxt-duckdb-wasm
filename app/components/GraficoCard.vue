@@ -60,7 +60,12 @@ onUnmounted(() => {
   <!-- Card normal -->
   <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
     <template #header>
-      <div class="cabecalho-card">
+      <div
+        class="cabecalho-card"
+        tabindex="1"
+        @touchend="abrirExpandido"
+        @dblclick="abrirExpandido"
+      >
         <h2 class="titulo-card">
           <slot name="titulo" />
         </h2>
@@ -78,7 +83,7 @@ onUnmounted(() => {
 
     <template v-if="!opcao">
       <USkeleton
-        class="w-full rounded-lg"
+        class="w-full rounded-t-none! rounded-b-lg rounded-r-lg rounded-l-lg"
         :style="{ height: altura + 'px' }"
       />
     </template>
@@ -112,21 +117,31 @@ onUnmounted(() => {
           @click="fecharExpandido"
         />
         <!-- Card expandido -->
-        <div class="card-expandido">
+        <UCard
+          class="card-expandido"
+          :ui="{ header: 'px-4 py-3 shrink-0', body: 'flex-1 min-h-0 p-0 sm:p-0' }"
+        >
           <!-- Header -->
-          <div class="cabecalho-expandido">
-            <h2 class="titulo-expandido">
-              <slot name="titulo" />
-            </h2>
-            <UButton
-              icon="i-lucide-shrink"
-              size="xs"
-              variant="ghost"
-              color="neutral"
-              aria-label="Fechar modo expandido"
-              @click="fecharExpandido"
-            />
-          </div>
+          <template #header>
+            <div
+              class="flex items-center justify-between"
+              @touchend="fecharExpandido"
+              @dblclick="fecharExpandido"
+            >
+              <h2 class="titulo-expandido">
+                <slot name="titulo" />
+              </h2>
+              <UButton
+                icon="i-lucide-shrink"
+                size="xs"
+                variant="ghost"
+                color="neutral"
+                aria-label="Fechar modo expandido"
+                @click="fecharExpandido"
+              />
+            </div>
+          </template>
+
           <!-- Corpo -->
           <div class="corpo-expandido">
             <div
@@ -144,7 +159,7 @@ onUnmounted(() => {
               :height="alturaExpandida"
             />
           </div>
-        </div>
+        </UCard>
       </div>
     </Transition>
   </Teleport>
@@ -178,11 +193,7 @@ onUnmounted(() => {
 }
 
 .card-expandido {
-  @apply relative z-10 w-full h-full flex flex-col bg-default border border-default rounded-xl shadow-2xl overflow-hidden;
-}
-
-.cabecalho-expandido {
-  @apply flex items-center justify-between px-4 py-3 border-b border-default shrink-0;
+  @apply relative z-10 w-full h-full flex flex-col shadow-2xl;
 }
 
 .titulo-expandido {

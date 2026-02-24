@@ -60,8 +60,8 @@ export const useTarifasFerroviarias = () => {
 
     executar(railwayFaresPriceDistributionConsulta(url)).then((data) => {
       const rows = data as { count: number; price_bucket: number }[];
-      const labels = rows.map((d) => `€${d.price_bucket}`);
-      const values = rows.map((d) => d.count);
+      const labels = rows.map(d => `€${d.price_bucket}`);
+      const values = rows.map(d => d.count);
       opcaoDistribuicaoPreco.value = {
         ...baseChart,
         color: [COR_PRIMARIA],
@@ -77,8 +77,8 @@ export const useTarifasFerroviarias = () => {
 
     executar(railwayFaresMostExpensiveRoutesConsulta(url)).then((data) => {
       const rows = data as { route: string; price: number }[];
-      const routes = rows.map((d) => d.route);
-      const prices = rows.map((d) => d.price);
+      const routes = rows.map(d => d.route);
+      const prices = rows.map(d => d.price);
       opcaoRotasCaras.value = {
         ...baseChart,
         grid: { ...baseChart.grid, left: 80 },
@@ -92,8 +92,8 @@ export const useTarifasFerroviarias = () => {
     executar(railwayFaresBusiestStationsConsulta(url))
       .then((data) => {
         const rows = data as { station: string; appearances: number }[];
-        const stations = rows.map((d) => d.station);
-        const appearances = rows.map((d) => d.appearances);
+        const stations = rows.map(d => d.station);
+        const appearances = rows.map(d => d.appearances);
         opcaoEstacoesConectadas.value = {
           ...baseChart,
           color: [COR_SECUNDARIA],
@@ -111,7 +111,7 @@ export const useTarifasFerroviarias = () => {
       .then((data) => {
         const rows = data as { src: string; dst: string; total: number; preco_medio: number }[];
         const nodesSet = new Set<string>();
-        rows.forEach(d => {
+        rows.forEach((d) => {
           nodesSet.add(d.src);
           nodesSet.add(d.dst);
         });

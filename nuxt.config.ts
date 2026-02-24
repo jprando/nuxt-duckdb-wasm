@@ -1,11 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: false,
-
-  imports: {
-    dirs: ["consultas"],
-  },
-
   modules: [
     "@nuxt/eslint",
     "@nuxt/ui",
@@ -19,9 +13,10 @@ export default defineNuxtConfig({
     "nuxt-monitoring",
     "@vueuse/nuxt",
   ],
+  ssr: false,
 
-  bunCompile: {
-    outfile: "nuxtbin",
+  imports: {
+    dirs: ["consultas"],
   },
 
   devtools: {
@@ -30,8 +25,6 @@ export default defineNuxtConfig({
 
   css: ["~/assets/css/main.css"],
 
-  compatibilityDate: "2025-01-15",
-
   future: {
     compatibilityVersion: 5,
   },
@@ -39,6 +32,8 @@ export default defineNuxtConfig({
   experimental: {
     viewTransition: true,
   },
+
+  compatibilityDate: "2025-01-15",
 
   nitro: {
     experimental: {
@@ -64,18 +59,15 @@ export default defineNuxtConfig({
     },
   },
 
+  bunCompile: {
+    outfile: "nuxtbin",
+  },
+
   echarts: {
     renderer: "svg",
     charts: ["BarChart", "LineChart", "PieChart"],
     components: ["GridComponent", "TooltipComponent", "LegendComponent"],
     features: ["LabelLayout", "UniversalTransition"],
-  },
-
-  monitoring: {
-    metrics: {
-      enabled: import.meta.dev,
-      path: "/metrics",
-    },
   },
 
   eslint: {
@@ -84,6 +76,13 @@ export default defineNuxtConfig({
         commaDangle: "never",
         braceStyle: "1tbs",
       },
+    },
+  },
+
+  monitoring: {
+    metrics: {
+      enabled: import.meta.dev,
+      path: "/metrics",
     },
   },
 });

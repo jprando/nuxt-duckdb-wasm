@@ -2,11 +2,11 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
+definePageMeta({ layout: "dashboard-pocv1" });
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
@@ -33,6 +33,6 @@ definePageMeta({ layout: "dashboard" });
       </div>
     </template>
 
-    <ViewDashboardTaxiNYCLocal />
+    <ViewPocsV1TaxiNYCLocal />
   </NuxtLayout>
 </template>

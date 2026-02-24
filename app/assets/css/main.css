@@ -31,7 +31,7 @@
   @apply bg-linear-to-br from-default dark:to-muted light:to-accented;
 }
 
-/* ── Classes globais de cabeçalho de seção (NuxtLayout name="dashboard") ── */
+/* ── Classes globais de cabeçalho de seção (NuxtLayout name="dashboard-pocv1") ── */
 .dashboard-cabecalho-titulo {
   @apply flex items-center gap-2 cursor-default;
 }

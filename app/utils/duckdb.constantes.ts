@@ -33,7 +33,7 @@ export const listaParquets = [
 ];
 
 // Mapeamento URL → nome para registro em lote no VFS (usado em duckdb.init.ts)
-export const nomeUrlParquetsR2 = listaParquets.map((nome) => ({
+export const nomeUrlParquetsR2 = listaParquets.map(nome => ({
   nome,
   url: `${r2BaseUrl}/${nome}`,
 }));
@@ -51,7 +51,7 @@ export const [
   eletricidadeFinlandiaUrl,
   diffusionDBUrl,
   precosAcoesUrl,
-] = listaParquets.map((nome) => `${r2BaseUrl}/${nome}`) as [
+] = listaParquets.map(nome => `${r2BaseUrl}/${nome}`) as [
   string,
   string,
   string,

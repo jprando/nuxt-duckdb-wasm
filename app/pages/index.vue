@@ -2,110 +2,95 @@
   setup
   lang="ts"
 >
-const {
-  init,
-  estahCarregando,
-  obterDadosSimples,
-  obterDadosSimplesQuantidade,
-  obterDadosParquet,
-  obterDadosParquetQuantidade,
-} = useDuckDb();
-
-const ultimoDatasetCarregado = ref<string | null>(null);
-const registros = ref<any[]>([]);
-const quantidadeTotalRegistros = ref(0);
-const paginaAtual = ref(1);
-const datasetSelecionado = ref<DatasetParquet | undefined>();
-const tempoExecucaoMs = ref<number | null>(null);
-const elmPaginacao = useTemplateRef<{ focus: () => void }>("elmPaginacao");
-
-const colunas = computed(() =>
-  Array.isArray(registros.value) && registros.value.length
-    ? Object.keys(registros.value[0])
-    : []
-);
-
-const executarConsulta = async (
-  pagina: number = 1,
-  itensPorPagina: number = duckDBItensPorPagina,
-) => {
-  if (!datasetSelecionado.value) return;
-
-  paginaAtual.value = pagina;
-  tempoExecucaoMs.value = null;
-
-  const url = datasetSelecionado.value.url;
-  const inicio = performance.now();
-
-  if (ultimoDatasetCarregado.value !== datasetSelecionado.value.label) {
-    quantidadeTotalRegistros.value = 0;
-    registros.value = [{ carregando: "aguarde..." }];
-    const quantidadeRegistros = url === ""
-      ? await obterDadosSimplesQuantidade()
-      : await obterDadosParquetQuantidade(url);
-    quantidadeTotalRegistros.value = quantidadeRegistros;
-  }
-
-  ultimoDatasetCarregado.value = datasetSelecionado.value.label;
-
-  const _registros = url === ""
-    ? await obterDadosSimples(pagina, itensPorPagina)
-    : await obterDadosParquet(pagina, itensPorPagina, url);
-
-  tempoExecucaoMs.value = performance.now() - inicio;
-  registros.value = _registros;
-
-  elmPaginacao.value?.focus();
-};
-
-onMounted(init);
+definePageMeta({ layout: "landing" });
 </script>
 
 <template>
-  <NuxtLayout>
-    <template #header>
-      <div class="cabecalho-dataset-dados">
-        <SeletorDataset
-          v-model:dataset-selecionado="datasetSelecionado"
-          :loading="estahCarregando"
-          @carregar="() => {
-            // quantidadeTotalRegistros = 0;
-            executarConsulta(1);
-          }"
-        />
-        <Paginador
-          ref="elmPaginacao"
-          v-model:page="paginaAtual"
-          :disabled="estahCarregando || !datasetSelecionado"
-          :total="quantidadeTotalRegistros"
-          @consultar-pagina="(numeroPagina: number) =>
-          executarConsulta(numeroPagina, duckDBItensPorPagina)"
-        />
-      </div>
-    </template>
+  <UPage>
+    <UPageHero
+      title="Data Hub Analytics"
+      description="Explore as capacidades de processamento de dados do DuckDB executado inteiramente no navegador via WebAssembly."
+      :ui="{
+        title:
+          'text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-primary-700 to-gray-900 dark:from-white dark:via-primary-300 dark:to-white',
+      }"
+    >
+      <template #headline>
+        <UBadge
+          variant="subtle"
+          size="lg"
+          class="rounded-full mb-4"
+        >
+          <UIcon
+            name="i-lucide-rocket"
+            class="w-4 h-4 mr-2"
+          />
+          Nuxt 4 (v5) + DuckDB WASM
+        </UBadge>
+      </template>
+    </UPageHero>
 
-    <template #default>
-      <TabelaDados
-        :colunas="colunas"
-        :registros="registros"
-        :estah-carregando="estahCarregando"
-      />
-    </template>
+    <UPageSection>
+      <UPageGrid>
+        <UPageCard
+          to="/dados"
+          title="Base de Dados"
+          description="Ambiente de testes para ingestão de parquets e execução de queries SQL em memória."
+          icon="i-lucide-database"
+          highlight
+          class="group"
+          spotlight
+          spotlight-color="secondary"
+        >
+          <template #footer>
+            <div class="flex items-center text-sm font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+              Iniciar testes <UIcon
+                name="i-lucide-arrow-right"
+                class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+              />
+            </div>
+          </template>
+        </UPageCard>
 
-    <template #footer>
-      <RodapeInfo
-        :tempo-execucao-ms="tempoExecucaoMs"
-        :quantidade-total-registros="quantidadeTotalRegistros"
-        :loading="estahCarregando"
-      />
-    </template>
-  </NuxtLayout>
+        <UPageCard
+          to="/pocs-v1"
+          title="Dashboards v1"
+          description="Primeira geração de Provas de Conceito. Análises visuais de grandes volumes de dados."
+          icon="i-lucide-layout-dashboard"
+          highlight
+          class="group"
+          spotlight
+          spotlight-color="error"
+        >
+          <template #footer>
+            <div class="flex items-center text-sm font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+              Acessar legado <UIcon
+                name="i-lucide-arrow-right"
+                class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+              />
+            </div>
+          </template>
+        </UPageCard>
+
+        <UPageCard
+          to="/pocs-v2"
+          title="Dashboards v2"
+          description="Próxima geração de visualizações. Foco em performance, novos componentes e features avançadas."
+          icon="i-lucide-flask-conical"
+          highlight
+          class="group"
+          spotlight
+        >
+          <template #footer>
+            <div class="flex items-center text-sm font-semibold transition-colors text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+              Explorar v2 <UIcon
+                name="i-lucide-arrow-right"
+                class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
+              />
+            </div>
+          </template>
+        </UPageCard>
+      </UPageGrid>
+    </UPageSection>
+  </UPage>
 </template>
-
-<style scoped>
-@reference "tailwindcss";
-
-.cabecalho-dataset-dados {
-  @apply flex flex-col gap-4;
-}
-</style>

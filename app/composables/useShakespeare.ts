@@ -71,8 +71,8 @@ export const useShakespeare = () => {
     executar(shakespearePecasConsulta(url))
       .then((data) => {
         const rows = data as { peca: string; total: number }[];
-        const pecas = rows.map((d) => d.peca).reverse();
-        const totais = rows.map((d) => d.total).reverse();
+        const pecas = rows.map(d => d.peca).reverse();
+        const totais = rows.map(d => d.total).reverse();
         opcaoPecas.value = {
           ...baseChart,
           color: [COR_PRIMARIA],
@@ -85,8 +85,8 @@ export const useShakespeare = () => {
     executar(shakespearePersonagensConsulta(url))
       .then((data) => {
         const rows = data as { personagem: string; total: number }[];
-        const personagens = rows.map((d) => d.personagem).reverse();
-        const totais = rows.map((d) => d.total).reverse();
+        const personagens = rows.map(d => d.personagem).reverse();
+        const totais = rows.map(d => d.total).reverse();
         opcaoPersonagens.value = {
           backgroundColor: "transparent",
           color: [COR_SECUNDARIA],
@@ -110,8 +110,8 @@ export const useShakespeare = () => {
     executar(shakespeareAtoConsulta(url))
       .then((data) => {
         const rows = data as { ato: string; total: number }[];
-        const atos = rows.map((d) => `Ato ${d.ato}`);
-        const totais = rows.map((d) => d.total);
+        const atos = rows.map(d => `Ato ${d.ato}`);
+        const totais = rows.map(d => d.total);
         opcaoAto.value = {
           backgroundColor: "transparent",
           color: [COR_TERCIARIA],
@@ -135,8 +135,8 @@ export const useShakespeare = () => {
     executar(shakespeareElencoConsulta(url))
       .then((data) => {
         const rows = data as { peca: string; personagens: number }[];
-        const pecas = rows.map((d) => d.peca).reverse();
-        const totais = rows.map((d) => d.personagens).reverse();
+        const pecas = rows.map(d => d.peca).reverse();
+        const totais = rows.map(d => d.personagens).reverse();
         opcaoElenco.value = {
           backgroundColor: "transparent",
           color: [COR_QUATERNARIA],
@@ -160,8 +160,8 @@ export const useShakespeare = () => {
     executar(shakespeareComprimentoConsulta(url))
       .then((data) => {
         const rows = data as { faixa: number; total: number }[];
-        const labels = rows.map((d) => `${d.faixa}–${d.faixa + 19}`);
-        const totais = rows.map((d) => d.total);
+        const labels = rows.map(d => `${d.faixa}–${d.faixa + 19}`);
+        const totais = rows.map(d => d.total);
         opcaoComprimento.value = {
           backgroundColor: "transparent",
           color: [PALETA[4]],

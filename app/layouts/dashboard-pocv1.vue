@@ -13,7 +13,7 @@ const _collapsed = ref(false);
 const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
     [
-      { label: "Dados", icon: "i-lucide-table-2", to: "/" },
+      { label: "Dados", icon: "i-lucide-table-2", to: "/dados" },
     ].map(i => ({
       ...i,
       class: [
@@ -32,61 +32,61 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
         label: "NYC Taxi Jan/2024",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "550k",
-        to: "/dashboard/taxiNYCLocal",
+        to: "/pocs-v1/taxiNYCLocal",
       },
       {
         label: "NYC Taxi Abr/2019",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "7.4Mi",
-        to: "/dashboard/taxiNYCAbril2019",
+        to: "/pocs-v1/taxiNYCAbril2019",
       },
       {
         label: "NYC Taxi Jan/2010",
         icon: "i-lucide-layout-dashboard",
         badge: _collapsed.value ? undefined : "14.8Mi",
-        to: "/dashboard/taxiNYCJaneiro2010",
+        to: "/pocs-v1/taxiNYCJaneiro2010",
       },
       {
         label: "Serviços de Trem (Holanda)",
         icon: "i-lucide-train-track",
         badge: _collapsed.value ? undefined : "380k",
-        to: "/dashboard/trensHolandeses",
+        to: "/pocs-v1/trensHolandeses",
       },
       {
         label: "Tarifas Ferroviárias",
         icon: "i-lucide-euro",
         badge: _collapsed.value ? undefined : "158k",
-        to: "/dashboard/tarifasFerroviarias",
+        to: "/pocs-v1/tarifasFerroviarias",
       },
       {
         label: "Shakespeare",
         icon: "i-lucide:scroll-text",
         badge: _collapsed.value ? undefined : "87k",
-        to: "/dashboard/shakespeare",
+        to: "/pocs-v1/shakespeare",
       },
       {
         label: "Estações de Trem",
         icon: "i-lucide-building-2",
         badge: _collapsed.value ? undefined : "578",
-        to: "/dashboard/estacoesTrem",
+        to: "/pocs-v1/estacoesTrem",
       },
       {
         label: "Dados de Voos",
         icon: "i-lucide-plane",
         badge: _collapsed.value ? undefined : "4.3Mi",
-        to: "/dashboard/pontualidadeVoos",
+        to: "/pocs-v1/pontualidadeVoos",
       },
       {
         label: "Eletricidade Finlândia",
         icon: "i-lucide-zap",
         badge: _collapsed.value ? undefined : "7,9k",
-        to: "/dashboard/eletricidadeFinlandia",
+        to: "/pocs-v1/eletricidadeFinlandia",
       },
       {
         label: "DiffusionDB",
         icon: "i-lucide-image",
         badge: _collapsed.value ? undefined : "2Mi",
-        to: "/dashboard/diffusionDB",
+        to: "/pocs-v1/diffusionDB",
       },
     ].map(i => ({
       ...i,
@@ -166,7 +166,10 @@ async function alternarFullscreen() {
       </UDashboardSidebar>
 
       <UDashboardPanel class="painel-principal">
-        <UDashboardNavbar>
+        <UDashboardNavbar
+          class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800"
+          :ui="{ wrapper: 'bg-transparent', root: 'bg-transparent' }"
+        >
           <template #left>
             <slot name="titulo">
               <h1 class="titulo-dashboard">

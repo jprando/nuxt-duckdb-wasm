@@ -2,27 +2,29 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
-
-useHead({
-  title: "Dashboard - Tarifas Ferroviárias",
-});
+definePageMeta({ layout: "dashboard-pocv1" });
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
-          name="i-lucide-euro"
+          name="i-lucide-layout-dashboard"
           class="dashboard-icone-secao"
         />
         <h1 class="dashboard-titulo-secao">
-          Tarifas Ferroviárias
+          NYC Taxi
         </h1>
-        <UTooltip text="158.802 registros">
+        <UBadge
+          label="ABRIL/2019"
+          variant="solid"
+          color="primary"
+          size="sm"
+        />
+        <UTooltip text="7.427.174 registros">
           <UBadge
-            label="158k"
+            label="7.4Mi"
             color="primary"
             variant="subtle"
             size="sm"
@@ -31,6 +33,6 @@ useHead({
       </div>
     </template>
 
-    <ViewDashboardTarifasFerroviarias />
+    <ViewPocsV1TaxiNYCAbril2019 />
   </NuxtLayout>
 </template>

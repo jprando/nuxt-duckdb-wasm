@@ -94,8 +94,8 @@ onUnmounted(() => {
 
 <template>
   <div
-    tabindex="0"
     ref="elmRaiz"
+    tabindex="0"
     @keydown="aoTeclarNoPaginador"
   >
     <UPagination
@@ -106,11 +106,11 @@ onUnmounted(() => {
       :sibling-count="paginadorSiblingCount"
       :items-per-page="duckDBItensPorPagina"
       :total="total || 1"
-      @update:page="(valorPagina: number) => emit('consultarPagina', valorPagina)"
-      activeVariant="subtle"
+      active-variant="subtle"
       class="pagination"
       variant="ghost"
       size="xl"
+      @update:page="(valorPagina: number) => emit('consultarPagina', valorPagina)"
     />
   </div>
 </template>

@@ -2,33 +2,35 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
+definePageMeta({ layout: "dashboard-pocv1" });
+
+useHead({
+  title: "Dashboard - Tarifas Ferroviárias",
+});
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
-          name="i-lucide-building-2"
+          name="i-lucide-euro"
           class="dashboard-icone-secao"
         />
         <h1 class="dashboard-titulo-secao">
-          Estações de Trem
+          Tarifas Ferroviárias
         </h1>
-        <UTooltip text="578 registros">
+        <UTooltip text="158.802 registros">
           <UBadge
-            label="578"
+            label="158k"
             color="primary"
             variant="subtle"
             size="sm"
-            title="578 registros"
-            class="dashboard-badge-info"
           />
         </UTooltip>
       </div>
     </template>
 
-    <ViewDashboardEstacoesTrem />
+    <ViewPocsV1TarifasFerroviarias />
   </NuxtLayout>
 </template>

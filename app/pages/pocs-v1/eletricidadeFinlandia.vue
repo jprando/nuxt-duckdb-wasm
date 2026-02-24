@@ -2,31 +2,38 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
+definePageMeta({ layout: "dashboard-pocv1" });
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
-          name="i-lucide-scroll-text"
+          name="i-lucide-zap"
           class="dashboard-icone-secao"
         />
         <h1 class="dashboard-titulo-secao">
-          Shakespeare
+          Eletricidade Finlândia
         </h1>
-        <UTooltip text="87.643 registros">
+        <UBadge
+          label="2021"
+          variant="solid"
+          color="primary"
+          size="sm"
+        />
+        <UTooltip text="7.992 registros horários">
           <UBadge
-            label="87k"
+            label="7,9k"
             color="primary"
             variant="subtle"
             size="sm"
+            class="dashboard-badge-info"
           />
         </UTooltip>
       </div>
     </template>
 
-    <ViewDashboardShakespeare />
+    <ViewPocsV1EletricidadeFinlandia />
   </NuxtLayout>
 </template>

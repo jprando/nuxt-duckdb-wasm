@@ -1,10 +1,21 @@
 {
+  "general": {
+    "previewFeatures": true
+  },
   "mcpServers": {
     "nuxt": {
       "command": "pnpx",
       "args": [
         "mcp-remote",
         "https://nuxt.com/mcp"
+      ],
+      "trust": true
+    },
+    "cloudflare": {
+      "command": "pnpx",
+      "args": [
+        "mcp-remote",
+        "https://bindings.mcp.cloudflare.com/mcp"
       ],
       "trust": true
     },
@@ -17,11 +28,34 @@
       "trust": true
     },
     "playwright": {
-      "command": "npx",
+      "command": "pnpx",
       "args": [
         "@playwright/mcp@latest"
       ],
       "trust": true
+    },
+    "serena": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server"
+      ],
+      "trust": true
+    },
+    "chrome-devtools": {
+      "command": "pnpx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--autoConnect"
+      ]
+    },
+    "sequential-thinking": {
+      "command": "pnpx",
+      "args": [
+        "@modelcontextprotocol/server-sequential-thinking@latest"
+      ]
     }
   }
 }

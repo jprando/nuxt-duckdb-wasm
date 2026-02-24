@@ -2,38 +2,33 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
+definePageMeta({ layout: "dashboard-pocv1" });
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
-          name="i-lucide-image"
+          name="i-lucide-building-2"
           class="dashboard-icone-secao"
         />
         <h1 class="dashboard-titulo-secao">
-          DiffusionDB
+          Estações de Trem
         </h1>
-        <UBadge
-          label="IA Generativa"
-          variant="solid"
-          color="primary"
-          size="sm"
-        />
-        <UTooltip text="2 milhões de imagens geradas por IA">
+        <UTooltip text="578 registros">
           <UBadge
-            label="2Mi"
+            label="578"
             color="primary"
             variant="subtle"
             size="sm"
+            title="578 registros"
             class="dashboard-badge-info"
           />
         </UTooltip>
       </div>
     </template>
 
-    <ViewDashboardDiffusionDB />
+    <ViewPocsV1EstacoesTrem />
   </NuxtLayout>
 </template>

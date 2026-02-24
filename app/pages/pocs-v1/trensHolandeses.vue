@@ -2,29 +2,31 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard" });
+definePageMeta({ layout: "dashboard-pocv1" });
+
+useHead({
+  title: "Dashboard - Serviços de Trem (Holanda)",
+});
 </script>
 
 <template>
-  <NuxtLayout name="dashboard">
+  <NuxtLayout name="dashboard-pocv1">
     <template #titulo>
       <div class="dashboard-cabecalho-titulo">
         <UIcon
-          name="i-lucide-layout-dashboard"
+          name="i-lucide-train-track"
           class="dashboard-icone-secao"
         />
         <h1 class="dashboard-titulo-secao">
-          NYC Taxi
+          Serviços de Trem
         </h1>
         <UBadge
-          label="ABRIL/2019"
-          variant="solid"
-          color="primary"
+          label="Holanda"
           size="sm"
         />
-        <UTooltip text="7.427.174 registros">
+        <UTooltip text="380 mil registros">
           <UBadge
-            label="7.4Mi"
+            label="380k"
             color="primary"
             variant="subtle"
             size="sm"
@@ -33,6 +35,6 @@ definePageMeta({ layout: "dashboard" });
       </div>
     </template>
 
-    <ViewDashboardTaxiNYCAbril2019 />
+    <ViewPocsV1TrensHolandeses />
   </NuxtLayout>
 </template>
