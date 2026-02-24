@@ -68,7 +68,7 @@ onUnmounted(() => {
 
 <template>
   <!-- Card normal -->
-  <UCard :ui="{ header: 'pb-2!', body: 'pt-0!' }">
+  <UCard :ui="{ header: 'pb-0! cursor-pointer', body: 'my-2!', root: 'divide-transparent' }">
     <template #header>
       <div
         class="cabecalho-card"
@@ -92,7 +92,7 @@ onUnmounted(() => {
 
     <template v-if="!configuracao">
       <USkeleton
-        class="w-full rounded-t-none! rounded-b-lg rounded-r-lg rounded-l-lg"
+        class="my-5"
         :style="{ height: altura + 'px' }"
       />
     </template>
@@ -130,7 +130,7 @@ onUnmounted(() => {
           class="card-expandido"
           :ui="{
             root: 'relative z-10 w-full h-full flex flex-col shadow-2xl',
-            header: 'px-4 py-3 shrink-0',
+            header: 'px-4 py-3 shrink-0 cursor-pointer',
             body: 'flex-1 min-h-0 p-0 sm:p-0',
           }"
         >

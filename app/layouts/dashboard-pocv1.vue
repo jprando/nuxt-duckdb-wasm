@@ -6,7 +6,7 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 
 const { isFullscreen, toggle } = useFullscreen();
 
-const { duckDBWasmInfo, cancelarConsulta, estahCarregando } = useDuckDb();
+const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 
 const _collapsed = ref(false);
 
@@ -25,7 +25,6 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
       ]
         .filter(Boolean)
         .join(" "),
-      onSelect: cancelarConsulta,
     })),
     [
       {
@@ -99,7 +98,6 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
       ]
         .filter(Boolean)
         .join(" "),
-      onSelect: cancelarConsulta,
     })),
   ];
 });
@@ -131,6 +129,7 @@ async function alternarFullscreen() {
       <UDashboardSidebar
         collapsible
         :class="{ 'w-fit': !_collapsed }"
+        :ui="{ header: 'justify-between' }"
         @update:collapsed="(valor) => _collapsed = valor"
       >
         <template #header="{ collapsed }">
@@ -161,20 +160,16 @@ async function alternarFullscreen() {
 
         <template #footer>
           <div class="rodape-sidebar">
-            <!-- <USeparator /> -->
-            <UProgress
-              v-if="estahCarregando && !_collapsed"
-              animation="swing"
-              size="sm"
-              class="w-full mb-4"
-            />
             <span
-              v-else-if="duckDBWasmInfo"
+              v-if="duckDBWasmInfo && !_collapsed"
               class="info-versao-duckdb"
               :class="_collapsed ? '[writing-mode:vertical-rl] rotate-180' : ''"
             >
               {{ duckDBWasmInfo }}
             </span>
+            <UTooltip v-else-if="duckDBWasmInfo"  :text="duckDBWasmInfo">
+            <UIcon name="devicon-plain-duckdb" class="mb-4 text-muted/50" />
+            </UTooltip>
           </div>
         </template>
       </UDashboardSidebar>
@@ -182,8 +177,8 @@ async function alternarFullscreen() {
       <UDashboardPanel class="painel-principal">
         <UMain class="area-conteudo">
           <UDashboardNavbar
-            class="z-50 sticky top-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800"
-            :ui="{ wrapper: 'bg-transparent', root: 'bg-transparent' }"
+            class="z-50 sticky top-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800"
+            :ui="{ root: 'bg-transparent' }"
           >
             <template #left>
               <slot name="titulo">
@@ -225,6 +220,8 @@ async function alternarFullscreen() {
               />
             </template>
           </UDashboardNavbar>
+
+          <UProgress v-show="estahCarregando" animation="elastic" size="xs" />
 
           <slot />
         </UMain>

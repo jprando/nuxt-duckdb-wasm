@@ -12,7 +12,9 @@ definePageMeta({ layout: "landing" });
       description="Explore as capacidades de processamento de dados do DuckDB executado inteiramente no navegador via WebAssembly."
       :ui="{
         title:
-          'text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-primary-700 to-gray-900 dark:from-white dark:via-primary-300 dark:to-white',
+          'text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-primary-700 to-gray-900 dark:from-white dark:via-primary-300 dark:to-white',
+        container:
+          'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-24 sm:py-32 lg:py-24 gap-16 sm:gap-y-24'
       }"
     >
       <template #headline>
@@ -30,14 +32,13 @@ definePageMeta({ layout: "landing" });
       </template>
     </UPageHero>
 
-    <UPageSection>
+    <UPageSection :ui="{container:'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-16 sm:py-16 lg:py-16 gap-8 sm:gap-16'}">
       <UPageGrid>
         <UPageCard
           to="/dados"
           title="Base de Dados"
           description="Ambiente de testes para ingestão de parquets e execução de queries SQL em memória."
           icon="i-lucide-database"
-          highlight
           class="group"
           spotlight
           spotlight-color="secondary"
@@ -53,11 +54,10 @@ definePageMeta({ layout: "landing" });
         </UPageCard>
 
         <UPageCard
-          to="/pocs-v1"
+          to="/pocs-v1/taxiNYCLocal"
           title="Dashboards v1"
           description="Primeira geração de Provas de Conceito. Análises visuais de grandes volumes de dados."
           icon="i-lucide-layout-dashboard"
-          highlight
           class="group"
           spotlight
           spotlight-color="error"
@@ -77,7 +77,6 @@ definePageMeta({ layout: "landing" });
           title="Dashboards v2"
           description="Próxima geração de visualizações. Foco em performance, novos componentes e features avançadas."
           icon="i-lucide-flask-conical"
-          highlight
           class="group"
           spotlight
         >

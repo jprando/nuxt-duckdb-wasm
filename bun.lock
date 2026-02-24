@@ -13,7 +13,7 @@
         "@nuxt/scripts": "0.13.2",
         "@nuxt/test-utils": "4.0.0",
         "@nuxt/ui": "^4.5.0",
-        "@unhead/vue": "^2.1.5",
+        "@unhead/vue": "^2.1.6",
         "@vueuse/nuxt": "14.2.1",
         "css-tree": "^3.1.0",
         "csso": "^5.0.5",
@@ -808,7 +808,7 @@
 
     "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.56.1", "", { "dependencies": { "@typescript-eslint/types": "8.56.1", "eslint-visitor-keys": "^5.0.0" } }, "sha512-KiROIzYdEV85YygXw6BI/Dx4fnBlFQu6Mq4QE4MOH9fFnhohw6wX/OAvDY2/C+ut0I3RSPKenvZJIVYqJNkhEw=="],
 
-    "@unhead/vue": ["@unhead/vue@2.1.5", "", { "dependencies": { "hookable": "^6.0.1", "unhead": "2.1.5" }, "peerDependencies": { "vue": ">=3.5.18" } }, "sha512-cAS7ibaCSFUicR51p+/ZLoRapf6TKuNg3lZLmDzkCNU85p4JS01gSfD8agAw1MGMjN82q6Q+2Pxzd0iabPcung=="],
+    "@unhead/vue": ["@unhead/vue@2.1.6", "", { "dependencies": { "hookable": "^6.0.1", "unhead": "2.1.6" }, "peerDependencies": { "vue": ">=3.5.18" } }, "sha512-CzogOduyU9aXrsTBmtN22Dcp7aZgh6R7otA3zxHMfQ+Z4NqqaMbE/u3IIwinTLtTnUgF+79RDNob9e6heXhQrA=="],
 
     "@unrs/resolver-binding-android-arm-eabi": ["@unrs/resolver-binding-android-arm-eabi@1.11.1", "", { "os": "android", "cpu": "arm" }, "sha512-ppLRUgHVaGRWUx0R0Ut06Mjo9gBaBkg3v/8AxusGLhsIotbBLuRk51rAzqLC8gq6NyyAojEXglNjzf6R948DNw=="],
 
@@ -2110,7 +2110,7 @@
 
     "unenv": ["unenv@2.0.0-rc.24", "", { "dependencies": { "pathe": "2.0.3" } }, "sha512-i7qRCmY42zmCwnYlh9H2SvLEypEFGye5iRmEMKjcGi7zk9UquigRjFtTLz0TYqr0ZGLZhaMHl/foy1bZR+Cwlw=="],
 
-    "unhead": ["unhead@2.1.5", "", { "dependencies": { "hookable": "^6.0.1" } }, "sha512-6C6OA1lznExqS8ns655UrK/5QR2OOOVmSQGjm510uK0AokipgUblk0cKHZCFrdZtVYKSlLikSzBg3m74QY41ow=="],
+    "unhead": ["unhead@2.1.6", "", { "dependencies": { "hookable": "^6.0.1" } }, "sha512-y78JhLcMCezRgs4O+rRo7o/x9GB6SDOHggnJBXwuhnHEkIeDddxjROGjQMb2ILCwHGIezqOXrB0bt7Vno7f9Pw=="],
 
     "unicorn-magic": ["unicorn-magic@0.3.0", "", {}, "sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA=="],
 
