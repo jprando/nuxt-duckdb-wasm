@@ -2,28 +2,7 @@
   setup
   lang="ts"
 >
-import {
-  CalendarComponent,
-  GridComponent,
-  LegendComponent,
-  TooltipComponent,
-  VisualMapComponent,
-} from "echarts/components";
-import { init, use } from "echarts/core";
-import { LabelLayout, UniversalTransition } from "echarts/features";
-import { SVGRenderer } from "echarts/renderers";
-
-// Initialize base components
-use([
-  CalendarComponent,
-  GridComponent,
-  TooltipComponent,
-  LegendComponent,
-  VisualMapComponent,
-  LabelLayout,
-  UniversalTransition,
-  SVGRenderer,
-]);
+import { computed, resolveComponent } from "vue";
 
 const props = withDefaults(
   defineProps<{
@@ -37,80 +16,44 @@ const props = withDefaults(
   },
 );
 
-const containerRef = ref<HTMLDivElement | null>(null);
-let chart: ReturnType<typeof init> | null = null;
-let resizeObserver: ResizeObserver | null = null;
-
-// Dynamically load only required chart types based on the option
-const loadRequiredCharts = async (option: any) => {
-  const types = new Set<string>();
-  if (Array.isArray(option.series)) {
-    option.series.forEach((s: any) => { if (s.type) types.add(s.type); });
-  } else if (option.series && option.series.type) {
-    types.add(option.series.type);
+const chartType = computed(() => {
+  let type = "bar";
+  if (Array.isArray(props.option?.series) && props.option.series.length > 0) {
+    type = (props.option.series[0] as Record<string, unknown>).type as string || "bar";
+  } else if (props.option?.series && (props.option.series as Record<string, unknown>).type) {
+    type = (props.option.series as Record<string, unknown>).type as string;
   }
-
-  const chartsToLoad: Promise<any>[] = [];
-  
-  if (types.has("bar")) chartsToLoad.push(import("echarts/charts").then(m => m.BarChart));
-  if (types.has("line")) chartsToLoad.push(import("echarts/charts").then(m => m.LineChart));
-  if (types.has("pie")) chartsToLoad.push(import("echarts/charts").then(m => m.PieChart));
-  if (types.has("radar")) chartsToLoad.push(import("echarts/charts").then(m => m.RadarChart));
-  if (types.has("heatmap")) chartsToLoad.push(import("echarts/charts").then(m => m.HeatmapChart));
-  if (types.has("sankey")) chartsToLoad.push(import("echarts/charts").then(m => m.SankeyChart));
-  if (types.has("chord")) chartsToLoad.push(import("echarts/charts").then(m => m.ChordChart));
-
-  if (chartsToLoad.length > 0) {
-    const modules = await Promise.all(chartsToLoad);
-    use(modules);
-  }
-};
-
-const initChart = async () => {
-  if (!containerRef.value) return;
-  await loadRequiredCharts(props.option);
-  
-  if (!chart) {
-    chart = init(containerRef.value, props.tema || undefined);
-  }
-  chart.setOption(props.option);
-};
-
-onMounted(() => {
-  initChart();
-
-  resizeObserver = new ResizeObserver(() => {
-    chart?.resize();
-  });
-
-  if (containerRef.value) {
-    resizeObserver.observe(containerRef.value);
-  }
+  return type;
 });
 
-onUnmounted(() => {
-  resizeObserver?.disconnect();
-  resizeObserver = null;
-  chart?.dispose();
-  chart = null;
-});
-
-watch(() => props.option, async (novaOpcao) => {
-  await loadRequiredCharts(novaOpcao);
-  if (!chart) return;
-  chart.setOption(novaOpcao, { notMerge: true });
-}, { deep: false });
-
-watch(() => props.tema, () => {
-  chart?.dispose();
-  chart = null;
-  initChart();
+const componentName = computed(() => {
+  switch (chartType.value) {
+    case "bar":
+      return resolveComponent("LazyGraficoEChartBarra");
+    case "line":
+      return resolveComponent("LazyGraficoEChartLinha");
+    case "pie":
+      return resolveComponent("LazyGraficoEChartPizza");
+    case "radar":
+      return resolveComponent("LazyGraficoEChartRadar");
+    case "heatmap":
+      return resolveComponent("LazyGraficoEChartHeatmap");
+    case "sankey":
+      return resolveComponent("LazyGraficoEChartSankey");
+    case "chord":
+      return resolveComponent("LazyGraficoEChartChord");
+    default:
+      return resolveComponent("LazyGraficoEChartBarra");
+  }
 });
 </script>
 
 <template>
-  <div
-    ref="containerRef"
-    :style="{ height: height + 'px', width: '100%' }"
+  <component
+    :is="componentName"
+    v-if="componentName"
+    :option="option"
+    :height="height"
+    :tema="tema"
   />
 </template>
