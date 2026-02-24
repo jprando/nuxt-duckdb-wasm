@@ -13,7 +13,7 @@ const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
 const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#f43f5e", "#14b8a6"];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -70,7 +70,7 @@ export const useTaxiNYCLocal = () => {
     const paxLabels = (data as any[]).map(d => `${d.passageiros} pax`);
     const paxValues = (data as any[]).map(d => d.total);
     configuracaoGraficoPassageiros.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
       xAxis: { type: "category", data: paxLabels, axisLabel: { fontSize: 11 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -82,7 +82,7 @@ export const useTaxiNYCLocal = () => {
     const distLabels = (data as any[]).map(d => `${d.milhas}mi`);
     const distValues = (data as any[]).map(d => d.total);
     configuracaoGraficoDistancia.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -94,7 +94,7 @@ export const useTaxiNYCLocal = () => {
     const valorLabels = (data as any[]).map(d => `$${d.faixa}`);
     const valorValues = (data as any[]).map(d => d.total);
     configuracaoGraficoValor.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: valorLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -110,7 +110,7 @@ export const useTaxiNYCLocal = () => {
     const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const horaValues = (data as any[]).map(d => d.total);
     configuracaoGraficoHora.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
       xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },

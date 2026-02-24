@@ -18,7 +18,7 @@ const PALETA = [
   "#14b8a6",
 ];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 16, right: 24, bottom: 8, left: 8 },
   tooltip: { trigger: "axis" as const },
@@ -56,7 +56,7 @@ export const useShakespeare = () => {
     const pecas = rows.map(d => d.peca).reverse();
     const totais = rows.map(d => d.total).reverse();
     opcaoPecas.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_PRIMARIA],
       xAxis: { type: "value", axisLabel: { fontSize: 10 } },
       yAxis: { type: "category", data: pecas, axisLabel: { fontSize: 10 } },

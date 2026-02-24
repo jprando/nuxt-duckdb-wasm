@@ -65,7 +65,7 @@ const {
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoDuracaoMediaParada"
+      :configuracao="configuracaoGraficoDuracaoMediaParada"
       :tema="temaGrafico"
       :altura="260"
     >
@@ -83,7 +83,7 @@ const {
 
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoPartidasPorHora"
+      :configuracao="configuracaoGraficoPartidasPorHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."

@@ -4,7 +4,7 @@
 >
 const props = withDefaults(
   defineProps<{
-    opcao: Record<string, unknown> | null;
+    configuracao: Record<string, unknown> | null;
     tema?: string;
     altura?: number;
     msgSemDados?: string;
@@ -20,7 +20,7 @@ const expandido = ref(false);
 const alturaExpandida = ref(0);
 
 const semDados = computed(
-  () => props.opcao !== null && Object.keys(props.opcao).length === 0,
+  () => props.configuracao !== null && Object.keys(props.configuracao).length === 0,
 );
 
 const calcularAlturaExpandida = () => {
@@ -80,7 +80,7 @@ onUnmounted(() => {
       </div>
     </template>
 
-    <template v-if="!opcao">
+    <template v-if="!configuracao">
       <USkeleton
         class="w-full rounded-t-none! rounded-b-lg rounded-r-lg rounded-l-lg"
         :style="{ height: altura + 'px' }"
@@ -97,7 +97,7 @@ onUnmounted(() => {
     </div>
     <LazyGraficoEChart
       v-else
-      :option="opcao"
+      :option="configuracao"
       :tema="tema"
       :height="altura"
     />
@@ -155,8 +155,8 @@ onUnmounted(() => {
               </p>
             </div>
             <LazyGraficoEChart
-              v-else-if="opcao && alturaExpandida > 0"
-              :option="opcao"
+              v-else-if="configuracao && alturaExpandida > 0"
+              :option="configuracao"
               :tema="tema"
               :height="alturaExpandida"
             />

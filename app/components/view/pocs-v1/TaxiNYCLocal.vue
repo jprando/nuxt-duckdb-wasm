@@ -80,7 +80,7 @@ const {
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="configuracaoGraficoVendor"
+        :configuracao="configuracaoGraficoVendor"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -94,7 +94,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="configuracaoGraficoPassageiros"
+        :configuracao="configuracaoGraficoPassageiros"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -111,7 +111,7 @@ const {
     <!-- ── Linha 3: Distância + Valor ────────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="configuracaoGraficoDistancia"
+        :configuracao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -128,7 +128,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="configuracaoGraficoValor"
+        :configuracao="configuracaoGraficoValor"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -147,7 +147,7 @@ const {
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoHora"
+      :configuracao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."

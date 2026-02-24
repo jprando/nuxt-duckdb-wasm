@@ -79,7 +79,7 @@ const {
     <div class="grade-graficos">
       <!-- Top 10 Dimensões -->
       <GraficoCard
-        :opcao="configuracaoGraficoDimensoes"
+        :configuracao="configuracaoGraficoDimensoes"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -97,7 +97,7 @@ const {
 
       <!-- Classificação NSFW -->
       <GraficoCard
-        :opcao="configuracaoGraficoNsfw"
+        :configuracao="configuracaoGraficoNsfw"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -115,7 +115,7 @@ const {
     <div class="grade-graficos">
       <!-- Distribuição de Steps -->
       <GraficoCard
-        :opcao="configuracaoGraficoSteps"
+        :configuracao="configuracaoGraficoSteps"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -130,7 +130,7 @@ const {
 
       <!-- Samplers -->
       <GraficoCard
-        :opcao="configuracaoGraficoSampler"
+        :configuracao="configuracaoGraficoSampler"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -146,7 +146,7 @@ const {
 
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoAtividade"
+      :configuracao="configuracaoGraficoAtividade"
       :tema="temaGrafico"
       :altura="220"
     >

@@ -10,7 +10,7 @@ const COR_PRIMARIA = "#3b82f6";
 const COR_SECUNDARIA = "#10b981";
 const COR_TERCIARIA = "#f59e0b";
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -47,7 +47,7 @@ export const useTarifasFerroviarias = () => {
     const labels = rows.map(d => `€${d.price_bucket}`);
     const values = rows.map(d => d.count);
     opcaoDistribuicaoPreco.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_PRIMARIA],
       xAxis: {
         type: "category",
@@ -64,8 +64,8 @@ export const useTarifasFerroviarias = () => {
     const routes = rows.map(d => d.route);
     const prices = rows.map(d => d.price);
     opcaoRotasCaras.value = {
-      ...baseChart,
-      grid: { ...baseChart.grid, left: 80 },
+      ...configuracaoGrafico,
+      grid: { ...configuracaoGrafico.grid, left: 80 },
       color: [COR_TERCIARIA],
       xAxis: { type: "value", axisLabel: { fontSize: 10 } },
       yAxis: { type: "category", data: routes, axisLabel: { fontSize: 10 } },
@@ -78,7 +78,7 @@ export const useTarifasFerroviarias = () => {
     const stations = rows.map(d => d.station);
     const appearances = rows.map(d => d.appearances);
     configuracaoGraficoEstacoesConectadas.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
       xAxis: {
         type: "category",

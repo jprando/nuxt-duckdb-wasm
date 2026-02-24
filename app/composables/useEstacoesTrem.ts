@@ -13,7 +13,7 @@ const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
 const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#f43f5e", "#14b8a6"];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -53,7 +53,7 @@ export const useEstacoesTrem = () => {
     const labels = rows.map(d => d.country);
     const values = rows.map(d => d.total);
     configuracaoGraficoPaises.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: {
         top: 16,
         right: 32,
@@ -116,7 +116,7 @@ export const useEstacoesTrem = () => {
     const labels = (data as any[]).map(d => `${d.faixa_lat}°N`);
     const values = (data as any[]).map(d => d.total);
     configuracaoGraficoLatitude.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -128,7 +128,7 @@ export const useEstacoesTrem = () => {
     const labels = (data as any[]).map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`);
     const values = (data as any[]).map(d => d.total);
     configuracaoGraficoLongitude.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },

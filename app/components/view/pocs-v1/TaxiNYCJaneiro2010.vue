@@ -78,7 +78,7 @@ const {
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="configuracaoGraficoDuracao"
+        :configuracao="configuracaoGraficoDuracao"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -92,7 +92,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="configuracaoGraficoGorjeta"
+        :configuracao="configuracaoGraficoGorjeta"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -111,7 +111,7 @@ const {
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoHora"
+      :configuracao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."

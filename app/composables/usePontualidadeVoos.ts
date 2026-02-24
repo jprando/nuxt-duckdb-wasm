@@ -11,7 +11,7 @@ const COR_PRIMARIA = "#3b82f6";
 const COR_SECUNDARIA = "#10b981";
 const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -72,7 +72,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => d.carrier);
     const values = rows.map(d => d.total);
     opcaoCompanhias.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: {
         top: 16,
         right: 32,
@@ -117,7 +117,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => DIAS_SEMANA[(d.dayofweek as number) - 1] ?? `D${d.dayofweek}`);
     const atrasos = rows.map(d => d.atraso_medio ?? 0);
     configuracaoGraficoDiaSemana.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "min", nameTextStyle: { fontSize: 10 } },
@@ -130,7 +130,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => MESES[(d.month as number) - 1] ?? `M${d.month}`);
     const totais = rows.map(d => d.total);
     configuracaoGraficoMensal.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 40, left: 64 },
       color: [COR_PRIMARIA],
       xAxis: { type: "category", data: labels, boundaryGap: false, axisLabel: { fontSize: 11 } },
@@ -154,7 +154,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => `${d.faixa_min}min`);
     const values = rows.map(d => d.total);
     configuracaoGraficoAtrasoPartida.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: ["#f43f5e"],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 9, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -167,7 +167,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => DIST_LABELS[(d.distancegroup as number) - 1] ?? `G${d.distancegroup}`);
     const values = rows.map(d => d.total);
     configuracaoGraficoDistancia.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 9, rotate: 30 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -180,7 +180,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => d.origin);
     const values = rows.map(d => d.total);
     configuracaoGraficoAeroportos.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: {
         top: 16,
         right: 32,
@@ -206,7 +206,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => d.carrier);
     const values = rows.map(d => d.taxa_cancelamento);
     configuracaoGraficoCancelamentos.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: {
         top: 16,
         right: 48,
@@ -236,7 +236,7 @@ export const usePontualidadeVoos = () => {
     const labels = rows.map(d => `${String(d.hora).padStart(2, "0")}h`);
     const atrasos = rows.map(d => d.atraso_medio ?? 0);
     configuracaoGraficoHoraPartida.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
       xAxis: { type: "category", data: labels, boundaryGap: false, axisLabel: { fontSize: 11 } },

@@ -13,7 +13,7 @@ const COR_SECUNDARIA = "#10b981";
 const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 64 },
   tooltip: { trigger: "axis" as const },
@@ -54,7 +54,7 @@ export const useEletricidadeFinlandia = () => {
     const rows = data as any[];
     const labels = rows.map(d => MESES[(d.mes as number) - 1]);
     configuracaoGraficoMensal.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       legend: { top: 4, textStyle: { fontSize: 10 } },
       xAxis: { type: "category", data: labels, axisLabel: { fontSize: 11 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 }, name: "€/MWh", nameTextStyle: { fontSize: 10 } },
@@ -86,7 +86,7 @@ export const useEletricidadeFinlandia = () => {
   const configurarGraficoHoraria = (data: any[]) => {
     const rows = data as any[];
     configuracaoGraficoHoraria.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
       xAxis: {
         type: "category",
@@ -146,7 +146,7 @@ export const useEletricidadeFinlandia = () => {
   const configurarGraficoDistribuicao = (data: any[]) => {
     const rows = data as any[];
     configuracaoGraficoDistribuicao.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 56, left: 64 },
       color: [COR_SECUNDARIA],
       xAxis: {

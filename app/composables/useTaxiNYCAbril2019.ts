@@ -13,7 +13,7 @@ const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
 const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#f43f5e", "#14b8a6"];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -89,7 +89,7 @@ export const useTaxiNYCAbril2019 = () => {
     const durLabels = (data as any[]).map(d => `${d.faixa_min}min`);
     const durValues = (data as any[]).map(d => d.total);
     configuracaoGraficoDuracao.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
       xAxis: { type: "category", data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -101,7 +101,7 @@ export const useTaxiNYCAbril2019 = () => {
     const gorjLabels = (data as any[]).map(d => `$${d.faixa}`);
     const gorjValues = (data as any[]).map(d => d.total);
     configuracaoGraficoGorjeta.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: gorjLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -117,7 +117,7 @@ export const useTaxiNYCAbril2019 = () => {
     const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const horaValues = (data as any[]).map(d => d.total);
     configuracaoGraficoHora.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
       xAxis: { type: "category", data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },

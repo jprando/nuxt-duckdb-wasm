@@ -12,7 +12,7 @@ const COR_TERCIARIA = "#f59e0b";
 const COR_QUATERNARIA = "#8b5cf6";
 const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#f43f5e", "#14b8a6"];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: "axis" as const },
@@ -67,7 +67,7 @@ export const useTrensHolandeses = () => {
     const stationLabels = (data as any[]).map(d => d.station_name);
     const stationValues = (data as any[]).map(d => d.count);
     opcaoEstacoesMovimentadas.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
       xAxis: { type: "category", data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10 } },
@@ -79,7 +79,7 @@ export const useTrensHolandeses = () => {
     const hourLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, "0")}h`);
     const hourValues = (data as any[]).map(d => d.total);
     configuracaoGraficoPartidasPorHora.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
       color: [COR_PRIMARIA],
       xAxis: { type: "category", data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
@@ -102,7 +102,7 @@ export const useTrensHolandeses = () => {
     const stopLabels = (data as any[]).map(d => d.station_name);
     const stopValues = (data as any[]).map(d => d.avg_stop_seconds);
     configuracaoGraficoDuracaoMediaParada.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_TERCIARIA],
       xAxis: { type: "category", data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: "value", axisLabel: { fontSize: 10, formatter: "{value}s" } },

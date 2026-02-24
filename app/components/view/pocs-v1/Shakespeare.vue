@@ -67,7 +67,7 @@ const {
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
     <div class="grade-graficos">
       <GraficoCard
-        :opcao="configuracaoGraficoAto"
+        :configuracao="configuracaoGraficoAto"
         :tema="temaGrafico"
         :altura="220"
       >
@@ -81,7 +81,7 @@ const {
       </GraficoCard>
 
       <GraficoCard
-        :opcao="configuracaoGraficoElenco"
+        :configuracao="configuracaoGraficoElenco"
         :tema="temaGrafico"
         :altura="220"
       >
@@ -100,7 +100,7 @@ const {
 
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoComprimento"
+      :configuracao="configuracaoGraficoComprimento"
       :tema="temaGrafico"
       :altura="200"
     >

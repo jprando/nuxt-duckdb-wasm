@@ -70,7 +70,7 @@ const {
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoEstacoesConectadas"
+      :configuracao="configuracaoGraficoEstacoesConectadas"
       :tema="temaGrafico"
       :altura="260"
     >
@@ -85,7 +85,7 @@ const {
 
     <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoChord"
+      :configuracao="configuracaoGraficoChord"
       :tema="temaGrafico"
       :altura="400"
     >

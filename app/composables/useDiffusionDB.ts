@@ -14,7 +14,7 @@ const COR_QUATERNARIA = "#8b5cf6";
 
 const PALETA_NSFW = ["#10b981", "#f59e0b", "#f97316", "#f43f5e"];
 
-const baseChart = {
+const configuracaoGrafico = {
   backgroundColor: "transparent",
   grid: { top: 32, right: 16, bottom: 48, left: 72 },
   tooltip: { trigger: "axis" as const },
@@ -53,7 +53,7 @@ export const useDiffusionDB = () => {
     const labels = rows.map(d => d.dimensao).reverse();
     const values = rows.map(d => d.total).reverse();
     configuracaoGraficoDimensoes.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       color: [COR_PRIMARIA],
       xAxis: { type: "value", axisLabel: { fontSize: 10 } },
       yAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, fontWeight: "bold" } },
@@ -83,7 +83,7 @@ export const useDiffusionDB = () => {
   const configurarGraficoSteps = (data: any[]) => {
     const rows = data as any[];
     configuracaoGraficoSteps.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 56 },
       color: [COR_TERCIARIA],
       xAxis: {
@@ -101,7 +101,7 @@ export const useDiffusionDB = () => {
     const labels = rows.map(d => d.nome_sampler).reverse();
     const values = rows.map(d => d.total).reverse();
     configuracaoGraficoSampler.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 8, left: 72 },
       color: [COR_QUATERNARIA],
       tooltip: { trigger: "axis" as const },
@@ -114,7 +114,7 @@ export const useDiffusionDB = () => {
   const configurarGraficoAtividadeHoraria = (data: any[]) => {
     const rows = data as any[];
     configuracaoGraficoAtividade.value = {
-      ...baseChart,
+      ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 72 },
       color: [COR_SECUNDARIA],
       xAxis: {

@@ -84,7 +84,7 @@ const {
     <div class="grade-graficos">
       <!-- Estações por País -->
       <GraficoCard
-        :opcao="configuracaoGraficoPaises"
+        :configuracao="configuracaoGraficoPaises"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -99,7 +99,7 @@ const {
 
       <!-- Tipos de Estação (donut) -->
       <GraficoCard
-        :opcao="configuracaoGraficoTipos"
+        :configuracao="configuracaoGraficoTipos"
         :tema="temaGrafico"
         :altura="280"
       >
@@ -117,7 +117,7 @@ const {
     <div class="grade-graficos">
       <!-- Categorias Simplificadas -->
       <GraficoCard
-        :opcao="configuracaoGraficoCategorias"
+        :configuracao="configuracaoGraficoCategorias"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -132,7 +132,7 @@ const {
 
       <!-- Distribuição por Latitude -->
       <GraficoCard
-        :opcao="configuracaoGraficoLatitude"
+        :configuracao="configuracaoGraficoLatitude"
         :tema="temaGrafico"
         :altura="260"
       >
@@ -151,7 +151,7 @@ const {
 
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoLongitude"
+      :configuracao="configuracaoGraficoLongitude"
       :tema="temaGrafico"
       :altura="200"
     >
@@ -169,7 +169,7 @@ const {
 
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
     <GraficoCard
-      :opcao="configuracaoGraficoTiposPorPais"
+      :configuracao="configuracaoGraficoTiposPorPais"
       :tema="temaGrafico"
       :altura="280"
     >
