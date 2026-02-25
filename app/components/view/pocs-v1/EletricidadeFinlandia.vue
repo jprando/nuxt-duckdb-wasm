@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -87,7 +86,7 @@ const {
     </div>
 
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoSemanal"
       :tema="temaGrafico"
       :altura="280"
@@ -102,12 +101,12 @@ const {
           2021
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Linha 2: Mensal + Horário ───────────────────────────────── -->
     <div class="grade-graficos">
       <!-- Variação Mensal -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoMensal"
         :tema="temaGrafico"
         :altura="260"
@@ -122,10 +121,10 @@ const {
             Médio / Min / Máx
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Perfil Horário -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoHoraria"
         :tema="temaGrafico"
         :altura="260"
@@ -140,11 +139,11 @@ const {
             Média do dia
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Distribuição de Preços ─────────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoDistribuicao"
       :tema="temaGrafico"
       :altura="220"
@@ -159,10 +158,10 @@ const {
           Faixas de €20/MWh
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Calendário de Preços ────────────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoCalendario"
       :tema="temaGrafico"
       :altura="200"
@@ -177,7 +176,7 @@ const {
           2021
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

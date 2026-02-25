@@ -2,14 +2,7 @@
   setup
   lang="ts"
 >
-// const LazyGraficoEChart = defineAsyncComponent(() =>
-//   import("~/components/GraficoEChart.vue")
-// );
-
-const LazyGraficoEChart = defineLazyHydrationComponent(
-  "visible",
-  () => import("~/components/GraficoEChart.vue"),
-);
+import { LazyGraficoEChart } from "@/utils/lazy-components";
 
 const props = withDefaults(
   defineProps<{
@@ -71,7 +64,7 @@ onUnmounted(() => {
   <UCard
     :ui="{
       header: 'p-0! cursor-pointer select-none',
-      body: 'my-2!',
+      body: 'py-2 sm:py-2 my-2',
       root: 'divide-transparent',
     }"
   >
@@ -136,8 +129,7 @@ onUnmounted(() => {
           class="card-expandido"
           :ui="{
             root: 'relative z-10 w-full h-full flex flex-col shadow-2xl divide-y-0',
-            header:
-              'shrink-0 p-0! cursor-pointer select-none',
+            header: 'shrink-0 p-0! cursor-pointer select-none',
             body: 'flex-1 min-h-0 p-0 sm:p-0',
           }"
         >

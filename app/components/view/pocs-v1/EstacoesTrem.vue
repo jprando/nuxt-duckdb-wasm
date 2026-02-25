@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -83,7 +82,7 @@ const {
     <!-- ── Linha 1: Países + Tipos ────────────────────────────────── -->
     <div class="grade-graficos">
       <!-- Estações por País -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoPaises"
         :tema="temaGrafico"
         :altura="280"
@@ -95,10 +94,10 @@ const {
           />
           Estações por País
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Tipos de Estação (donut) -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoTipos"
         :tema="temaGrafico"
         :altura="280"
@@ -110,13 +109,13 @@ const {
           />
           Distribuição por Tipo de Estação
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 2: Categorias + Latitude ─────────────────────────── -->
     <div class="grade-graficos">
       <!-- Categorias Simplificadas -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoCategorias"
         :tema="temaGrafico"
         :altura="260"
@@ -128,10 +127,10 @@ const {
           />
           Categorias de Estação
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Distribuição por Latitude -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoLatitude"
         :tema="temaGrafico"
         :altura="260"
@@ -146,11 +145,11 @@ const {
             Latitude
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoLongitude"
       :tema="temaGrafico"
       :altura="200"
@@ -165,10 +164,10 @@ const {
           Longitude
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoTiposPorPais"
       :tema="temaGrafico"
       :altura="280"
@@ -183,7 +182,7 @@ const {
           Top 6 Países
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

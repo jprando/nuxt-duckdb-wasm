@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -77,7 +76,7 @@ const {
 
     <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
     <div class="grade-graficos">
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoDuracao"
         :tema="temaGrafico"
         :altura="260"
@@ -89,9 +88,9 @@ const {
           />
           Distribuição por Duração da Corrida
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoGorjeta"
         :tema="temaGrafico"
         :altura="260"
@@ -106,11 +105,11 @@ const {
             USD
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
@@ -123,7 +122,7 @@ const {
         />
         Corridas por Hora do Dia
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -78,7 +77,7 @@ const {
     <!-- ── Linha 1: Dimensões + NSFW ──────────────────────────────── -->
     <div class="grade-graficos">
       <!-- Top 10 Dimensões -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoDimensoes"
         :tema="temaGrafico"
         :altura="280"
@@ -93,10 +92,10 @@ const {
             Top 10
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Classificação NSFW -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoNsfw"
         :tema="temaGrafico"
         :altura="280"
@@ -108,13 +107,13 @@ const {
           />
           Classificação de Segurança (NSFW)
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 2: Steps + Samplers ──────────────────────────────── -->
     <div class="grade-graficos">
       <!-- Distribuição de Steps -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoSteps"
         :tema="temaGrafico"
         :altura="260"
@@ -126,10 +125,10 @@ const {
           />
           Distribuição de Steps de Inferência
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Samplers -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoSampler"
         :tema="temaGrafico"
         :altura="260"
@@ -141,11 +140,11 @@ const {
           />
           Algoritmo de Sampling Usado
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoAtividade"
       :tema="temaGrafico"
       :altura="220"
@@ -160,7 +159,7 @@ const {
           UTC
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

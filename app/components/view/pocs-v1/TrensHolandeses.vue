@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -64,7 +63,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoDuracaoMediaParada"
       :tema="temaGrafico"
       :altura="260"
@@ -79,10 +78,10 @@ const {
           Top 10 Estações
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoPartidasPorHora"
       :tema="temaGrafico"
       :altura="200"
@@ -95,7 +94,7 @@ const {
         />
         Partidas por Hora do Dia
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

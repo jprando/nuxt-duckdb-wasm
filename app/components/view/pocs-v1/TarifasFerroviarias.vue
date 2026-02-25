@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -69,7 +68,7 @@ const {
     </div>
 
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoEstacoesConectadas"
       :tema="temaGrafico"
       :altura="260"
@@ -81,10 +80,10 @@ const {
         />
         Top 10 Estações com mais Conexões
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoChord"
       :tema="temaGrafico"
       :altura="400"
@@ -99,7 +98,7 @@ const {
           Top 10 · Chord
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

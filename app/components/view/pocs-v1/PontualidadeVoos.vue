@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -88,7 +87,7 @@ const {
     <!-- ── Linha 2: Dia da Semana + Mensal ────────────────────────── -->
     <div class="grade-graficos">
       <!-- Atraso por Dia da Semana -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoDiaSemana"
         :tema="temaGrafico"
         :altura="240"
@@ -100,10 +99,10 @@ const {
           />
           Atraso Médio por Dia da Semana
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Voos por Mês -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoMensal"
         :tema="temaGrafico"
         :altura="240"
@@ -115,13 +114,13 @@ const {
           />
           Voos por Mês
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 3: Histograma de Atraso + Distância ─────────────── -->
     <div class="grade-graficos">
       <!-- Distribuição de Atraso na Partida -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoAtrasoPartida"
         :tema="temaGrafico"
         :altura="260"
@@ -133,10 +132,10 @@ const {
           />
           Distribuição do Atraso na Partida
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Distribuição por Grupo de Distância -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
@@ -148,13 +147,13 @@ const {
           />
           Voos por Faixa de Distância
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 4: Aeroportos + Cancelamentos por Companhia ──────── -->
     <div class="grade-graficos">
       <!-- Top 12 Aeroportos de Origem -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoAeroportos"
         :tema="temaGrafico"
         :altura="300"
@@ -166,10 +165,10 @@ const {
           />
           Top 12 Aeroportos de Origem
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Taxa de Cancelamento por Companhia -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoCancelamentos"
         :tema="temaGrafico"
         :altura="300"
@@ -184,11 +183,11 @@ const {
             %
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 5: Atraso por Hora do Dia (full width) ──────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoHoraPartida"
       :tema="temaGrafico"
       :altura="200"
@@ -204,12 +203,12 @@ const {
           min
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
 
     <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
     <div class="grade-graficos-xl">
       <!-- Radar: Performance Comparativa das Companhias -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoRadar"
         :tema="temaGrafico"
         :altura="320"
@@ -224,10 +223,10 @@ const {
             Radar
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
       <!-- Sankey: Fluxo Companhia → Status do Voo -->
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoSankey"
         :tema="temaGrafico"
         :altura="320"
@@ -242,7 +241,7 @@ const {
             Sankey
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
   </div>
 </template>

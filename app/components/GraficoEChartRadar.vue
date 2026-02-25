@@ -4,12 +4,8 @@
 >
 import { RadarChart } from "echarts/charts";
 import { use } from "echarts/core";
-// import EChartBase from "./GraficoEChartBase.vue";
 
-const LazyEChartBase = defineLazyHydrationComponent(
-  "visible",
-  () => import("./GraficoEChartBase.vue"),
-);
+import { LazyGraficoEChartBase } from "@/utils/lazy-components";
 
 withDefaults(
   defineProps<{
@@ -23,13 +19,13 @@ withDefaults(
   },
 );
 
-onMounted(() => {
+onBeforeMount(() => {
   use([RadarChart]);
 });
 </script>
 
 <template>
-  <LazyEChartBase
+  <LazyGraficoEChartBase
     :option="option"
     :height="height"
     :tema="tema"

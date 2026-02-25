@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -79,7 +78,7 @@ const {
 
     <!-- ── Linha 2: Vendor + Passageiros ─────────────────────────── -->
     <div class="grade-graficos">
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoVendor"
         :tema="temaGrafico"
         :altura="260"
@@ -91,9 +90,9 @@ const {
           />
           Corridas por Fornecedor
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoPassageiros"
         :tema="temaGrafico"
         :altura="260"
@@ -105,12 +104,12 @@ const {
           />
           Corridas por Nº de Passageiros
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 3: Distância + Valor ────────────────────────────── -->
     <div class="grade-graficos">
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
@@ -125,9 +124,9 @@ const {
             milhas
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoValor"
         :tema="temaGrafico"
         :altura="260"
@@ -142,11 +141,11 @@ const {
             USD
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoHora"
       :tema="temaGrafico"
       :altura="200"
@@ -159,7 +158,7 @@ const {
         />
         Corridas por Hora do Dia
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

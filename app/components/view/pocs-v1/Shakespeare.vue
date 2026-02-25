@@ -2,9 +2,8 @@
   setup
   lang="ts"
 >
-const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+import { LazyGraficoCard } from "@/utils/lazy-components";
+
 const {
   carregandoKpis,
   erro,
@@ -66,7 +65,7 @@ const {
 
     <!-- ── Linha 3: Linhas por Ato + Tamanho do Elenco ───────────── -->
     <div class="grade-graficos">
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoAto"
         :tema="temaGrafico"
         :altura="220"
@@ -78,9 +77,9 @@ const {
           />
           Linhas por Ato
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
 
-      <GraficoCard
+      <LazyGraficoCard
         :configuracao="configuracaoGraficoElenco"
         :tema="temaGrafico"
         :altura="220"
@@ -95,11 +94,11 @@ const {
             Top 10 Peças
           </UBadge>
         </template>
-      </GraficoCard>
+      </LazyGraficoCard>
     </div>
 
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
-    <GraficoCard
+    <LazyGraficoCard
       :configuracao="configuracaoGraficoComprimento"
       :tema="temaGrafico"
       :altura="200"
@@ -114,7 +113,7 @@ const {
           caracteres
         </UBadge>
       </template>
-    </GraficoCard>
+    </LazyGraficoCard>
   </div>
 </template>
 

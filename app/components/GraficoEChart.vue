@@ -31,50 +31,21 @@ const chartType = computed(() => {
 const componentName = computed(() => {
   switch (chartType.value) {
     case "bar":
-      // ? porque nao funciona ?
-      // return defineLazyHydrationComponent(
-      //   "visible",
-      //   async () => import("~/components/GraficoEChartBarra.vue"),
-      // );
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartBarra.vue")
-      );
-      // return resolveComponent("GraficoEChartBarra");
+      return LazyGraficoEChartBarra;
     case "line":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartLinha.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartLinha");
+      return LazyGraficoEChartLinha;
     case "pie":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartPizza.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartPizza");
+      return LazyGraficoEChartPizza;
     case "radar":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartRadar.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartRadar");
+      return LazyGraficoEChartRadar;
     case "heatmap":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartHeatmap.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartHeatmap");
+      return LazyGraficoEChartHeatmap;
     case "sankey":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartSankey.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartSankey");
+      return LazyGraficoEChartSankey;
     case "chord":
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartChord.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartChord");
+      return LazyGraficoEChartChord;
     default:
-      return defineAsyncComponent(async () =>
-        import("~/components/GraficoEChartBarra.vue")
-      );
-      // return resolveComponent("LazyGraficoEChartBarra");
+      return LazyGraficoEChartBarra;
   }
 });
 </script>
