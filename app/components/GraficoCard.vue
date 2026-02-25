@@ -68,10 +68,16 @@ onUnmounted(() => {
 
 <template>
   <!-- Card normal -->
-  <UCard :ui="{ header: 'pb-0! cursor-pointer', body: 'my-2!', root: 'divide-transparent' }">
+  <UCard
+    :ui="{
+      header: 'p-0! cursor-pointer select-none',
+      body: 'my-2!',
+      root: 'divide-transparent',
+    }"
+  >
     <template #header>
       <div
-        class="cabecalho-card"
+        class="cabecalho-card px-4 pt-4"
         tabindex="1"
         @dblclick="abrirExpandido"
       >
@@ -129,15 +135,16 @@ onUnmounted(() => {
         <UCard
           class="card-expandido"
           :ui="{
-            root: 'relative z-10 w-full h-full flex flex-col shadow-2xl',
-            header: 'px-4 py-3 shrink-0 cursor-pointer',
+            root: 'relative z-10 w-full h-full flex flex-col shadow-2xl divide-y-0',
+            header:
+              'shrink-0 p-0! cursor-pointer select-none',
             body: 'flex-1 min-h-0 p-0 sm:p-0',
           }"
         >
           <!-- Header -->
           <template #header>
             <div
-              class="flex items-center justify-between"
+              class="flex items-center justify-between px-4 pt-4"
               @dblclick="fecharExpandido"
             >
               <h2 class="titulo-expandido">

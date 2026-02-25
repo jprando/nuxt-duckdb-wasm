@@ -4,11 +4,15 @@
 >
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const route = useRoute();
 const { isFullscreen, toggle } = useFullscreen();
-
 const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 
 const _collapsed = ref(false);
+const menuRef = ref<HTMLElement | null>(null);
+const estahCarregandoDebounce = ref(false);
+
+let estahCarregandoTimerId = 0;
 
 const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
@@ -102,9 +106,6 @@ const navItens = computed<NavigationMenuItem[][]>(() => {
   ];
 });
 
-const menuRef = ref<HTMLElement | null>(null);
-const route = useRoute();
-
 const scrollParaItemAtivo = async () => {
   await nextTick();
   const itemAtivo = menuRef.value?.querySelector("[aria-current=\"page\"]");
@@ -112,15 +113,15 @@ const scrollParaItemAtivo = async () => {
 };
 
 watch(() => route.path, scrollParaItemAtivo);
-onMounted(scrollParaItemAtivo);
+watch(estahCarregando, (novoValor) => {
+  if (estahCarregandoTimerId) clearTimeout(estahCarregandoTimerId);
+  estahCarregandoTimerId = window.setTimeout(async () => {
+    await nextTick();
+    estahCarregandoDebounce.value = novoValor;
+  }, 650);
+});
 
-async function alternarFullscreen() {
-  if (!document.fullscreenElement) {
-    await document.documentElement.requestFullscreen();
-    return;
-  }
-  await document.exitFullscreen();
-}
+onMounted(scrollParaItemAtivo);
 </script>
 
 <template>
@@ -167,8 +168,14 @@ async function alternarFullscreen() {
             >
               {{ duckDBWasmInfo }}
             </span>
-            <UTooltip v-else-if="duckDBWasmInfo"  :text="duckDBWasmInfo">
-            <UIcon name="devicon-plain-duckdb" class="mb-4 text-muted/50" />
+            <UTooltip
+              v-else-if="duckDBWasmInfo"
+              :text="duckDBWasmInfo"
+            >
+              <UIcon
+                name="devicon-plain-duckdb"
+                class="mb-4 text-muted/50"
+              />
             </UTooltip>
           </div>
         </template>
@@ -221,7 +228,11 @@ async function alternarFullscreen() {
             </template>
           </UDashboardNavbar>
 
-          <UProgress v-show="estahCarregando" animation="elastic" size="xs" />
+          <UProgress
+            :model-value="estahCarregandoDebounce ? null : 0"
+            animation="elastic"
+            size="xs"
+          />
 
           <slot />
         </UMain>

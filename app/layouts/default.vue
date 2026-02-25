@@ -20,7 +20,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
 
         <template #right>
           <UButton
-            to="/pocs-v1"
+            to="/pocs-v1/taxiNYCLocal"
             icon="i-lucide-layout-dashboard"
             label="Dashboards v1"
             color="neutral"
