@@ -4,7 +4,12 @@ export interface DatasetParquet {
   grupo: string
 }
 
-export type ItemSeletorDataset = DatasetParquet | {
-  type: 'label' | 'separator'
-  label?: string
-}
+export type ItemSeletorDataset =
+  | DatasetParquet
+  | {
+    type: 'label'
+    label: string
+  }
+  | {
+    type: 'separator'
+  }
