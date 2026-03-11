@@ -7,26 +7,11 @@ interface Kpis {
   periodo_fim: string
 }
 
-interface DadosTarifa {
-  tarifa: string
-  total: number
-}
-interface DadosPagamento {
-  pagamento: string
-  total: number
-}
-interface DadosDuracao {
-  faixa_min: number
-  total: number
-}
-interface DadosGorjeta {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+type DadosTarifa = { tarifa: string, total: number }
+type DadosPagamento = { pagamento: string, total: number }
+type DadosDuracao = { faixa_min: number, total: number }
+type DadosGorjeta = { faixa: string, total: number }
+type DadosHora = { hora: number, total: number }
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -168,7 +153,7 @@ export const useTaxiNYCAbril2019 = () => {
 
     executar(nycTaxi2019AprKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        kpis.value = kpisData as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -178,12 +163,12 @@ export const useTaxiNYCAbril2019 = () => {
         carregandoKpis.value = false
       })
 
-    executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(configurarGraficoTarifa)
-    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(configurarGraficoPagamento)
-    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(configurarGraficoDuracao)
-    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(configurarGraficoGorjeta)
+    executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(data => configurarGraficoTarifa(data as DadosTarifa[]))
+    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(data => configurarGraficoPagamento(data as DadosPagamento[]))
+    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(data => configurarGraficoDuracao(data as DadosDuracao[]))
+    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(data => configurarGraficoGorjeta(data as DadosGorjeta[]))
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(data => configurarGraficoHora(data as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

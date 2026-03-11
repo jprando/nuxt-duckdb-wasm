@@ -140,7 +140,7 @@ export const useDiffusionDB = () => {
 
     executar(diffusionDBKpisConsulta(nomeArquivo))
       .then(([row]) => {
-        kpis.value = row as Kpis
+        kpis.value = row as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -150,11 +150,11 @@ export const useDiffusionDB = () => {
         carregandoKpis.value = false
       })
 
-    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(configurarGraficoDimensoes)
-    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(configurarGraficoNsfw)
-    executar(diffusionDBStepsConsulta(nomeArquivo)).then(configurarGraficoSteps)
-    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(configurarGraficoSampler)
-    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(configurarGraficoAtividadeHoraria)
+    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(data => configurarGraficoDimensoes(data as DadosPorDimensao[]))
+    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(data => configurarGraficoNsfw(data as DadosPorCategoriaNsfw[]))
+    executar(diffusionDBStepsConsulta(nomeArquivo)).then(data => configurarGraficoSteps(data as DadosPorFaixaSteps[]))
+    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(data => configurarGraficoSampler(data as DadosPorSampler[]))
+    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(data => configurarGraficoAtividadeHoraria(data as DadosPorHoraAtividade[]))
   }
 
   onMounted(async () => {

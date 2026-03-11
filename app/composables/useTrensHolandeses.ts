@@ -126,7 +126,7 @@ export const useTrensHolandeses = () => {
 
     executar(dutchTrainServicesKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        kpis.value = kpisData as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -136,10 +136,10 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false
       })
 
-    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(configurarGraficoTipo)
-    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(configurarGraficoEstacoesMovimentadas)
-    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(configurarGraficoPartidasPorHora)
-    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(configurarGraficoDuracaoMediaParada)
+    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(data => configurarGraficoTipo(data as DadosPorTipoServico[]))
+    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(data => configurarGraficoEstacoesMovimentadas(data as DadosEstacaoMovimentada[]))
+    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(data => configurarGraficoPartidasPorHora(data as DadosPartidaPorHora[]))
+    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(data => configurarGraficoDuracaoMediaParada(data as DadosDuracaoMediaParada[]))
   }
 
   onMounted(async () => {

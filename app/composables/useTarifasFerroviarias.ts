@@ -143,7 +143,7 @@ export const useTarifasFerroviarias = () => {
 
     executar(railwayFaresKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        kpis.value = kpisData as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -153,10 +153,10 @@ export const useTarifasFerroviarias = () => {
         carregandoKpis.value = false
       })
 
-    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(configurarGraficoDistribuicaoPreco)
-    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(configurarGraficoRotasCaras)
-    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(configurarGraficoEstacoesConectadas)
-    executar(railwayFaresChordConsulta(nomeArquivo)).then(configurarGraficoChord)
+    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(data => configurarGraficoDistribuicaoPreco(data as DadosDistribuicaoTarifa[]))
+    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(data => configurarGraficoRotasCaras(data as DadosRotaCara[]))
+    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(data => configurarGraficoEstacoesConectadas(data as DadosEstacaoConectada[]))
+    executar(railwayFaresChordConsulta(nomeArquivo)).then(data => configurarGraficoChord(data as DadosConexaoChord[]))
   }
 
   onMounted(async () => {
