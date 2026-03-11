@@ -7,26 +7,11 @@ interface Kpis {
   periodo_fim: string
 }
 
-interface DadosVendor {
-  vendor: string
-  total: number
-}
-interface DadosPagamento {
-  pagamento: string
-  total: number
-}
-interface DadosDistancia {
-  milhas: number
-  total: number
-}
-interface DadosGorjeta {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+type DadosVendor = { vendor: string, total: number }
+type DadosPagamento = { pagamento: string, total: number }
+type DadosDistancia = { milhas: number, total: number }
+type DadosGorjeta = { faixa: string, total: number }
+type DadosHora = { hora: number, total: number }
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -168,7 +153,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
     executar(nycTaxi2010JanKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        kpis.value = kpisData as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -178,12 +163,16 @@ export const useTaxiNYCJaneiro2010 = () => {
         carregandoKpis.value = false
       })
 
-    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(configurarGraficoTarifa)
-    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(configurarGraficoPagamento)
-    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(configurarGraficoDuracao)
-    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(configurarGraficoGorjeta)
+    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(data => configurarGraficoTarifa(data as DadosVendor[]))
+    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPagamento(data as DadosPagamento[])
+    )
+    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDuracao(data as DadosDistancia[])
+    )
+    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(data => configurarGraficoGorjeta(data as DadosGorjeta[]))
     executar(nycTaxi2010JanHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(data => configurarGraficoHora(data as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

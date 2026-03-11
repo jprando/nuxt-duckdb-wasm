@@ -7,26 +7,11 @@ interface Kpis {
   periodo_fim: string
 }
 
-interface DadosVendor {
-  vendor: string
-  total: number
-}
-interface DadosPassageiros {
-  passageiros: number
-  total: number
-}
-interface DadosDistancia {
-  milhas: number
-  total: number
-}
-interface DadosValor {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+type DadosVendor = { vendor: string, total: number }
+type DadosPassageiros = { passageiros: number, total: number }
+type DadosDistancia = { milhas: number, total: number }
+type DadosValor = { faixa: string, total: number }
+type DadosHora = { hora: number, total: number }
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -161,7 +146,7 @@ export const useTaxiNYCLocal = () => {
 
     executar(localNYCTaxiKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        kpis.value = kpisData as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -171,12 +156,16 @@ export const useTaxiNYCLocal = () => {
         carregandoKpis.value = false
       })
 
-    executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(configurarGraficoVendor)
-    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(configurarGraficoPassageiros)
-    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(configurarGraficoDistancia)
-    executar(localNYCTaxiValorConsulta(nomeArquivo)).then(configurarGraficoValor)
+    executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(data => configurarGraficoVendor(data as DadosVendor[]))
+    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPassageiros(data as DadosPassageiros[])
+    )
+    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDistancia(data as DadosDistancia[])
+    )
+    executar(localNYCTaxiValorConsulta(nomeArquivo)).then(data => configurarGraficoValor(data as DadosValor[]))
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(data => configurarGraficoHora(data as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

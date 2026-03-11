@@ -36,6 +36,7 @@
     "@vueuse/nuxt": "14.2.1",
     "css-tree": "^3.1.0",
     "csso": "^5.0.5",
+    "echarts": "^6.0.0",
     "mdn-data": "^2.27.1",
     "nuxt": "^4.3.1",
     "nuxt-echarts": "1.0.1",

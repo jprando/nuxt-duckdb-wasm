@@ -215,7 +215,7 @@ export const useEletricidadeFinlandia = () => {
 
     executar(eletricidadeFinlandiaKpisConsulta(nomeArquivo))
       .then(([row]) => {
-        kpis.value = row as Kpis
+        kpis.value = row as unknown as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -225,11 +225,21 @@ export const useEletricidadeFinlandia = () => {
         carregandoKpis.value = false
       })
 
-    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(configurarGraficoMensal)
-    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(configurarGraficoHoraria)
-    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(configurarGraficoSemanal)
-    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(configurarGraficoDistribuicao)
-    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(configurarGraficoCalendario)
+    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(data =>
+      configurarGraficoMensal(data as DadosPrecoMensal[])
+    )
+    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoHoraria(data as DadosPrecoHorario[])
+    )
+    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(data =>
+      configurarGraficoSemanal(data as DadosPrecoSemanal[])
+    )
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDistribuicao(data as DadosDistribuicaoPreco[])
+    )
+    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(data =>
+      configurarGraficoCalendario(data as DadosCalendario[])
+    )
   }
 
   onMounted(async () => {
