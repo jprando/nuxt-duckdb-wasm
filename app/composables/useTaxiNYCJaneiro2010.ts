@@ -41,7 +41,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
   const opcaoTarifa = ref<Record<string, unknown> | null>(null)
   const opcaoPagamento = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoDuracao = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoDistancia = ref<Record<string, unknown> | null>(null)
   const configuracaoGraficoGorjeta = ref<Record<string, unknown> | null>(null)
   const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null)
 
@@ -85,15 +85,15 @@ export const useTaxiNYCJaneiro2010 = () => {
     }
   }
 
-  const configurarGraficoDuracao = (data: DadosDistancia[]) => {
-    const durLabels = data.map(d => `${d.milhas}min`)
-    const durValues = data.map(d => d.total)
-    configuracaoGraficoDuracao.value = {
+  const configurarGraficoDistancia = (data: DadosDistancia[]) => {
+    const distLabels = data.map(d => `${d.milhas} mi`)
+    const distValues = data.map(d => d.total)
+    configuracaoGraficoDistancia.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
-      xAxis: { type: 'category', data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      xAxis: { type: 'category', data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: durValues, name: 'Corridas' }]
+      series: [{ type: 'bar', data: distValues, name: 'Corridas' }]
     }
   }
 
@@ -162,7 +162,7 @@ export const useTaxiNYCJaneiro2010 = () => {
       configurarGraficoPagamento(dados as DadosPagamento[])
     )
     executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(dados =>
-      configurarGraficoDuracao(dados as DadosDistancia[])
+      configurarGraficoDistancia(dados as DadosDistancia[])
     )
     executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(dados =>
       configurarGraficoGorjeta(dados as DadosGorjeta[])
@@ -193,7 +193,7 @@ export const useTaxiNYCJaneiro2010 = () => {
     temaGrafico,
     opcaoTarifa,
     opcaoPagamento,
-    configuracaoGraficoDuracao,
+    configuracaoGraficoDistancia,
     configuracaoGraficoGorjeta,
     configuracaoGraficoHora,
     fmtNumero,
