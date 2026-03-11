@@ -11,7 +11,7 @@ export const railwayFaresKpisConsulta = (url: string) => `
       (SELECT AVG(Price) FROM read_parquet('${url}')) as avg_price,
       (SELECT MIN(Price) FROM read_parquet('${url}')) as min_price,
       (SELECT MAX(Price) FROM read_parquet('${url}')) as max_price;
-`;
+`
 
 // Gráfico de Distribuição de Preços
 export const railwayFaresPriceDistributionConsulta = (url: string) => `
@@ -21,7 +21,7 @@ export const railwayFaresPriceDistributionConsulta = (url: string) => `
   FROM read_parquet('${url}')
   GROUP BY price_bucket
   ORDER BY price_bucket;
-`;
+`
 
 // Gráfico de Rotas mais Caras
 export const railwayFaresMostExpensiveRoutesConsulta = (url: string) => `
@@ -31,7 +31,7 @@ export const railwayFaresMostExpensiveRoutesConsulta = (url: string) => `
   FROM read_parquet('${url}')
   ORDER BY Price DESC
   LIMIT 10;
-`;
+`
 
 // Gráfico de Estações mais Conectadas
 export const railwayFaresBusiestStationsConsulta = (url: string) => `
@@ -47,7 +47,7 @@ export const railwayFaresBusiestStationsConsulta = (url: string) => `
   GROUP BY station
   ORDER BY appearances DESC
   LIMIT 10;
-`;
+`
 
 // Chord: conexões entre as 10 estações mais movimentadas
 export const railwayFaresChordConsulta = (url: string) => `
@@ -72,4 +72,4 @@ export const railwayFaresChordConsulta = (url: string) => `
     AND Station1 != Station2
   GROUP BY src, dst
   ORDER BY total DESC
-`;
+`

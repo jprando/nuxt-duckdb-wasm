@@ -2,11 +2,11 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard-pocv1" });
+definePageMeta({ layout: 'dashboard-pocv1' })
 
 useHead({
-  title: "Dashboard - Tarifas Ferroviárias",
-});
+  title: 'Dashboard - Tarifas Ferroviárias'
+})
 </script>
 
 <template>

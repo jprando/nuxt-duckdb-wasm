@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -21,8 +21,8 @@ const {
   fmtNumero,
   fmtMin,
   fmtPct,
-  fmtMi,
-} = usePontualidadeVoos();
+  fmtMi
+} = usePontualidadeVoos()
 </script>
 
 <template>

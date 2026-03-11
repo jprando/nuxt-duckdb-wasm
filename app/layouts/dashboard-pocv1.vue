@@ -2,126 +2,126 @@
   setup
   lang="ts"
 >
-import type { NavigationMenuItem } from "@nuxt/ui";
+import type { NavigationMenuItem } from '@nuxt/ui'
 
-const route = useRoute();
-const { isFullscreen, toggle } = useFullscreen();
-const { duckDBWasmInfo, estahCarregando } = useDuckDb();
+const route = useRoute()
+const { isFullscreen, toggle } = useFullscreen()
+const { duckDBWasmInfo, estahCarregando } = useDuckDb()
 
-const _collapsed = ref(false);
-const menuRef = ref<HTMLElement | null>(null);
-const estahCarregandoDebounce = ref(false);
+const _collapsed = ref(false)
+const menuRef = ref<HTMLElement | null>(null)
+const estahCarregandoDebounce = ref(false)
 
-let estahCarregandoTimerId = 0;
+let estahCarregandoTimerId = 0
 
 const navItens = computed<NavigationMenuItem[][]>(() => {
   return [
     [
-      { label: "Dados", icon: "i-lucide-table-2", to: "/dados" },
+      { label: 'Dados', icon: 'i-lucide-table-2', to: '/dados' }
     ].map(i => ({
       ...i,
       class: [
-        "text-md",
-        "my-1.5",
-        "-mx-1",
-        "p-2.5",
-        _collapsed.value ? "w-10" : "",
+        'text-md',
+        'my-1.5',
+        '-mx-1',
+        'p-2.5',
+        _collapsed.value ? 'w-10' : ''
       ]
         .filter(Boolean)
-        .join(" "),
+        .join(' ')
     })),
     [
       {
-        label: "NYC Taxi Jan/2024",
-        icon: "i-lucide-layout-dashboard",
-        badge: _collapsed.value ? undefined : "550k",
-        to: "/pocs-v1/taxiNYCLocal",
+        label: 'NYC Taxi Jan/2024',
+        icon: 'i-lucide-layout-dashboard',
+        badge: _collapsed.value ? undefined : '550k',
+        to: '/pocs-v1/taxiNYCLocal'
       },
       {
-        label: "NYC Taxi Abr/2019",
-        icon: "i-lucide-layout-dashboard",
-        badge: _collapsed.value ? undefined : "7.4Mi",
-        to: "/pocs-v1/taxiNYCAbril2019",
+        label: 'NYC Taxi Abr/2019',
+        icon: 'i-lucide-layout-dashboard',
+        badge: _collapsed.value ? undefined : '7.4Mi',
+        to: '/pocs-v1/taxiNYCAbril2019'
       },
       {
-        label: "NYC Taxi Jan/2010",
-        icon: "i-lucide-layout-dashboard",
-        badge: _collapsed.value ? undefined : "14.8Mi",
-        to: "/pocs-v1/taxiNYCJaneiro2010",
+        label: 'NYC Taxi Jan/2010',
+        icon: 'i-lucide-layout-dashboard',
+        badge: _collapsed.value ? undefined : '14.8Mi',
+        to: '/pocs-v1/taxiNYCJaneiro2010'
       },
       {
-        label: "Serviços de Trem (Holanda)",
-        icon: "i-lucide-train-track",
-        badge: _collapsed.value ? undefined : "380k",
-        to: "/pocs-v1/trensHolandeses",
+        label: 'Serviços de Trem (Holanda)',
+        icon: 'i-lucide-train-track',
+        badge: _collapsed.value ? undefined : '380k',
+        to: '/pocs-v1/trensHolandeses'
       },
       {
-        label: "Tarifas Ferroviárias",
-        icon: "i-lucide-euro",
-        badge: _collapsed.value ? undefined : "158k",
-        to: "/pocs-v1/tarifasFerroviarias",
+        label: 'Tarifas Ferroviárias',
+        icon: 'i-lucide-euro',
+        badge: _collapsed.value ? undefined : '158k',
+        to: '/pocs-v1/tarifasFerroviarias'
       },
       {
-        label: "Shakespeare",
-        icon: "i-lucide:scroll-text",
-        badge: _collapsed.value ? undefined : "87k",
-        to: "/pocs-v1/shakespeare",
+        label: 'Shakespeare',
+        icon: 'i-lucide:scroll-text',
+        badge: _collapsed.value ? undefined : '87k',
+        to: '/pocs-v1/shakespeare'
       },
       {
-        label: "Estações de Trem",
-        icon: "i-lucide-building-2",
-        badge: _collapsed.value ? undefined : "578",
-        to: "/pocs-v1/estacoesTrem",
+        label: 'Estações de Trem',
+        icon: 'i-lucide-building-2',
+        badge: _collapsed.value ? undefined : '578',
+        to: '/pocs-v1/estacoesTrem'
       },
       {
-        label: "Dados de Voos",
-        icon: "i-lucide-plane",
-        badge: _collapsed.value ? undefined : "4.3Mi",
-        to: "/pocs-v1/pontualidadeVoos",
+        label: 'Dados de Voos',
+        icon: 'i-lucide-plane',
+        badge: _collapsed.value ? undefined : '4.3Mi',
+        to: '/pocs-v1/pontualidadeVoos'
       },
       {
-        label: "Eletricidade Finlândia",
-        icon: "i-lucide-zap",
-        badge: _collapsed.value ? undefined : "7,9k",
-        to: "/pocs-v1/eletricidadeFinlandia",
+        label: 'Eletricidade Finlândia',
+        icon: 'i-lucide-zap',
+        badge: _collapsed.value ? undefined : '7,9k',
+        to: '/pocs-v1/eletricidadeFinlandia'
       },
       {
-        label: "DiffusionDB",
-        icon: "i-lucide-image",
-        badge: _collapsed.value ? undefined : "2Mi",
-        to: "/pocs-v1/diffusionDB",
-      },
+        label: 'DiffusionDB',
+        icon: 'i-lucide-image',
+        badge: _collapsed.value ? undefined : '2Mi',
+        to: '/pocs-v1/diffusionDB'
+      }
     ].map(i => ({
       ...i,
       class: [
-        "text-md",
-        "my-1.5",
-        "-mx-1",
-        "p-2.5",
-        _collapsed.value ? "w-10" : "",
+        'text-md',
+        'my-1.5',
+        '-mx-1',
+        'p-2.5',
+        _collapsed.value ? 'w-10' : ''
       ]
         .filter(Boolean)
-        .join(" "),
-    })),
-  ];
-});
+        .join(' ')
+    }))
+  ]
+})
 
 const scrollParaItemAtivo = async () => {
-  await nextTick();
-  const itemAtivo = menuRef.value?.querySelector("[aria-current=\"page\"]");
-  itemAtivo?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-};
+  await nextTick()
+  const itemAtivo = menuRef.value?.querySelector('[aria-current="page"]')
+  itemAtivo?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+}
 
-watch(() => route.path, scrollParaItemAtivo);
+watch(() => route.path, scrollParaItemAtivo)
 watch(estahCarregando, (novoValor) => {
-  if (estahCarregandoTimerId) clearTimeout(estahCarregandoTimerId);
+  if (estahCarregandoTimerId) clearTimeout(estahCarregandoTimerId)
   estahCarregandoTimerId = window.setTimeout(async () => {
-    await nextTick();
-    estahCarregandoDebounce.value = novoValor;
-  }, 650);
-});
+    await nextTick()
+    estahCarregandoDebounce.value = novoValor
+  }, 650)
+})
 
-onMounted(scrollParaItemAtivo);
+onMounted(scrollParaItemAtivo)
 </script>
 
 <template>

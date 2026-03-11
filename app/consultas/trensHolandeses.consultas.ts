@@ -7,7 +7,7 @@ export const dutchTrainServicesKpisConsulta = (url: string) => `
     CAST(MIN(Departure_time) AS VARCHAR)          AS periodo_inicio,
     CAST(MAX(Departure_time) AS VARCHAR)          AS periodo_fim
   FROM read_parquet('${url}');
-`;
+`
 
 // Gráfico de Tipos de Trem
 export const dutchTrainServicesTypeConsulta = (url: string) => `
@@ -17,7 +17,7 @@ export const dutchTrainServicesTypeConsulta = (url: string) => `
   FROM read_parquet('${url}')
   GROUP BY Type
   ORDER BY total DESC;
-`;
+`
 
 // Gráfico de Estações mais movimentadas
 export const dutchTrainServicesBusiestStationsConsulta = (url: string) => `
@@ -28,7 +28,7 @@ export const dutchTrainServicesBusiestStationsConsulta = (url: string) => `
   GROUP BY Station_name
   ORDER BY count DESC
   LIMIT 10;
-`;
+`
 
 // Gráfico de Partidas por Hora
 export const dutchTrainServicesDeparturesByHourConsulta = (url: string) => `
@@ -39,7 +39,7 @@ export const dutchTrainServicesDeparturesByHourConsulta = (url: string) => `
   WHERE Departure_time IS NOT NULL
   GROUP BY hora
   ORDER BY hora;
-`;
+`
 
 // Gráfico de Duração Média de Parada nas 10 Estações mais Movimentadas
 export const dutchTrainServicesAvgStopDurationConsulta = (url: string) => `
@@ -60,4 +60,4 @@ export const dutchTrainServicesAvgStopDurationConsulta = (url: string) => `
   WHERE s.Departure_time IS NOT NULL AND s.Arrival_time IS NOT NULL AND s.Departure_time > s.Arrival_time
   GROUP BY s.Station_name
   ORDER BY avg_stop_seconds DESC;
-`;
+`

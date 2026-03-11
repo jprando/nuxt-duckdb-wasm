@@ -3,33 +3,33 @@
   lang="ts"
 >
 const datasetSelecionado = defineModel<DatasetParquet | undefined>(
-  "datasetSelecionado",
-);
+  'datasetSelecionado'
+)
 
 defineProps<{
-  loading: boolean;
-}>();
+  loading: boolean
+}>()
 
 const emit = defineEmits<{
-  carregar: [];
-}>();
+  carregar: []
+}>()
 
 const itensAgrupados = computed(() => {
-  const grupos = new Map<string, DatasetParquet[]>();
+  const grupos = new Map<string, DatasetParquet[]>()
   for (const ds of datasetsParquet) {
-    const lista = grupos.get(ds.grupo) ?? [];
-    lista.push(ds);
-    grupos.set(ds.grupo, lista);
+    const lista = grupos.get(ds.grupo) ?? []
+    lista.push(ds)
+    grupos.set(ds.grupo, lista)
   }
   const items:
-    (DatasetParquet | { type: "label" | "separator"; label?: string })[] = [];
+  (DatasetParquet | { type: 'label' | 'separator', label?: string })[] = []
   for (const [nome, lista] of grupos) {
-    if (items.length) items.push({ type: "separator" });
-    items.push({ type: "label", label: nome });
-    items.push(...lista);
+    if (items.length) items.push({ type: 'separator' })
+    items.push({ type: 'label', label: nome })
+    items.push(...lista)
   }
-  return items;
-});
+  return items
+})
 </script>
 
 <template>
@@ -45,7 +45,7 @@ const itensAgrupados = computed(() => {
         :disabled="loading"
         :ui="{
           trailingIcon:
-            'group-data-[state=open]:rotate-180 transition-transform duration-200',
+            'group-data-[state=open]:rotate-180 transition-transform duration-200'
         }"
         variant="soft"
         placeholder="Selecione um dataset..."

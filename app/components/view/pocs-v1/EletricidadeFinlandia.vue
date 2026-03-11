@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -15,8 +15,8 @@ const {
   configuracaoGraficoDistribuicao,
   configuracaoGraficoCalendario,
   fmtNumero,
-  fmtEuro,
-} = useEletricidadeFinlandia();
+  fmtEuro
+} = useEletricidadeFinlandia()
 </script>
 
 <template>

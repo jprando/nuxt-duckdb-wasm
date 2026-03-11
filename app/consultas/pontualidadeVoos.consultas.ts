@@ -7,7 +7,7 @@ export const ontimeKpisConsulta = (url: string) => `
     ROUND(SUM(Cancelled) * 100.0 / COUNT(*), 2)                                                      AS taxa_cancelamento,
     ROUND(SUM(CASE WHEN Cancelled = 0 AND Depdel15 = 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1)   AS pct_pontuais
   FROM '${url}'
-`;
+`
 
 export const ontimeCompanhiasConsulta = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const ontimeCompanhiasConsulta = (url: string) => `
   GROUP BY Carrier
   ORDER BY total DESC
   LIMIT 15
-`;
+`
 
 export const ontimeStatusConsulta = (url: string) => `
   SELECT
@@ -31,7 +31,7 @@ export const ontimeStatusConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY status
   ORDER BY total DESC
-`;
+`
 
 export const ontimeDiaSemanaConsulta = (url: string) => `
   SELECT
@@ -42,7 +42,7 @@ export const ontimeDiaSemanaConsulta = (url: string) => `
   WHERE Cancelled = 0
   GROUP BY Dayofweek
   ORDER BY Dayofweek
-`;
+`
 
 export const ontimeMensalConsulta = (url: string) => `
   SELECT
@@ -52,7 +52,7 @@ export const ontimeMensalConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY Month
   ORDER BY Month
-`;
+`
 
 export const ontimeAtrasoPartidaConsulta = (url: string) => `
   SELECT
@@ -65,7 +65,7 @@ export const ontimeAtrasoPartidaConsulta = (url: string) => `
     AND Depdelay <= 360
   GROUP BY faixa_min
   ORDER BY faixa_min
-`;
+`
 
 export const ontimeDistanciaConsulta = (url: string) => `
   SELECT
@@ -75,7 +75,7 @@ export const ontimeDistanciaConsulta = (url: string) => `
   WHERE Distancegroup IS NOT NULL
   GROUP BY Distancegroup
   ORDER BY Distancegroup
-`;
+`
 
 export const ontimeAeroportosConsulta = (url: string) => `
   SELECT
@@ -85,7 +85,7 @@ export const ontimeAeroportosConsulta = (url: string) => `
   GROUP BY Origin
   ORDER BY total DESC
   LIMIT 12
-`;
+`
 
 export const ontimeCancelamentosConsulta = (url: string) => `
   SELECT
@@ -97,7 +97,7 @@ export const ontimeCancelamentosConsulta = (url: string) => `
   HAVING COUNT(*) > 10000
   ORDER BY taxa_cancelamento DESC
   LIMIT 12
-`;
+`
 
 export const ontimeHoraPartidaConsulta = (url: string) => `
   SELECT
@@ -111,7 +111,7 @@ export const ontimeHoraPartidaConsulta = (url: string) => `
   GROUP BY hora
   HAVING hora BETWEEN 0 AND 23
   ORDER BY hora
-`;
+`
 
 export const ontimeRadarCompanhiasConsulta = (url: string) => `
   SELECT
@@ -126,7 +126,7 @@ export const ontimeRadarCompanhiasConsulta = (url: string) => `
   HAVING COUNT(*) > 50000
   ORDER BY total_voos DESC
   LIMIT 8
-`;
+`
 
 export const ontimeSankeyConsulta = (url: string) => `
   SELECT
@@ -141,4 +141,4 @@ export const ontimeSankeyConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY Carrier, status
   ORDER BY Carrier, total DESC
-`;
+`

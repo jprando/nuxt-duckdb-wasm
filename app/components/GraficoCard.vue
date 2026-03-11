@@ -2,61 +2,61 @@
   setup
   lang="ts"
 >
-import { LazyGraficoEChart } from "@/utils/lazy-components";
+import { LazyGraficoEChart } from '@/utils/lazy-components'
 
 const props = withDefaults(
   defineProps<{
-    configuracao: Record<string, unknown> | null;
-    tema?: string;
-    altura?: number;
-    msgSemDados?: string;
+    configuracao: Record<string, unknown> | null
+    tema?: string
+    altura?: number
+    msgSemDados?: string
   }>(),
   {
-    tema: "",
+    tema: '',
     altura: 260,
-    msgSemDados: "Dados indisponíveis para este dataset.",
-  },
-);
+    msgSemDados: 'Dados indisponíveis para este dataset.'
+  }
+)
 
-const expandido = ref(false);
-const alturaExpandida = ref(0);
+const expandido = ref(false)
+const alturaExpandida = ref(0)
 
 const semDados = computed(
   () =>
-    props.configuracao !== null && Object.keys(props.configuracao).length === 0,
-);
+    props.configuracao !== null && Object.keys(props.configuracao).length === 0
+)
 
 const calcularAlturaExpandida = () => {
   // viewport - inset-4 (2×16px) - header (~53px) - padding corpo (2×16px)
-  alturaExpandida.value = window.innerHeight - 32 - 53 - 32;
-};
+  alturaExpandida.value = window.innerHeight - 32 - 53 - 32
+}
 
 const onKeydown = (e: KeyboardEvent) => {
-  if (e.key === "Escape") fecharExpandido();
-};
+  if (e.key === 'Escape') fecharExpandido()
+}
 
 const abrirExpandido = () => {
-  calcularAlturaExpandida();
-  expandido.value = true;
-  window.addEventListener("resize", calcularAlturaExpandida);
-  document.addEventListener("keydown", onKeydown);
-  document.body.style.overflow = "hidden";
-};
+  calcularAlturaExpandida()
+  expandido.value = true
+  window.addEventListener('resize', calcularAlturaExpandida)
+  document.addEventListener('keydown', onKeydown)
+  document.body.style.overflow = 'hidden'
+}
 
 const fecharExpandido = () => {
-  expandido.value = false;
-  window.removeEventListener("resize", calcularAlturaExpandida);
-  document.removeEventListener("keydown", onKeydown);
-  document.body.style.overflow = "";
-};
+  expandido.value = false
+  window.removeEventListener('resize', calcularAlturaExpandida)
+  document.removeEventListener('keydown', onKeydown)
+  document.body.style.overflow = ''
+}
 
 onUnmounted(() => {
   if (expandido.value) {
-    window.removeEventListener("resize", calcularAlturaExpandida);
-    document.removeEventListener("keydown", onKeydown);
-    document.body.style.overflow = "";
+    window.removeEventListener('resize', calcularAlturaExpandida)
+    document.removeEventListener('keydown', onKeydown)
+    document.body.style.overflow = ''
   }
-});
+})
 </script>
 
 <template>
@@ -65,7 +65,7 @@ onUnmounted(() => {
     :ui="{
       header: 'p-0! cursor-pointer select-none',
       body: 'py-2 sm:py-2 my-2',
-      root: 'divide-transparent',
+      root: 'divide-transparent'
     }"
   >
     <template #header>
@@ -130,7 +130,7 @@ onUnmounted(() => {
           :ui="{
             root: 'relative z-10 w-full h-full flex flex-col shadow-2xl divide-y-0',
             header: 'shrink-0 p-0! cursor-pointer select-none',
-            body: 'flex-1 min-h-0 p-0 sm:p-0',
+            body: 'flex-1 min-h-0 p-0 sm:p-0'
           }"
         >
           <!-- Header -->

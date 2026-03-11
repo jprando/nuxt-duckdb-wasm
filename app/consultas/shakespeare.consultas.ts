@@ -7,7 +7,7 @@ export const shakespeareKpisConsulta = (url: string) => `
   FROM '${url}'
   WHERE Text_entry IS NOT NULL
     AND TRIM(Text_entry) != ''
-`;
+`
 
 export const shakespearePecasConsulta = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const shakespearePecasConsulta = (url: string) => `
   GROUP BY Play_name
   ORDER BY total DESC
   LIMIT 10
-`;
+`
 
 export const shakespearePersonagensConsulta = (url: string) => `
   SELECT
@@ -29,7 +29,7 @@ export const shakespearePersonagensConsulta = (url: string) => `
   GROUP BY Speaker
   ORDER BY total DESC
   LIMIT 15
-`;
+`
 
 export const shakespeareAtoConsulta = (url: string) => `
   SELECT
@@ -40,7 +40,7 @@ export const shakespeareAtoConsulta = (url: string) => `
     AND TRIM(Line_number) != ''
   GROUP BY ato
   ORDER BY ato
-`;
+`
 
 export const shakespeareElencoConsulta = (url: string) => `
   SELECT
@@ -52,7 +52,7 @@ export const shakespeareElencoConsulta = (url: string) => `
   GROUP BY Play_name
   ORDER BY personagens DESC
   LIMIT 10
-`;
+`
 
 export const shakespeareComprimentoConsulta = (url: string) => `
   SELECT
@@ -64,4 +64,4 @@ export const shakespeareComprimentoConsulta = (url: string) => `
     AND LENGTH(Text_entry) <= 300
   GROUP BY faixa
   ORDER BY faixa
-`;
+`

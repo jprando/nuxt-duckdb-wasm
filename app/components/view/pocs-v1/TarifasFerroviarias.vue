@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -12,8 +12,8 @@ const {
   configuracaoGraficoEstacoesConectadas,
   configuracaoGraficoChord,
   fmtNumero,
-  fmtPreco,
-} = useTarifasFerroviarias();
+  fmtPreco
+} = useTarifasFerroviarias()
 </script>
 
 <template>

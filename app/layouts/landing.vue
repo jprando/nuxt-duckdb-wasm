@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-const { duckDBWasmInfo, estahCarregando } = useDuckDb();
+const { duckDBWasmInfo, estahCarregando } = useDuckDb()
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
         :ui="{
           root:
             'h-12! shrink-0 border-b border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl',
-          container: 'h-full',
+          container: 'h-full'
         }"
       >
         <template #left>
@@ -62,7 +62,7 @@ const { duckDBWasmInfo, estahCarregando } = useDuckDb();
               'w-full max-w-(--ui-container) mx-auto px-4 sm:py-3 flex sm:gap-x-3 py-2',
             left: 'flex gap-x-1.5 order-1',
             center: 'order-2',
-            right: 'flex gap-x-1.5 order-3 items-center',
+            right: 'flex gap-x-1.5 order-3 items-center'
           }"
         >
           <template #left>

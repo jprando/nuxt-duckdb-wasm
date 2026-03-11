@@ -2,26 +2,26 @@
   setup
   lang="ts"
 >
-import { RadarChart } from "echarts/charts";
-import { use } from "echarts/core";
+import { RadarChart } from 'echarts/charts'
+import { use } from 'echarts/core'
 
-import { LazyGraficoEChartBase } from "@/utils/lazy-components";
+import { LazyGraficoEChartBase } from '@/utils/lazy-components'
 
 withDefaults(
   defineProps<{
-    option: Record<string, unknown>;
-    height?: number;
-    tema?: string;
+    option: Record<string, unknown>
+    height?: number
+    tema?: string
   }>(),
   {
     height: 260,
-    tema: "",
-  },
-);
+    tema: ''
+  }
+)
 
 onBeforeMount(() => {
-  use([RadarChart]);
-});
+  use([RadarChart])
+})
 </script>
 
 <template>

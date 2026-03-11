@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "dashboard-pocv1" });
+definePageMeta({ layout: 'dashboard-pocv1' })
 </script>
 
 <template>

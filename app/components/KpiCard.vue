@@ -4,38 +4,38 @@
 >
 const props = withDefaults(
   defineProps<{
-    label: string;
-    icon: string;
-    cor: string;
-    valor?: string | number;
-    subtexto?: string;
-    unidade?: string;
-    carregando?: boolean;
-    esqueleto?: string;
-    pequeno?: boolean;
+    label: string
+    icon: string
+    cor: string
+    valor?: string | number
+    subtexto?: string
+    unidade?: string
+    carregando?: boolean
+    esqueleto?: string
+    pequeno?: boolean
   }>(),
   {
     valor: undefined,
     subtexto: undefined,
     unidade: undefined,
     carregando: false,
-    esqueleto: "w-20",
-    pequeno: false,
-  },
-);
+    esqueleto: 'w-20',
+    pequeno: false
+  }
+)
 
-const mapaCorClasses: Record<string, { icone: string; fundo: string }> = {
-  primary: { icone: "text-primary", fundo: "bg-primary/10" },
-  success: { icone: "text-success", fundo: "bg-success/10" },
-  warning: { icone: "text-warning", fundo: "bg-warning/10" },
-  secondary: { icone: "text-secondary", fundo: "bg-secondary/10" },
-  info: { icone: "text-info", fundo: "bg-info/10" },
-  error: { icone: "text-error", fundo: "bg-error/10" },
-};
+const mapaCorClasses: Record<string, { icone: string, fundo: string }> = {
+  primary: { icone: 'text-primary', fundo: 'bg-primary/10' },
+  success: { icone: 'text-success', fundo: 'bg-success/10' },
+  warning: { icone: 'text-warning', fundo: 'bg-warning/10' },
+  secondary: { icone: 'text-secondary', fundo: 'bg-secondary/10' },
+  info: { icone: 'text-info', fundo: 'bg-info/10' },
+  error: { icone: 'text-error', fundo: 'bg-error/10' }
+}
 
 const classes = computed(() =>
   mapaCorClasses[props.cor] ?? mapaCorClasses.primary
-);
+)
 </script>
 
 <template>

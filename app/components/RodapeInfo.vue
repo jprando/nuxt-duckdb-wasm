@@ -3,15 +3,15 @@
   lang="ts"
 >
 const props = defineProps<{
-  tempoExecucaoMs: number | null;
-  quantidadeTotalRegistros: number;
-  loading: boolean;
-}>();
+  tempoExecucaoMs: number | null
+  quantidadeTotalRegistros: number
+  loading: boolean
+}>()
 
 const rodapeQuantidadeRegistros = computed(() =>
-  ["-", "1 registro"][props.quantidadeTotalRegistros || 0]
+  ['-', '1 registro'][props.quantidadeTotalRegistros || 0]
   || `${numeroSemCasaDecimal.format(props.quantidadeTotalRegistros)} registros`
-);
+)
 </script>
 
 <template>
@@ -22,8 +22,8 @@ const rodapeQuantidadeRegistros = computed(() =>
     >
       {{
         tempoExecucaoMs < 1000
-        ? `${Math.round(tempoExecucaoMs)} ms`
-        : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
+          ? `${Math.round(tempoExecucaoMs)} ms`
+          : `${(tempoExecucaoMs / 1000).toFixed(2)} s`
       }}
     </span>
     <span v-else>&nbsp;</span>
