@@ -23,7 +23,7 @@ const elmPaginacao = useTemplateRef<{ focus: () => void }>('elmPaginacao')
 
 const colunas = computed(() =>
   Array.isArray(registros.value) && registros.value.length
-    ? Object.keys(registros.value[0])
+    ? Object.keys(registros.value[0] ?? {})
     : []
 )
 
