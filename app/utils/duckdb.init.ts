@@ -1,9 +1,7 @@
-import type { AsyncDuckDB } from '@duckdb/duckdb-wasm'
-import type { Ref, ShallowRef } from 'vue'
 import { duckDBLogLevelWARNING } from './duckdb.constantes'
 
 export const duckDBWasmIniciar = (
-  db: ShallowRef<AsyncDuckDB | null>,
+  db: ShallowRef<unknown>,
   estahCarregando: Ref<boolean>,
   duckDBWasmInfo: Ref<string>
 ) => {
@@ -71,10 +69,9 @@ export const duckDBWasmIniciar = (
   }
 }
 
-export const duckDBWasmEncerrar = async (db: ShallowRef<AsyncDuckDB | null>) => {
-  if (db.value) {
-    await db.value.terminate()
-    db.value = null
+export const duckDBWasmEncerrar = async (db: ShallowRef<unknown>) => {
+  if (typeof db.value?.close === 'function') {
+    await db.value.close()
     console.info('Conexão encerrada.')
   }
 }

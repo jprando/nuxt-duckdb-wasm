@@ -1,17 +1,11 @@
-interface Kpis {
-  total_trips: number
-  avg_duration_min: number
-  avg_tip: number
-  total_revenue: number
-  periodo_inicio: string
-  periodo_fim: string
-}
-
-type DadosVendor = { vendor: string, total: number }
-type DadosPagamento = { pagamento: string, total: number }
-type DadosDistancia = { milhas: number, total: number }
-type DadosGorjeta = { faixa: string, total: number }
-type DadosHora = { hora: number, total: number }
+import type {
+  DadosDistancia,
+  DadosGorjeta,
+  DadosHora,
+  DadosPagamento,
+  DadosVendor,
+  KpisTaxiNYCJaneiro2010
+} from '~/types/taxi-nyc-janeiro-2010.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -36,7 +30,7 @@ export const useTaxiNYCJaneiro2010 = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTaxiNYCJaneiro2010>({
     total_trips: 0,
     avg_duration_min: 0,
     avg_tip: 0,
@@ -47,7 +41,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
   const opcaoTarifa = ref<Record<string, unknown> | null>(null)
   const opcaoPagamento = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoDuracao = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoDistancia = ref<Record<string, unknown> | null>(null)
   const configuracaoGraficoGorjeta = ref<Record<string, unknown> | null>(null)
   const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null)
 
@@ -91,15 +85,15 @@ export const useTaxiNYCJaneiro2010 = () => {
     }
   }
 
-  const configurarGraficoDuracao = (data: DadosDistancia[]) => {
-    const durLabels = data.map(d => `${d.milhas}min`)
-    const durValues = data.map(d => d.total)
-    configuracaoGraficoDuracao.value = {
+  const configurarGraficoDistancia = (data: DadosDistancia[]) => {
+    const distLabels = data.map(d => `${d.milhas} mi`)
+    const distValues = data.map(d => d.total)
+    configuracaoGraficoDistancia.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
-      xAxis: { type: 'category', data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
+      xAxis: { type: 'category', data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
       yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: durValues, name: 'Corridas' }]
+      series: [{ type: 'bar', data: distValues, name: 'Corridas' }]
     }
   }
 
@@ -153,7 +147,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
     executar(nycTaxi2010JanKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as unknown as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTaxiNYCJaneiro2010
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -163,16 +157,18 @@ export const useTaxiNYCJaneiro2010 = () => {
         carregandoKpis.value = false
       })
 
-    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(data => configurarGraficoTarifa(data as DadosVendor[]))
-    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(data =>
-      configurarGraficoPagamento(data as DadosPagamento[])
+    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(dados => configurarGraficoTarifa(dados as DadosVendor[]))
+    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPagamento(dados as DadosPagamento[])
     )
-    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(data =>
-      configurarGraficoDuracao(data as DadosDistancia[])
+    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDistancia(dados as DadosDistancia[])
     )
-    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(data => configurarGraficoGorjeta(data as DadosGorjeta[]))
+    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoGorjeta(dados as DadosGorjeta[])
+    )
     executar(nycTaxi2010JanHoraConsulta(nomeArquivo))
-      .then(data => configurarGraficoHora(data as DadosHora[]))
+      .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })
@@ -197,7 +193,7 @@ export const useTaxiNYCJaneiro2010 = () => {
     temaGrafico,
     opcaoTarifa,
     opcaoPagamento,
-    configuracaoGraficoDuracao,
+    configuracaoGraficoDistancia,
     configuracaoGraficoGorjeta,
     configuracaoGraficoHora,
     fmtNumero,

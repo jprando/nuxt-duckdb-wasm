@@ -1,11 +1,11 @@
-interface Kpis {
-  total_imagens: number
-  total_usuarios: number
-  pct_nsfw: number
-  steps_medio: number
-  periodo_inicio: string
-  periodo_fim: string
-}
+import type {
+  DadosPorCategoriaNsfw,
+  DadosPorDimensao,
+  DadosPorFaixaSteps,
+  DadosPorHoraAtividade,
+  DadosPorSampler,
+  KpisDiffusionDB
+} from '~/types/diffusion-db.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -20,12 +20,6 @@ const configuracaoGrafico = {
   tooltip: { trigger: 'axis' as const }
 }
 
-type DadosPorDimensao = { dimensao: string, total: number }
-type DadosPorCategoriaNsfw = { categoria: string, total: number }
-type DadosPorFaixaSteps = { faixa_inicio: number, total: number }
-type DadosPorSampler = { nome_sampler: string, total: number }
-type DadosPorHoraAtividade = { hora: number, total: number }
-
 export const useDiffusionDB = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -37,7 +31,7 @@ export const useDiffusionDB = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisDiffusionDB>({
     total_imagens: 0,
     total_usuarios: 0,
     pct_nsfw: 0,
@@ -140,7 +134,7 @@ export const useDiffusionDB = () => {
 
     executar(diffusionDBKpisConsulta(nomeArquivo))
       .then(([row]) => {
-        kpis.value = row as unknown as Kpis
+        if (row) kpis.value = row as KpisDiffusionDB
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -150,14 +144,18 @@ export const useDiffusionDB = () => {
         carregandoKpis.value = false
       })
 
-    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(data =>
-      configurarGraficoDimensoes(data as DadosPorDimensao[])
+    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDimensoes(dados as DadosPorDimensao[])
     )
-    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(data => configurarGraficoNsfw(data as DadosPorCategoriaNsfw[]))
-    executar(diffusionDBStepsConsulta(nomeArquivo)).then(data => configurarGraficoSteps(data as DadosPorFaixaSteps[]))
-    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(data => configurarGraficoSampler(data as DadosPorSampler[]))
-    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(data =>
-      configurarGraficoAtividadeHoraria(data as DadosPorHoraAtividade[])
+    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoNsfw(dados as DadosPorCategoriaNsfw[])
+    )
+    executar(diffusionDBStepsConsulta(nomeArquivo)).then(dados => configurarGraficoSteps(dados as DadosPorFaixaSteps[]))
+    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoSampler(dados as DadosPorSampler[])
+    )
+    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoAtividadeHoraria(dados as DadosPorHoraAtividade[])
     )
   }
 

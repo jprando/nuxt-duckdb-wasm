@@ -9,7 +9,7 @@ const {
   erro,
   kpis,
   temaGrafico,
-  configuracaoGraficoDuracao,
+  configuracaoGraficoDistancia,
   configuracaoGraficoGorjeta,
   configuracaoGraficoHora,
   fmtNumero,
@@ -74,19 +74,19 @@ const {
       />
     </div>
 
-    <!-- ── Linha 3: Duração + Gorjeta ────────────────────────────── -->
+    <!-- ── Linha 3: Distância + Gorjeta ────────────────────────────── -->
     <div class="grade-graficos">
       <LazyGraficoCard
-        :configuracao="configuracaoGraficoDuracao"
+        :configuracao="configuracaoGraficoDistancia"
         :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
           <UIcon
-            name="i-lucide-timer"
+            name="i-lucide-route"
             class="text-success size-4"
           />
-          Distribuição por Duração da Corrida
+          Distribuição por Distância da Corrida
         </template>
       </LazyGraficoCard>
 
