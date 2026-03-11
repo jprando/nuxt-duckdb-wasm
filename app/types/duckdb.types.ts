@@ -4,15 +4,15 @@ export interface DatasetParquet {
   grupo: string
 }
 
-export type ItemSeletorDataset =
-  | DatasetParquet
-  | {
-    type: 'label'
-    label: string
-  }
-  | {
-    type: 'separator'
-  }
+export type ItemSeletorDataset
+  = DatasetParquet
+    | {
+      type: 'label'
+      label: string
+    }
+    | {
+      type: 'separator'
+    }
 
 // Contrato mínimo dos métodos do DuckDB WASM usados na aplicação
 
