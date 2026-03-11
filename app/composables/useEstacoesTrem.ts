@@ -1,10 +1,41 @@
-interface Kpis {
+interface Kpis extends Record<string, unknown> {
   total_estacoes: number
   total_paises: number
   total_tipos: number
   megaestacoes: number
   estacoes_nl: number
   estacoes_intercidade: number
+}
+
+interface LinhaContagemPorPais extends Record<string, unknown> {
+  country: string
+  total: number
+}
+
+interface LinhaContagemPorTipo extends Record<string, unknown> {
+  type: string
+  total: number
+}
+
+interface LinhaContagemPorCategoria extends Record<string, unknown> {
+  categoria: string
+  total: number
+}
+
+interface LinhaContagemPorFaixaLatitude extends Record<string, unknown> {
+  faixa_lat: string
+  total: number
+}
+
+interface LinhaContagemPorFaixaLongitude extends Record<string, unknown> {
+  faixa_lng: number
+  total: number
+}
+
+interface LinhaTipoPorPais extends Record<string, unknown> {
+  country: string
+  type: string
+  total: number
 }
 
 const COR_PRIMARIA = '#3b82f6'
@@ -48,10 +79,9 @@ export const useEstacoesTrem = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoPaises = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => d.country)
-    const values = rows.map(d => d.total)
+  const configurarGraficoPaises = (data: LinhaContagemPorPais[]) => {
+    const labels = data.map(d => d.country)
+    const values = data.map(d => d.total)
     configuracaoGraficoPaises.value = {
       ...configuracaoGrafico,
       grid: {
@@ -74,7 +104,7 @@ export const useEstacoesTrem = () => {
     }
   }
 
-  const configurarGraficoTipos = (data: any[]) => {
+  const configurarGraficoTipos = (data: LinhaContagemPorTipo[]) => {
     configuracaoGraficoTipos.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -85,7 +115,7 @@ export const useEstacoesTrem = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.type, value: d.total })),
+          data: data.map(d => ({ name: d.type, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -93,7 +123,7 @@ export const useEstacoesTrem = () => {
     }
   }
 
-  const configurarGraficoCategorias = (data: any[]) => {
+  const configurarGraficoCategorias = (data: LinhaContagemPorCategoria[]) => {
     configuracaoGraficoCategorias.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -104,7 +134,7 @@ export const useEstacoesTrem = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.categoria, value: d.total })),
+          data: data.map(d => ({ name: d.categoria, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -112,9 +142,9 @@ export const useEstacoesTrem = () => {
     }
   }
 
-  const configurarGraficoLatitude = (data: any[]) => {
-    const labels = (data as any[]).map(d => `${d.faixa_lat}°N`)
-    const values = (data as any[]).map(d => d.total)
+  const configurarGraficoLatitude = (data: LinhaContagemPorFaixaLatitude[]) => {
+    const labels = data.map(d => `${d.faixa_lat}°N`)
+    const values = data.map(d => d.total)
     configuracaoGraficoLatitude.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],
@@ -124,9 +154,9 @@ export const useEstacoesTrem = () => {
     }
   }
 
-  const configurarGraficoLongitude = (data: any[]) => {
-    const labels = (data as any[]).map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`)
-    const values = (data as any[]).map(d => d.total)
+  const configurarGraficoLongitude = (data: LinhaContagemPorFaixaLongitude[]) => {
+    const labels = data.map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`)
+    const values = data.map(d => d.total)
     configuracaoGraficoLongitude.value = {
       ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
@@ -136,13 +166,12 @@ export const useEstacoesTrem = () => {
     }
   }
 
-  const configurarGraficoTiposPorPais = (data: any[]) => {
-    const rows = data as any[]
-    const countries = [...new Set(rows.map(d => d.country))]
-    const types = [...new Set(rows.map(d => d.type))]
+  const configurarGraficoTiposPorPais = (data: LinhaTipoPorPais[]) => {
+    const countries = [...new Set(data.map(d => d.country))]
+    const types = [...new Set(data.map(d => d.type))]
 
     const map = new Map<string, Map<string, number>>()
-    rows.forEach((d) => {
+    data.forEach((d) => {
       if (!map.has(d.country)) map.set(d.country, new Map())
       map.get(d.country)!.set(d.type, d.total)
     })
@@ -188,7 +217,7 @@ export const useEstacoesTrem = () => {
 
     executar(estacoesTremKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -198,12 +227,24 @@ export const useEstacoesTrem = () => {
         carregandoKpis.value = false
       })
 
-    executar(estacoesTremPaisesConsulta(nomeArquivo)).then(configurarGraficoPaises)
-    executar(estacoesTremTiposConsulta(nomeArquivo)).then(configurarGraficoTipos)
-    executar(estacoesTremCategoriasConsulta(nomeArquivo)).then(configurarGraficoCategorias)
-    executar(estacoesTremLatitudeConsulta(nomeArquivo)).then(configurarGraficoLatitude)
-    executar(estacoesTremLongitudeConsulta(nomeArquivo)).then(configurarGraficoLongitude)
-    executar(estacoesTremTiposPorPaisConsulta(nomeArquivo)).then(configurarGraficoTiposPorPais)
+    executar(estacoesTremPaisesConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPaises(dados as LinhaContagemPorPais[])
+    )
+    executar(estacoesTremTiposConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoTipos(dados as LinhaContagemPorTipo[])
+    )
+    executar(estacoesTremCategoriasConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoCategorias(dados as LinhaContagemPorCategoria[])
+    )
+    executar(estacoesTremLatitudeConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoLatitude(dados as LinhaContagemPorFaixaLatitude[])
+    )
+    executar(estacoesTremLongitudeConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoLongitude(dados as LinhaContagemPorFaixaLongitude[])
+    )
+    executar(estacoesTremTiposPorPaisConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoTiposPorPais(dados as LinhaTipoPorPais[])
+    )
   }
 
   onMounted(async () => {

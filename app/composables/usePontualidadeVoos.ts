@@ -1,10 +1,76 @@
-interface Kpis {
+interface Kpis extends Record<string, unknown> {
   total_voos: number
   distancia_media: number
   atraso_medio_partida: number
   atraso_medio_chegada: number
   taxa_cancelamento: number
   pct_pontuais: number
+}
+
+interface LinhaContagemPorCompanhia extends Record<string, unknown> {
+  carrier: string
+  total: number
+}
+
+interface LinhaContagemPorStatus extends Record<string, unknown> {
+  status: string
+  total: number
+}
+
+interface LinhaAtrasoPorDiaSemana extends Record<string, unknown> {
+  dayofweek: number
+  atraso_medio: number | null
+}
+
+interface LinhaContagemMensal extends Record<string, unknown> {
+  month: number
+  total: number
+}
+
+interface LinhaContagemPorFaixaAtraso extends Record<string, unknown> {
+  faixa_min: number
+  total: number
+}
+
+interface LinhaContagemPorGrupoDistancia extends Record<string, unknown> {
+  distancegroup: number
+  total: number
+}
+
+interface LinhaContagemPorAeroportoOrigem extends Record<string, unknown> {
+  origin: string
+  total: number
+}
+
+interface LinhaTaxaCancelamentoPorCompanhia extends Record<string, unknown> {
+  carrier: string
+  taxa_cancelamento: number
+}
+
+interface LinhaAtrasoPorHoraPartida extends Record<string, unknown> {
+  hora: number
+  atraso_medio: number | null
+}
+
+interface LinhaRadarCompanhia extends Record<string, unknown> {
+  carrier: string
+  atraso_medio: number | null
+  distancia_media: number | null
+  pct_cancelado: number | null
+  pct_pontual: number | null
+}
+
+interface LinhaSankeyCompanhiaStatus extends Record<string, unknown> {
+  companhia: string
+  status: string
+  total: number
+}
+
+interface ParametroTooltipSankey {
+  dataType: string
+  data: { source?: string, target?: string, value?: number }
+  name?: string
+  value?: number
 }
 
 const COR_PRIMARIA = '#3b82f6'
@@ -67,10 +133,9 @@ export const usePontualidadeVoos = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoCompanhias = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => d.carrier)
-    const values = rows.map(d => d.total)
+  const configurarGraficoCompanhias = (data: LinhaContagemPorCompanhia[]) => {
+    const labels = data.map(d => d.carrier)
+    const values = data.map(d => d.total)
     opcaoCompanhias.value = {
       ...configuracaoGrafico,
       grid: {
@@ -93,7 +158,7 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoStatus = (data: any[]) => {
+  const configurarGraficoStatus = (data: LinhaContagemPorStatus[]) => {
     opcaoStatus.value = {
       backgroundColor: 'transparent',
       color: [COR_SECUNDARIA, COR_TERCIARIA, '#f43f5e', COR_QUATERNARIA],
@@ -104,7 +169,7 @@ export const usePontualidadeVoos = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.status, value: d.total })),
+          data: data.map(d => ({ name: d.status, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -112,10 +177,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoDiaSemana = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => DIAS_SEMANA[(d.dayofweek as number) - 1] ?? `D${d.dayofweek}`)
-    const atrasos = rows.map(d => d.atraso_medio ?? 0)
+  const configurarGraficoDiaSemana = (data: LinhaAtrasoPorDiaSemana[]) => {
+    const labels = data.map(d => DIAS_SEMANA[d.dayofweek - 1] ?? `D${d.dayofweek}`)
+    const atrasos = data.map(d => d.atraso_medio ?? 0)
     configuracaoGraficoDiaSemana.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],
@@ -125,10 +189,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoMensal = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => MESES[(d.month as number) - 1] ?? `M${d.month}`)
-    const totais = rows.map(d => d.total)
+  const configurarGraficoMensal = (data: LinhaContagemMensal[]) => {
+    const labels = data.map(d => MESES[d.month - 1] ?? `M${d.month}`)
+    const totais = data.map(d => d.total)
     configuracaoGraficoMensal.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 40, left: 64 },
@@ -149,10 +212,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoAtrasoPartida = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => `${d.faixa_min}min`)
-    const values = rows.map(d => d.total)
+  const configurarGraficoAtrasoPartida = (data: LinhaContagemPorFaixaAtraso[]) => {
+    const labels = data.map(d => `${d.faixa_min}min`)
+    const values = data.map(d => d.total)
     configuracaoGraficoAtrasoPartida.value = {
       ...configuracaoGrafico,
       color: ['#f43f5e'],
@@ -162,10 +224,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoDistancia = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => DIST_LABELS[(d.distancegroup as number) - 1] ?? `G${d.distancegroup}`)
-    const values = rows.map(d => d.total)
+  const configurarGraficoDistancia = (data: LinhaContagemPorGrupoDistancia[]) => {
+    const labels = data.map(d => DIST_LABELS[d.distancegroup - 1] ?? `G${d.distancegroup}`)
+    const values = data.map(d => d.total)
     configuracaoGraficoDistancia.value = {
       ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
@@ -175,10 +236,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoAeroportos = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => d.origin)
-    const values = rows.map(d => d.total)
+  const configurarGraficoAeroportos = (data: LinhaContagemPorAeroportoOrigem[]) => {
+    const labels = data.map(d => d.origin)
+    const values = data.map(d => d.total)
     configuracaoGraficoAeroportos.value = {
       ...configuracaoGrafico,
       grid: {
@@ -201,10 +261,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoCancelamentos = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => d.carrier)
-    const values = rows.map(d => d.taxa_cancelamento)
+  const configurarGraficoCancelamentos = (data: LinhaTaxaCancelamentoPorCompanhia[]) => {
+    const labels = data.map(d => d.carrier)
+    const values = data.map(d => d.taxa_cancelamento)
     configuracaoGraficoCancelamentos.value = {
       ...configuracaoGrafico,
       grid: {
@@ -227,14 +286,13 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoHoraPartida = (data: any[]) => {
+  const configurarGraficoHoraPartida = (data: LinhaAtrasoPorHoraPartida[]) => {
     if (!data || data.length === 0) {
       configuracaoGraficoHoraPartida.value = {}
       return
     }
-    const rows = data as any[]
-    const labels = rows.map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const atrasos = rows.map(d => d.atraso_medio ?? 0)
+    const labels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
+    const atrasos = data.map(d => d.atraso_medio ?? 0)
     configuracaoGraficoHoraPartida.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
@@ -255,10 +313,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoRadar = (data: any[]) => {
-    const rows = data as any[]
-    const maxAtraso = Math.ceil(Math.max(...rows.map(d => d.atraso_medio ?? 0), 10) / 50) * 50
-    const maxDist = Math.ceil(Math.max(...rows.map(d => d.distancia_media ?? 0), 500) / 500) * 500
+  const configurarGraficoRadar = (data: LinhaRadarCompanhia[]) => {
+    const maxAtraso = Math.ceil(Math.max(...data.map(d => d.atraso_medio ?? 0), 10) / 50) * 50
+    const maxDist = Math.ceil(Math.max(...data.map(d => d.distancia_media ?? 0), 500) / 500) * 500
     configuracaoGraficoRadar.value = {
       backgroundColor: 'transparent',
       tooltip: { trigger: 'item' },
@@ -280,7 +337,7 @@ export const usePontualidadeVoos = () => {
       },
       series: [{
         type: 'radar',
-        data: rows.map(d => ({
+        data: data.map(d => ({
           name: d.carrier,
           value: [
             d.pct_pontual ?? 0,
@@ -294,10 +351,9 @@ export const usePontualidadeVoos = () => {
     }
   }
 
-  const configurarGraficoSankey = (data: any[]) => {
-    const rows = data as { companhia: string, status: string, total: number }[]
-    const companhias = [...new Set(rows.map(d => d.companhia))]
-    const statuses = [...new Set(rows.map(d => d.status))]
+  const configurarGraficoSankey = (data: LinhaSankeyCompanhiaStatus[]) => {
+    const companhias = [...new Set(data.map(d => d.companhia))]
+    const statuses = [...new Set(data.map(d => d.status))]
     const COR_SANKEY_STATUS: Record<string, string> = {
       'Pontual': COR_SECUNDARIA,
       'Atrasado (>15min)': COR_TERCIARIA,
@@ -308,13 +364,13 @@ export const usePontualidadeVoos = () => {
       backgroundColor: 'transparent',
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => {
+        formatter: (p: ParametroTooltipSankey) => {
           if (p.dataType === 'edge') {
             return `${p.data.source} → ${p.data.target}<br/>${
-              new Intl.NumberFormat('pt-BR').format(p.data.value)
+              new Intl.NumberFormat('pt-BR').format(p.data.value ?? 0)
             } voos`
           }
-          return p.name
+          return p.name ?? ''
         }
       },
       series: [{
@@ -331,7 +387,7 @@ export const usePontualidadeVoos = () => {
           ...companhias.map(c => ({ name: c, itemStyle: { color: COR_PRIMARIA } })),
           ...statuses.map(s => ({ name: s, itemStyle: { color: COR_SANKEY_STATUS[s] ?? '#94a3b8' } }))
         ],
-        edges: rows.map(d => ({
+        edges: data.map(d => ({
           source: d.companhia,
           target: d.status,
           value: d.total
@@ -351,7 +407,7 @@ export const usePontualidadeVoos = () => {
 
     executar(ontimeKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as Kpis
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -361,21 +417,39 @@ export const usePontualidadeVoos = () => {
         carregandoKpis.value = false
       })
 
-    executar(ontimeCompanhiasConsulta(nomeArquivo)).then(configurarGraficoCompanhias)
-    executar(ontimeStatusConsulta(nomeArquivo)).then(configurarGraficoStatus)
-    executar(ontimeDiaSemanaConsulta(nomeArquivo)).then(configurarGraficoDiaSemana)
-    executar(ontimeMensalConsulta(nomeArquivo)).then(configurarGraficoMensal)
-    executar(ontimeAtrasoPartidaConsulta(nomeArquivo)).then(configurarGraficoAtrasoPartida)
-    executar(ontimeDistanciaConsulta(nomeArquivo)).then(configurarGraficoDistancia)
-    executar(ontimeAeroportosConsulta(nomeArquivo)).then(configurarGraficoAeroportos)
-    executar(ontimeCancelamentosConsulta(nomeArquivo)).then(configurarGraficoCancelamentos)
+    executar(ontimeCompanhiasConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoCompanhias(dados as LinhaContagemPorCompanhia[])
+    )
+    executar(ontimeStatusConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoStatus(dados as LinhaContagemPorStatus[])
+    )
+    executar(ontimeDiaSemanaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDiaSemana(dados as LinhaAtrasoPorDiaSemana[])
+    )
+    executar(ontimeMensalConsulta(nomeArquivo)).then(dados => configurarGraficoMensal(dados as LinhaContagemMensal[]))
+    executar(ontimeAtrasoPartidaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoAtrasoPartida(dados as LinhaContagemPorFaixaAtraso[])
+    )
+    executar(ontimeDistanciaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDistancia(dados as LinhaContagemPorGrupoDistancia[])
+    )
+    executar(ontimeAeroportosConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoAeroportos(dados as LinhaContagemPorAeroportoOrigem[])
+    )
+    executar(ontimeCancelamentosConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoCancelamentos(dados as LinhaTaxaCancelamentoPorCompanhia[])
+    )
     executar(ontimeHoraPartidaConsulta(nomeArquivo))
-      .then(configurarGraficoHoraPartida)
+      .then(dados => configurarGraficoHoraPartida(dados as LinhaAtrasoPorHoraPartida[]))
       .catch(() => {
         configuracaoGraficoHoraPartida.value = {}
       })
-    executar(ontimeRadarCompanhiasConsulta(nomeArquivo)).then(configurarGraficoRadar)
-    executar(ontimeSankeyConsulta(nomeArquivo)).then(configurarGraficoSankey)
+    executar(ontimeRadarCompanhiasConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoRadar(dados as LinhaRadarCompanhia[])
+    )
+    executar(ontimeSankeyConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoSankey(dados as LinhaSankeyCompanhiaStatus[])
+    )
   }
 
   onMounted(async () => {

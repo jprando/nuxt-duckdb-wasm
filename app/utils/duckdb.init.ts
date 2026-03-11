@@ -1,12 +1,12 @@
-import { duckDBDataProtocolHTTP, duckDBLogLevelWARNING, nomeUrlParquetsR2 } from './duckdb.constantes'
+import { duckDBLogLevelWARNING } from './duckdb.constantes'
 
 export const duckDBWasmIniciar = (
   db: ShallowRef<unknown>,
   estahCarregando: Ref<boolean>,
   duckDBWasmInfo: Ref<string>
-) =>
-  async () => {
-  // console.clear();
+) => {
+  return async () => {
+    // console.clear();
 
     if (!import.meta.client || db.value || estahCarregando.value) return
 
@@ -54,19 +54,20 @@ export const duckDBWasmIniciar = (
       await _db.instantiate(bundle.mainModule, pthreadWorkerUrl)
       db.value = _db
 
-      const conn = await _db.connect()
-      // await conn.close();
+      const _conn = await _db.connect()
+      // await _conn.close();
 
       const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1]
         ?? 'desconhecido'
       duckDBWasmInfo.value = `DuckDB WASM v${version} (${tipo})`
-    // infoDev(duckDBWasmInfo.value);
+      // infoDev(duckDBWasmInfo.value);
     } catch (error) {
       console.error('Falha ao instanciar DuckDB COI:', error)
     } finally {
       estahCarregando.value = false
     }
   }
+}
 
 export const duckDBWasmEncerrar = async (db: ShallowRef<unknown>) => {
   if (typeof db.value?.close === 'function') {

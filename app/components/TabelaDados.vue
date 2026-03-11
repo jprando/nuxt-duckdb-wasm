@@ -3,7 +3,7 @@
   lang="ts"
 >
 interface DataRecord {
-  [key: string]: any
+  [key: string]: unknown
 }
 
 const props = defineProps<{

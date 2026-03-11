@@ -1,5 +1,9 @@
 {
   "typescript": {
+    "semiColons": "asi",
+    "quoteStyle": "alwaysSingle",
+    "trailingCommas": "never",
+    "typeLiteral.separatorKind.singleLine": "comma"
   },
   "json": {
   },

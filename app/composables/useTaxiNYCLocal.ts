@@ -7,6 +7,27 @@ interface Kpis {
   periodo_fim: string
 }
 
+interface DadosVendor {
+  vendor: string
+  total: number
+}
+interface DadosPassageiros {
+  passageiros: number
+  total: number
+}
+interface DadosDistancia {
+  milhas: number
+  total: number
+}
+interface DadosValor {
+  faixa: string
+  total: number
+}
+interface DadosHora {
+  hora: number
+  total: number
+}
+
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
 const COR_TERCIARIA = '#f59e0b'
@@ -47,7 +68,7 @@ export const useTaxiNYCLocal = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoVendor = (data: any[]) => {
+  const configurarGraficoVendor = (data: DadosVendor[]) => {
     configuracaoGraficoVendor.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -58,7 +79,7 @@ export const useTaxiNYCLocal = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.vendor, value: d.total })),
+          data: data.map(d => ({ name: d.vendor, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -66,9 +87,9 @@ export const useTaxiNYCLocal = () => {
     }
   }
 
-  const configurarGraficoPassageiros = (data: any[]) => {
-    const paxLabels = (data as any[]).map(d => `${d.passageiros} pax`)
-    const paxValues = (data as any[]).map(d => d.total)
+  const configurarGraficoPassageiros = (data: DadosPassageiros[]) => {
+    const paxLabels = data.map(d => `${d.passageiros} pax`)
+    const paxValues = data.map(d => d.total)
     configuracaoGraficoPassageiros.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
@@ -78,9 +99,9 @@ export const useTaxiNYCLocal = () => {
     }
   }
 
-  const configurarGraficoDistancia = (data: any[]) => {
-    const distLabels = (data as any[]).map(d => `${d.milhas}mi`)
-    const distValues = (data as any[]).map(d => d.total)
+  const configurarGraficoDistancia = (data: DadosDistancia[]) => {
+    const distLabels = data.map(d => `${d.milhas}mi`)
+    const distValues = data.map(d => d.total)
     configuracaoGraficoDistancia.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],
@@ -90,9 +111,9 @@ export const useTaxiNYCLocal = () => {
     }
   }
 
-  const configurarGraficoValor = (data: any[]) => {
-    const valorLabels = (data as any[]).map(d => `$${d.faixa}`)
-    const valorValues = (data as any[]).map(d => d.total)
+  const configurarGraficoValor = (data: DadosValor[]) => {
+    const valorLabels = data.map(d => `$${d.faixa}`)
+    const valorValues = data.map(d => d.total)
     configuracaoGraficoValor.value = {
       ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
@@ -102,13 +123,13 @@ export const useTaxiNYCLocal = () => {
     }
   }
 
-  const configurarGraficoHora = (data: any[]) => {
+  const configurarGraficoHora = (data: DadosHora[]) => {
     if (!data || data.length === 0) {
       configuracaoGraficoHora.value = {}
       return
     }
-    const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const horaValues = (data as any[]).map(d => d.total)
+    const horaLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
+    const horaValues = data.map(d => d.total)
     configuracaoGraficoHora.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },

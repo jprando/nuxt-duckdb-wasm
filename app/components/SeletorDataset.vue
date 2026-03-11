@@ -14,6 +14,11 @@ const emit = defineEmits<{
   carregar: []
 }>()
 
+type ItemSeletor = DatasetParquet | {
+  type: 'label' | 'separator'
+  label?: string
+}
+
 const itensAgrupados = computed(() => {
   const grupos = new Map<string, DatasetParquet[]>()
   for (const ds of datasetsParquet) {
@@ -21,8 +26,7 @@ const itensAgrupados = computed(() => {
     lista.push(ds)
     grupos.set(ds.grupo, lista)
   }
-  const items:
-  (DatasetParquet | { type: 'label' | 'separator', label?: string })[] = []
+  const items: ItemSeletor[] = []
   for (const [nome, lista] of grupos) {
     if (items.length) items.push({ type: 'separator' })
     items.push({ type: 'label', label: nome })
@@ -61,7 +65,7 @@ const itensAgrupados = computed(() => {
       @click="emit('carregar')"
     >
       <span class="truncate">
-        {{ loading ? "carregando" : "carregar" }}
+        {{ loading ? 'carregando' : 'carregar' }}
       </span>
     </UButton>
   </div>

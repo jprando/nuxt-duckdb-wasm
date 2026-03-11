@@ -25,6 +25,12 @@ const configuracaoGrafico = {
 }
 // grid: { top: 16, right: 24, bottom: 8, left: 8 },
 
+type DadosPorPeca = { peca: string, total: number }
+type DadosPorPersonagem = { personagem: string, total: number }
+type DadosPorAto = { ato: string, total: number }
+type DadosPorElenco = { peca: string, personagens: number }
+type DadosPorComprimento = { faixa: number, total: number }
+
 export const useShakespeare = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -51,10 +57,9 @@ export const useShakespeare = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoPecas = (data: any[]) => {
-    const rows = data as { peca: string, total: number }[]
-    const pecas = rows.map(d => d.peca).reverse()
-    const totais = rows.map(d => d.total).reverse()
+  const configurarGraficoPecas = (data: DadosPorPeca[]) => {
+    const pecas = data.map(d => d.peca).reverse()
+    const totais = data.map(d => d.total).reverse()
     opcaoPecas.value = {
       ...configuracaoGrafico,
       color: [COR_PRIMARIA],
@@ -64,10 +69,9 @@ export const useShakespeare = () => {
     }
   }
 
-  const configurarGraficoPersonagens = (data: any[]) => {
-    const rows = data as { personagem: string, total: number }[]
-    const personagens = rows.map(d => d.personagem).reverse()
-    const totais = rows.map(d => d.total).reverse()
+  const configurarGraficoPersonagens = (data: DadosPorPersonagem[]) => {
+    const personagens = data.map(d => d.personagem).reverse()
+    const totais = data.map(d => d.total).reverse()
     opcaoPersonagens.value = {
       backgroundColor: 'transparent',
       color: [COR_SECUNDARIA],
@@ -88,10 +92,9 @@ export const useShakespeare = () => {
     }
   }
 
-  const configurarGraficoAto = (data: any[]) => {
-    const rows = data as { ato: string, total: number }[]
-    const atos = rows.map(d => `Ato ${d.ato}`)
-    const totais = rows.map(d => d.total)
+  const configurarGraficoAto = (data: DadosPorAto[]) => {
+    const atos = data.map(d => `Ato ${d.ato}`)
+    const totais = data.map(d => d.total)
     configuracaoGraficoAto.value = {
       backgroundColor: 'transparent',
       color: [COR_TERCIARIA],
@@ -112,10 +115,9 @@ export const useShakespeare = () => {
     }
   }
 
-  const configurarGraficoElenco = (data: any[]) => {
-    const rows = data as { peca: string, personagens: number }[]
-    const pecas = rows.map(d => d.peca).reverse()
-    const totais = rows.map(d => d.personagens).reverse()
+  const configurarGraficoElenco = (data: DadosPorElenco[]) => {
+    const pecas = data.map(d => d.peca).reverse()
+    const totais = data.map(d => d.personagens).reverse()
     configuracaoGraficoElenco.value = {
       backgroundColor: 'transparent',
       color: [COR_QUATERNARIA],
@@ -136,10 +138,9 @@ export const useShakespeare = () => {
     }
   }
 
-  const configurarGraficoComprimento = (data: any[]) => {
-    const rows = data as { faixa: number, total: number }[]
-    const labels = rows.map(d => `${d.faixa}–${d.faixa + 19}`)
-    const totais = rows.map(d => d.total)
+  const configurarGraficoComprimento = (data: DadosPorComprimento[]) => {
+    const labels = data.map(d => `${d.faixa}–${d.faixa + 19}`)
+    const totais = data.map(d => d.total)
     configuracaoGraficoComprimento.value = {
       backgroundColor: 'transparent',
       color: [PALETA[4]],

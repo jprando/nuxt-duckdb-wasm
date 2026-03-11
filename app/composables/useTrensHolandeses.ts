@@ -18,6 +18,11 @@ const configuracaoGrafico = {
   tooltip: { trigger: 'axis' as const }
 }
 
+type DadosPorTipoServico = { type: string, total: number }
+type DadosEstacaoMovimentada = { station_name: string, count: number }
+type DadosPartidaPorHora = { hora: number, total: number }
+type DadosDuracaoMediaParada = { station_name: string, avg_stop_seconds: number }
+
 export const useTrensHolandeses = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -44,7 +49,7 @@ export const useTrensHolandeses = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoTipo = (data: any[]) => {
+  const configurarGraficoTipo = (data: DadosPorTipoServico[]) => {
     opcaoTipo.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -55,7 +60,7 @@ export const useTrensHolandeses = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.type, value: d.total })),
+          data: data.map(d => ({ name: d.type, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -63,9 +68,9 @@ export const useTrensHolandeses = () => {
     }
   }
 
-  const configurarGraficoEstacoesMovimentadas = (data: any[]) => {
-    const stationLabels = (data as any[]).map(d => d.station_name)
-    const stationValues = (data as any[]).map(d => d.count)
+  const configurarGraficoEstacoesMovimentadas = (data: DadosEstacaoMovimentada[]) => {
+    const stationLabels = data.map(d => d.station_name)
+    const stationValues = data.map(d => d.count)
     opcaoEstacoesMovimentadas.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
@@ -75,9 +80,9 @@ export const useTrensHolandeses = () => {
     }
   }
 
-  const configurarGraficoPartidasPorHora = (data: any[]) => {
-    const hourLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const hourValues = (data as any[]).map(d => d.total)
+  const configurarGraficoPartidasPorHora = (data: DadosPartidaPorHora[]) => {
+    const hourLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
+    const hourValues = data.map(d => d.total)
     configuracaoGraficoPartidasPorHora.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },
@@ -98,9 +103,9 @@ export const useTrensHolandeses = () => {
     }
   }
 
-  const configurarGraficoDuracaoMediaParada = (data: any[]) => {
-    const stopLabels = (data as any[]).map(d => d.station_name)
-    const stopValues = (data as any[]).map(d => d.avg_stop_seconds)
+  const configurarGraficoDuracaoMediaParada = (data: DadosDuracaoMediaParada[]) => {
+    const stopLabels = data.map(d => d.station_name)
+    const stopValues = data.map(d => d.avg_stop_seconds)
     configuracaoGraficoDuracaoMediaParada.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],

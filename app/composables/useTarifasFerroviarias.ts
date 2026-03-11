@@ -16,6 +16,17 @@ const configuracaoGrafico = {
   tooltip: { trigger: 'axis' as const }
 }
 
+type DadosDistribuicaoTarifa = { count: number, price_bucket: number }
+type DadosRotaCara = { route: string, price: number }
+type DadosEstacaoConectada = { station: string, appearances: number }
+type DadosConexaoChord = { src: string, dst: string, total: number, preco_medio: number }
+type ParametroTooltipChord = {
+  dataType: string
+  data: { source?: string, target?: string, value?: number, preco_medio?: number }
+  name?: string
+  value?: number
+}
+
 export const useTarifasFerroviarias = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -42,10 +53,9 @@ export const useTarifasFerroviarias = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoDistribuicaoPreco = (data: any[]) => {
-    const rows = data as { count: number, price_bucket: number }[]
-    const labels = rows.map(d => `€${d.price_bucket}`)
-    const values = rows.map(d => d.count)
+  const configurarGraficoDistribuicaoPreco = (data: DadosDistribuicaoTarifa[]) => {
+    const labels = data.map(d => `€${d.price_bucket}`)
+    const values = data.map(d => d.count)
     opcaoDistribuicaoPreco.value = {
       ...configuracaoGrafico,
       color: [COR_PRIMARIA],
@@ -59,10 +69,9 @@ export const useTarifasFerroviarias = () => {
     }
   }
 
-  const configurarGraficoRotasCaras = (data: any[]) => {
-    const rows = data as { route: string, price: number }[]
-    const routes = rows.map(d => d.route)
-    const prices = rows.map(d => d.price)
+  const configurarGraficoRotasCaras = (data: DadosRotaCara[]) => {
+    const routes = data.map(d => d.route)
+    const prices = data.map(d => d.price)
     opcaoRotasCaras.value = {
       ...configuracaoGrafico,
       grid: { ...configuracaoGrafico.grid, left: 80 },
@@ -73,10 +82,9 @@ export const useTarifasFerroviarias = () => {
     }
   }
 
-  const configurarGraficoEstacoesConectadas = (data: any[]) => {
-    const rows = data as { station: string, appearances: number }[]
-    const stations = rows.map(d => d.station)
-    const appearances = rows.map(d => d.appearances)
+  const configurarGraficoEstacoesConectadas = (data: DadosEstacaoConectada[]) => {
+    const stations = data.map(d => d.station)
+    const appearances = data.map(d => d.appearances)
     configuracaoGraficoEstacoesConectadas.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
@@ -90,10 +98,9 @@ export const useTarifasFerroviarias = () => {
     }
   }
 
-  const configurarGraficoChord = (data: any[]) => {
-    const rows = data as { src: string, dst: string, total: number, preco_medio: number }[]
+  const configurarGraficoChord = (data: DadosConexaoChord[]) => {
     const nodesSet = new Set<string>()
-    rows.forEach((d) => {
+    data.forEach((d) => {
       nodesSet.add(d.src)
       nodesSet.add(d.dst)
     })
@@ -102,7 +109,7 @@ export const useTarifasFerroviarias = () => {
       backgroundColor: 'transparent',
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => {
+        formatter: (p: ParametroTooltipChord) => {
           if (p.dataType === 'edge') {
             return `${p.data.source} ↔ ${p.data.target}<br/>${p.data.value} rotas · €${p.data.preco_medio} médio`
           }
@@ -115,7 +122,7 @@ export const useTarifasFerroviarias = () => {
         center: ['50%', '50%'],
         label: { fontSize: 10 },
         nodes,
-        edges: rows.map(d => ({
+        edges: data.map(d => ({
           source: d.src,
           target: d.dst,
           value: d.total,

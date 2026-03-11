@@ -12,7 +12,7 @@ const {
 } = useDuckDb()
 
 const ultimoDatasetCarregado = ref<string | null>(null)
-const registros = ref<any[]>([])
+const registros = ref<Record<string, unknown>[]>([])
 const quantidadeTotalRegistros = ref(0)
 const paginaAtual = ref(1)
 const datasetSelecionado = ref<DatasetParquet | undefined>()
@@ -70,7 +70,7 @@ onMounted(init)
           :loading="estahCarregando"
           @carregar="() => {
             // quantidadeTotalRegistros = 0;
-            executarConsulta(1);
+            executarConsulta(1)
           }"
         />
         <Paginador
@@ -78,8 +78,7 @@ onMounted(init)
           v-model:page="paginaAtual"
           :disabled="estahCarregando || !datasetSelecionado"
           :total="quantidadeTotalRegistros"
-          @consultar-pagina="(numeroPagina: number) =>
-            executarConsulta(numeroPagina, duckDBItensPorPagina)"
+          @consultar-pagina="executarConsulta"
         />
       </div>
     </template>

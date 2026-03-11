@@ -7,6 +7,27 @@ interface Kpis {
   periodo_fim: string
 }
 
+interface DadosTarifa {
+  tarifa: string
+  total: number
+}
+interface DadosPagamento {
+  pagamento: string
+  total: number
+}
+interface DadosDuracao {
+  faixa_min: number
+  total: number
+}
+interface DadosGorjeta {
+  faixa: string
+  total: number
+}
+interface DadosHora {
+  hora: number
+  total: number
+}
+
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
 const COR_TERCIARIA = '#f59e0b'
@@ -47,7 +68,7 @@ export const useTaxiNYCAbril2019 = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoTarifa = (data: any[]) => {
+  const configurarGraficoTarifa = (data: DadosTarifa[]) => {
     opcaoTarifa.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -58,7 +79,7 @@ export const useTaxiNYCAbril2019 = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.tarifa, value: d.total })),
+          data: data.map(d => ({ name: d.tarifa, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -66,7 +87,7 @@ export const useTaxiNYCAbril2019 = () => {
     }
   }
 
-  const configurarGraficoPagamento = (data: any[]) => {
+  const configurarGraficoPagamento = (data: DadosPagamento[]) => {
     opcaoPagamento.value = {
       backgroundColor: 'transparent',
       color: PALETA,
@@ -77,7 +98,7 @@ export const useTaxiNYCAbril2019 = () => {
           type: 'pie',
           radius: ['42%', '70%'],
           center: ['50%', '42%'],
-          data: (data as any[]).map(d => ({ name: d.pagamento, value: d.total })),
+          data: data.map(d => ({ name: d.pagamento, value: d.total })),
           label: { show: false },
           emphasis: { label: { show: true, fontWeight: 'bold' } }
         }
@@ -85,9 +106,9 @@ export const useTaxiNYCAbril2019 = () => {
     }
   }
 
-  const configurarGraficoDuracao = (data: any[]) => {
-    const durLabels = (data as any[]).map(d => `${d.faixa_min}min`)
-    const durValues = (data as any[]).map(d => d.total)
+  const configurarGraficoDuracao = (data: DadosDuracao[]) => {
+    const durLabels = data.map(d => `${d.faixa_min}min`)
+    const durValues = data.map(d => d.total)
     configuracaoGraficoDuracao.value = {
       ...configuracaoGrafico,
       color: [COR_SECUNDARIA],
@@ -97,9 +118,9 @@ export const useTaxiNYCAbril2019 = () => {
     }
   }
 
-  const configurarGraficoGorjeta = (data: any[]) => {
-    const gorjLabels = (data as any[]).map(d => `$${d.faixa}`)
-    const gorjValues = (data as any[]).map(d => d.total)
+  const configurarGraficoGorjeta = (data: DadosGorjeta[]) => {
+    const gorjLabels = data.map(d => `$${d.faixa}`)
+    const gorjValues = data.map(d => d.total)
     configuracaoGraficoGorjeta.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],
@@ -109,13 +130,13 @@ export const useTaxiNYCAbril2019 = () => {
     }
   }
 
-  const configurarGraficoHora = (data: any[]) => {
+  const configurarGraficoHora = (data: DadosHora[]) => {
     if (!data || data.length === 0) {
       configuracaoGraficoHora.value = {}
       return
     }
-    const horaLabels = (data as any[]).map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const horaValues = (data as any[]).map(d => d.total)
+    const horaLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
+    const horaValues = data.map(d => d.total)
     configuracaoGraficoHora.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 48, left: 64 },

@@ -1,4 +1,4 @@
-const db = shallowRef<any>(null)
+const db = shallowRef<unknown>(null)
 const estahCarregando = ref(false)
 const duckDBWasmInfo = ref('...')
 const parquetsRegistrados = new Set<string>()
@@ -17,11 +17,11 @@ export const useDuckDb = () => {
     const conn = await db.value!.connect()
 
     try {
-      const resultado: any[] = []
+      const resultado: Record<string, unknown>[] = []
       const stream = await conn.send(sql)
       for await (const batch of stream) {
         resultado.push(
-          ...batch.toArray().map((row: any) => sanitizeRow(row.toJSON()))
+          ...batch.toArray().map((row: { toJSON: () => Record<string, unknown> }) => sanitizeRow(row.toJSON()))
         )
       }
       return resultado
@@ -81,7 +81,6 @@ export const useDuckDb = () => {
         console.info('Cache API falhou (arquivo muito grande) — tentar OPFS')
 
         try {
-          debugger
           const root = await navigator.storage.getDirectory()
           const handle = await root.getFileHandle(nomeArquivo, {
             create: true
@@ -110,7 +109,7 @@ export const useDuckDb = () => {
     pagina: number = 1,
     itensPorPagina: number = duckDBItensPorPagina
   ) => {
-    const registros: any[] = await executar(
+    const registros: Record<string, unknown>[] = await executar(
       selectDadosSimples(pagina, itensPorPagina)
     )
     return registros
@@ -130,7 +129,7 @@ export const useDuckDb = () => {
   ) => {
     if (!url) return []
     const nomeArquivo = await registrarParquet(url)
-    const registros: any[] = await executar(
+    const registros: Record<string, unknown>[] = await executar(
       selectDadosParquet(nomeArquivo, pagina, itensPorPagina)
     )
 

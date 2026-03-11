@@ -21,6 +21,13 @@ const configuracaoGrafico = {
 
 const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
+type DadosPrecoMensal = { mes: number, preco_medio: number, preco_max: number, preco_min: number }
+type DadosPrecoHorario = { hora: number, preco_medio: number }
+type DadosPrecoSemanal = { semana: string, preco_medio: number, preco_max: number }
+type DadosDistribuicaoPreco = { faixa_inicio: number, total: number }
+type DadosCalendario = { dia: string, preco_medio: number }
+type ParametroTooltipCalendario = { value: [string, number] }
+
 export const useEletricidadeFinlandia = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -50,9 +57,8 @@ export const useEletricidadeFinlandia = () => {
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoMensal = (data: any[]) => {
-    const rows = data as any[]
-    const labels = rows.map(d => MESES[(d.mes as number) - 1])
+  const configurarGraficoMensal = (data: DadosPrecoMensal[]) => {
+    const labels = data.map(d => MESES[d.mes - 1])
     configuracaoGraficoMensal.value = {
       ...configuracaoGrafico,
       legend: { top: 4, textStyle: { fontSize: 10 } },
@@ -62,20 +68,20 @@ export const useEletricidadeFinlandia = () => {
         {
           type: 'bar',
           name: 'Médio',
-          data: rows.map(d => d.preco_medio),
+          data: data.map(d => d.preco_medio),
           itemStyle: { color: COR_PRIMARIA }
         },
         {
           type: 'line',
           name: 'Máximo',
-          data: rows.map(d => d.preco_max),
+          data: data.map(d => d.preco_max),
           itemStyle: { color: COR_TERCIARIA },
           lineStyle: { width: 2 }
         },
         {
           type: 'line',
           name: 'Mínimo',
-          data: rows.map(d => d.preco_min),
+          data: data.map(d => d.preco_min),
           itemStyle: { color: COR_SECUNDARIA },
           lineStyle: { width: 2 }
         }
@@ -83,14 +89,13 @@ export const useEletricidadeFinlandia = () => {
     }
   }
 
-  const configurarGraficoHoraria = (data: any[]) => {
-    const rows = data as any[]
+  const configurarGraficoHoraria = (data: DadosPrecoHorario[]) => {
     configuracaoGraficoHoraria.value = {
       ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
       xAxis: {
         type: 'category',
-        data: rows.map(d => `${String(d.hora as number).padStart(2, '0')}h`),
+        data: data.map(d => `${String(d.hora).padStart(2, '0')}h`),
         axisLabel: { fontSize: 10 }
       },
       yAxis: {
@@ -99,12 +104,11 @@ export const useEletricidadeFinlandia = () => {
         name: '€/MWh',
         nameTextStyle: { fontSize: 10 }
       },
-      series: [{ type: 'bar', data: rows.map(d => d.preco_medio), name: 'Preço Médio' }]
+      series: [{ type: 'bar', data: data.map(d => d.preco_medio), name: 'Preço Médio' }]
     }
   }
 
-  const configurarGraficoSemanal = (data: any[]) => {
-    const rows = data as any[]
+  const configurarGraficoSemanal = (data: DadosPrecoSemanal[]) => {
     configuracaoGraficoSemanal.value = {
       backgroundColor: 'transparent',
       grid: { top: 40, right: 16, bottom: 32, left: 64 },
@@ -112,7 +116,7 @@ export const useEletricidadeFinlandia = () => {
       tooltip: { trigger: 'axis' as const },
       xAxis: {
         type: 'category',
-        data: rows.map(d => d.semana),
+        data: data.map(d => d.semana),
         axisLabel: { fontSize: 8, rotate: 45, interval: 3 }
       },
       yAxis: {
@@ -125,7 +129,7 @@ export const useEletricidadeFinlandia = () => {
         {
           type: 'line',
           name: 'Médio',
-          data: rows.map(d => d.preco_medio),
+          data: data.map(d => d.preco_medio),
           smooth: true,
           itemStyle: { color: COR_PRIMARIA },
           lineStyle: { width: 2 },
@@ -134,7 +138,7 @@ export const useEletricidadeFinlandia = () => {
         {
           type: 'line',
           name: 'Máximo',
-          data: rows.map(d => d.preco_max),
+          data: data.map(d => d.preco_max),
           smooth: true,
           itemStyle: { color: COR_TERCIARIA },
           lineStyle: { width: 1.5, type: 'dashed' as const }
@@ -143,32 +147,30 @@ export const useEletricidadeFinlandia = () => {
     }
   }
 
-  const configurarGraficoDistribuicao = (data: any[]) => {
-    const rows = data as any[]
+  const configurarGraficoDistribuicao = (data: DadosDistribuicaoPreco[]) => {
     configuracaoGraficoDistribuicao.value = {
       ...configuracaoGrafico,
       grid: { top: 16, right: 16, bottom: 56, left: 64 },
       color: [COR_SECUNDARIA],
       xAxis: {
         type: 'category',
-        data: rows.map(d => `${d.faixa_inicio}–${(d.faixa_inicio as number) + 20}`),
+        data: data.map(d => `${d.faixa_inicio}–${d.faixa_inicio + 20}`),
         axisLabel: { fontSize: 10, rotate: 45 }
       },
       yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: rows.map(d => d.total), name: 'Horas' }]
+      series: [{ type: 'bar', data: data.map(d => d.total), name: 'Horas' }]
     }
   }
 
-  const configurarGraficoCalendario = (data: any[]) => {
-    const rows = data as { dia: string, preco_medio: number }[]
-    const valores = rows.map(d => d.preco_medio)
+  const configurarGraficoCalendario = (data: DadosCalendario[]) => {
+    const valores = data.map(d => d.preco_medio)
     const minVal = Math.min(...valores)
     const maxVal = Math.max(...valores)
     configuracaoGraficoCalendario.value = {
       backgroundColor: 'transparent',
       tooltip: {
         trigger: 'item',
-        formatter: (p: any) => `${p.value[0]}<br/>€${p.value[1]}/MWh`
+        formatter: (p: ParametroTooltipCalendario) => `${p.value[0]}<br/>€${p.value[1]}/MWh`
       },
       visualMap: {
         min: minVal,
@@ -197,7 +199,7 @@ export const useEletricidadeFinlandia = () => {
       series: [{
         type: 'heatmap',
         coordinateSystem: 'calendar',
-        data: rows.map(d => [d.dia, d.preco_medio])
+        data: data.map(d => [d.dia, d.preco_medio])
       }]
     }
   }
