@@ -1,7 +1,9 @@
+import type { Ref, ShallowRef } from 'vue'
+import type { InstanciaDuckDBWasm } from '~/types/duckdb.types'
 import { duckDBLogLevelWARNING } from './duckdb.constantes'
 
 export const duckDBWasmIniciar = (
-  db: ShallowRef<unknown>,
+  db: ShallowRef<InstanciaDuckDBWasm | null>,
   estahCarregando: Ref<boolean>,
   duckDBWasmInfo: Ref<string>
 ) => {
@@ -52,7 +54,9 @@ export const duckDBWasmIniciar = (
       const _db = new duckdb.AsyncDuckDB(logger, worker)
 
       await _db.instantiate(bundle.mainModule, pthreadWorkerUrl)
-      db.value = _db
+      // Cast necessário: AsyncDuckDB do pacote usa assinaturas genéricas (ex.: send<T>)
+      // incompatíveis estruturalmente com InstanciaDuckDBWasm, mas implementa todos os métodos.
+      db.value = _db as unknown as InstanciaDuckDBWasm
 
       const _conn = await _db.connect()
       // await _conn.close();
@@ -69,9 +73,9 @@ export const duckDBWasmIniciar = (
   }
 }
 
-export const duckDBWasmEncerrar = async (db: ShallowRef<unknown>) => {
-  if (typeof db.value?.close === 'function') {
-    await db.value.close()
+export const duckDBWasmEncerrar = async (db: ShallowRef<InstanciaDuckDBWasm | null>) => {
+  if (typeof db.value?.terminate === 'function') {
+    await db.value.terminate()
     console.info('Conexão encerrada.')
   }
 }
