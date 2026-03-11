@@ -10,6 +10,7 @@ export default defineConfig<ConfigOptions>({
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
   use: {
+    headless: !!process.env.CI,
     trace: "on-first-retry",
     nuxt: {
       rootDir: fileURLToPath(new URL(".", import.meta.url)),
