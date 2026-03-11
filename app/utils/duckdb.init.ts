@@ -74,6 +74,7 @@ export const duckDBWasmIniciar = (
 export const duckDBWasmEncerrar = async (db: ShallowRef<AsyncDuckDB | null>) => {
   if (db.value) {
     await db.value.terminate()
+    db.value = null
     console.info('Conexão encerrada.')
   }
 }
