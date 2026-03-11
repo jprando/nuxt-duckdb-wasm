@@ -1,77 +1,18 @@
-interface Kpis extends Record<string, unknown> {
-  total_voos: number
-  distancia_media: number
-  atraso_medio_partida: number
-  atraso_medio_chegada: number
-  taxa_cancelamento: number
-  pct_pontuais: number
-}
-
-interface LinhaContagemPorCompanhia extends Record<string, unknown> {
-  carrier: string
-  total: number
-}
-
-interface LinhaContagemPorStatus extends Record<string, unknown> {
-  status: string
-  total: number
-}
-
-interface LinhaAtrasoPorDiaSemana extends Record<string, unknown> {
-  dayofweek: number
-  atraso_medio: number | null
-}
-
-interface LinhaContagemMensal extends Record<string, unknown> {
-  month: number
-  total: number
-}
-
-interface LinhaContagemPorFaixaAtraso extends Record<string, unknown> {
-  faixa_min: number
-  total: number
-}
-
-interface LinhaContagemPorGrupoDistancia extends Record<string, unknown> {
-  distancegroup: number
-  total: number
-}
-
-interface LinhaContagemPorAeroportoOrigem extends Record<string, unknown> {
-  origin: string
-  total: number
-}
-
-interface LinhaTaxaCancelamentoPorCompanhia extends Record<string, unknown> {
-  carrier: string
-  taxa_cancelamento: number
-}
-
-interface LinhaAtrasoPorHoraPartida extends Record<string, unknown> {
-  hora: number
-  atraso_medio: number | null
-}
-
-interface LinhaRadarCompanhia extends Record<string, unknown> {
-  carrier: string
-  atraso_medio: number | null
-  distancia_media: number | null
-  pct_cancelado: number | null
-  pct_pontual: number | null
-}
-
-interface LinhaSankeyCompanhiaStatus extends Record<string, unknown> {
-  companhia: string
-  status: string
-  total: number
-}
-
-interface ParametroTooltipSankey {
-  dataType: string
-  data: { source?: string, target?: string, value?: number }
-  name?: string
-  value?: number
-}
+import type {
+  KpisPontualidadeVoos,
+  LinhaAtrasoPorDiaSemana,
+  LinhaAtrasoPorHoraPartida,
+  LinhaContagemMensal,
+  LinhaContagemPorAeroportoOrigem,
+  LinhaContagemPorCompanhia,
+  LinhaContagemPorFaixaAtraso,
+  LinhaContagemPorGrupoDistancia,
+  LinhaContagemPorStatus,
+  LinhaRadarCompanhia,
+  LinhaSankeyCompanhiaStatus,
+  LinhaTaxaCancelamentoPorCompanhia,
+  ParametroTooltipSankey
+} from '~/types/pontualidade-voos.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -110,7 +51,7 @@ export const usePontualidadeVoos = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisPontualidadeVoos>({
     total_voos: 0,
     distancia_media: 0,
     atraso_medio_partida: 0,
@@ -407,7 +348,7 @@ export const usePontualidadeVoos = () => {
 
     executar(ontimeKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        if (kpisData) kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisPontualidadeVoos
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`

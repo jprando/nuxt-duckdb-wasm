@@ -1,6 +1,4 @@
-import type { AsyncDuckDB } from '@duckdb/duckdb-wasm'
-
-const db = shallowRef<AsyncDuckDB | null>(null)
+const db = shallowRef<unknown>(null)
 const estahCarregando = ref(false)
 const duckDBWasmInfo = ref('...')
 const parquetsRegistrados = new Set<string>()
@@ -118,10 +116,10 @@ export const useDuckDb = () => {
   }
 
   const obterDadosSimplesQuantidade = async () => {
-    const resultado = await executar(
+    const [quantidade]: [{ total?: number }] = await executar(
       'FROM range(10_000) SELECT COUNT() AS total WHERE range % 2 = 0'
     )
-    return (resultado[0] as { total?: number } | undefined)?.total ?? 0
+    return quantidade?.total ?? 0
   }
 
   const obterDadosParquet = async (
@@ -142,11 +140,11 @@ export const useDuckDb = () => {
     if (!url) return 0
 
     const nomeArquivo = await registrarParquet(url)
-    const resultado = await executar(
+    const [quantidade]: [{ total?: number }] = await executar(
       `FROM '${nomeArquivo}' SELECT COUNT() AS total`
     )
 
-    return (resultado[0] as { total?: number } | undefined)?.total ?? 0
+    return quantidade?.total ?? 0
   }
 
   return {

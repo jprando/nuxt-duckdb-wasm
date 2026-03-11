@@ -1,9 +1,11 @@
-interface Kpis {
-  total_lines: number
-  total_plays: number
-  total_speakers: number
-  avg_words_per_line: number
-}
+import type {
+  DadosPorAto,
+  DadosPorComprimento,
+  DadosPorElenco,
+  DadosPorPeca,
+  DadosPorPersonagem,
+  KpisShakespeare
+} from '~/types/shakespeare.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -25,12 +27,6 @@ const configuracaoGrafico = {
 }
 // grid: { top: 16, right: 24, bottom: 8, left: 8 },
 
-type DadosPorPeca = { peca: string, total: number }
-type DadosPorPersonagem = { personagem: string, total: number }
-type DadosPorAto = { ato: string, total: number }
-type DadosPorElenco = { peca: string, personagens: number }
-type DadosPorComprimento = { faixa: number, total: number }
-
 export const useShakespeare = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -42,7 +38,7 @@ export const useShakespeare = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisShakespeare>({
     total_lines: 0,
     total_plays: 0,
     total_speakers: 0,
@@ -172,7 +168,7 @@ export const useShakespeare = () => {
 
     executar(shakespeareKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as unknown as Kpis
+        if (kpisData) kpis.value = kpisData as KpisShakespeare
       }).catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
         console.error(e)
@@ -181,14 +177,14 @@ export const useShakespeare = () => {
         carregandoKpis.value = false
       })
 
-    executar(shakespearePecasConsulta(nomeArquivo)).then(data => configurarGraficoPecas(data as DadosPorPeca[]))
-    executar(shakespearePersonagensConsulta(nomeArquivo)).then(data =>
-      configurarGraficoPersonagens(data as DadosPorPersonagem[])
+    executar(shakespearePecasConsulta(nomeArquivo)).then(dados => configurarGraficoPecas(dados as DadosPorPeca[]))
+    executar(shakespearePersonagensConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPersonagens(dados as DadosPorPersonagem[])
     )
-    executar(shakespeareAtoConsulta(nomeArquivo)).then(data => configurarGraficoAto(data as DadosPorAto[]))
-    executar(shakespeareElencoConsulta(nomeArquivo)).then(data => configurarGraficoElenco(data as DadosPorElenco[]))
-    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(data =>
-      configurarGraficoComprimento(data as DadosPorComprimento[])
+    executar(shakespeareAtoConsulta(nomeArquivo)).then(dados => configurarGraficoAto(dados as DadosPorAto[]))
+    executar(shakespeareElencoConsulta(nomeArquivo)).then(dados => configurarGraficoElenco(dados as DadosPorElenco[]))
+    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoComprimento(dados as DadosPorComprimento[])
     )
   }
 
