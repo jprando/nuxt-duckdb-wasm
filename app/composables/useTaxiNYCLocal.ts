@@ -1,32 +1,11 @@
-interface Kpis {
-  total_trips: number
-  avg_distance: number
-  avg_amount: number
-  total_revenue: number
-  periodo_inicio: string
-  periodo_fim: string
-}
-
-interface DadosVendor {
-  vendor: string
-  total: number
-}
-interface DadosPassageiros {
-  passageiros: number
-  total: number
-}
-interface DadosDistancia {
-  milhas: number
-  total: number
-}
-interface DadosValor {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+import type {
+  KpisTaxiNYCLocal,
+  DadosVendor,
+  DadosPassageiros,
+  DadosDistancia,
+  DadosValor,
+  DadosHora
+} from '~/types/taxi-nyc-local.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -51,7 +30,7 @@ export const useTaxiNYCLocal = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTaxiNYCLocal>({
     total_trips: 0,
     avg_distance: 0,
     avg_amount: 0,
@@ -161,7 +140,7 @@ export const useTaxiNYCLocal = () => {
 
     executar(localNYCTaxiKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTaxiNYCLocal
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -171,12 +150,12 @@ export const useTaxiNYCLocal = () => {
         carregandoKpis.value = false
       })
 
-    executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(configurarGraficoVendor)
-    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(configurarGraficoPassageiros)
-    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(configurarGraficoDistancia)
-    executar(localNYCTaxiValorConsulta(nomeArquivo)).then(configurarGraficoValor)
+    executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(dados => configurarGraficoVendor(dados as DadosVendor[]))
+    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(dados => configurarGraficoPassageiros(dados as DadosPassageiros[]))
+    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(dados => configurarGraficoDistancia(dados as DadosDistancia[]))
+    executar(localNYCTaxiValorConsulta(nomeArquivo)).then(dados => configurarGraficoValor(dados as DadosValor[]))
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

@@ -1,10 +1,10 @@
-interface Kpis {
-  total_services: number
-  total_stations: number
-  total_trains: number
-  periodo_inicio: string
-  periodo_fim: string
-}
+import type {
+  KpisTrensHolandeses,
+  DadosPorTipoServico,
+  DadosEstacaoMovimentada,
+  DadosPartidaPorHora,
+  DadosDuracaoMediaParada
+} from '~/types/trens-holandeses.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -18,11 +18,6 @@ const configuracaoGrafico = {
   tooltip: { trigger: 'axis' as const }
 }
 
-type DadosPorTipoServico = { type: string, total: number }
-type DadosEstacaoMovimentada = { station_name: string, count: number }
-type DadosPartidaPorHora = { hora: number, total: number }
-type DadosDuracaoMediaParada = { station_name: string, avg_stop_seconds: number }
-
 export const useTrensHolandeses = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -34,7 +29,7 @@ export const useTrensHolandeses = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTrensHolandeses>({
     total_services: 0,
     total_stations: 0,
     total_trains: 0,
@@ -126,7 +121,7 @@ export const useTrensHolandeses = () => {
 
     executar(dutchTrainServicesKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTrensHolandeses
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -136,10 +131,10 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false
       })
 
-    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(configurarGraficoTipo)
-    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(configurarGraficoEstacoesMovimentadas)
-    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(configurarGraficoPartidasPorHora)
-    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(configurarGraficoDuracaoMediaParada)
+    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(dados => configurarGraficoTipo(dados as DadosPorTipoServico[]))
+    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(dados => configurarGraficoEstacoesMovimentadas(dados as DadosEstacaoMovimentada[]))
+    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(dados => configurarGraficoPartidasPorHora(dados as DadosPartidaPorHora[]))
+    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(dados => configurarGraficoDuracaoMediaParada(dados as DadosDuracaoMediaParada[]))
   }
 
   onMounted(async () => {

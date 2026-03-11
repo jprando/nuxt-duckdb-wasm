@@ -2,6 +2,8 @@
   setup
   lang="ts"
 >
+import type { DatasetParquet, ItemSeletorDataset } from '~/types/duckdb.types'
+
 const datasetSelecionado = defineModel<DatasetParquet | undefined>(
   'datasetSelecionado'
 )
@@ -14,11 +16,6 @@ const emit = defineEmits<{
   carregar: []
 }>()
 
-type ItemSeletor = DatasetParquet | {
-  type: 'label' | 'separator'
-  label?: string
-}
-
 const itensAgrupados = computed(() => {
   const grupos = new Map<string, DatasetParquet[]>()
   for (const ds of datasetsParquet) {
@@ -26,7 +23,7 @@ const itensAgrupados = computed(() => {
     lista.push(ds)
     grupos.set(ds.grupo, lista)
   }
-  const items: ItemSeletor[] = []
+  const items: ItemSeletorDataset[] = []
   for (const [nome, lista] of grupos) {
     if (items.length) items.push({ type: 'separator' })
     items.push({ type: 'label', label: nome })

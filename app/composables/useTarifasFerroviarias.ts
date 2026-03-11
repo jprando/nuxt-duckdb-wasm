@@ -1,10 +1,11 @@
-interface Kpis {
-  total_routes: number
-  total_stations: number
-  avg_price: number
-  min_price: number
-  max_price: number
-}
+import type {
+  KpisTarifasFerroviarias,
+  DadosDistribuicaoTarifa,
+  DadosRotaCara,
+  DadosEstacaoConectada,
+  DadosConexaoChord,
+  ParametroTooltipChord
+} from '~/types/tarifas-ferroviarias.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -14,17 +15,6 @@ const configuracaoGrafico = {
   backgroundColor: 'transparent',
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
   tooltip: { trigger: 'axis' as const }
-}
-
-type DadosDistribuicaoTarifa = { count: number, price_bucket: number }
-type DadosRotaCara = { route: string, price: number }
-type DadosEstacaoConectada = { station: string, appearances: number }
-type DadosConexaoChord = { src: string, dst: string, total: number, preco_medio: number }
-type ParametroTooltipChord = {
-  dataType: string
-  data: { source?: string, target?: string, value?: number, preco_medio?: number }
-  name?: string
-  value?: number
 }
 
 export const useTarifasFerroviarias = () => {
@@ -38,7 +28,7 @@ export const useTarifasFerroviarias = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTarifasFerroviarias>({
     total_routes: 0,
     total_stations: 0,
     avg_price: 0,
@@ -143,7 +133,7 @@ export const useTarifasFerroviarias = () => {
 
     executar(railwayFaresKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTarifasFerroviarias
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -153,10 +143,10 @@ export const useTarifasFerroviarias = () => {
         carregandoKpis.value = false
       })
 
-    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(configurarGraficoDistribuicaoPreco)
-    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(configurarGraficoRotasCaras)
-    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(configurarGraficoEstacoesConectadas)
-    executar(railwayFaresChordConsulta(nomeArquivo)).then(configurarGraficoChord)
+    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(dados => configurarGraficoDistribuicaoPreco(dados as DadosDistribuicaoTarifa[]))
+    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(dados => configurarGraficoRotasCaras(dados as DadosRotaCara[]))
+    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(dados => configurarGraficoEstacoesConectadas(dados as DadosEstacaoConectada[]))
+    executar(railwayFaresChordConsulta(nomeArquivo)).then(dados => configurarGraficoChord(dados as DadosConexaoChord[]))
   }
 
   onMounted(async () => {

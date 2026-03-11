@@ -1,32 +1,11 @@
-interface Kpis {
-  total_trips: number
-  avg_duration_min: number
-  avg_tip: number
-  total_revenue: number
-  periodo_inicio: string
-  periodo_fim: string
-}
-
-interface DadosVendor {
-  vendor: string
-  total: number
-}
-interface DadosPagamento {
-  pagamento: string
-  total: number
-}
-interface DadosDistancia {
-  milhas: number
-  total: number
-}
-interface DadosGorjeta {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+import type {
+  KpisTaxiNYCJaneiro2010,
+  DadosVendor,
+  DadosPagamento,
+  DadosDistancia,
+  DadosGorjeta,
+  DadosHora
+} from '~/types/taxi-nyc-janeiro-2010.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -51,7 +30,7 @@ export const useTaxiNYCJaneiro2010 = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTaxiNYCJaneiro2010>({
     total_trips: 0,
     avg_duration_min: 0,
     avg_tip: 0,
@@ -168,7 +147,7 @@ export const useTaxiNYCJaneiro2010 = () => {
 
     executar(nycTaxi2010JanKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTaxiNYCJaneiro2010
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -178,12 +157,12 @@ export const useTaxiNYCJaneiro2010 = () => {
         carregandoKpis.value = false
       })
 
-    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(configurarGraficoTarifa)
-    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(configurarGraficoPagamento)
-    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(configurarGraficoDuracao)
-    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(configurarGraficoGorjeta)
+    executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(dados => configurarGraficoTarifa(dados as DadosVendor[]))
+    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(dados => configurarGraficoPagamento(dados as DadosPagamento[]))
+    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(dados => configurarGraficoDuracao(dados as DadosDistancia[]))
+    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(dados => configurarGraficoGorjeta(dados as DadosGorjeta[]))
     executar(nycTaxi2010JanHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

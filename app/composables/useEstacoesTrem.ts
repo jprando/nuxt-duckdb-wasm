@@ -1,42 +1,12 @@
-interface Kpis extends Record<string, unknown> {
-  total_estacoes: number
-  total_paises: number
-  total_tipos: number
-  megaestacoes: number
-  estacoes_nl: number
-  estacoes_intercidade: number
-}
-
-interface LinhaContagemPorPais extends Record<string, unknown> {
-  country: string
-  total: number
-}
-
-interface LinhaContagemPorTipo extends Record<string, unknown> {
-  type: string
-  total: number
-}
-
-interface LinhaContagemPorCategoria extends Record<string, unknown> {
-  categoria: string
-  total: number
-}
-
-interface LinhaContagemPorFaixaLatitude extends Record<string, unknown> {
-  faixa_lat: string
-  total: number
-}
-
-interface LinhaContagemPorFaixaLongitude extends Record<string, unknown> {
-  faixa_lng: number
-  total: number
-}
-
-interface LinhaTipoPorPais extends Record<string, unknown> {
-  country: string
-  type: string
-  total: number
-}
+import type {
+  KpisEstacoesTrem,
+  LinhaContagemPorPais,
+  LinhaContagemPorTipo,
+  LinhaContagemPorCategoria,
+  LinhaContagemPorFaixaLatitude,
+  LinhaContagemPorFaixaLongitude,
+  LinhaTipoPorPais
+} from '~/types/estacoes-trem.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -61,7 +31,7 @@ export const useEstacoesTrem = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisEstacoesTrem>({
     total_estacoes: 0,
     total_paises: 0,
     total_tipos: 0,
@@ -217,7 +187,7 @@ export const useEstacoesTrem = () => {
 
     executar(estacoesTremKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        if (kpisData) kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisEstacoesTrem
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`

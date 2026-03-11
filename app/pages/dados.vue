@@ -2,6 +2,8 @@
   setup
   lang="ts"
 >
+import type { DatasetParquet } from '~/types/duckdb.types'
+
 const {
   init,
   estahCarregando,

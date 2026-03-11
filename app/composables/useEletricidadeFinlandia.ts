@@ -1,12 +1,12 @@
-interface Kpis {
-  total_registros: number
-  preco_medio: number
-  preco_minimo: number
-  preco_maximo: number
-  desvio_padrao: number
-  periodo_inicio: string
-  periodo_fim: string
-}
+import type {
+  KpisEletricidadeFinlandia,
+  DadosPrecoMensal,
+  DadosPrecoHorario,
+  DadosPrecoSemanal,
+  DadosDistribuicaoPreco,
+  DadosCalendario,
+  ParametroTooltipCalendario
+} from '~/types/eletricidade-finlandia.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -21,13 +21,6 @@ const configuracaoGrafico = {
 
 const MESES = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
-type DadosPrecoMensal = { mes: number, preco_medio: number, preco_max: number, preco_min: number }
-type DadosPrecoHorario = { hora: number, preco_medio: number }
-type DadosPrecoSemanal = { semana: string, preco_medio: number, preco_max: number }
-type DadosDistribuicaoPreco = { faixa_inicio: number, total: number }
-type DadosCalendario = { dia: string, preco_medio: number }
-type ParametroTooltipCalendario = { value: [string, number] }
-
 export const useEletricidadeFinlandia = () => {
   const { executar, init, registrarParquet } = useDuckDb()
   const colorMode = useColorMode()
@@ -39,7 +32,7 @@ export const useEletricidadeFinlandia = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisEletricidadeFinlandia>({
     total_registros: 0,
     preco_medio: 0,
     preco_minimo: 0,
@@ -215,7 +208,7 @@ export const useEletricidadeFinlandia = () => {
 
     executar(eletricidadeFinlandiaKpisConsulta(nomeArquivo))
       .then(([row]) => {
-        kpis.value = row as Kpis
+        if (row) kpis.value = row as KpisEletricidadeFinlandia
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -225,11 +218,11 @@ export const useEletricidadeFinlandia = () => {
         carregandoKpis.value = false
       })
 
-    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(configurarGraficoMensal)
-    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(configurarGraficoHoraria)
-    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(configurarGraficoSemanal)
-    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(configurarGraficoDistribuicao)
-    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(configurarGraficoCalendario)
+    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(dados => configurarGraficoMensal(dados as DadosPrecoMensal[]))
+    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(dados => configurarGraficoHoraria(dados as DadosPrecoHorario[]))
+    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(dados => configurarGraficoSemanal(dados as DadosPrecoSemanal[]))
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(dados => configurarGraficoDistribuicao(dados as DadosDistribuicaoPreco[]))
+    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(dados => configurarGraficoCalendario(dados as DadosCalendario[]))
   }
 
   onMounted(async () => {

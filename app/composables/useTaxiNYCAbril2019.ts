@@ -1,32 +1,11 @@
-interface Kpis {
-  total_trips: number
-  avg_duration_min: number
-  avg_tip: number
-  total_revenue: number
-  periodo_inicio: string
-  periodo_fim: string
-}
-
-interface DadosTarifa {
-  tarifa: string
-  total: number
-}
-interface DadosPagamento {
-  pagamento: string
-  total: number
-}
-interface DadosDuracao {
-  faixa_min: number
-  total: number
-}
-interface DadosGorjeta {
-  faixa: string
-  total: number
-}
-interface DadosHora {
-  hora: number
-  total: number
-}
+import type {
+  KpisTaxiNYCAbril2019,
+  DadosTarifa,
+  DadosPagamento,
+  DadosDuracao,
+  DadosGorjeta,
+  DadosHora
+} from '~/types/taxi-nyc-abril-2019.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -51,7 +30,7 @@ export const useTaxiNYCAbril2019 = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisTaxiNYCAbril2019>({
     total_trips: 0,
     avg_duration_min: 0,
     avg_tip: 0,
@@ -168,7 +147,7 @@ export const useTaxiNYCAbril2019 = () => {
 
     executar(nycTaxi2019AprKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis
+        if (kpisData) kpis.value = kpisData as KpisTaxiNYCAbril2019
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`
@@ -178,12 +157,12 @@ export const useTaxiNYCAbril2019 = () => {
         carregandoKpis.value = false
       })
 
-    executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(configurarGraficoTarifa)
-    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(configurarGraficoPagamento)
-    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(configurarGraficoDuracao)
-    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(configurarGraficoGorjeta)
+    executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(dados => configurarGraficoTarifa(dados as DadosTarifa[]))
+    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(dados => configurarGraficoPagamento(dados as DadosPagamento[]))
+    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(dados => configurarGraficoDuracao(dados as DadosDuracao[]))
+    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(dados => configurarGraficoGorjeta(dados as DadosGorjeta[]))
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))
-      .then(configurarGraficoHora)
+      .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
         configuracaoGraficoHora.value = {}
       })

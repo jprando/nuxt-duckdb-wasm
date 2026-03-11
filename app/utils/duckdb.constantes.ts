@@ -1,4 +1,6 @@
 // export const DUCKDB_VERSION = "1.32.0";
+import type { DatasetParquet } from '~/types/duckdb.types'
+
 export const duckDBDataProtocolHTTP = 4 // Protocolo HTTP para leitura de dados (vs. Fetch API ou File API)
 export const duckDBItensPorPagina = 50 // Quantidade de itens a exibir por página na paginação dos resultados
 export const duckDBLogLevelWARNING = 3 // Correspondente a LogLevel.WARNING em @duckdb/duckdb-wasm
@@ -64,12 +66,6 @@ export const [
   string,
   string
 ]
-
-export interface DatasetParquet {
-  label: string
-  url: string
-  grupo: string
-}
 
 export const datasetsParquet: DatasetParquet[] = [
   // Gerado em memória
