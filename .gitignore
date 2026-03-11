@@ -43,3 +43,4 @@ nuxtbin
 
 *.parquet
 .playwright-cli
+package-lock.json
