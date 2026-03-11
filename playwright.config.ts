@@ -17,8 +17,8 @@ export default defineConfig<ConfigOptions>({
   },
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
     },
   ],
 });
