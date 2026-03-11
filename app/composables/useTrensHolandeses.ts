@@ -1,9 +1,9 @@
 import type {
-  KpisTrensHolandeses,
-  DadosPorTipoServico,
+  DadosDuracaoMediaParada,
   DadosEstacaoMovimentada,
   DadosPartidaPorHora,
-  DadosDuracaoMediaParada
+  DadosPorTipoServico,
+  KpisTrensHolandeses
 } from '~/types/trens-holandeses.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -131,10 +131,18 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false
       })
 
-    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(dados => configurarGraficoTipo(dados as DadosPorTipoServico[]))
-    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(dados => configurarGraficoEstacoesMovimentadas(dados as DadosEstacaoMovimentada[]))
-    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(dados => configurarGraficoPartidasPorHora(dados as DadosPartidaPorHora[]))
-    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(dados => configurarGraficoDuracaoMediaParada(dados as DadosDuracaoMediaParada[]))
+    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoTipo(dados as DadosPorTipoServico[])
+    )
+    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoEstacoesMovimentadas(dados as DadosEstacaoMovimentada[])
+    )
+    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPartidasPorHora(dados as DadosPartidaPorHora[])
+    )
+    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDuracaoMediaParada(dados as DadosDuracaoMediaParada[])
+    )
   }
 
   onMounted(async () => {

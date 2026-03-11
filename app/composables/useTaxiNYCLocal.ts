@@ -1,10 +1,10 @@
 import type {
-  KpisTaxiNYCLocal,
-  DadosVendor,
-  DadosPassageiros,
   DadosDistancia,
+  DadosHora,
+  DadosPassageiros,
   DadosValor,
-  DadosHora
+  DadosVendor,
+  KpisTaxiNYCLocal
 } from '~/types/taxi-nyc-local.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -151,8 +151,12 @@ export const useTaxiNYCLocal = () => {
       })
 
     executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(dados => configurarGraficoVendor(dados as DadosVendor[]))
-    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(dados => configurarGraficoPassageiros(dados as DadosPassageiros[]))
-    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(dados => configurarGraficoDistancia(dados as DadosDistancia[]))
+    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPassageiros(dados as DadosPassageiros[])
+    )
+    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDistancia(dados as DadosDistancia[])
+    )
     executar(localNYCTaxiValorConsulta(nomeArquivo)).then(dados => configurarGraficoValor(dados as DadosValor[]))
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
       .then(dados => configurarGraficoHora(dados as DadosHora[]))

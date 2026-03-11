@@ -1,10 +1,10 @@
 import type {
-  KpisTaxiNYCAbril2019,
-  DadosTarifa,
-  DadosPagamento,
   DadosDuracao,
   DadosGorjeta,
-  DadosHora
+  DadosHora,
+  DadosPagamento,
+  DadosTarifa,
+  KpisTaxiNYCAbril2019
 } from '~/types/taxi-nyc-abril-2019.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -158,9 +158,15 @@ export const useTaxiNYCAbril2019 = () => {
       })
 
     executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(dados => configurarGraficoTarifa(dados as DadosTarifa[]))
-    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(dados => configurarGraficoPagamento(dados as DadosPagamento[]))
-    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(dados => configurarGraficoDuracao(dados as DadosDuracao[]))
-    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(dados => configurarGraficoGorjeta(dados as DadosGorjeta[]))
+    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPagamento(dados as DadosPagamento[])
+    )
+    executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDuracao(dados as DadosDuracao[])
+    )
+    executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoGorjeta(dados as DadosGorjeta[])
+    )
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))
       .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {

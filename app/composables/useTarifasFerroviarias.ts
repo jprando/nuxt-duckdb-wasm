@@ -1,9 +1,9 @@
 import type {
-  KpisTarifasFerroviarias,
-  DadosDistribuicaoTarifa,
-  DadosRotaCara,
-  DadosEstacaoConectada,
   DadosConexaoChord,
+  DadosDistribuicaoTarifa,
+  DadosEstacaoConectada,
+  DadosRotaCara,
+  KpisTarifasFerroviarias,
   ParametroTooltipChord
 } from '~/types/tarifas-ferroviarias.types'
 
@@ -143,9 +143,15 @@ export const useTarifasFerroviarias = () => {
         carregandoKpis.value = false
       })
 
-    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(dados => configurarGraficoDistribuicaoPreco(dados as DadosDistribuicaoTarifa[]))
-    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(dados => configurarGraficoRotasCaras(dados as DadosRotaCara[]))
-    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(dados => configurarGraficoEstacoesConectadas(dados as DadosEstacaoConectada[]))
+    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDistribuicaoPreco(dados as DadosDistribuicaoTarifa[])
+    )
+    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoRotasCaras(dados as DadosRotaCara[])
+    )
+    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoEstacoesConectadas(dados as DadosEstacaoConectada[])
+    )
     executar(railwayFaresChordConsulta(nomeArquivo)).then(dados => configurarGraficoChord(dados as DadosConexaoChord[]))
   }
 

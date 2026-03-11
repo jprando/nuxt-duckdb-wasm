@@ -1,16 +1,16 @@
 import type {
   KpisPontualidadeVoos,
-  LinhaContagemPorCompanhia,
-  LinhaContagemPorStatus,
   LinhaAtrasoPorDiaSemana,
+  LinhaAtrasoPorHoraPartida,
   LinhaContagemMensal,
+  LinhaContagemPorAeroportoOrigem,
+  LinhaContagemPorCompanhia,
   LinhaContagemPorFaixaAtraso,
   LinhaContagemPorGrupoDistancia,
-  LinhaContagemPorAeroportoOrigem,
-  LinhaTaxaCancelamentoPorCompanhia,
-  LinhaAtrasoPorHoraPartida,
+  LinhaContagemPorStatus,
   LinhaRadarCompanhia,
   LinhaSankeyCompanhiaStatus,
+  LinhaTaxaCancelamentoPorCompanhia,
   ParametroTooltipSankey
 } from '~/types/pontualidade-voos.types'
 

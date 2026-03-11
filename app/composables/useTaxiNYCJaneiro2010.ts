@@ -1,10 +1,10 @@
 import type {
-  KpisTaxiNYCJaneiro2010,
-  DadosVendor,
-  DadosPagamento,
   DadosDistancia,
   DadosGorjeta,
-  DadosHora
+  DadosHora,
+  DadosPagamento,
+  DadosVendor,
+  KpisTaxiNYCJaneiro2010
 } from '~/types/taxi-nyc-janeiro-2010.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -158,9 +158,15 @@ export const useTaxiNYCJaneiro2010 = () => {
       })
 
     executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(dados => configurarGraficoTarifa(dados as DadosVendor[]))
-    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(dados => configurarGraficoPagamento(dados as DadosPagamento[]))
-    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(dados => configurarGraficoDuracao(dados as DadosDistancia[]))
-    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(dados => configurarGraficoGorjeta(dados as DadosGorjeta[]))
+    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPagamento(dados as DadosPagamento[])
+    )
+    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDuracao(dados as DadosDistancia[])
+    )
+    executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoGorjeta(dados as DadosGorjeta[])
+    )
     executar(nycTaxi2010JanHoraConsulta(nomeArquivo))
       .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {

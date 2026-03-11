@@ -1,10 +1,10 @@
 import type {
-  KpisShakespeare,
+  DadosPorAto,
+  DadosPorComprimento,
+  DadosPorElenco,
   DadosPorPeca,
   DadosPorPersonagem,
-  DadosPorAto,
-  DadosPorElenco,
-  DadosPorComprimento
+  KpisShakespeare
 } from '~/types/shakespeare.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -178,10 +178,14 @@ export const useShakespeare = () => {
       })
 
     executar(shakespearePecasConsulta(nomeArquivo)).then(dados => configurarGraficoPecas(dados as DadosPorPeca[]))
-    executar(shakespearePersonagensConsulta(nomeArquivo)).then(dados => configurarGraficoPersonagens(dados as DadosPorPersonagem[]))
+    executar(shakespearePersonagensConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPersonagens(dados as DadosPorPersonagem[])
+    )
     executar(shakespeareAtoConsulta(nomeArquivo)).then(dados => configurarGraficoAto(dados as DadosPorAto[]))
     executar(shakespeareElencoConsulta(nomeArquivo)).then(dados => configurarGraficoElenco(dados as DadosPorElenco[]))
-    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(dados => configurarGraficoComprimento(dados as DadosPorComprimento[]))
+    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoComprimento(dados as DadosPorComprimento[])
+    )
   }
 
   onMounted(async () => {

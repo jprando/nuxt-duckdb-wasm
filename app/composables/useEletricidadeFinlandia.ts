@@ -1,10 +1,10 @@
 import type {
-  KpisEletricidadeFinlandia,
-  DadosPrecoMensal,
-  DadosPrecoHorario,
-  DadosPrecoSemanal,
-  DadosDistribuicaoPreco,
   DadosCalendario,
+  DadosDistribuicaoPreco,
+  DadosPrecoHorario,
+  DadosPrecoMensal,
+  DadosPrecoSemanal,
+  KpisEletricidadeFinlandia,
   ParametroTooltipCalendario
 } from '~/types/eletricidade-finlandia.types'
 
@@ -218,11 +218,21 @@ export const useEletricidadeFinlandia = () => {
         carregandoKpis.value = false
       })
 
-    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(dados => configurarGraficoMensal(dados as DadosPrecoMensal[]))
-    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(dados => configurarGraficoHoraria(dados as DadosPrecoHorario[]))
-    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(dados => configurarGraficoSemanal(dados as DadosPrecoSemanal[]))
-    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(dados => configurarGraficoDistribuicao(dados as DadosDistribuicaoPreco[]))
-    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(dados => configurarGraficoCalendario(dados as DadosCalendario[]))
+    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoMensal(dados as DadosPrecoMensal[])
+    )
+    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoHoraria(dados as DadosPrecoHorario[])
+    )
+    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoSemanal(dados as DadosPrecoSemanal[])
+    )
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDistribuicao(dados as DadosDistribuicaoPreco[])
+    )
+    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoCalendario(dados as DadosCalendario[])
+    )
   }
 
   onMounted(async () => {

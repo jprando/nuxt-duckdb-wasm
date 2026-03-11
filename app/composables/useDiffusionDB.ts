@@ -1,10 +1,10 @@
 import type {
-  KpisDiffusionDB,
-  DadosPorDimensao,
   DadosPorCategoriaNsfw,
+  DadosPorDimensao,
   DadosPorFaixaSteps,
+  DadosPorHoraAtividade,
   DadosPorSampler,
-  DadosPorHoraAtividade
+  KpisDiffusionDB
 } from '~/types/diffusion-db.types'
 
 const COR_PRIMARIA = '#3b82f6'
@@ -144,11 +144,19 @@ export const useDiffusionDB = () => {
         carregandoKpis.value = false
       })
 
-    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(dados => configurarGraficoDimensoes(dados as DadosPorDimensao[]))
-    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(dados => configurarGraficoNsfw(dados as DadosPorCategoriaNsfw[]))
+    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoDimensoes(dados as DadosPorDimensao[])
+    )
+    executar(diffusionDBNsfwConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoNsfw(dados as DadosPorCategoriaNsfw[])
+    )
     executar(diffusionDBStepsConsulta(nomeArquivo)).then(dados => configurarGraficoSteps(dados as DadosPorFaixaSteps[]))
-    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(dados => configurarGraficoSampler(dados as DadosPorSampler[]))
-    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(dados => configurarGraficoAtividadeHoraria(dados as DadosPorHoraAtividade[]))
+    executar(diffusionDBSamplerConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoSampler(dados as DadosPorSampler[])
+    )
+    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoAtividadeHoraria(dados as DadosPorHoraAtividade[])
+    )
   }
 
   onMounted(async () => {

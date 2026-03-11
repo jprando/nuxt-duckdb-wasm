@@ -1,10 +1,10 @@
 import type {
   KpisEstacoesTrem,
-  LinhaContagemPorPais,
-  LinhaContagemPorTipo,
   LinhaContagemPorCategoria,
   LinhaContagemPorFaixaLatitude,
   LinhaContagemPorFaixaLongitude,
+  LinhaContagemPorPais,
+  LinhaContagemPorTipo,
   LinhaTipoPorPais
 } from '~/types/estacoes-trem.types'
 
