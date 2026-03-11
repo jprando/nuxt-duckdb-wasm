@@ -153,9 +153,15 @@ export const useTarifasFerroviarias = () => {
         carregandoKpis.value = false
       })
 
-    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(data => configurarGraficoDistribuicaoPreco(data as DadosDistribuicaoTarifa[]))
-    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(data => configurarGraficoRotasCaras(data as DadosRotaCara[]))
-    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(data => configurarGraficoEstacoesConectadas(data as DadosEstacaoConectada[]))
+    executar(railwayFaresPriceDistributionConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDistribuicaoPreco(data as DadosDistribuicaoTarifa[])
+    )
+    executar(railwayFaresMostExpensiveRoutesConsulta(nomeArquivo)).then(data =>
+      configurarGraficoRotasCaras(data as DadosRotaCara[])
+    )
+    executar(railwayFaresBusiestStationsConsulta(nomeArquivo)).then(data =>
+      configurarGraficoEstacoesConectadas(data as DadosEstacaoConectada[])
+    )
     executar(railwayFaresChordConsulta(nomeArquivo)).then(data => configurarGraficoChord(data as DadosConexaoChord[]))
   }
 

@@ -136,10 +136,18 @@ export const useTrensHolandeses = () => {
         carregandoKpis.value = false
       })
 
-    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(data => configurarGraficoTipo(data as DadosPorTipoServico[]))
-    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(data => configurarGraficoEstacoesMovimentadas(data as DadosEstacaoMovimentada[]))
-    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(data => configurarGraficoPartidasPorHora(data as DadosPartidaPorHora[]))
-    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(data => configurarGraficoDuracaoMediaParada(data as DadosDuracaoMediaParada[]))
+    executar(dutchTrainServicesTypeConsulta(nomeArquivo)).then(data =>
+      configurarGraficoTipo(data as DadosPorTipoServico[])
+    )
+    executar(dutchTrainServicesBusiestStationsConsulta(nomeArquivo)).then(data =>
+      configurarGraficoEstacoesMovimentadas(data as DadosEstacaoMovimentada[])
+    )
+    executar(dutchTrainServicesDeparturesByHourConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPartidasPorHora(data as DadosPartidaPorHora[])
+    )
+    executar(dutchTrainServicesAvgStopDurationConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDuracaoMediaParada(data as DadosDuracaoMediaParada[])
+    )
   }
 
   onMounted(async () => {

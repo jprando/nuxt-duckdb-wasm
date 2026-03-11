@@ -225,11 +225,21 @@ export const useEletricidadeFinlandia = () => {
         carregandoKpis.value = false
       })
 
-    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(data => configurarGraficoMensal(data as DadosPrecoMensal[]))
-    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(data => configurarGraficoHoraria(data as DadosPrecoHorario[]))
-    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(data => configurarGraficoSemanal(data as DadosPrecoSemanal[]))
-    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(data => configurarGraficoDistribuicao(data as DadosDistribuicaoPreco[]))
-    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(data => configurarGraficoCalendario(data as DadosCalendario[]))
+    executar(eletricidadeFinlandiaMensalConsulta(nomeArquivo)).then(data =>
+      configurarGraficoMensal(data as DadosPrecoMensal[])
+    )
+    executar(eletricidadeFinlandiaHorariaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoHoraria(data as DadosPrecoHorario[])
+    )
+    executar(eletricidadeFinlandiaSemanaisConsulta(nomeArquivo)).then(data =>
+      configurarGraficoSemanal(data as DadosPrecoSemanal[])
+    )
+    executar(eletricidadeFinlandiaDistribuicaoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDistribuicao(data as DadosDistribuicaoPreco[])
+    )
+    executar(eletricidadeFinlandiaCalendarioConsulta(nomeArquivo)).then(data =>
+      configurarGraficoCalendario(data as DadosCalendario[])
+    )
   }
 
   onMounted(async () => {

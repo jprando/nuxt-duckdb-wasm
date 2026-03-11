@@ -150,11 +150,15 @@ export const useDiffusionDB = () => {
         carregandoKpis.value = false
       })
 
-    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(data => configurarGraficoDimensoes(data as DadosPorDimensao[]))
+    executar(diffusionDBDimensoesConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDimensoes(data as DadosPorDimensao[])
+    )
     executar(diffusionDBNsfwConsulta(nomeArquivo)).then(data => configurarGraficoNsfw(data as DadosPorCategoriaNsfw[]))
     executar(diffusionDBStepsConsulta(nomeArquivo)).then(data => configurarGraficoSteps(data as DadosPorFaixaSteps[]))
     executar(diffusionDBSamplerConsulta(nomeArquivo)).then(data => configurarGraficoSampler(data as DadosPorSampler[]))
-    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(data => configurarGraficoAtividadeHoraria(data as DadosPorHoraAtividade[]))
+    executar(diffusionDBAtividadeHorariaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoAtividadeHoraria(data as DadosPorHoraAtividade[])
+    )
   }
 
   onMounted(async () => {

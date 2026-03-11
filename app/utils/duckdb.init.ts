@@ -1,5 +1,5 @@
-import type { ShallowRef, Ref } from 'vue'
 import type { AsyncDuckDB } from '@duckdb/duckdb-wasm'
+import type { Ref, ShallowRef } from 'vue'
 import { duckDBLogLevelWARNING } from './duckdb.constantes'
 
 export const duckDBWasmIniciar = (

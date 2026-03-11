@@ -164,7 +164,9 @@ export const useTaxiNYCAbril2019 = () => {
       })
 
     executar(nycTaxi2019AprTarifaConsulta(nomeArquivo)).then(data => configurarGraficoTarifa(data as DadosTarifa[]))
-    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(data => configurarGraficoPagamento(data as DadosPagamento[]))
+    executar(nycTaxi2019AprPagamentoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPagamento(data as DadosPagamento[])
+    )
     executar(nycTaxi2019AprDuracaoConsulta(nomeArquivo)).then(data => configurarGraficoDuracao(data as DadosDuracao[]))
     executar(nycTaxi2019AprGorjetaConsulta(nomeArquivo)).then(data => configurarGraficoGorjeta(data as DadosGorjeta[]))
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))

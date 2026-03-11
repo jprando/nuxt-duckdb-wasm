@@ -182,10 +182,14 @@ export const useShakespeare = () => {
       })
 
     executar(shakespearePecasConsulta(nomeArquivo)).then(data => configurarGraficoPecas(data as DadosPorPeca[]))
-    executar(shakespearePersonagensConsulta(nomeArquivo)).then(data => configurarGraficoPersonagens(data as DadosPorPersonagem[]))
+    executar(shakespearePersonagensConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPersonagens(data as DadosPorPersonagem[])
+    )
     executar(shakespeareAtoConsulta(nomeArquivo)).then(data => configurarGraficoAto(data as DadosPorAto[]))
     executar(shakespeareElencoConsulta(nomeArquivo)).then(data => configurarGraficoElenco(data as DadosPorElenco[]))
-    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(data => configurarGraficoComprimento(data as DadosPorComprimento[]))
+    executar(shakespeareComprimentoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoComprimento(data as DadosPorComprimento[])
+    )
   }
 
   onMounted(async () => {

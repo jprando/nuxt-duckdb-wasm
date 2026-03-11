@@ -157,8 +157,12 @@ export const useTaxiNYCLocal = () => {
       })
 
     executar(localNYCTaxiVendorConsulta(nomeArquivo)).then(data => configurarGraficoVendor(data as DadosVendor[]))
-    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(data => configurarGraficoPassageiros(data as DadosPassageiros[]))
-    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(data => configurarGraficoDistancia(data as DadosDistancia[]))
+    executar(localNYCTaxiPassageirosConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPassageiros(data as DadosPassageiros[])
+    )
+    executar(localNYCTaxiDistanciaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDistancia(data as DadosDistancia[])
+    )
     executar(localNYCTaxiValorConsulta(nomeArquivo)).then(data => configurarGraficoValor(data as DadosValor[]))
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
       .then(data => configurarGraficoHora(data as DadosHora[]))

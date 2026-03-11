@@ -164,8 +164,12 @@ export const useTaxiNYCJaneiro2010 = () => {
       })
 
     executar(nycTaxi2010JanVendorConsulta(nomeArquivo)).then(data => configurarGraficoTarifa(data as DadosVendor[]))
-    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(data => configurarGraficoPagamento(data as DadosPagamento[]))
-    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(data => configurarGraficoDuracao(data as DadosDistancia[]))
+    executar(nycTaxi2010JanPagamentoConsulta(nomeArquivo)).then(data =>
+      configurarGraficoPagamento(data as DadosPagamento[])
+    )
+    executar(nycTaxi2010JanDistanciaConsulta(nomeArquivo)).then(data =>
+      configurarGraficoDuracao(data as DadosDistancia[])
+    )
     executar(nycTaxi2010JanGorjetaConsulta(nomeArquivo)).then(data => configurarGraficoGorjeta(data as DadosGorjeta[]))
     executar(nycTaxi2010JanHoraConsulta(nomeArquivo))
       .then(data => configurarGraficoHora(data as DadosHora[]))
