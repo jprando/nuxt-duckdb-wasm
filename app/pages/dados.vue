@@ -73,7 +73,7 @@ onMounted(init)
             executarConsulta(1)
           }"
         />
-        <Paginador
+        <PaginadorTabela
           ref="elmPaginacao"
           v-model:page="paginaAtual"
           :disabled="estahCarregando || !datasetSelecionado"
