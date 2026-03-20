@@ -25,13 +25,8 @@
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev19.0",
-<<<<<<< HEAD
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/simple-icons": "^1.2.74",
-=======
-    "@iconify-json/lucide": "^1.2.96",
-    "@iconify-json/simple-icons": "^1.2.73",
->>>>>>> fd03f1743a4b259bc5884273d7921786ee07aebb
     "@nuxt/hints": "1.0.0-alpha.8",
     "@nuxt/image": "2.0.0",
     "@nuxt/scripts": "0.13.2",
@@ -49,11 +44,7 @@
     "nuxt-vitalizer": "2.0.0",
     "sharp": "^0.34.5",
     "svgo": "^4.0.1",
-<<<<<<< HEAD
     "tailwindcss": "^4.2.2"
-=======
-    "tailwindcss": "^4.2.1"
->>>>>>> fd03f1743a4b259bc5884273d7921786ee07aebb
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
