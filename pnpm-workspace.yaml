@@ -12,3 +12,4 @@ onlyBuiltDependencies:
 
 overrides:
   minimatch@<10.2.1: ">=10.2.1"
+  serialize-javascript@<=7.0.2: ">=7.0.4"

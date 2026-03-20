@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -11,8 +11,8 @@ const {
   temaGrafico,
   configuracaoGraficoPartidasPorHora,
   configuracaoGraficoDuracaoMediaParada,
-  fmtNumero,
-} = useTrensHolandeses();
+  fmtNumero
+} = useTrensHolandeses()
 </script>
 
 <template>

@@ -2,12 +2,12 @@
   setup
   lang="ts"
 >
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 // Redireciona para um futuro dashboard
-router.push("/"); // provisório
+router.push('/') // provisório
 </script>
 
 <template>

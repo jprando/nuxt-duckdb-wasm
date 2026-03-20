@@ -7,7 +7,7 @@ export const estacoesTremKpisConsulta = (url: string) => `
     COUNT(*) FILTER (WHERE Country = 'NL')                                             AS estacoes_nl,
     COUNT(*) FILTER (WHERE Type IN ('intercitystation', 'knooppuntIntercitystation'))  AS estacoes_intercidade
   FROM '${url}'
-`;
+`
 
 export const estacoesTremPaisesConsulta = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const estacoesTremPaisesConsulta = (url: string) => `
   WHERE Country IS NOT NULL
   GROUP BY Country
   ORDER BY total DESC
-`;
+`
 
 export const estacoesTremTiposConsulta = (url: string) => `
   SELECT
@@ -27,7 +27,7 @@ export const estacoesTremTiposConsulta = (url: string) => `
   WHERE Type IS NOT NULL
   GROUP BY Type
   ORDER BY total DESC
-`;
+`
 
 export const estacoesTremCategoriasConsulta = (url: string) => `
   SELECT
@@ -45,7 +45,7 @@ export const estacoesTremCategoriasConsulta = (url: string) => `
   WHERE Type IS NOT NULL
   GROUP BY categoria
   ORDER BY total DESC
-`;
+`
 
 export const estacoesTremLatitudeConsulta = (url: string) => `
   SELECT
@@ -55,7 +55,7 @@ export const estacoesTremLatitudeConsulta = (url: string) => `
   WHERE Geo_lat IS NOT NULL
   GROUP BY faixa_lat
   ORDER BY faixa_lat
-`;
+`
 
 export const estacoesTremLongitudeConsulta = (url: string) => `
   SELECT
@@ -65,7 +65,7 @@ export const estacoesTremLongitudeConsulta = (url: string) => `
   WHERE Geo_lng IS NOT NULL
   GROUP BY faixa_lng
   ORDER BY faixa_lng
-`;
+`
 
 export const estacoesTremTiposPorPaisConsulta = (url: string) => `
   SELECT
@@ -80,4 +80,4 @@ export const estacoesTremTiposPorPaisConsulta = (url: string) => `
     AND Country IS NOT NULL
   GROUP BY Country, Type
   ORDER BY Country, total DESC
-`;
+`

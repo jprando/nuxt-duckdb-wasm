@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -16,8 +16,8 @@ const {
   configuracaoGraficoHora,
   fmtNumero,
   fmtDolar,
-  fmtDolarDecimal,
-} = useTaxiNYCLocal();
+  fmtDolarDecimal
+} = useTaxiNYCLocal()
 </script>
 
 <template>

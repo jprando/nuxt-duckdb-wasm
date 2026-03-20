@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-import { LazyGraficoCard } from "@/utils/lazy-components";
+import { LazyGraficoCard } from '@/utils/lazy-components'
 
 const {
   carregandoKpis,
@@ -13,8 +13,8 @@ const {
   configuracaoGraficoElenco,
   configuracaoGraficoComprimento,
   fmtNumero,
-  fmtDecimal,
-} = useShakespeare();
+  fmtDecimal
+} = useShakespeare()
 </script>
 
 <template>

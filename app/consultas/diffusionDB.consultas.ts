@@ -7,7 +7,7 @@ export const diffusionDBKpisConsulta = (url: string) => `
     CAST(MIN(timestamp) AS VARCHAR)                                     AS periodo_inicio,
     CAST(MAX(timestamp) AS VARCHAR)                                     AS periodo_fim
   FROM '${url}'
-`;
+`
 
 export const diffusionDBDimensoesConsulta = (url: string) => `
   SELECT
@@ -17,7 +17,7 @@ export const diffusionDBDimensoesConsulta = (url: string) => `
   GROUP BY dimensao
   ORDER BY total DESC
   LIMIT 10
-`;
+`
 
 export const diffusionDBNsfwConsulta = (url: string) => `
   SELECT
@@ -31,7 +31,7 @@ export const diffusionDBNsfwConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY categoria
   ORDER BY total DESC
-`;
+`
 
 export const diffusionDBStepsConsulta = (url: string) => `
   SELECT
@@ -42,7 +42,7 @@ export const diffusionDBStepsConsulta = (url: string) => `
   GROUP BY faixa_inicio
   ORDER BY faixa_inicio
   LIMIT 25
-`;
+`
 
 export const diffusionDBSamplerConsulta = (url: string) => `
   SELECT
@@ -61,7 +61,7 @@ export const diffusionDBSamplerConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY nome_sampler
   ORDER BY total DESC
-`;
+`
 
 export const diffusionDBAtividadeHorariaConsulta = (url: string) => `
   SELECT
@@ -70,4 +70,4 @@ export const diffusionDBAtividadeHorariaConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY hora
   ORDER BY hora
-`;
+`

@@ -3,14 +3,14 @@
   lang="ts"
 >
 interface DataRecord {
-  [key: string]: any;
+  [key: string]: unknown
 }
 
 const props = defineProps<{
-  colunas: string[];
-  registros: DataRecord[];
-  estahCarregando?: boolean;
-}>();
+  colunas: string[]
+  registros: DataRecord[]
+  estahCarregando?: boolean
+}>()
 
 // const columns = computed(() =>
 //   props.colunas.map(coluna => ({

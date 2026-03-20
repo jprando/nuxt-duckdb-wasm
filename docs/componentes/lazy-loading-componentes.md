@@ -149,17 +149,17 @@ Bundle Principal (222 KB)
 ```typescript
 // ✅ Recomendado: Lazy loading com fallback
 const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+  import('~/components/GraficoCard.vue')
+)
 
 // ✅ Com loading e error states (melhor UX)
 const GraficoCard = defineAsyncComponent({
-  loader: () => import("~/components/GraficoCard.vue"),
+  loader: () => import('~/components/GraficoCard.vue'),
   loadingComponent: LoadingSkeleton,
   errorComponent: ErrorFallback,
   delay: 200,
-  timeout: 10000,
-});
+  timeout: 10000
+})
 ```
 
 ### 🌲 Tree Shaking vs Code Splitting
@@ -184,13 +184,13 @@ export default defineNuxtConfig({
     // 🚫 Excluir componentes pesados da auto-importação
     dirs: [
       {
-        path: "~/components",
-        ignore: ["Grafico*"], // Padrão glob
-      },
-    ],
-  },
+        path: '~/components',
+        ignore: ['Grafico*'] // Padrão glob
+      }
+    ]
+  }
   // ... resto da config
-});
+})
 ```
 
 **Por que?**
@@ -210,12 +210,12 @@ export default defineNuxtConfig({
  */
 
 export const LazyGraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+  import('~/components/GraficoCard.vue')
+)
 
 export const LazyGraficoEChart = defineAsyncComponent(() =>
-  import("~/components/GraficoEChart.vue")
-);
+  import('~/components/GraficoEChart.vue')
+)
 
 // ... etc para outros componentes Grafico*
 ```
@@ -235,18 +235,18 @@ export const LazyGraficoEChart = defineAsyncComponent(() =>
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent } from 'vue'
 
 // Lazy loading explícito
 const GraficoCard = defineAsyncComponent(() =>
-  import("~/components/GraficoCard.vue")
-);
+  import('~/components/GraficoCard.vue')
+)
 
 const {
   carregandoKpis,
-  opcaoVendor,
+  opcaoVendor
   // ... resto dos dados
-} = useTaxiNYCLocal();
+} = useTaxiNYCLocal()
 </script>
 
 <template>
@@ -273,11 +273,11 @@ const {
 
 ```typescript
 // Vue 3 Composition API official pattern
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent } from 'vue'
 
 const HeavyComponent = defineAsyncComponent(() =>
-  import("./HeavyComponent.vue")
-);
+  import('./HeavyComponent.vue')
+)
 ```
 
 - ✅ Documentado oficialmente
@@ -433,8 +433,8 @@ Se criar um novo componente grande (> 100KB):
 ```typescript
 // app/utils/lazy-components.ts
 export const LazyMeuComponentePesado = defineAsyncComponent(() =>
-  import("~/components/MeuComponentePesado.vue")
-);
+  import('~/components/MeuComponentePesado.vue')
+)
 ```
 
 ```vue
@@ -443,11 +443,11 @@ export const LazyMeuComponentePesado = defineAsyncComponent(() =>
   setup
   lang="ts"
 >
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent } from 'vue'
 
 const MeuComponentePesado = defineAsyncComponent(() =>
-  import("~/components/MeuComponentePesado.vue")
-);
+  import('~/components/MeuComponentePesado.vue')
+)
 </script>
 
 <template>
@@ -481,12 +481,12 @@ const MeuComponentePesado = defineAsyncComponent(() =>
 
 ```typescript
 // ❌ Componentes pequenos (< 10KB)
-const Icon = defineAsyncComponent(() => import("./Icon.vue")); // Desnecessário
+const Icon = defineAsyncComponent(() => import('./Icon.vue')) // Desnecessário
 
 // ✅ Use para componentes pesados
 const EChartsVisualization = defineAsyncComponent(() =>
-  import("./EChartsVisualization.vue")
-);
+  import('./EChartsVisualization.vue')
+)
 ```
 
 ---

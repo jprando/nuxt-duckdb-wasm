@@ -2,12 +2,12 @@
   setup
   lang="ts"
 >
-import { useRouter } from "vue-router";
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
+const router = useRouter()
 
 // Redireciona para o primeiro dashboard da lista
-router.push("/pocs-v1/taxiNYCLocal");
+router.push('/pocs-v1/taxiNYCLocal')
 </script>
 
 <template>

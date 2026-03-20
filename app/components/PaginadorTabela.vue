@@ -2,30 +2,30 @@
   setup
   lang="ts"
 >
-const pagina = defineModel<number>("page", { required: true });
+const pagina = defineModel<number>('page', { required: true })
 
 const props = defineProps<{
-  disabled: boolean;
-  total: number;
-}>();
+  disabled: boolean
+  total: number
+}>()
 
 const emit = defineEmits<{
-  consultarPagina: [pagina: number];
-}>();
+  consultarPagina: [pagina: number]
+}>()
 
-const paginadorSiblingCount = ref(1);
-const elmRaiz = ref<HTMLDivElement | null>(null);
-const debounceTimerId = ref<ReturnType<typeof setTimeout> | null>(null);
+const paginadorSiblingCount = ref(1)
+const elmRaiz = ref<HTMLDivElement | null>(null)
+const debounceTimerId = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const totalPaginas = computed(() =>
   Math.max(
     1,
-    Math.ceil((props.total || 1) / duckDBItensPorPagina),
+    Math.ceil((props.total || 1) / duckDBItensPorPagina)
   )
-);
+)
 
 const calcularDeslocamento = (base: number, ehPrimeiraPagina: boolean) =>
-  ehPrimeiraPagina ? base - 1 : base;
+  ehPrimeiraPagina ? base - 1 : base
 
 const teclasNavegacao: Record<
   string,
@@ -36,60 +36,60 @@ const teclasNavegacao: Record<
   Home: () => 1,
   End: () => totalPaginas.value,
   PageUp: (p, shift, eh1) => p + calcularDeslocamento(shift ? 100 : 50, eh1),
-  PageDown: (p, shift, eh1) => p - calcularDeslocamento(shift ? 100 : 50, eh1),
-};
+  PageDown: (p, shift, eh1) => p - calcularDeslocamento(shift ? 100 : 50, eh1)
+}
 
 const aoTeclarNoPaginador = (evento: KeyboardEvent) => {
-  if (props.disabled) return;
+  if (props.disabled) return
 
-  const calcular = teclasNavegacao[evento.key];
-  if (!calcular) return;
+  const calcular = teclasNavegacao[evento.key]
+  if (!calcular) return
 
   const novaPagina = Math.max(
     1,
     Math.min(
       calcular(pagina.value, evento.shiftKey, pagina.value === 1),
-      totalPaginas.value,
-    ),
-  );
+      totalPaginas.value
+    )
+  )
 
   if (novaPagina !== pagina.value) {
-    pagina.value = novaPagina;
-    if (debounceTimerId.value) clearTimeout(debounceTimerId.value);
+    pagina.value = novaPagina
+    if (debounceTimerId.value) clearTimeout(debounceTimerId.value)
     debounceTimerId.value = setTimeout(() => {
-      evento.preventDefault();
-      emit("consultarPagina", pagina.value);
-    }, 650);
+      evento.preventDefault()
+      emit('consultarPagina', pagina.value)
+    }, 650)
   }
-};
+}
 
-const focus = () => elmRaiz.value?.focus();
+const focus = () => elmRaiz.value?.focus()
 
-defineExpose({ focus });
+defineExpose({ focus })
 
 onMounted(() => {
   const breakpoints: [string, number][] = [
-    ["(min-width: 1120px)", 4],
-    ["(min-width: 960px)", 3],
-    ["(min-width: 800px)", 2],
-    ["(min-width: 400px)", 1],
-  ];
+    ['(min-width: 1120px)', 4],
+    ['(min-width: 960px)', 3],
+    ['(min-width: 800px)', 2],
+    ['(min-width: 400px)', 1]
+  ]
   const mediaQueries = breakpoints.map(
-    ([query, count]) => [matchMedia(query), count] as const,
-  );
+    ([query, count]) => [matchMedia(query), count] as const
+  )
   const atualizar = () => {
     paginadorSiblingCount.value = mediaQueries.find(([mq]) => mq.matches)?.[1]
-      ?? 1;
-  };
-  atualizar();
-  mediaQueries.forEach(([mq]) => mq.addEventListener("change", atualizar));
-});
+      ?? 1
+  }
+  atualizar()
+  mediaQueries.forEach(([mq]) => mq.addEventListener('change', atualizar))
+})
 
 onUnmounted(() => {
   if (debounceTimerId.value) {
-    clearTimeout(debounceTimerId.value);
+    clearTimeout(debounceTimerId.value)
   }
-});
+})
 </script>
 
 <template>

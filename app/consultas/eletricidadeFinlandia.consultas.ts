@@ -8,7 +8,7 @@ export const eletricidadeFinlandiaKpisConsulta = (url: string) => `
     CAST(MIN(time) AS VARCHAR)      AS periodo_inicio,
     CAST(MAX(time) AS VARCHAR)      AS periodo_fim
   FROM '${url}'
-`;
+`
 
 export const eletricidadeFinlandiaMensalConsulta = (url: string) => `
   SELECT
@@ -19,7 +19,7 @@ export const eletricidadeFinlandiaMensalConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY mes
   ORDER BY mes
-`;
+`
 
 export const eletricidadeFinlandiaHorariaConsulta = (url: string) => `
   SELECT
@@ -28,7 +28,7 @@ export const eletricidadeFinlandiaHorariaConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY hora
   ORDER BY hora
-`;
+`
 
 export const eletricidadeFinlandiaSemanaisConsulta = (url: string) => `
   SELECT
@@ -39,7 +39,7 @@ export const eletricidadeFinlandiaSemanaisConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY semana
   ORDER BY semana
-`;
+`
 
 export const eletricidadeFinlandiaDistribuicaoConsulta = (url: string) => `
   SELECT
@@ -49,7 +49,7 @@ export const eletricidadeFinlandiaDistribuicaoConsulta = (url: string) => `
   WHERE price >= 0
   GROUP BY faixa_inicio
   ORDER BY faixa_inicio
-`;
+`
 
 export const eletricidadeFinlandiaCalendarioConsulta = (url: string) => `
   SELECT
@@ -58,4 +58,4 @@ export const eletricidadeFinlandiaCalendarioConsulta = (url: string) => `
   FROM '${url}'
   GROUP BY dia
   ORDER BY dia
-`;
+`

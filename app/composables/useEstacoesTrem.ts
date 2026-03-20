@@ -1,57 +1,57 @@
-interface Kpis {
-  total_estacoes: number;
-  total_paises: number;
-  total_tipos: number;
-  megaestacoes: number;
-  estacoes_nl: number;
-  estacoes_intercidade: number;
-}
+import type {
+  KpisEstacoesTrem,
+  LinhaContagemPorCategoria,
+  LinhaContagemPorFaixaLatitude,
+  LinhaContagemPorFaixaLongitude,
+  LinhaContagemPorPais,
+  LinhaContagemPorTipo,
+  LinhaTipoPorPais
+} from '~/types/estacoes-trem.types'
 
-const COR_PRIMARIA = "#3b82f6";
-const COR_SECUNDARIA = "#10b981";
-const COR_TERCIARIA = "#f59e0b";
-const COR_QUATERNARIA = "#8b5cf6";
-const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, "#f43f5e", "#14b8a6"];
+const COR_PRIMARIA = '#3b82f6'
+const COR_SECUNDARIA = '#10b981'
+const COR_TERCIARIA = '#f59e0b'
+const COR_QUATERNARIA = '#8b5cf6'
+const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, '#f43f5e', '#14b8a6']
 
 const configuracaoGrafico = {
-  backgroundColor: "transparent",
+  backgroundColor: 'transparent',
   grid: { top: 32, right: 16, bottom: 48, left: 56 },
-  tooltip: { trigger: "axis" as const },
-};
+  tooltip: { trigger: 'axis' as const }
+}
 
 export const useEstacoesTrem = () => {
-  const { executar, init, registrarParquet } = useDuckDb();
-  const colorMode = useColorMode();
+  const { executar, init, registrarParquet } = useDuckDb()
+  const colorMode = useColorMode()
 
-  const temaGrafico = computed(() => colorMode.value === "dark" ? "dark" : "");
+  const temaGrafico = computed(() => colorMode.value === 'dark' ? 'dark' : '')
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
-  const carregandoKpis = ref(true);
-  const erro = ref<string | null>(null);
+  const carregandoKpis = ref(true)
+  const erro = ref<string | null>(null)
 
-  const kpis = ref<Kpis>({
+  const kpis = ref<KpisEstacoesTrem>({
     total_estacoes: 0,
     total_paises: 0,
     total_tipos: 0,
     megaestacoes: 0,
     estacoes_nl: 0,
-    estacoes_intercidade: 0,
-  });
+    estacoes_intercidade: 0
+  })
 
-  const configuracaoGraficoPaises = ref<Record<string, unknown> | null>(null);
-  const configuracaoGraficoTipos = ref<Record<string, unknown> | null>(null);
-  const configuracaoGraficoCategorias = ref<Record<string, unknown> | null>(null);
-  const configuracaoGraficoLatitude = ref<Record<string, unknown> | null>(null);
-  const configuracaoGraficoLongitude = ref<Record<string, unknown> | null>(null);
-  const configuracaoGraficoTiposPorPais = ref<Record<string, unknown> | null>(null);
+  const configuracaoGraficoPaises = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoTipos = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoCategorias = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoLatitude = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoLongitude = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoTiposPorPais = ref<Record<string, unknown> | null>(null)
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
-  const configurarGraficoPaises = (data: any[]) => {
-    const rows = data as any[];
-    const labels = rows.map(d => d.country);
-    const values = rows.map(d => d.total);
+  const configurarGraficoPaises = (data: LinhaContagemPorPais[]) => {
+    const labels = data.map(d => d.country)
+    const values = data.map(d => d.total)
     configuracaoGraficoPaises.value = {
       ...configuracaoGrafico,
       grid: {
@@ -60,160 +60,171 @@ export const useEstacoesTrem = () => {
         bottom: 8,
         left: 40,
         outerBounds: { top: 16, right: 32, bottom: 8, left: 40 },
-        outerBoundsContain: "axisLabel",
+        outerBoundsContain: 'axisLabel'
       },
       color: [COR_PRIMARIA],
-      tooltip: { trigger: "axis" as const },
-      xAxis: { type: "value", axisLabel: { fontSize: 10 } },
+      tooltip: { trigger: 'axis' as const },
+      xAxis: { type: 'value', axisLabel: { fontSize: 10 } },
       yAxis: {
-        type: "category",
+        type: 'category',
         data: [...labels].reverse(),
-        axisLabel: { fontSize: 11, fontWeight: "bold" },
+        axisLabel: { fontSize: 11, fontWeight: 'bold' }
       },
-      series: [{ type: "bar", data: [...values].reverse(), name: "Estações" }],
-    };
-  };
+      series: [{ type: 'bar', data: [...values].reverse(), name: 'Estações' }]
+    }
+  }
 
-  const configurarGraficoTipos = (data: any[]) => {
+  const configurarGraficoTipos = (data: LinhaContagemPorTipo[]) => {
     configuracaoGraficoTipos.value = {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       color: PALETA,
-      tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-      legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
+      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+      legend: { bottom: 0, type: 'scroll', textStyle: { fontSize: 10 } },
       series: [
         {
-          type: "pie",
-          radius: ["42%", "70%"],
-          center: ["50%", "42%"],
-          data: (data as any[]).map(d => ({ name: d.type, value: d.total })),
+          type: 'pie',
+          radius: ['42%', '70%'],
+          center: ['50%', '42%'],
+          data: data.map(d => ({ name: d.type, value: d.total })),
           label: { show: false },
-          emphasis: { label: { show: true, fontWeight: "bold" } },
-        },
-      ],
-    };
-  };
+          emphasis: { label: { show: true, fontWeight: 'bold' } }
+        }
+      ]
+    }
+  }
 
-  const configurarGraficoCategorias = (data: any[]) => {
+  const configurarGraficoCategorias = (data: LinhaContagemPorCategoria[]) => {
     configuracaoGraficoCategorias.value = {
-      backgroundColor: "transparent",
+      backgroundColor: 'transparent',
       color: PALETA,
-      tooltip: { trigger: "item", formatter: "{b}: {c} ({d}%)" },
-      legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
+      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+      legend: { bottom: 0, type: 'scroll', textStyle: { fontSize: 10 } },
       series: [
         {
-          type: "pie",
-          radius: ["42%", "70%"],
-          center: ["50%", "42%"],
-          data: (data as any[]).map(d => ({ name: d.categoria, value: d.total })),
+          type: 'pie',
+          radius: ['42%', '70%'],
+          center: ['50%', '42%'],
+          data: data.map(d => ({ name: d.categoria, value: d.total })),
           label: { show: false },
-          emphasis: { label: { show: true, fontWeight: "bold" } },
-        },
-      ],
-    };
-  };
+          emphasis: { label: { show: true, fontWeight: 'bold' } }
+        }
+      ]
+    }
+  }
 
-  const configurarGraficoLatitude = (data: any[]) => {
-    const labels = (data as any[]).map(d => `${d.faixa_lat}°N`);
-    const values = (data as any[]).map(d => d.total);
+  const configurarGraficoLatitude = (data: LinhaContagemPorFaixaLatitude[]) => {
+    const labels = data.map(d => `${d.faixa_lat}°N`)
+    const values = data.map(d => d.total)
     configuracaoGraficoLatitude.value = {
       ...configuracaoGrafico,
       color: [COR_TERCIARIA],
-      xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-      series: [{ type: "bar", data: values, name: "Estações" }],
-    };
-  };
+      xAxis: { type: 'category', data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
+      series: [{ type: 'bar', data: values, name: 'Estações' }]
+    }
+  }
 
-  const configurarGraficoLongitude = (data: any[]) => {
-    const labels = (data as any[]).map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`);
-    const values = (data as any[]).map(d => d.total);
+  const configurarGraficoLongitude = (data: LinhaContagemPorFaixaLongitude[]) => {
+    const labels = data.map(d => `${d.faixa_lng}°–${d.faixa_lng + 2}°L`)
+    const values = data.map(d => d.total)
     configuracaoGraficoLongitude.value = {
       ...configuracaoGrafico,
       color: [COR_QUATERNARIA],
-      xAxis: { type: "category", data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-      series: [{ type: "bar", data: values, name: "Estações" }],
-    };
-  };
+      xAxis: { type: 'category', data: labels, axisLabel: { fontSize: 10, rotate: 45 } },
+      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
+      series: [{ type: 'bar', data: values, name: 'Estações' }]
+    }
+  }
 
-  const configurarGraficoTiposPorPais = (data: any[]) => {
-    const rows = data as any[];
-    const countries = [...new Set(rows.map(d => d.country))];
-    const types = [...new Set(rows.map(d => d.type))];
+  const configurarGraficoTiposPorPais = (data: LinhaTipoPorPais[]) => {
+    const countries = [...new Set(data.map(d => d.country))]
+    const types = [...new Set(data.map(d => d.type))]
 
-    const map = new Map<string, Map<string, number>>();
-    rows.forEach((d) => {
-      if (!map.has(d.country)) map.set(d.country, new Map());
-      map.get(d.country)!.set(d.type, d.total);
-    });
+    const map = new Map<string, Map<string, number>>()
+    data.forEach((d) => {
+      if (!map.has(d.country)) map.set(d.country, new Map())
+      map.get(d.country)!.set(d.type, d.total)
+    })
 
     const series = types.map((type, i) => ({
       name: type,
-      type: "bar",
-      stack: "total",
+      type: 'bar',
+      stack: 'total',
       data: countries.map(c => map.get(c)?.get(type) ?? 0),
-      itemStyle: { color: PALETA[i % PALETA.length] },
-    }));
+      itemStyle: { color: PALETA[i % PALETA.length] }
+    }))
 
     configuracaoGraficoTiposPorPais.value = {
-      backgroundColor: "transparent",
-      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
-      legend: { bottom: 0, type: "scroll", textStyle: { fontSize: 10 } },
+      backgroundColor: 'transparent',
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+      legend: { bottom: 0, type: 'scroll', textStyle: { fontSize: 10 } },
       grid: {
         top: 32,
         right: 16,
         bottom: 80,
         left: 40,
         outerBounds: { top: 32, right: 16, bottom: 80, left: 40 },
-        outerBoundsContain: "axisLabel",
+        outerBoundsContain: 'axisLabel'
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         data: countries,
-        axisLabel: { fontSize: 11, fontWeight: "bold" },
+        axisLabel: { fontSize: 11, fontWeight: 'bold' }
       },
-      yAxis: { type: "value", axisLabel: { fontSize: 10 } },
-      series,
-    };
-  };
+      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
+      series
+    }
+  }
 
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = async () => {
-    carregandoKpis.value = true;
-    erro.value = null;
+    carregandoKpis.value = true
+    erro.value = null
 
-    const url = estacoesTremUrl;
-    const nomeArquivo = await registrarParquet(url);
+    const url = estacoesTremUrl
+    const nomeArquivo = await registrarParquet(url)
 
     executar(estacoesTremKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        kpis.value = kpisData as Kpis;
+        if (kpisData) kpis.value = kpisData as KpisEstacoesTrem
       })
       .catch((e) => {
-        erro.value = `Erro ao carregar dados: ${e}`;
-        console.error(e);
+        erro.value = `Erro ao carregar dados: ${e}`
+        console.error(e)
       })
       .finally(() => {
-        carregandoKpis.value = false;
-      });
+        carregandoKpis.value = false
+      })
 
-    executar(estacoesTremPaisesConsulta(nomeArquivo)).then(configurarGraficoPaises);
-    executar(estacoesTremTiposConsulta(nomeArquivo)).then(configurarGraficoTipos);
-    executar(estacoesTremCategoriasConsulta(nomeArquivo)).then(configurarGraficoCategorias);
-    executar(estacoesTremLatitudeConsulta(nomeArquivo)).then(configurarGraficoLatitude);
-    executar(estacoesTremLongitudeConsulta(nomeArquivo)).then(configurarGraficoLongitude);
-    executar(estacoesTremTiposPorPaisConsulta(nomeArquivo)).then(configurarGraficoTiposPorPais);
-  };
+    executar(estacoesTremPaisesConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoPaises(dados as LinhaContagemPorPais[])
+    )
+    executar(estacoesTremTiposConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoTipos(dados as LinhaContagemPorTipo[])
+    )
+    executar(estacoesTremCategoriasConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoCategorias(dados as LinhaContagemPorCategoria[])
+    )
+    executar(estacoesTremLatitudeConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoLatitude(dados as LinhaContagemPorFaixaLatitude[])
+    )
+    executar(estacoesTremLongitudeConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoLongitude(dados as LinhaContagemPorFaixaLongitude[])
+    )
+    executar(estacoesTremTiposPorPaisConsulta(nomeArquivo)).then(dados =>
+      configurarGraficoTiposPorPais(dados as LinhaTipoPorPais[])
+    )
+  }
 
   onMounted(async () => {
-    await init();
-    carregarDados();
-  });
+    await init()
+    carregarDados()
+  })
 
   // ─── Formatação ───────────────────────────────────────────────────────────
 
-  const fmtNumero = (n: number) => numeroSemCasaDecimal.format(n);
+  const fmtNumero = (n: number) => numeroSemCasaDecimal.format(n)
 
   return {
     carregandoKpis,
@@ -226,6 +237,6 @@ export const useEstacoesTrem = () => {
     configuracaoGraficoLatitude,
     configuracaoGraficoLongitude,
     configuracaoGraficoTiposPorPais,
-    fmtNumero,
-  };
-};
+    fmtNumero
+  }
+}

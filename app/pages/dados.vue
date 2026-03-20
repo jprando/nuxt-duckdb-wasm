@@ -2,63 +2,65 @@
   setup
   lang="ts"
 >
+import type { DatasetParquet } from '~/types/duckdb.types'
+
 const {
   init,
   estahCarregando,
   obterDadosSimples,
   obterDadosSimplesQuantidade,
   obterDadosParquet,
-  obterDadosParquetQuantidade,
-} = useDuckDb();
+  obterDadosParquetQuantidade
+} = useDuckDb()
 
-const ultimoDatasetCarregado = ref<string | null>(null);
-const registros = ref<any[]>([]);
-const quantidadeTotalRegistros = ref(0);
-const paginaAtual = ref(1);
-const datasetSelecionado = ref<DatasetParquet | undefined>();
-const tempoExecucaoMs = ref<number | null>(null);
-const elmPaginacao = useTemplateRef<{ focus: () => void }>("elmPaginacao");
+const ultimoDatasetCarregado = ref<string | null>(null)
+const registros = ref<Record<string, unknown>[]>([])
+const quantidadeTotalRegistros = ref(0)
+const paginaAtual = ref(1)
+const datasetSelecionado = ref<DatasetParquet | undefined>()
+const tempoExecucaoMs = ref<number | null>(null)
+const elmPaginacao = useTemplateRef<{ focus: () => void }>('elmPaginacao')
 
 const colunas = computed(() =>
   Array.isArray(registros.value) && registros.value.length
-    ? Object.keys(registros.value[0])
+    ? Object.keys(registros.value[0] ?? {})
     : []
-);
+)
 
 const executarConsulta = async (
   pagina: number = 1,
-  itensPorPagina: number = duckDBItensPorPagina,
+  itensPorPagina: number = duckDBItensPorPagina
 ) => {
-  if (!datasetSelecionado.value) return;
+  if (!datasetSelecionado.value) return
 
-  paginaAtual.value = pagina;
-  tempoExecucaoMs.value = null;
+  paginaAtual.value = pagina
+  tempoExecucaoMs.value = null
 
-  const url = datasetSelecionado.value.url;
-  const inicio = performance.now();
+  const url = datasetSelecionado.value.url
+  const inicio = performance.now()
 
   if (ultimoDatasetCarregado.value !== datasetSelecionado.value.label) {
-    quantidadeTotalRegistros.value = 0;
-    registros.value = [{ carregando: "aguarde..." }];
-    const quantidadeRegistros = url === ""
+    quantidadeTotalRegistros.value = 0
+    registros.value = [{ carregando: 'aguarde...' }]
+    const quantidadeRegistros = url === ''
       ? await obterDadosSimplesQuantidade()
-      : await obterDadosParquetQuantidade(url);
-    quantidadeTotalRegistros.value = quantidadeRegistros;
+      : await obterDadosParquetQuantidade(url)
+    quantidadeTotalRegistros.value = quantidadeRegistros
   }
 
-  ultimoDatasetCarregado.value = datasetSelecionado.value.label;
+  ultimoDatasetCarregado.value = datasetSelecionado.value.label
 
-  const _registros = url === ""
+  const _registros = url === ''
     ? await obterDadosSimples(pagina, itensPorPagina)
-    : await obterDadosParquet(pagina, itensPorPagina, url);
+    : await obterDadosParquet(pagina, itensPorPagina, url)
 
-  tempoExecucaoMs.value = performance.now() - inicio;
-  registros.value = _registros;
+  tempoExecucaoMs.value = performance.now() - inicio
+  registros.value = _registros
 
-  elmPaginacao.value?.focus();
-};
+  elmPaginacao.value?.focus()
+}
 
-onMounted(init);
+onMounted(init)
 </script>
 
 <template>
@@ -70,16 +72,15 @@ onMounted(init);
           :loading="estahCarregando"
           @carregar="() => {
             // quantidadeTotalRegistros = 0;
-            executarConsulta(1);
+            executarConsulta(1)
           }"
         />
-        <Paginador
+        <PaginadorTabela
           ref="elmPaginacao"
           v-model:page="paginaAtual"
           :disabled="estahCarregando || !datasetSelecionado"
           :total="quantidadeTotalRegistros"
-          @consultar-pagina="(numeroPagina: number) =>
-          executarConsulta(numeroPagina, duckDBItensPorPagina)"
+          @consultar-pagina="executarConsulta"
         />
       </div>
     </template>

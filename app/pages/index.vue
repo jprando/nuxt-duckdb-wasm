@@ -2,7 +2,7 @@
   setup
   lang="ts"
 >
-definePageMeta({ layout: "landing" });
+definePageMeta({ layout: 'landing' })
 </script>
 
 <template>
@@ -14,7 +14,7 @@ definePageMeta({ layout: "landing" });
         title:
           'text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl mb-6 bg-clip-text text-transparent bg-linear-to-r from-gray-900 via-primary-700 to-gray-900 dark:from-white dark:via-primary-300 dark:to-white',
         container:
-          'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-24 sm:py-32 lg:py-24 gap-16 sm:gap-y-24',
+          'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-24 sm:py-32 lg:py-24 gap-16 sm:gap-y-24'
       }"
     >
       <template #headline>
@@ -35,7 +35,7 @@ definePageMeta({ layout: "landing" });
     <UPageSection
       :ui="{
         container:
-          'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-16 sm:py-16 lg:py-16 gap-8 sm:gap-16',
+          'w-full max-w-(--ui-container) mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:grid py-16 sm:py-16 lg:py-16 gap-8 sm:gap-16'
       }"
     >
       <UPageGrid>
