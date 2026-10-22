@@ -1,6 +1,6 @@
+import { defineEventHandler } from 'nuxt/server'
+
 export default defineEventHandler((event) => {
-  setResponseHeaders(event, {
-    'Cross-Origin-Opener-Policy': 'same-origin',
-    'Cross-Origin-Embedder-Policy': 'require-corp'
-  })
+  event.res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
+  event.res.headers.set('Cross-Origin-Embedder-Policy', 'require-corp')
 })
