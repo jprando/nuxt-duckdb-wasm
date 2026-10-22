@@ -6,12 +6,30 @@ Guia técnico e arquitetura do projeto **nuxt-duckdb-wasm**.
 
 ```
 docs/
-├── README.md                              (este arquivo)
-└── componentes/
-    └── lazy-loading-componentes.md        📄 Guia de lazy loading
+├── README.md                                              (este arquivo)
+├── componentes/
+│   └── lazy-loading-componentes.md                        📄 Guia de lazy loading
+└── configuracao/
+    └── compatibilidade-nuxt5-nitro-e-sharp.md             📄 Compatibilidade Nuxt 5, Nitro e Sharp
 ```
 
 ## 📖 Conteúdo
+
+### ⚙️ Configuração & Ambiente
+
+#### [Compatibilidade Nuxt 5 (`compatibilityVersion: 5`), Nitro Auto-Imports e Build do `sharp`](./configuracao/compatibilidade-nuxt5-nitro-e-sharp.md)
+
+> 🛠️ Resolução de erros de instalação (`sharp`/`libvips`) e de inicialização do servidor Nitro (`virtual:#imports`)
+
+**Tópicos Cobertos:**
+
+- 🔧 Falha no `pnpm install` com `sharp` quando `libvips` está instalado globalmente no Linux
+- 🚀 Falha no `pnpm run dev` com `virtual:#imports` e `compatibilityVersion: 5`
+- 💡 Motivação arquitetural da equipe Nuxt + Nitro para desativar `nitroAutoImports` no Nuxt 5
+- 🔗 Issues e PRs oficiais (`@nuxt/image` #2205 / #2347, `@nuxt/icon`)
+- ✅ Ajustes aplicados no projeto e boas práticas para novos arquivos em `server/`
+
+---
 
 ### 🎯 Componentes
 
