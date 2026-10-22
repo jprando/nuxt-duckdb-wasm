@@ -4,8 +4,8 @@ import type {
   DadosHora,
   DadosPagamento,
   DadosTarifa,
-  KpisTaxiNYCAbril2019
-} from '~/types/taxi-nyc-abril-2019.types'
+  KpisTaxiNYC
+} from '~/types/taxi-nyc.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
@@ -30,7 +30,7 @@ export const useTaxiNYCAbril2019 = () => {
   const carregandoKpis = ref(true)
   const erro = ref<string | null>(null)
 
-  const kpis = ref<KpisTaxiNYCAbril2019>({
+  const kpis = ref<KpisTaxiNYC>({
     total_trips: 0,
     avg_duration_min: 0,
     avg_tip: 0,
@@ -147,7 +147,7 @@ export const useTaxiNYCAbril2019 = () => {
 
     executar(nycTaxi2019AprKpisConsulta(nomeArquivo))
       .then(([kpisData]) => {
-        if (kpisData) kpis.value = kpisData as KpisTaxiNYCAbril2019
+        if (kpisData) kpis.value = kpisData as KpisTaxiNYC
       })
       .catch((e) => {
         erro.value = `Erro ao carregar dados: ${e}`

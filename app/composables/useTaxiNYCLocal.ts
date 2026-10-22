@@ -5,7 +5,7 @@ import type {
   DadosValor,
   DadosVendor,
   KpisTaxiNYCLocal
-} from '~/types/taxi-nyc-local.types'
+} from '~/types/taxi-nyc.types'
 
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
