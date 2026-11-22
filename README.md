@@ -129,7 +129,7 @@ projeto/
 - Carrega DuckDB via CDN jsdelivr (dynamic import)
 - Cria Worker via blob URL para compatibilidade com Cross-Origin Isolation
 - Pthread worker baixado via fetch e convertido em blob URL
-- Detecta versao e tipo de bundle (mvp/eh)
+- Detecta versao e tipo de bundle (base/threads)
 
 **Funcoes disponveis:**
 
@@ -157,7 +157,7 @@ projeto/
 ### 4. Layout (`app/app.vue`)
 
 - Header com logo e toggle de tema claro/escuro
-- Exibe versao do DuckDB WASM (ex: "DuckDB WASM v1.33.1 (mvp)")
+- Exibe versao do DuckDB WASM (ex: "DuckDB WASM v1.33.1-dev121.0 (threads)")
 - Footer com copyright e link para GitHub
 - SEO otimizado (meta tags, Open Graph, Twitter Cards)
 

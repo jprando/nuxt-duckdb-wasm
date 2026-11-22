@@ -19,19 +19,16 @@ export const duckDBWasmIniciar = (
 
       const JSDELIVR_BUNDLES = duckdb.getJsDelivrBundles()
 
-      const version = JSDELIVR_BUNDLES.mvp!.mainModule.match(/duckdb-wasm@([\d.\-\w]+)\//)
+      const version = JSDELIVR_BUNDLES.base!.mainModule.match(/duckdb-wasm@([\d.\-\w]+)\//)
         ?.[1] ?? 'latest'
-
-      // // COI bundle desabilitado: extensões (parquet, etc.) não são compiladas com shared memory,
-      // // causando LinkError em wasm_threads. Bug aberto: https://github.com/duckdb/duckdb-wasm/issues/1916
-      // // Quando corrigido, descomentar o bloco abaixo para reativar COI com multi-threading.
-      // JSDELIVR_BUNDLES.coi = {
-      //   mainModule: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-coi.wasm`,
-      //   mainWorker: `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.worker.js`,
-      //   pthreadWorker:
-      //     `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist/duckdb-browser-coi.pthread.worker.js`,
-      // };
-
+      // Bundle threads (wasm_threads): requer cross-origin isolation (COOP/COEP) e extensões v2.0.1+.
+      // getJsDelivrBundles() só retorna `base`; selectBundle escolhe `threads` se a plataforma suportar.
+      const cdn = `https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@${version}/dist`
+      JSDELIVR_BUNDLES.threads = {
+        mainModule: `${cdn}/duckdb-threads.wasm`,
+        mainWorker: `${cdn}/duckdb-browser-threads.worker.js`,
+        pthreadWorker: `${cdn}/duckdb-browser-threads.pthread.worker.js`
+      }
       const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES)
 
       // infoDev("Bundle selecionado:", JSON.stringify(bundle, null, 2));
@@ -61,12 +58,12 @@ export const duckDBWasmIniciar = (
       const _conn = await _db.connect()
       // await _conn.close();
 
-      const tipo = bundle.mainModule.match(/duckdb-(mvp|eh|coi)\.wasm/)?.[1]
+      const tipo = bundle.mainModule.match(/duckdb-(base|threads)\.wasm/)?.[1]
         ?? 'desconhecido'
       duckDBWasmInfo.value = `DuckDB WASM v${version} (${tipo})`
       // infoDev(duckDBWasmInfo.value);
     } catch (error) {
-      console.error('Falha ao instanciar DuckDB COI:', error)
+      console.error('Falha ao instanciar DuckDB:', error)
     } finally {
       estahCarregando.value = false
     }

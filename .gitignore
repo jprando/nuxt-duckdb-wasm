@@ -44,3 +44,5 @@ nuxtbin
 *.parquet
 .playwright-cli
 package-lock.json
+
+.github/context-mode/sessions
