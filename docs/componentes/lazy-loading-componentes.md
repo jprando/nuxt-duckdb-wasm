@@ -1,3 +1,5 @@
+> **Nota:** o projeto migrou do ECharts para o `UChart` do Nuxt UI (TanStack Charts). Este documento é histórico; hoje só `GraficoCard` é carregado de forma lazy.
+
 # 🚀 Lazy Loading de Componentes com ECharts
 
 **Documentação:** Otimização de Bundle através de Dynamic Component Loading

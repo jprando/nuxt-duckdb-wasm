@@ -10,7 +10,6 @@ import {
   diffusionDBStepsConsulta
 } from '../../app/consultas/diffusionDB.consultas'
 import {
-  eletricidadeFinlandiaCalendarioConsulta,
   eletricidadeFinlandiaDistribuicaoConsulta,
   eletricidadeFinlandiaHorariaConsulta,
   eletricidadeFinlandiaKpisConsulta,
@@ -36,8 +35,6 @@ import {
   ontimeHoraPartidaConsulta,
   ontimeKpisConsulta,
   ontimeMensalConsulta,
-  ontimeRadarCompanhiasConsulta,
-  ontimeSankeyConsulta,
   ontimeStatusConsulta
 } from '../../app/consultas/pontualidadeVoos.consultas'
 import {
@@ -50,7 +47,6 @@ import {
 } from '../../app/consultas/shakespeare.consultas'
 import {
   railwayFaresBusiestStationsConsulta,
-  railwayFaresChordConsulta,
   railwayFaresKpisConsulta,
   railwayFaresMostExpensiveRoutesConsulta,
   railwayFaresPriceDistributionConsulta
@@ -101,7 +97,6 @@ const todasConsultas: Array<{ nome: string, fn: (url: string) => string }> = [
   { nome: 'railwayFaresPriceDistribution', fn: railwayFaresPriceDistributionConsulta },
   { nome: 'railwayFaresMostExpensiveRoutes', fn: railwayFaresMostExpensiveRoutesConsulta },
   { nome: 'railwayFaresBusiestStations', fn: railwayFaresBusiestStationsConsulta },
-  { nome: 'railwayFaresChord', fn: railwayFaresChordConsulta },
   // Estações de Trem
   { nome: 'estacoesTremKpis', fn: estacoesTremKpisConsulta },
   { nome: 'estacoesTremPaises', fn: estacoesTremPaisesConsulta },
@@ -121,8 +116,6 @@ const todasConsultas: Array<{ nome: string, fn: (url: string) => string }> = [
   { nome: 'ontimeAeroportos', fn: ontimeAeroportosConsulta },
   { nome: 'ontimeCancelamentos', fn: ontimeCancelamentosConsulta },
   { nome: 'ontimeHoraPartida', fn: ontimeHoraPartidaConsulta },
-  { nome: 'ontimeRadarCompanhias', fn: ontimeRadarCompanhiasConsulta },
-  { nome: 'ontimeSankey', fn: ontimeSankeyConsulta },
   // Shakespeare
   { nome: 'shakespeareKpis', fn: shakespeareKpisConsulta },
   { nome: 'shakespearePecas', fn: shakespearePecasConsulta },
@@ -157,7 +150,6 @@ const todasConsultas: Array<{ nome: string, fn: (url: string) => string }> = [
   { nome: 'eletricidadeFinlandiaHoraria', fn: eletricidadeFinlandiaHorariaConsulta },
   { nome: 'eletricidadeFinlandiaSemanais', fn: eletricidadeFinlandiaSemanaisConsulta },
   { nome: 'eletricidadeFinlandiaDistribuicao', fn: eletricidadeFinlandiaDistribuicaoConsulta },
-  { nome: 'eletricidadeFinlandiaCalendario', fn: eletricidadeFinlandiaCalendarioConsulta },
   // Taxi NYC Local
   { nome: 'localNYCTaxiKpis', fn: localNYCTaxiKpisConsulta },
   { nome: 'localNYCTaxiVendor', fn: localNYCTaxiVendorConsulta },
@@ -228,13 +220,6 @@ describe('consultas com CTE — usam WITH corretamente', () => {
     expect(sql.toUpperCase()).toContain('UNION')
   })
 
-  it('railwayFaresChord usa CTE para top_stations', () => {
-    const sql = railwayFaresChordConsulta(ARQUIVO)
-    expect(sql.toUpperCase()).toContain('WITH TOP_STATIONS')
-    expect(sql.toUpperCase()).toContain('LEAST')
-    expect(sql.toUpperCase()).toContain('GREATEST')
-  })
-
   it('dutchTrainServicesAvgStopDuration usa CTE com JOIN', () => {
     const sql = dutchTrainServicesAvgStopDurationConsulta(ARQUIVO)
     expect(sql.toUpperCase()).toContain('WITH')
@@ -278,11 +263,6 @@ describe('consultas com CASE — mapeamento de códigos', () => {
 })
 
 describe('consultas com HAVING — filtros pós-agrupamento', () => {
-  it('ontimeRadarCompanhias filtra companhias com mais de 50.000 voos', () => {
-    const sql = ontimeRadarCompanhiasConsulta(ARQUIVO)
-    expect(sql).toContain('HAVING COUNT(*) > 50000')
-  })
-
   it('ontimeCancelamentos filtra companhias com mais de 10.000 voos', () => {
     const sql = ontimeCancelamentosConsulta(ARQUIVO)
     expect(sql).toContain('HAVING COUNT(*) > 10000')

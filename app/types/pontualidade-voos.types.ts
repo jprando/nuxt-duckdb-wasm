@@ -51,24 +51,3 @@ export interface LinhaAtrasoPorHoraPartida extends Record<string, unknown> {
   hora: number
   atraso_medio: number | null
 }
-
-export interface LinhaRadarCompanhia extends Record<string, unknown> {
-  carrier: string
-  atraso_medio: number | null
-  distancia_media: number | null
-  pct_cancelado: number | null
-  pct_pontual: number | null
-}
-
-export interface LinhaSankeyCompanhiaStatus extends Record<string, unknown> {
-  companhia: string
-  status: string
-  total: number
-}
-
-export interface ParametroTooltipSankey {
-  dataType: string
-  data: { source?: string, target?: string, value?: number }
-  name?: string
-  value?: number
-}

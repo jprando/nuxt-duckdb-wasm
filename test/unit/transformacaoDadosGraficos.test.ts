@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
  * extraindo e reproduzindo as funções puras de configuração de gráficos.
  *
  * Essas funções vivem dentro dos composables mas são lógica pura —
- * transformam arrays de dados em objetos de configuração ECharts.
+ * transformam arrays de dados em configurações de gráfico.
  */
 
 const PALETA = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#f43f5e', '#14b8a6']
@@ -36,16 +36,6 @@ function construirMapaTiposPorPais(data: Array<{ country: string, type: string, 
 }
 
 // ─── Lógica extraída de usePontualidadeVoos ─────────────────────────────────
-
-function calcularRadarIndicadores(data: Array<{ atraso_medio?: number, distancia_media?: number }>) {
-  const maxAtraso = Math.ceil(Math.max(...data.map(d => d.atraso_medio ?? 0), 10) / 50) * 50
-  const maxDist = Math.ceil(Math.max(...data.map(d => d.distancia_media ?? 0), 500) / 500) * 500
-  return { maxAtraso, maxDist }
-}
-
-function calcularTaxaCancelamentoInvertida(pctCancelado: number) {
-  return Math.max(0, 100 - pctCancelado * 20)
-}
 
 function mapearDiaSemana(dayofweek: number) {
   return DIAS_SEMANA[dayofweek - 1] ?? `D${dayofweek}`
@@ -124,74 +114,6 @@ describe('construirMapaTiposPorPais — Map de Maps com paleta cíclica', () => 
     expect(countries).toEqual([])
     expect(types).toEqual([])
     expect(series).toEqual([])
-  })
-})
-
-describe('calcularRadarIndicadores — arredondamento para cima dos eixos', () => {
-  it('arredonda maxAtraso para múltiplo de 50 acima do maior valor', () => {
-    const { maxAtraso } = calcularRadarIndicadores([
-      { atraso_medio: 12 },
-      { atraso_medio: 47 }
-    ])
-    expect(maxAtraso).toBe(50) // ceil(47/50)*50 = 50
-  })
-
-  it('arredonda maxDist para múltiplo de 500 acima do maior valor', () => {
-    const { maxDist } = calcularRadarIndicadores([
-      { distancia_media: 800 },
-      { distancia_media: 1200 }
-    ])
-    expect(maxDist).toBe(1500) // ceil(1200/500)*500 = 1500
-  })
-
-  it('usa mínimo de 10 para atraso e 500 para distância quando dados são pequenos', () => {
-    const { maxAtraso, maxDist } = calcularRadarIndicadores([
-      { atraso_medio: 2, distancia_media: 100 }
-    ])
-    expect(maxAtraso).toBe(50) // ceil(max(2,10)/50)*50 = 50
-    expect(maxDist).toBe(500) // ceil(max(100,500)/500)*500 = 500
-  })
-
-  it('lida com valores undefined nos dados (usa fallback 0)', () => {
-    const { maxAtraso, maxDist } = calcularRadarIndicadores([
-      { atraso_medio: undefined, distancia_media: undefined }
-    ])
-    expect(maxAtraso).toBe(50) // ceil(max(0,10)/50)*50
-    expect(maxDist).toBe(500) // ceil(max(0,500)/500)*500
-  })
-
-  it('calcula corretamente para valores grandes', () => {
-    const { maxAtraso, maxDist } = calcularRadarIndicadores([
-      { atraso_medio: 310, distancia_media: 3200 }
-    ])
-    expect(maxAtraso).toBe(350) // ceil(310/50)*50
-    expect(maxDist).toBe(3500) // ceil(3200/500)*500
-  })
-
-  it('lida com dados vazios', () => {
-    const { maxAtraso, maxDist } = calcularRadarIndicadores([])
-    // Math.max(...[], 10) = 10; Math.max(...[], 500) = 500
-    // -Infinity é menor que 10/500, então usa os mínimos
-    expect(maxAtraso).toBe(50)
-    expect(maxDist).toBe(500)
-  })
-})
-
-describe('calcularTaxaCancelamentoInvertida — escala invertida 0-100', () => {
-  it('retorna 100 quando nenhum voo é cancelado (pctCancelado = 0)', () => {
-    expect(calcularTaxaCancelamentoInvertida(0)).toBe(100)
-  })
-
-  it('retorna 0 quando pctCancelado = 5 (5 * 20 = 100)', () => {
-    expect(calcularTaxaCancelamentoInvertida(5)).toBe(0)
-  })
-
-  it('aplica Math.max(0, ...) para evitar valores negativos', () => {
-    expect(calcularTaxaCancelamentoInvertida(10)).toBe(0) // 100 - 200 clamped a 0
-  })
-
-  it('calcula valor intermediário corretamente', () => {
-    expect(calcularTaxaCancelamentoInvertida(2.5)).toBe(50) // 100 - 50
   })
 })
 

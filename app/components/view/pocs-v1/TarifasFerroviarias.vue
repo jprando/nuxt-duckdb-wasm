@@ -8,9 +8,7 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoEstacoesConectadas,
-  configuracaoGraficoChord,
   fmtNumero,
   fmtPreco
 } = useTarifasFerroviarias()
@@ -70,7 +68,6 @@ const {
     <!-- ── Linha 3: Estações mais conectadas ─────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoEstacoesConectadas"
-      :tema="temaGrafico"
       :altura="260"
     >
       <template #titulo>
@@ -79,24 +76,6 @@ const {
           class="text-success size-4"
         />
         Top 10 Estações com mais Conexões
-      </template>
-    </LazyGraficoCard>
-
-    <!-- ── Chord: Conexões entre Estações ─────────────────────────── -->
-    <LazyGraficoCard
-      :configuracao="configuracaoGraficoChord"
-      :tema="temaGrafico"
-      :altura="400"
-    >
-      <template #titulo>
-        <UIcon
-          name="i-lucide-circle-dot"
-          class="text-primary size-4"
-        />
-        Rede de Conexões entre Estações
-        <UBadge variant="soft">
-          Top 10 · Chord
-        </UBadge>
       </template>
     </LazyGraficoCard>
   </div>

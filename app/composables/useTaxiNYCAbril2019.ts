@@ -1,3 +1,4 @@
+import type { ConfiguracaoGrafico } from '~/types/grafico.types'
 import type {
   DadosDuracao,
   DadosGorjeta,
@@ -10,20 +11,9 @@ import type {
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
 const COR_TERCIARIA = '#f59e0b'
-const COR_QUATERNARIA = '#8b5cf6'
-const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, '#f43f5e', '#14b8a6']
-
-const configuracaoGrafico = {
-  backgroundColor: 'transparent',
-  grid: { top: 32, right: 16, bottom: 48, left: 56 },
-  tooltip: { trigger: 'axis' as const }
-}
 
 export const useTaxiNYCAbril2019 = () => {
   const { executar, init, registrarParquet } = useDuckDb()
-  const colorMode = useColorMode()
-
-  const temaGrafico = computed(() => colorMode.value === 'dark' ? 'dark' : '')
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
@@ -39,103 +29,55 @@ export const useTaxiNYCAbril2019 = () => {
     periodo_fim: ''
   })
 
-  const opcaoTarifa = ref<Record<string, unknown> | null>(null)
-  const opcaoPagamento = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoDuracao = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoGorjeta = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null)
+  const opcaoTarifa = ref<ConfiguracaoGrafico | null>(null)
+  const opcaoPagamento = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoDuracao = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoGorjeta = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoHora = ref<ConfiguracaoGrafico | null>(null)
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
   const configurarGraficoTarifa = (data: DadosTarifa[]) => {
-    opcaoTarifa.value = {
-      backgroundColor: 'transparent',
-      color: PALETA,
-      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-      legend: { bottom: 0, type: 'scroll' },
-      series: [
-        {
-          type: 'pie',
-          radius: ['42%', '70%'],
-          center: ['50%', '42%'],
-          data: data.map(d => ({ name: d.tarifa, value: d.total })),
-          label: { show: false },
-          emphasis: { label: { show: true, fontWeight: 'bold' } }
-        }
-      ]
-    }
+    opcaoTarifa.value = montarRosca(
+      data.map(d => ({ nome: d.tarifa, valor: d.total })),
+      'Corridas'
+    )
   }
 
   const configurarGraficoPagamento = (data: DadosPagamento[]) => {
-    opcaoPagamento.value = {
-      backgroundColor: 'transparent',
-      color: PALETA,
-      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-      legend: { bottom: 0, type: 'scroll' },
-      series: [
-        {
-          type: 'pie',
-          radius: ['42%', '70%'],
-          center: ['50%', '42%'],
-          data: data.map(d => ({ name: d.pagamento, value: d.total })),
-          label: { show: false },
-          emphasis: { label: { show: true, fontWeight: 'bold' } }
-        }
-      ]
-    }
+    opcaoPagamento.value = montarRosca(
+      data.map(d => ({ nome: d.pagamento, valor: d.total })),
+      'Corridas'
+    )
   }
 
   const configurarGraficoDuracao = (data: DadosDuracao[]) => {
-    const durLabels = data.map(d => `${d.faixa_min}min`)
-    const durValues = data.map(d => d.total)
-    configuracaoGraficoDuracao.value = {
-      ...configuracaoGrafico,
-      color: [COR_SECUNDARIA],
-      xAxis: { type: 'category', data: durLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: durValues, name: 'Corridas' }]
-    }
+    configuracaoGraficoDuracao.value = montarGrafico({
+      rotulos: data.map(d => `${d.faixa_min}min`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_SECUNDARIA }]
+    })
   }
 
   const configurarGraficoGorjeta = (data: DadosGorjeta[]) => {
-    const gorjLabels = data.map(d => `$${d.faixa}`)
-    const gorjValues = data.map(d => d.total)
-    configuracaoGraficoGorjeta.value = {
-      ...configuracaoGrafico,
-      color: [COR_TERCIARIA],
-      xAxis: { type: 'category', data: gorjLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: gorjValues, name: 'Corridas' }]
-    }
+    configuracaoGraficoGorjeta.value = montarGrafico({
+      rotulos: data.map(d => `$${d.faixa}`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_TERCIARIA }]
+    })
   }
 
   const configurarGraficoHora = (data: DadosHora[]) => {
     if (!data || data.length === 0) {
-      configuracaoGraficoHora.value = {}
+      configuracaoGraficoHora.value = graficoVazio()
       return
     }
-    const horaLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const horaValues = data.map(d => d.total)
-    configuracaoGraficoHora.value = {
-      ...configuracaoGrafico,
-      grid: { top: 16, right: 16, bottom: 48, left: 64 },
-      color: [COR_PRIMARIA],
-      xAxis: { type: 'category', data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [
-        {
-          type: 'line',
-          data: horaValues,
-          name: 'Corridas',
-          smooth: true,
-          symbol: 'circle',
-          symbolSize: 5,
-          areaStyle: { opacity: 0.15 }
-        }
-      ]
-    }
+    configuracaoGraficoHora.value = montarGrafico({
+      tipo: 'area',
+      rotulos: data.map(d => `${String(d.hora).padStart(2, '0')}h`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_PRIMARIA }],
+      curva: 'monotone',
+      pontos: true
+    })
   }
-
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = async () => {
@@ -170,7 +112,7 @@ export const useTaxiNYCAbril2019 = () => {
     executar(nycTaxi2019AprHoraConsulta(nomeArquivo))
       .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
-        configuracaoGraficoHora.value = {}
+        configuracaoGraficoHora.value = graficoVazio()
       })
   }
 
@@ -190,7 +132,6 @@ export const useTaxiNYCAbril2019 = () => {
     carregandoKpis,
     erro,
     kpis,
-    temaGrafico,
     opcaoTarifa,
     opcaoPagamento,
     configuracaoGraficoDuracao,

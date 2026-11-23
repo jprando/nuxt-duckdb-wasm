@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoPaises,
   configuracaoGraficoTipos,
   configuracaoGraficoCategorias,
@@ -84,7 +83,6 @@ const {
       <!-- Estações por País -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoPaises"
-        :tema="temaGrafico"
         :altura="280"
       >
         <template #titulo>
@@ -99,7 +97,6 @@ const {
       <!-- Tipos de Estação (donut) -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoTipos"
-        :tema="temaGrafico"
         :altura="280"
       >
         <template #titulo>
@@ -117,7 +114,6 @@ const {
       <!-- Categorias Simplificadas -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoCategorias"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -132,7 +128,6 @@ const {
       <!-- Distribuição por Latitude -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoLatitude"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -151,7 +146,6 @@ const {
     <!-- ── Linha 3: Longitude ─────────────────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoLongitude"
-      :tema="temaGrafico"
       :altura="200"
     >
       <template #titulo>
@@ -169,7 +163,6 @@ const {
     <!-- ── Linha 4: Tipos por País (stacked bar) ──────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoTiposPorPais"
-      :tema="temaGrafico"
       :altura="280"
     >
       <template #titulo>

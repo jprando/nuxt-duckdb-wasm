@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoDiaSemana,
   configuracaoGraficoMensal,
   configuracaoGraficoAtrasoPartida,
@@ -16,8 +15,6 @@ const {
   configuracaoGraficoAeroportos,
   configuracaoGraficoCancelamentos,
   configuracaoGraficoHoraPartida,
-  configuracaoGraficoRadar,
-  configuracaoGraficoSankey,
   fmtNumero,
   fmtMin,
   fmtPct,
@@ -89,7 +86,6 @@ const {
       <!-- Atraso por Dia da Semana -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoDiaSemana"
-        :tema="temaGrafico"
         :altura="240"
       >
         <template #titulo>
@@ -104,7 +100,6 @@ const {
       <!-- Voos por Mês -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoMensal"
-        :tema="temaGrafico"
         :altura="240"
       >
         <template #titulo>
@@ -122,7 +117,6 @@ const {
       <!-- Distribuição de Atraso na Partida -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoAtrasoPartida"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -137,7 +131,6 @@ const {
       <!-- Distribuição por Grupo de Distância -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoDistancia"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -155,7 +148,6 @@ const {
       <!-- Top 12 Aeroportos de Origem -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoAeroportos"
-        :tema="temaGrafico"
         :altura="300"
       >
         <template #titulo>
@@ -170,7 +162,6 @@ const {
       <!-- Taxa de Cancelamento por Companhia -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoCancelamentos"
-        :tema="temaGrafico"
         :altura="300"
       >
         <template #titulo>
@@ -189,7 +180,6 @@ const {
     <!-- ── Linha 5: Atraso por Hora do Dia (full width) ──────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoHoraPartida"
-      :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."
     >
@@ -204,45 +194,6 @@ const {
         </UBadge>
       </template>
     </LazyGraficoCard>
-
-    <!-- ── Linha 6: Radar de Performance + Sankey Companhia→Status ── -->
-    <div class="grade-graficos-xl">
-      <!-- Radar: Performance Comparativa das Companhias -->
-      <LazyGraficoCard
-        :configuracao="configuracaoGraficoRadar"
-        :tema="temaGrafico"
-        :altura="320"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-radar"
-            class="text-primary size-4"
-          />
-          Performance Comparativa das Companhias
-          <UBadge variant="soft">
-            Radar
-          </UBadge>
-        </template>
-      </LazyGraficoCard>
-
-      <!-- Sankey: Fluxo Companhia → Status do Voo -->
-      <LazyGraficoCard
-        :configuracao="configuracaoGraficoSankey"
-        :tema="temaGrafico"
-        :altura="320"
-      >
-        <template #titulo>
-          <UIcon
-            name="i-lucide-git-merge"
-            class="text-secondary size-4"
-          />
-          Fluxo de Voos: Companhia → Status
-          <UBadge variant="soft">
-            Sankey
-          </UBadge>
-        </template>
-      </LazyGraficoCard>
-    </div>
   </div>
 </template>
 
@@ -255,9 +206,5 @@ const {
 
 .grade-graficos {
   @apply grid grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-4;
-}
-
-.grade-graficos-xl {
-  @apply grid grid-cols-1 xl:grid-cols-2 gap-4;
 }
 </style>

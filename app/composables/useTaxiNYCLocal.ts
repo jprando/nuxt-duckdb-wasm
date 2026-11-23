@@ -1,3 +1,4 @@
+import type { ConfiguracaoGrafico } from '~/types/grafico.types'
 import type {
   DadosDistancia,
   DadosHora,
@@ -11,19 +12,9 @@ const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
 const COR_TERCIARIA = '#f59e0b'
 const COR_QUATERNARIA = '#8b5cf6'
-const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, '#f43f5e', '#14b8a6']
-
-const configuracaoGrafico = {
-  backgroundColor: 'transparent',
-  grid: { top: 32, right: 16, bottom: 48, left: 56 },
-  tooltip: { trigger: 'axis' as const }
-}
 
 export const useTaxiNYCLocal = () => {
   const { executar, init, registrarParquet } = useDuckDb()
-  const colorMode = useColorMode()
-
-  const temaGrafico = computed(() => colorMode.value === 'dark' ? 'dark' : '')
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
@@ -39,96 +30,55 @@ export const useTaxiNYCLocal = () => {
     periodo_fim: ''
   })
 
-  const configuracaoGraficoVendor = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoPassageiros = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoDistancia = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoValor = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoHora = ref<Record<string, unknown> | null>(null)
+  const configuracaoGraficoVendor = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoPassageiros = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoDistancia = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoValor = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoHora = ref<ConfiguracaoGrafico | null>(null)
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
   const configurarGraficoVendor = (data: DadosVendor[]) => {
-    configuracaoGraficoVendor.value = {
-      backgroundColor: 'transparent',
-      color: PALETA,
-      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-      legend: { bottom: 0, type: 'scroll' },
-      series: [
-        {
-          type: 'pie',
-          radius: ['42%', '70%'],
-          center: ['50%', '42%'],
-          data: data.map(d => ({ name: d.vendor, value: d.total })),
-          label: { show: false },
-          emphasis: { label: { show: true, fontWeight: 'bold' } }
-        }
-      ]
-    }
+    configuracaoGraficoVendor.value = montarRosca(
+      data.map(d => ({ nome: d.vendor, valor: d.total })),
+      'Corridas'
+    )
   }
 
   const configurarGraficoPassageiros = (data: DadosPassageiros[]) => {
-    const paxLabels = data.map(d => `${d.passageiros} pax`)
-    const paxValues = data.map(d => d.total)
-    configuracaoGraficoPassageiros.value = {
-      ...configuracaoGrafico,
-      color: [COR_SECUNDARIA],
-      xAxis: { type: 'category', data: paxLabels, axisLabel: { fontSize: 11 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: paxValues, name: 'Corridas', barMaxWidth: 48 }]
-    }
+    configuracaoGraficoPassageiros.value = montarGrafico({
+      rotulos: data.map(d => `${d.passageiros} pax`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_SECUNDARIA }]
+    })
   }
 
   const configurarGraficoDistancia = (data: DadosDistancia[]) => {
-    const distLabels = data.map(d => `${d.milhas}mi`)
-    const distValues = data.map(d => d.total)
-    configuracaoGraficoDistancia.value = {
-      ...configuracaoGrafico,
-      color: [COR_TERCIARIA],
-      xAxis: { type: 'category', data: distLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: distValues, name: 'Corridas' }]
-    }
+    configuracaoGraficoDistancia.value = montarGrafico({
+      rotulos: data.map(d => `${d.milhas}mi`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_TERCIARIA }]
+    })
   }
 
   const configurarGraficoValor = (data: DadosValor[]) => {
-    const valorLabels = data.map(d => `$${d.faixa}`)
-    const valorValues = data.map(d => d.total)
-    configuracaoGraficoValor.value = {
-      ...configuracaoGrafico,
-      color: [COR_QUATERNARIA],
-      xAxis: { type: 'category', data: valorLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: valorValues, name: 'Corridas' }]
-    }
+    configuracaoGraficoValor.value = montarGrafico({
+      rotulos: data.map(d => `$${d.faixa}`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_QUATERNARIA }]
+    })
   }
 
   const configurarGraficoHora = (data: DadosHora[]) => {
     if (!data || data.length === 0) {
-      configuracaoGraficoHora.value = {}
+      configuracaoGraficoHora.value = graficoVazio()
       return
     }
-    const horaLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const horaValues = data.map(d => d.total)
-    configuracaoGraficoHora.value = {
-      ...configuracaoGrafico,
-      grid: { top: 16, right: 16, bottom: 48, left: 64 },
-      color: [COR_PRIMARIA],
-      xAxis: { type: 'category', data: horaLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [
-        {
-          type: 'line',
-          data: horaValues,
-          name: 'Corridas',
-          smooth: true,
-          symbol: 'circle',
-          symbolSize: 5,
-          areaStyle: { opacity: 0.15 }
-        }
-      ]
-    }
+    configuracaoGraficoHora.value = montarGrafico({
+      tipo: 'area',
+      rotulos: data.map(d => `${String(d.hora).padStart(2, '0')}h`),
+      series: [{ nome: 'Corridas', valores: data.map(d => d.total), cor: COR_PRIMARIA }],
+      curva: 'monotone',
+      pontos: true
+    })
   }
-
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = async () => {
@@ -161,7 +111,7 @@ export const useTaxiNYCLocal = () => {
     executar(localNYCTaxiHoraConsulta(nomeArquivo))
       .then(dados => configurarGraficoHora(dados as DadosHora[]))
       .catch(() => {
-        configuracaoGraficoHora.value = {}
+        configuracaoGraficoHora.value = graficoVazio()
       })
   }
 
@@ -180,7 +130,6 @@ export const useTaxiNYCLocal = () => {
     carregandoKpis,
     erro,
     kpis,
-    temaGrafico,
     configuracaoGraficoVendor,
     configuracaoGraficoPassageiros,
     configuracaoGraficoDistancia,

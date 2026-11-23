@@ -77,7 +77,7 @@ O composable central `useDuckDb.ts` fornece `executar(sql)` e `registrarParquet(
 
 ### Componentes de gráficos
 
-Componentes `Grafico*` são **excluídos do auto-import** no `nuxt.config.ts` para evitar bundle de ~300KB do ECharts. Importados explicitamente via `defineAsyncComponent` em `app/utils/lazy-components.ts`.
+Gráficos usam `UChart` (Nuxt UI + `@tanstack/charts`). Os composables montam a configuração com `montarGrafico`/`montarRosca` (`app/utils/grafico.ts`) e `GraficoCard` renderiza via `v-bind`. Tipos suportados: `line`, `area`, `bar`, `donut`. `GraficoCard` é importado via `defineAsyncComponent` em `app/utils/lazy-components.ts`.
 
 ## Convenções de código
 

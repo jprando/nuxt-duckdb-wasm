@@ -7,7 +7,6 @@ import {
   diffusionDBStepsConsulta
 } from '../../app/consultas/diffusionDB.consultas'
 import {
-  eletricidadeFinlandiaCalendarioConsulta,
   eletricidadeFinlandiaDistribuicaoConsulta,
   eletricidadeFinlandiaHorariaConsulta,
   eletricidadeFinlandiaKpisConsulta,
@@ -117,11 +116,5 @@ describe('consultas Eletricidade Finlândia', () => {
     const sql = eletricidadeFinlandiaDistribuicaoConsulta(ARQUIVO_TESTE)
     expect(sql).toContain('FLOOR(price / 20)')
     expect(sql).toContain('faixa_inicio')
-  })
-
-  it('calendário agrupa por dia', () => {
-    const sql = eletricidadeFinlandiaCalendarioConsulta(ARQUIVO_TESTE)
-    expect(sql).toContain('DATE_TRUNC(\'day\'')
-    expect(sql).toContain('ORDER BY dia')
   })
 })

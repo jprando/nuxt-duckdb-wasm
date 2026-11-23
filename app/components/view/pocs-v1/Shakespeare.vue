@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoAto,
   configuracaoGraficoElenco,
   configuracaoGraficoComprimento,
@@ -67,7 +66,6 @@ const {
     <div class="grade-graficos">
       <LazyGraficoCard
         :configuracao="configuracaoGraficoAto"
-        :tema="temaGrafico"
         :altura="220"
       >
         <template #titulo>
@@ -81,7 +79,6 @@ const {
 
       <LazyGraficoCard
         :configuracao="configuracaoGraficoElenco"
-        :tema="temaGrafico"
         :altura="220"
       >
         <template #titulo>
@@ -100,7 +97,6 @@ const {
     <!-- ── Linha 4: Comprimento das Falas ─────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoComprimento"
-      :tema="temaGrafico"
       :altura="200"
     >
       <template #titulo>

@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoDuracao,
   configuracaoGraficoGorjeta,
   configuracaoGraficoHora,
@@ -78,7 +77,6 @@ const {
     <div class="grade-graficos">
       <LazyGraficoCard
         :configuracao="configuracaoGraficoDuracao"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -92,7 +90,6 @@ const {
 
       <LazyGraficoCard
         :configuracao="configuracaoGraficoGorjeta"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -111,7 +108,6 @@ const {
     <!-- ── Linha 4: Corridas por Hora ────────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoHora"
-      :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."
     >

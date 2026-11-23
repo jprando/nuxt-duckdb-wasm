@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/test-utils',
     'nuxt-bun-compile',
-    'nuxt-echarts',
     'nuxt-vitalizer',
     'nuxt-monitoring',
     '@vueuse/nuxt'
@@ -63,7 +62,7 @@ export default defineNuxtConfig({
 
   vite: {
     optimizeDeps: {
-      exclude: ['@duckdb/duckdb-wasm', 'echarts']
+      exclude: ['@duckdb/duckdb-wasm']
     },
 
     worker: {
@@ -73,13 +72,6 @@ export default defineNuxtConfig({
 
   bunCompile: {
     outfile: 'nuxtbin'
-  },
-
-  echarts: {
-    renderer: 'svg',
-    charts: ['BarChart', 'LineChart', 'PieChart'],
-    components: ['GridComponent', 'TooltipComponent', 'LegendComponent'],
-    features: ['LabelLayout', 'UniversalTransition']
   },
 
   eslint: {

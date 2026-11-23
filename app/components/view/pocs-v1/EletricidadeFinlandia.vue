@@ -8,12 +8,10 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoMensal,
   configuracaoGraficoHoraria,
   configuracaoGraficoSemanal,
   configuracaoGraficoDistribuicao,
-  configuracaoGraficoCalendario,
   fmtNumero,
   fmtEuro
 } = useEletricidadeFinlandia()
@@ -88,7 +86,6 @@ const {
     <!-- ── Série Temporal Semanal ──────────────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoSemanal"
-      :tema="temaGrafico"
       :altura="280"
     >
       <template #titulo>
@@ -108,7 +105,6 @@ const {
       <!-- Variação Mensal -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoMensal"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -126,7 +122,6 @@ const {
       <!-- Perfil Horário -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoHoraria"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -145,7 +140,6 @@ const {
     <!-- ── Distribuição de Preços ─────────────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoDistribuicao"
-      :tema="temaGrafico"
       :altura="220"
     >
       <template #titulo>
@@ -156,24 +150,6 @@ const {
         Distribuição de Preços
         <UBadge variant="soft">
           Faixas de €20/MWh
-        </UBadge>
-      </template>
-    </LazyGraficoCard>
-
-    <!-- ── Calendário de Preços ────────────────────────────────────── -->
-    <LazyGraficoCard
-      :configuracao="configuracaoGraficoCalendario"
-      :tema="temaGrafico"
-      :altura="200"
-    >
-      <template #titulo>
-        <UIcon
-          name="i-lucide-calendar-range"
-          class="text-primary size-4"
-        />
-        Mapa de Calor Diário de Preços
-        <UBadge variant="soft">
-          2021
         </UBadge>
       </template>
     </LazyGraficoCard>

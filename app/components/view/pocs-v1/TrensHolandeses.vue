@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoPartidasPorHora,
   configuracaoGraficoDuracaoMediaParada,
   fmtNumero
@@ -65,7 +64,6 @@ const {
     <!-- ── Linha 3: Duração Média da Parada ─────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoDuracaoMediaParada"
-      :tema="temaGrafico"
       :altura="260"
     >
       <template #titulo>
@@ -83,7 +81,6 @@ const {
     <!-- ── Linha 4: Partidas por Hora ──────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoPartidasPorHora"
-      :tema="temaGrafico"
       :altura="200"
       msg-sem-dados="Dados de hora indisponíveis para este dataset."
     >

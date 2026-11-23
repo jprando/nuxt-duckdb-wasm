@@ -8,7 +8,6 @@ const {
   carregandoKpis,
   erro,
   kpis,
-  temaGrafico,
   configuracaoGraficoDimensoes,
   configuracaoGraficoNsfw,
   configuracaoGraficoSteps,
@@ -79,7 +78,6 @@ const {
       <!-- Top 10 Dimensões -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoDimensoes"
-        :tema="temaGrafico"
         :altura="280"
       >
         <template #titulo>
@@ -97,7 +95,6 @@ const {
       <!-- Classificação NSFW -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoNsfw"
-        :tema="temaGrafico"
         :altura="280"
       >
         <template #titulo>
@@ -115,7 +112,6 @@ const {
       <!-- Distribuição de Steps -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoSteps"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -130,7 +126,6 @@ const {
       <!-- Samplers -->
       <LazyGraficoCard
         :configuracao="configuracaoGraficoSampler"
-        :tema="temaGrafico"
         :altura="260"
       >
         <template #titulo>
@@ -146,7 +141,6 @@ const {
     <!-- ── Atividade por Hora ──────────────────────────────────────── -->
     <LazyGraficoCard
       :configuracao="configuracaoGraficoAtividade"
-      :tema="temaGrafico"
       :altura="220"
     >
       <template #titulo>

@@ -1,3 +1,4 @@
+import type { ConfiguracaoGrafico } from '~/types/grafico.types'
 import type {
   DadosPorAto,
   DadosPorComprimento,
@@ -20,18 +21,10 @@ const PALETA = [
   '#14b8a6'
 ]
 
-const configuracaoGrafico = {
-  backgroundColor: 'transparent',
-  grid: { top: 16, right: 24, bottom: 8, left: 8 },
-  tooltip: { trigger: 'axis' as const }
-}
 // grid: { top: 16, right: 24, bottom: 8, left: 8 },
 
 export const useShakespeare = () => {
   const { executar, init, registrarParquet } = useDuckDb()
-  const colorMode = useColorMode()
-
-  const temaGrafico = computed(() => colorMode.value === 'dark' ? 'dark' : '')
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
@@ -45,118 +38,43 @@ export const useShakespeare = () => {
     avg_words_per_line: 0
   })
 
-  const opcaoPecas = ref<Record<string, unknown> | null>(null)
-  const opcaoPersonagens = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoAto = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoElenco = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoComprimento = ref<Record<string, unknown> | null>(null)
+  const opcaoPecas = ref<ConfiguracaoGrafico | null>(null)
+  const opcaoPersonagens = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoAto = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoElenco = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoComprimento = ref<ConfiguracaoGrafico | null>(null)
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
-
   const configurarGraficoPecas = (data: DadosPorPeca[]) => {
-    const pecas = data.map(d => d.peca).reverse()
-    const totais = data.map(d => d.total).reverse()
-    opcaoPecas.value = {
-      ...configuracaoGrafico,
-      color: [COR_PRIMARIA],
-      xAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      yAxis: { type: 'category', data: pecas, axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: totais, name: 'Linhas' }]
-    }
+    opcaoPecas.value = montarGrafico({
+      rotulos: data.map(d => d.peca),
+      series: [{ nome: 'Linhas', valores: data.map(d => d.total), cor: COR_PRIMARIA }]
+    })
   }
-
   const configurarGraficoPersonagens = (data: DadosPorPersonagem[]) => {
-    const personagens = data.map(d => d.personagem).reverse()
-    const totais = data.map(d => d.total).reverse()
-    opcaoPersonagens.value = {
-      backgroundColor: 'transparent',
-      color: [COR_SECUNDARIA],
-      tooltip: { trigger: 'axis' },
-      grid: {
-        top: 16,
-        right: 24,
-        bottom: 8,
-        left: 8
-      },
-      xAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      yAxis: {
-        type: 'category',
-        data: personagens,
-        axisLabel: { fontSize: 10 }
-      },
-      series: [{ type: 'bar', data: totais, name: 'Falas' }]
-    }
+    opcaoPersonagens.value = montarGrafico({
+      rotulos: data.map(d => d.personagem),
+      series: [{ nome: 'Falas', valores: data.map(d => d.total), cor: COR_SECUNDARIA }]
+    })
   }
-
   const configurarGraficoAto = (data: DadosPorAto[]) => {
-    const atos = data.map(d => `Ato ${d.ato}`)
-    const totais = data.map(d => d.total)
-    configuracaoGraficoAto.value = {
-      backgroundColor: 'transparent',
-      color: [COR_TERCIARIA],
-      tooltip: { trigger: 'axis' },
-      grid: {
-        top: 16,
-        right: 16,
-        bottom: 32,
-        left: 56
-      },
-      xAxis: {
-        type: 'category',
-        data: atos,
-        axisLabel: { fontSize: 11 }
-      },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: totais, name: 'Linhas' }]
-    }
+    configuracaoGraficoAto.value = montarGrafico({
+      rotulos: data.map(d => `Ato ${d.ato}`),
+      series: [{ nome: 'Linhas', valores: data.map(d => d.total), cor: COR_TERCIARIA }]
+    })
   }
-
   const configurarGraficoElenco = (data: DadosPorElenco[]) => {
-    const pecas = data.map(d => d.peca).reverse()
-    const totais = data.map(d => d.personagens).reverse()
-    configuracaoGraficoElenco.value = {
-      backgroundColor: 'transparent',
-      color: [COR_QUATERNARIA],
-      tooltip: { trigger: 'axis' },
-      grid: {
-        top: 16,
-        right: 24,
-        bottom: 8,
-        left: 8
-      },
-      xAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      yAxis: {
-        type: 'category',
-        data: pecas,
-        axisLabel: { fontSize: 10 }
-      },
-      series: [{ type: 'bar', data: totais, name: 'Personagens' }]
-    }
+    configuracaoGraficoElenco.value = montarGrafico({
+      rotulos: data.map(d => d.peca),
+      series: [{ nome: 'Personagens', valores: data.map(d => d.personagens), cor: COR_QUATERNARIA }]
+    })
   }
-
   const configurarGraficoComprimento = (data: DadosPorComprimento[]) => {
-    const labels = data.map(d => `${d.faixa}–${d.faixa + 19}`)
-    const totais = data.map(d => d.total)
-    configuracaoGraficoComprimento.value = {
-      backgroundColor: 'transparent',
-      color: [PALETA[4]],
-      tooltip: { trigger: 'axis' },
-      grid: {
-        top: 16,
-        right: 16,
-        bottom: 48,
-        left: 56
-      },
-      xAxis: {
-        type: 'category',
-        data: labels,
-        axisLabel: { fontSize: 9, rotate: 45 }
-      },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: totais, name: 'Linhas' }]
-    }
+    configuracaoGraficoComprimento.value = montarGrafico({
+      rotulos: data.map(d => `${d.faixa}–${d.faixa + 19}`),
+      series: [{ nome: 'Linhas', valores: data.map(d => d.total), cor: PALETA[4] }]
+    })
   }
-
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = async () => {
@@ -206,7 +124,6 @@ export const useShakespeare = () => {
     carregandoKpis,
     erro,
     kpis,
-    temaGrafico,
     opcaoPecas,
     opcaoPersonagens,
     configuracaoGraficoAto,

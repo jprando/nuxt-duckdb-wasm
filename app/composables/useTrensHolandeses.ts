@@ -1,3 +1,4 @@
+import type { ConfiguracaoGrafico } from '~/types/grafico.types'
 import type {
   DadosDuracaoMediaParada,
   DadosEstacaoMovimentada,
@@ -9,20 +10,9 @@ import type {
 const COR_PRIMARIA = '#3b82f6'
 const COR_SECUNDARIA = '#10b981'
 const COR_TERCIARIA = '#f59e0b'
-const COR_QUATERNARIA = '#8b5cf6'
-const PALETA = [COR_PRIMARIA, COR_SECUNDARIA, COR_TERCIARIA, COR_QUATERNARIA, '#f43f5e', '#14b8a6']
-
-const configuracaoGrafico = {
-  backgroundColor: 'transparent',
-  grid: { top: 32, right: 16, bottom: 48, left: 56 },
-  tooltip: { trigger: 'axis' as const }
-}
 
 export const useTrensHolandeses = () => {
   const { executar, init, registrarParquet } = useDuckDb()
-  const colorMode = useColorMode()
-
-  const temaGrafico = computed(() => (colorMode.value === 'dark' ? 'dark' : ''))
 
   // ─── Estado ───────────────────────────────────────────────────────────────
 
@@ -37,79 +27,48 @@ export const useTrensHolandeses = () => {
     periodo_fim: ''
   })
 
-  const opcaoTipo = ref<Record<string, unknown> | null>(null)
-  const opcaoEstacoesMovimentadas = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoPartidasPorHora = ref<Record<string, unknown> | null>(null)
-  const configuracaoGraficoDuracaoMediaParada = ref<Record<string, unknown> | null>(null)
+  const opcaoTipo = ref<ConfiguracaoGrafico | null>(null)
+  const opcaoEstacoesMovimentadas = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoPartidasPorHora = ref<ConfiguracaoGrafico | null>(null)
+  const configuracaoGraficoDuracaoMediaParada = ref<ConfiguracaoGrafico | null>(null)
 
   // ─── Configuração dos Gráficos ────────────────────────────────────────────
 
   const configurarGraficoTipo = (data: DadosPorTipoServico[]) => {
-    opcaoTipo.value = {
-      backgroundColor: 'transparent',
-      color: PALETA,
-      tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-      legend: { bottom: 0, type: 'scroll' },
-      series: [
-        {
-          type: 'pie',
-          radius: ['42%', '70%'],
-          center: ['50%', '42%'],
-          data: data.map(d => ({ name: d.type, value: d.total })),
-          label: { show: false },
-          emphasis: { label: { show: true, fontWeight: 'bold' } }
-        }
-      ]
-    }
+    opcaoTipo.value = montarRosca(
+      data.map(d => ({ nome: d.type, valor: d.total })),
+      'Eventos'
+    )
   }
 
   const configurarGraficoEstacoesMovimentadas = (data: DadosEstacaoMovimentada[]) => {
-    const stationLabels = data.map(d => d.station_name)
-    const stationValues = data.map(d => d.count)
-    opcaoEstacoesMovimentadas.value = {
-      ...configuracaoGrafico,
-      color: [COR_SECUNDARIA],
-      xAxis: { type: 'category', data: stationLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [{ type: 'bar', data: stationValues, name: 'Eventos' }]
-    }
+    opcaoEstacoesMovimentadas.value = montarGrafico({
+      rotulos: data.map(d => d.station_name),
+      series: [{ nome: 'Eventos', valores: data.map(d => d.count), cor: COR_SECUNDARIA }]
+    })
   }
 
   const configurarGraficoPartidasPorHora = (data: DadosPartidaPorHora[]) => {
-    const hourLabels = data.map(d => `${String(d.hora).padStart(2, '0')}h`)
-    const hourValues = data.map(d => d.total)
-    configuracaoGraficoPartidasPorHora.value = {
-      ...configuracaoGrafico,
-      grid: { top: 16, right: 16, bottom: 48, left: 64 },
-      color: [COR_PRIMARIA],
-      xAxis: { type: 'category', data: hourLabels, boundaryGap: false, axisLabel: { fontSize: 11 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10 } },
-      series: [
-        {
-          type: 'line',
-          data: hourValues,
-          name: 'Partidas',
-          smooth: true,
-          symbol: 'circle',
-          symbolSize: 5,
-          areaStyle: { opacity: 0.15 }
-        }
-      ]
+    if (!data || data.length === 0) {
+      configuracaoGraficoPartidasPorHora.value = graficoVazio()
+      return
     }
+    configuracaoGraficoPartidasPorHora.value = montarGrafico({
+      tipo: 'area',
+      rotulos: data.map(d => `${String(d.hora).padStart(2, '0')}h`),
+      series: [{ nome: 'Partidas', valores: data.map(d => d.total), cor: COR_PRIMARIA }],
+      curva: 'monotone',
+      pontos: true
+    })
   }
 
   const configurarGraficoDuracaoMediaParada = (data: DadosDuracaoMediaParada[]) => {
-    const stopLabels = data.map(d => d.station_name)
-    const stopValues = data.map(d => d.avg_stop_seconds)
-    configuracaoGraficoDuracaoMediaParada.value = {
-      ...configuracaoGrafico,
-      color: [COR_TERCIARIA],
-      xAxis: { type: 'category', data: stopLabels, axisLabel: { fontSize: 10, rotate: 45 } },
-      yAxis: { type: 'value', axisLabel: { fontSize: 10, formatter: '{value}s' } },
-      series: [{ type: 'bar', data: stopValues, name: 'Duração Média (s)' }]
-    }
+    configuracaoGraficoDuracaoMediaParada.value = montarGrafico({
+      rotulos: data.map(d => d.station_name),
+      series: [{ nome: 'Duração Média (s)', valores: data.map(d => d.avg_stop_seconds), cor: COR_TERCIARIA }],
+      rotuloY: 's'
+    })
   }
-
   // ─── Carregamento ─────────────────────────────────────────────────────────
 
   const carregarDados = async () => {
@@ -156,7 +115,6 @@ export const useTrensHolandeses = () => {
     carregandoKpis,
     erro,
     kpis,
-    temaGrafico,
     opcaoTipo,
     opcaoEstacoesMovimentadas,
     configuracaoGraficoPartidasPorHora,

@@ -2,17 +2,15 @@
   setup
   lang="ts"
 >
-import { LazyGraficoEChart } from '@/utils/lazy-components'
+import type { ConfiguracaoGrafico } from '~/types/grafico.types'
 
 const props = withDefaults(
   defineProps<{
-    configuracao: Record<string, unknown> | null
-    tema?: string
+    configuracao: ConfiguracaoGrafico | null
     altura?: number
     msgSemDados?: string
   }>(),
   {
-    tema: '',
     altura: 260,
     msgSemDados: 'Dados indisponíveis para este dataset.'
   }
@@ -23,7 +21,7 @@ const alturaExpandida = ref(0)
 
 const semDados = computed(
   () =>
-    props.configuracao !== null && Object.keys(props.configuracao).length === 0
+    props.configuracao !== null && props.configuracao.data.length === 0
 )
 
 const calcularAlturaExpandida = () => {
@@ -104,10 +102,9 @@ onUnmounted(() => {
         {{ msgSemDados }}
       </p>
     </div>
-    <LazyGraficoEChart
+    <UChart
       v-else
-      :option="configuracao"
-      :tema="tema"
+      v-bind="configuracao"
       :height="altura"
     />
   </UCard>
@@ -163,10 +160,9 @@ onUnmounted(() => {
                 {{ msgSemDados }}
               </p>
             </div>
-            <LazyGraficoEChart
+            <UChart
               v-else-if="configuracao && alturaExpandida > 0"
-              :option="configuracao"
-              :tema="tema"
+              v-bind="configuracao"
               :height="alturaExpandida"
             />
           </div>
